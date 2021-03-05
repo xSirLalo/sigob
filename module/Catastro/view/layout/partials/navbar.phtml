@@ -1,0 +1,33 @@
+	<nav class="pcoded-navbar menupos-fixed">
+		<div class="navbar-wrapper  ">
+			<div class="navbar-content scroll-div " >
+				<ul class="nav pcoded-inner-navbar ">
+                    <li class="nav-item pcoded-menu-caption">
+						<label>Navegación</label>
+					</li>
+                    <li class="nav-item"><a href=<?=$this->url('home')?> class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">home</span></a></li>
+                    <li class="nav-item"><a href=<?= $this->url('home')?> class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Contribuyentes</span></a></li>
+					<li class="nav-item pcoded-hasmenu">
+						<a href="#" class="nav-link "><span class="pcoded-micon"><i class="feather icon-menu"></i></span><span class="pcoded-mtext">Catastro</span></a>
+						<ul class="pcoded-submenu">
+						<li><a href=<?=$this->url('home')?> >Listado</a></li>
+						<li class="pcoded-hasmenu">
+								<a href="#">Aportaciones</a>
+								<ul class="pcoded-submenu">
+									<li><a href=<?=$this->url('home')?> >Pagos</a></li>
+									<li><a href=<?=$this->url('home')?> >Director</a></li>
+								</ul>
+							</li>
+							<li class="pcoded-hasmenu">
+								<a href="#">Biblioteca</a>
+								<ul class="pcoded-submenu">
+									<li><a href=<?=$this->url('home')?> >Archivos</a></li>
+									<li><a href=<?=$this->url('home')?> >Categorías</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
