@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
 // Create a simple "default" Doctrine ORM configuration for Annotations
-$paths = array(__DIR__.'/../module/Catastro/src/Model/Entity');
+$paths = array(__DIR__.'/../module/Catastro/src/Entities');
 $isDevMode = true;
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);

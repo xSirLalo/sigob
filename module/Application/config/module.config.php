@@ -68,4 +68,9 @@ return [
             'pageBreadcrumbs' => View\Helper\Breadcrumbs::class,
         ]
     ],
+    'service_manager' => [
+        'factories' => [
+            Service\ContribuyenteModel::class => Service\Factory\ContribuyenteModelFactory::class,
+        ]
+    ],
 ];

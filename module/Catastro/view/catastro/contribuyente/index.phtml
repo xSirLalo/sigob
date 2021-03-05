@@ -1,0 +1,69 @@
+<?php
+$title = $this->translate('Contribuyentes');
+// meta palabras claves
+$this->headMeta()->appendName('keywords', '');
+// meta descripción
+$this->headMeta()->appendName('description', '');
+// titulo de pagina
+$this->headTitle($this->escapeHtml($title));
+// migas de pan
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Contribuyentes' => $this->url('contribuyente'),
+]);
+// Hoja de estilos requerido
+$this->headLink()
+    // Css DataTables
+    ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
+    // Js Requerido
+$this->inlineScript()
+    // Css DataTables
+    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
+    ->prependFile($this->basePath('js/catastro/contribuyente/index.js'))
+    ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
+    ;
+?>
+<!-- [ col ] start -->
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-1 col-xs-12 mb-4" align=center>
+                    <div class="btn-group" role="group" aria-label="Botones">
+                        <a href="#" class="btn btn-secondary" data-toggle="modal" onClick="add_contribuyente()">Agregar Ajax</a>
+                        <a href="<?= $this->url("contribuyente/agregar") ?>" class="btn btn-success">Agregar</a>
+                        <a href="<?= $this->url("contribuyente/pdf") ?>" class="btn btn-danger">PDF</a>
+                    </div>
+                </div>
+            </div>
+            <table  class="display table table-striped table-hover dt-responsive nowrap" id="contribuyentes" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($contribuyentes) : ?>
+                        <?php foreach ($contribuyentes as $contribuyente) : ?>
+                            <tr>
+                                <td><?= $contribuyente->getIdContribuyente() ?></td>
+                                <td><?= $contribuyente->getNombre() ?></td>
+                            </tr>
+                        <?php endforeach ?>
+                    <?php else : ?>
+                        <tr>
+                            <td>No hay datos</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

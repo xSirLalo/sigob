@@ -1,0 +1,62 @@
+<?php
+$title = $this->translate('Agregar');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Contribuyentes' => $this->url('contribuyente'),
+    'Agregar' => $this->url('contribuyente/agregar'),
+]);
+$form = $this->form;
+$form->setAttribute('action', $this->url('contribuyente/agregar'));
+$form->prepare();
+?>
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <!-- [ openTag ] start -->
+            <?= $this->form()->openTag($form); ?>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('nombre')); ?>
+                    <?= $this->formText($form->get('nombre')); ?>
+                    <?= $this->formElementErrors($form->get('nombre', ['class' => 'text-danger'])); ?>
+                </div>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('apellido_paterno')); ?>
+                    <?= $this->formText($form->get('apellido_paterno')); ?>
+                    <?= $this->formElementErrors($form->get('apellido_paterno')); ?>
+                </div>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('apellido_materno')); ?>
+                    <?= $this->formText($form->get('apellido_materno')); ?>
+                    <?= $this->formElementErrors($form->get('apellido_materno')); ?>
+                </div>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('rfc')); ?>
+                    <?= $this->formText($form->get('rfc')); ?>
+                    <?= $this->formElementErrors($form->get('rfc')); ?>
+                </div>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('curp')); ?>
+                    <?= $this->formText($form->get('curp')); ?>
+                    <?= $this->formElementErrors($form->get('curp')); ?>
+                </div>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('genero')); ?>
+                    <?= $this->formText($form->get('genero')); ?>
+                    <?= $this->formElementErrors($form->get('genero')); ?>
+                </div>
+                <?= $this->formHidden($form->get('csrf')); ?>
+                <?= $this->formElementErrors($form->get('csrf')); ?>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
+            <?= $this->form()->closeTag(); ?>
+            <!-- [ closeTag ] start -->
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

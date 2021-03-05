@@ -29,7 +29,9 @@
         "laminas/laminas-i18n-resources": "^2.6",
         "laminas/laminas-i18n": "^2.11",
         "laminas/laminas-soap": "^2.9",
-        "tecnickcom/tcpdf": "^6.3"
+        "laminas/laminas-math": "^3.3",
+        "tecnickcom/tcpdf": "^6.3",,
+        "doctrine/doctrine-orm-module": "^3.2"
     },
     "autoload": {
         "psr-4": {
