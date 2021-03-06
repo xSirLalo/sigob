@@ -22,7 +22,6 @@ $conn = array(
     'user'      => 'root',
     'password'  => '',
     'dbname'    => 'sigob',
-    //'dbname'    => 'catastro',
     'charset'   => 'utf8',
     'driverOptions' => [
         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'

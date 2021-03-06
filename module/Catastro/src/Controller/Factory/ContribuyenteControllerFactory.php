@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Catastro\Controller\Factory;
 
 use Interop\Container\ContainerInterface;

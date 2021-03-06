@@ -2,7 +2,7 @@
 
 namespace Catastro\Service;
 
-use Catastro\Entities\Contribuyente;
+use Application\Entities\Contribuyente;
 
 class ContribuyenteModel
 {
@@ -15,7 +15,6 @@ class ContribuyenteModel
     /**
      * Constructor.
      */
-
     public function __construct($entityManager)
     {
         $this->entityManager = $entityManager;
@@ -27,23 +26,31 @@ class ContribuyenteModel
 
         $contribuyente->setNombre($data['nombre']);
         $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-        $contribuyente->setApellidoPaterno($data['apellido_materno']);
+        $contribuyente->setApellidoMaterno($data['apellido_materno']);
         $contribuyente->setRfc($data['rfc']);
         $contribuyente->setCurp($data['curp']);
         $contribuyente->setGenero($data['genero']);
+
         $this->entityManager->persist($contribuyente);
         $this->entityManager->flush();
     }
 
-    public function delete($contribuyente)
+    public function actualizar($contribuyente, $data)
     {
-        $this->entityManager->remove($contribuyente);
+        $contribuyente->setNombre($data['nombre']);
+        $contribuyente->setApellidoPaterno($data['apellido_paterno']);
+        $contribuyente->setApellidoMaterno($data['apellido_materno']);
+        $contribuyente->setRfc($data['rfc']);
+        $contribuyente->setCurp($data['curp']);
+        $contribuyente->setGenero($data['genero']);
+
         $this->entityManager->flush();
     }
 
-    public function update($contribuyente, $data)
+    public function eliminar($contribuyente)
     {
-        $contribuyente->setNombre($data['nombre']);
+        $this->entityManager->remove($contribuyente);
+
         $this->entityManager->flush();
     }
 

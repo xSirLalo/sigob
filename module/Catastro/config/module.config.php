@@ -86,39 +86,6 @@ return [
                             ],
                         ],
                     ],
-                    'agregar_ajax' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/agregar_ajax',
-                            'defaults' => [
-                                'action' => 'addAjax',
-                            ],
-                        ],
-                    ],
-                    'ver_ajax' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/ver_ajax[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'viewAjax',
-                            ],
-                        ],
-                    ],
-                    'editar_ajax' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/editar_ajax[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'editAjax',
-                            ],
-                        ],
-                    ],
                     'buscar_ajax' => [
                         'type' => 'segment',
                         'options' => [
@@ -152,7 +119,7 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            Service\PostManager::class => Service\Factory\PostManagerFactory::class,
+            Service\ContribuyenteModel::class => Service\Factory\ContribuyenteModelFactory::class,
         ]
     ],
     // The following registers the session container for storing language settings.
@@ -160,8 +127,6 @@ return [
         'I18nSessionContainer'
     ],
     'view_manager' => [
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
         ],
@@ -184,7 +149,7 @@ return [
             // Override `orm_default` only if you know what you're doing
             'orm_default' => [
                 'drivers' => [
-                    // register `my_annotation_driver` for any entity under namespace `My\Namespace`
+                // register `my_annotation_driver` for any entity under namespace `My\Namespace`
                 __NAMESPACE__ . '\Entities' => __NAMESPACE__ . '_driver',
                 ],
             ],

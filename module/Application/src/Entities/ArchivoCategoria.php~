@@ -1,6 +1,6 @@
 <?php
 
-namespace Catastro\Entities;
+namespace Application\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 

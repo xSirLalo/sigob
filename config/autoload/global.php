@@ -16,17 +16,6 @@ use Laminas\Session\Validator\RemoteAddr;
 use Laminas\Session\Validator\HttpUserAgent;
 
 return [
-    // Migrations configuration
-    'doctrine' => [
-        'migrations_configuration' => [
-            'orm_default' => [
-                'directory' => 'data/Migrations',
-                'name'      => 'Doctrine Database Migrations',
-                'namespace' => 'Migrations',
-                'table'     => 'migrations',
-            ],
-        ],
-    ],
     // Session configuration.
     'session_config' => [
         'cookie_lifetime' => 60*60*1,  // Session cookie will expire in 1 hour.
@@ -43,5 +32,16 @@ return [
     // Session storage configuration.
     'session_storage' => [
         'type' => SessionArrayStorage::class
+    ],
+    // Migrations configuration
+    'doctrine' => [
+        'migrations_configuration' => [
+            'orm_default' => [
+                'directory' => 'data/Migrations',
+                'name'      => 'Doctrine Database Migrations',
+                'namespace' => 'Migrations',
+                'table'     => 'migrations',
+            ],
+        ],
     ],
 ];

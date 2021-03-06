@@ -98,7 +98,7 @@ class ContribuyenteForm extends Form
             'attributes' => [
                 // 'required' => true,
                 'class' => 'form-control',
-                'placeholder' => 'Apellido Materno',
+                'placeholder' => 'Genero',
             ]
         ]);
 

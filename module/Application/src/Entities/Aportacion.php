@@ -1,6 +1,6 @@
 <?php
 
-namespace Catastro\Entities;
+namespace Application\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -78,9 +78,9 @@ class Aportacion
     private $estatus;
 
     /**
-     * @var \Catastro\Entities\Contribuyente
+     * @var \Application\Entities\Contribuyente
      *
-     * @ORM\ManyToOne(targetEntity="Catastro\Entities\Contribuyente")
+     * @ORM\ManyToOne(targetEntity="Application\Entities\Contribuyente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_contribuyente", referencedColumnName="id_contribuyente")
      * })
@@ -88,9 +88,9 @@ class Aportacion
     private $idContribuyente;
 
     /**
-     * @var \Catastro\Entities\Predio
+     * @var \Application\Entities\Predio
      *
-     * @ORM\ManyToOne(targetEntity="Catastro\Entities\Predio")
+     * @ORM\ManyToOne(targetEntity="Application\Entities\Predio")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_predio", referencedColumnName="id_predio")
      * })
@@ -304,11 +304,11 @@ class Aportacion
     /**
      * Set idContribuyente.
      *
-     * @param \Catastro\Entities\Contribuyente|null $idContribuyente
+     * @param \Application\Entities\Contribuyente|null $idContribuyente
      *
      * @return Aportacion
      */
-    public function setIdContribuyente(\Catastro\Entities\Contribuyente $idContribuyente = null)
+    public function setIdContribuyente(\Application\Entities\Contribuyente $idContribuyente = null)
     {
         $this->idContribuyente = $idContribuyente;
 
@@ -318,7 +318,7 @@ class Aportacion
     /**
      * Get idContribuyente.
      *
-     * @return \Catastro\Entities\Contribuyente|null
+     * @return \Application\Entities\Contribuyente|null
      */
     public function getIdContribuyente()
     {
@@ -328,11 +328,11 @@ class Aportacion
     /**
      * Set idPredio.
      *
-     * @param \Catastro\Entities\Predio|null $idPredio
+     * @param \Application\Entities\Predio|null $idPredio
      *
      * @return Aportacion
      */
-    public function setIdPredio(\Catastro\Entities\Predio $idPredio = null)
+    public function setIdPredio(\Application\Entities\Predio $idPredio = null)
     {
         $this->idPredio = $idPredio;
 
@@ -342,7 +342,7 @@ class Aportacion
     /**
      * Get idPredio.
      *
-     * @return \Catastro\Entities\Predio|null
+     * @return \Application\Entities\Predio|null
      */
     public function getIdPredio()
     {

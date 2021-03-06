@@ -1,6 +1,6 @@
 <?php
 
-namespace Catastro\Entities;
+namespace Application\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,9 +43,9 @@ class PredioColindancia
     private $orientacionGeografica;
 
     /**
-     * @var \Catastro\Entities\Predio
+     * @var \Application\Entities\Predio
      *
-     * @ORM\ManyToOne(targetEntity="Catastro\Entities\Predio")
+     * @ORM\ManyToOne(targetEntity="Application\Entities\Predio")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_predio", referencedColumnName="id_predio")
      * })
@@ -139,11 +139,11 @@ class PredioColindancia
     /**
      * Set idPredio.
      *
-     * @param \Catastro\Entities\Predio|null $idPredio
+     * @param \Application\Entities\Predio|null $idPredio
      *
      * @return PredioColindancia
      */
-    public function setIdPredio(\Catastro\Entities\Predio $idPredio = null)
+    public function setIdPredio(\Application\Entities\Predio $idPredio = null)
     {
         $this->idPredio = $idPredio;
 
@@ -153,7 +153,7 @@ class PredioColindancia
     /**
      * Get idPredio.
      *
-     * @return \Catastro\Entities\Predio|null
+     * @return \Application\Entities\Predio|null
      */
     public function getIdPredio()
     {

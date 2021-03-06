@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Catastro\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;

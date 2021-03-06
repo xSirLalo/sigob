@@ -62,7 +62,7 @@ class Breadcrumbs extends AbstractHelper
         $result = $isActive ? '<li class="breadcrumb-item active">' : '<li class="breadcrumb-item">';
 
         if (!$isActive) {
-            if ($label == "Inicio") {
+            if ($label == "Home") {
                 $result .= '<a href="' . $link . '"><i class="feather icon-home"></i></a>';
             } else {
                 $result .= '<a href="' . $link . '">' . $label . '</a>';

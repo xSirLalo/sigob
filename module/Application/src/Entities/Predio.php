@@ -1,6 +1,6 @@
 <?php
 
-namespace Catastro\Entities;
+namespace Application\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -50,9 +50,9 @@ class Predio
     private $titularAnterio;
 
     /**
-     * @var \Catastro\Entities\Contribuyente
+     * @var \Application\Entities\Contribuyente
      *
-     * @ORM\ManyToOne(targetEntity="Catastro\Entities\Contribuyente")
+     * @ORM\ManyToOne(targetEntity="Application\Entities\Contribuyente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_contribuyente", referencedColumnName="id_contribuyente")
      * })
@@ -170,11 +170,11 @@ class Predio
     /**
      * Set idContribuyente.
      *
-     * @param \Catastro\Entities\Contribuyente|null $idContribuyente
+     * @param \Application\Entities\Contribuyente|null $idContribuyente
      *
      * @return Predio
      */
-    public function setIdContribuyente(\Catastro\Entities\Contribuyente $idContribuyente = null)
+    public function setIdContribuyente(\Application\Entities\Contribuyente $idContribuyente = null)
     {
         $this->idContribuyente = $idContribuyente;
 
@@ -184,7 +184,7 @@ class Predio
     /**
      * Get idContribuyente.
      *
-     * @return \Catastro\Entities\Contribuyente|null
+     * @return \Application\Entities\Contribuyente|null
      */
     public function getIdContribuyente()
     {

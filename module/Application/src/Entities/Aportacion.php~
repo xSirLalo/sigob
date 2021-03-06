@@ -1,6 +1,6 @@
 <?php
 
-namespace Catastro\Entities;
+namespace Application\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -78,9 +78,9 @@ class Aportacion
     private $estatus;
 
     /**
-     * @var \Catastro\Entities\Contribuyente
+     * @var \Application\Entities\Contribuyente
      *
-     * @ORM\ManyToOne(targetEntity="Catastro\Entities\Contribuyente")
+     * @ORM\ManyToOne(targetEntity="Application\Entities\Contribuyente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_contribuyente", referencedColumnName="id_contribuyente")
      * })
@@ -88,9 +88,9 @@ class Aportacion
     private $idContribuyente;
 
     /**
-     * @var \Catastro\Entities\Predio
+     * @var \Application\Entities\Predio
      *
-     * @ORM\ManyToOne(targetEntity="Catastro\Entities\Predio")
+     * @ORM\ManyToOne(targetEntity="Application\Entities\Predio")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_predio", referencedColumnName="id_predio")
      * })
