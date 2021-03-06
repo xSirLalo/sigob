@@ -86,7 +86,7 @@ return [
             'orm_default' => [
                 'drivers' => [
                 // register `my_annotation_driver` for any entity under namespace `My\Namespace`
-                __NAMESPACE__ . '\Entities' => __NAMESPACE__ . '_driver',
+                __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver',
                 ],
             ],
         ],

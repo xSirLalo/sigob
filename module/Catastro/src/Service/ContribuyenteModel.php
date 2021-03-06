@@ -2,7 +2,7 @@
 
 namespace Catastro\Service;
 
-use Application\Entities\Contribuyente;
+use Application\Entity\Contribuyente;
 
 class ContribuyenteModel
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Application\Entities;
+namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Archivo
  *
- * @ORM\Table(name="archivo", indexes={@ORM\Index(name="id_contribuyente", columns={"id_contribuyente"}), @ORM\Index(name="id_predio", columns={"id_predio"}), @ORM\Index(name="id_archivo_categoria", columns={"id_archivo_categoria"})})
+ * @ORM\Table(name="archivo", indexes={@ORM\Index(name="id_contribuyente", columns={"id_contribuyente"}), @ORM\Index(name="id_archivo_categoria", columns={"id_archivo_categoria"}), @ORM\Index(name="id_predio", columns={"id_predio"})})
  * @ORM\Entity
  */
 class Archivo
@@ -43,9 +43,9 @@ class Archivo
     private $tamanio;
 
     /**
-     * @var \Application\Entities\ArchivoCategoria
+     * @var \Application\Entity\ArchivoCategoria
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entities\ArchivoCategoria")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\ArchivoCategoria")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_archivo_categoria", referencedColumnName="id_archivo_categoria")
      * })
@@ -53,9 +53,9 @@ class Archivo
     private $idArchivoCategoria;
 
     /**
-     * @var \Application\Entities\Contribuyente
+     * @var \Application\Entity\Contribuyente
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entities\Contribuyente")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Contribuyente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_contribuyente", referencedColumnName="id_contribuyente")
      * })
@@ -63,9 +63,9 @@ class Archivo
     private $idContribuyente;
 
     /**
-     * @var \Application\Entities\Predio
+     * @var \Application\Entity\Predio
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entities\Predio")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Predio")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_predio", referencedColumnName="id_predio")
      * })
@@ -159,11 +159,11 @@ class Archivo
     /**
      * Set idArchivoCategoria.
      *
-     * @param \Application\Entities\ArchivoCategoria|null $idArchivoCategoria
+     * @param \Application\Entity\ArchivoCategoria|null $idArchivoCategoria
      *
      * @return Archivo
      */
-    public function setIdArchivoCategoria(\Application\Entities\ArchivoCategoria $idArchivoCategoria = null)
+    public function setIdArchivoCategoria(\Application\Entity\ArchivoCategoria $idArchivoCategoria = null)
     {
         $this->idArchivoCategoria = $idArchivoCategoria;
 
@@ -173,7 +173,7 @@ class Archivo
     /**
      * Get idArchivoCategoria.
      *
-     * @return \Application\Entities\ArchivoCategoria|null
+     * @return \Application\Entity\ArchivoCategoria|null
      */
     public function getIdArchivoCategoria()
     {
@@ -183,11 +183,11 @@ class Archivo
     /**
      * Set idContribuyente.
      *
-     * @param \Application\Entities\Contribuyente|null $idContribuyente
+     * @param \Application\Entity\Contribuyente|null $idContribuyente
      *
      * @return Archivo
      */
-    public function setIdContribuyente(\Application\Entities\Contribuyente $idContribuyente = null)
+    public function setIdContribuyente(\Application\Entity\Contribuyente $idContribuyente = null)
     {
         $this->idContribuyente = $idContribuyente;
 
@@ -197,7 +197,7 @@ class Archivo
     /**
      * Get idContribuyente.
      *
-     * @return \Application\Entities\Contribuyente|null
+     * @return \Application\Entity\Contribuyente|null
      */
     public function getIdContribuyente()
     {
@@ -207,11 +207,11 @@ class Archivo
     /**
      * Set idPredio.
      *
-     * @param \Application\Entities\Predio|null $idPredio
+     * @param \Application\Entity\Predio|null $idPredio
      *
      * @return Archivo
      */
-    public function setIdPredio(\Application\Entities\Predio $idPredio = null)
+    public function setIdPredio(\Application\Entity\Predio $idPredio = null)
     {
         $this->idPredio = $idPredio;
 
@@ -221,7 +221,7 @@ class Archivo
     /**
      * Get idPredio.
      *
-     * @return \Application\Entities\Predio|null
+     * @return \Application\Entity\Predio|null
      */
     public function getIdPredio()
     {

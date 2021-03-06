@@ -10,7 +10,7 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use Application\Entities\Contribuyente;
+use Application\Entity\Contribuyente;
 use Catastro\Form\ContribuyenteForm;
 use Catastro\Form\EliminarForm;
 
@@ -182,30 +182,44 @@ class ContribuyenteController extends AbstractActionController
 
     public function deleteAction()
     {
+        $request = $this->getRequest();
         $form = new EliminarForm();
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
-        if ($contribuyenteId < 0) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
-        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-        if ($contribuyente == null) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
-        if ($this->getRequest()->isPost()) {
-            $data = $this->params()->fromPost();
-            $form->setData($data);
-            if ($form->isValid()) {
-                if ($this->getRequest()->getPost()->get('delete') == 'Yes') {
-                    $this->contribuyenteModel->eliminar($contribuyente);
-                }
-                $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
-                return $this->redirect()->toRoute('contribuyente');
-            }
-        }
 
-        return new ViewModel(['form' => $form, 'id' => $contribuyenteId]);# code...
+        if ($request->isXmlHttpRequest()) {
+            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+            $this->contribuyenteModel->eliminar($contribuyente);
+
+            $this->flashMessenger()->addSuccessMessage('Se elimino con éxito');
+            $view = new JsonModel();
+            $view->setTerminal(true);
+        } else {
+            if ($contribuyenteId < 0) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+
+            if ($contribuyente == null) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            if ($this->getRequest()->isPost()) {
+                $data = $this->params()->fromPost();
+                $form->setData($data);
+                if ($form->isValid()) {
+                    if ($this->getRequest()->getPost()->get('delete') == 'Yes') {
+                        $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
+                        $this->contribuyenteModel->eliminar($contribuyente);
+                    }
+                    return $this->redirect()->toRoute('contribuyente');
+                }
+            }
+            $view = new ViewModel(['form' => $form, 'id' => $contribuyenteId]);
+        }
+        return $view;
     }
 
     public function searchAjaxAction()

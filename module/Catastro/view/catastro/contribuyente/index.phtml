@@ -23,6 +23,7 @@ $this->inlineScript()
     ->prependFile($this->basePath('js/catastro/contribuyente/add.js'))
     ->prependFile($this->basePath('js/catastro/contribuyente/view.js'))
     ->prependFile($this->basePath('js/catastro/contribuyente/edit.js'))
+    ->prependFile($this->basePath('js/catastro/contribuyente/delete.js'))
     ;
 ?>
 <!-- [ col ] start -->
@@ -63,7 +64,7 @@ $this->inlineScript()
                                 <td>
                                     <a href="<?= $this->url('contribuyente/ver', ['action' => 'ver', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-primary" data-toggle="modal" onclick="view_contribuyente('<?= $contribuyente->getIdContribuyente() ?>')"> Ver</a>
                                     <a href="<?= $this->url('contribuyente/editar', ['action' => 'editar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-warning" data-toggle="modal" onclick="edit_contribuyente('<?= $contribuyente->getIdContribuyente() ?>')"> Editar</a>
-                                    <a href="<?= $this->url('contribuyente/eliminar', ['action' => 'eliminar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-danger"> Eliminar</a>
+                                    <a href="<?= $this->url('contribuyente/eliminar', ['action' => 'eliminar', 'id' => $contribuyente->getIdContribuyente()]); ?>" data-toggle="modal" data-target="#deleteModal" data-id="<?= $contribuyente->getIdContribuyente() ?>" class="btn btn-danger"> Eliminar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -133,6 +134,33 @@ $this->inlineScript()
                 <button id="btnClose" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?= $this->form()->closeTag(); ?>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Esta apunto de realizar una accion irreversible hasta para el administrador.</p>
+                <p>¿Desea continuar?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger btn-ok">Confirmar</button>
+                <!-- <form id="formDelete" action="{{ route('admin.users.destroy', 0) }}" data-action="{{ route('admin.users.destroy', 0) }}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Confirmar</button>
+                </form> -->
             </div>
         </div>
     </div>

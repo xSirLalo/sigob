@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Entities;
+namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -78,9 +78,9 @@ class Aportacion
     private $estatus;
 
     /**
-     * @var \Application\Entities\Contribuyente
+     * @var \Application\Entity\Contribuyente
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entities\Contribuyente")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Contribuyente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_contribuyente", referencedColumnName="id_contribuyente")
      * })
@@ -88,9 +88,9 @@ class Aportacion
     private $idContribuyente;
 
     /**
-     * @var \Application\Entities\Predio
+     * @var \Application\Entity\Predio
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entities\Predio")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Predio")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_predio", referencedColumnName="id_predio")
      * })

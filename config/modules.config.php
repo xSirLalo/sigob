@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'Laminas\Mail',
+    'Laminas\Serializer',
     'Laminas\Paginator',
     'Laminas\Cache',
     'Laminas\Di',

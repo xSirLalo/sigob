@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Entities;
+namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -50,9 +50,9 @@ class Predio
     private $titularAnterio;
 
     /**
-     * @var \Application\Entities\Contribuyente
+     * @var \Application\Entity\Contribuyente
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entities\Contribuyente")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Contribuyente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_contribuyente", referencedColumnName="id_contribuyente")
      * })
@@ -170,11 +170,11 @@ class Predio
     /**
      * Set idContribuyente.
      *
-     * @param \Application\Entities\Contribuyente|null $idContribuyente
+     * @param \Application\Entity\Contribuyente|null $idContribuyente
      *
      * @return Predio
      */
-    public function setIdContribuyente(\Application\Entities\Contribuyente $idContribuyente = null)
+    public function setIdContribuyente(\Application\Entity\Contribuyente $idContribuyente = null)
     {
         $this->idContribuyente = $idContribuyente;
 
@@ -184,7 +184,7 @@ class Predio
     /**
      * Get idContribuyente.
      *
-     * @return \Application\Entities\Contribuyente|null
+     * @return \Application\Entity\Contribuyente|null
      */
     public function getIdContribuyente()
     {

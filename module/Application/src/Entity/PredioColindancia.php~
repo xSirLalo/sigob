@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Entities;
+namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,9 +43,9 @@ class PredioColindancia
     private $orientacionGeografica;
 
     /**
-     * @var \Application\Entities\Predio
+     * @var \Application\Entity\Predio
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entities\Predio")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Predio")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_predio", referencedColumnName="id_predio")
      * })

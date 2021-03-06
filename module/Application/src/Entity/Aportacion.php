@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Entities;
+namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -78,9 +78,9 @@ class Aportacion
     private $estatus;
 
     /**
-     * @var \Application\Entities\Contribuyente
+     * @var \Application\Entity\Contribuyente
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entities\Contribuyente")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Contribuyente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_contribuyente", referencedColumnName="id_contribuyente")
      * })
@@ -88,9 +88,9 @@ class Aportacion
     private $idContribuyente;
 
     /**
-     * @var \Application\Entities\Predio
+     * @var \Application\Entity\Predio
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entities\Predio")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Predio")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_predio", referencedColumnName="id_predio")
      * })
@@ -304,11 +304,11 @@ class Aportacion
     /**
      * Set idContribuyente.
      *
-     * @param \Application\Entities\Contribuyente|null $idContribuyente
+     * @param \Application\Entity\Contribuyente|null $idContribuyente
      *
      * @return Aportacion
      */
-    public function setIdContribuyente(\Application\Entities\Contribuyente $idContribuyente = null)
+    public function setIdContribuyente(\Application\Entity\Contribuyente $idContribuyente = null)
     {
         $this->idContribuyente = $idContribuyente;
 
@@ -318,7 +318,7 @@ class Aportacion
     /**
      * Get idContribuyente.
      *
-     * @return \Application\Entities\Contribuyente|null
+     * @return \Application\Entity\Contribuyente|null
      */
     public function getIdContribuyente()
     {
@@ -328,11 +328,11 @@ class Aportacion
     /**
      * Set idPredio.
      *
-     * @param \Application\Entities\Predio|null $idPredio
+     * @param \Application\Entity\Predio|null $idPredio
      *
      * @return Aportacion
      */
-    public function setIdPredio(\Application\Entities\Predio $idPredio = null)
+    public function setIdPredio(\Application\Entity\Predio $idPredio = null)
     {
         $this->idPredio = $idPredio;
 
@@ -342,7 +342,7 @@ class Aportacion
     /**
      * Get idPredio.
      *
-     * @return \Application\Entities\Predio|null
+     * @return \Application\Entity\Predio|null
      */
     public function getIdPredio()
     {
