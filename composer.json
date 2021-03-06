@@ -36,7 +36,8 @@
         "laminas/laminas-mime": "^2.8",
         "laminas/laminas-serializer": "^2.10",
         "laminas/laminas-mail": "^2.13",
-        "laminas/laminas-permissions-rbac": "^3.0"
+        "laminas/laminas-permissions-rbac": "^3.0",
+        "phpoffice/phpspreadsheet": "^1.17"
     },
     "autoload": {
         "psr-4": {

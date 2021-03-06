@@ -86,6 +86,24 @@ return [
                             ],
                         ],
                     ],
+                    'pdf' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/pdf',
+                            'defaults' => [
+                                'action' => 'pdf',
+                            ],
+                        ],
+                    ],
+                    'excel' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/excel',
+                            'defaults' => [
+                                'action' => 'excel',
+                            ],
+                        ],
+                    ],
                     'buscar_ajax' => [
                         'type' => 'segment',
                         'options' => [
@@ -95,15 +113,6 @@ return [
                             ],
                             'defaults' => [
                                 'action' => 'searchAjax',
-                            ],
-                        ],
-                    ],
-                    'pdf' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/pdf',
-                            'defaults' => [
-                                'action' => 'pdf',
                             ],
                         ],
                     ],
@@ -127,7 +136,13 @@ return [
         'I18nSessionContainer'
     ],
     'view_manager' => [
+        'display_not_found_reason' => true,
+        'display_exceptions'       => true,
+        'not_found_template'       => 'error/404',
+        'exception_template'       => 'error/index',
         'template_map' => [
+            'error/404'   => __DIR__ . '/../view/error/404.phtml',
+            'error/index' => __DIR__ . '/../view/error/index.phtml',
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
         ],
         'template_path_stack' => [

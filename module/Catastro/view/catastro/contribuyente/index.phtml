@@ -36,12 +36,14 @@ $this->inlineScript()
             <div class="row">
                 <div class="col-md-1 col-xs-12 mb-4" align=center>
                     <div class="btn-group" role="group" aria-label="Botones">
-                        <a href="<?= $this->url("contribuyente/agregar") ?>" class="btn btn-success" data-toggle="modal" onClick="add_contribuyente()">Agregar</a>
+                        <a href="<?= $this->url("contribuyente/agregar") ?>" class="btn btn-primary" data-toggle="modal" onClick="add_contribuyente()">Agregar</a>
                         <a href="<?= $this->url("contribuyente/pdf") ?>" class="btn btn-danger">PDF</a>
+                        <a href="<?= $this->url("contribuyente/excel") ?>" class="btn btn-success">Excel</a>
                     </div>
                 </div>
             </div>
-            <table  class="display table table-striped table-hover dt-responsive nowrap" id="contribuyente" style="width:100%">
+            <!-- <table class="table table-striped table-bordered nowrap" id="contribuyentes"> -->
+            <table  class="display table table-striped table-hover dt-responsive nowrap" id="contribuyentes" style="width:100%">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -62,9 +64,11 @@ $this->inlineScript()
                                 <td><?= $contribuyente->getApellidoMaterno() ?></td>
                                 <td><?= $contribuyente->getGenero() ?></td>
                                 <td>
-                                    <a href="<?= $this->url('contribuyente/ver', ['action' => 'ver', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-primary" data-toggle="modal" onclick="view_contribuyente('<?= $contribuyente->getIdContribuyente() ?>')"> Ver</a>
-                                    <a href="<?= $this->url('contribuyente/editar', ['action' => 'editar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-warning" data-toggle="modal" onclick="edit_contribuyente('<?= $contribuyente->getIdContribuyente() ?>')"> Editar</a>
-                                    <a href="<?= $this->url('contribuyente/eliminar', ['action' => 'eliminar', 'id' => $contribuyente->getIdContribuyente()]); ?>" data-toggle="modal" data-target="#deleteModal" data-id="<?= $contribuyente->getIdContribuyente() ?>" class="btn btn-danger"> Eliminar</a>
+                                    <div class="btn-group">
+                                        <a href="<?= $this->url('contribuyente/ver', ['action' => 'ver', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-info" data-toggle="modal" onclick="view_contribuyente('<?= $contribuyente->getIdContribuyente() ?>')"> Ver</a>
+                                        <a href="<?= $this->url('contribuyente/editar', ['action' => 'editar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-warning" data-toggle="modal" onclick="edit_contribuyente('<?= $contribuyente->getIdContribuyente() ?>')"> Editar</a>
+                                        <a href="<?= $this->url('contribuyente/eliminar', ['action' => 'eliminar', 'id' => $contribuyente->getIdContribuyente()]); ?>" data-toggle="modal" data-target="#deleteModal" data-id="<?= $contribuyente->getIdContribuyente() ?>" class="btn btn-danger"> Eliminar</a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -75,7 +79,7 @@ $this->inlineScript()
                     <?php endif; ?>
                 </tbody>
             </table>
-            <div class="float-right">
+            <div class="float-right" id="lv-links">
                 <?= $this->paginationControl($contribuyentes, 'Sliding', 'catastro/partial/paginator', ['route' => 'contribuyente']); ?>
             </div>
         </div>
@@ -154,13 +158,8 @@ $this->inlineScript()
                 <p>¿Desea continuar?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-danger btn-ok">Confirmar</button>
-                <!-- <form id="formDelete" action="{{ route('admin.users.destroy', 0) }}" data-action="{{ route('admin.users.destroy', 0) }}" method="POST">
-                    @method('DELETE')
-                    @csrf
-                    <button type="submit" class="btn btn-danger">Confirmar</button>
-                </form> -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
