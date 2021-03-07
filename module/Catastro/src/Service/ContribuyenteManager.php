@@ -2,9 +2,9 @@
 
 namespace Catastro\Service;
 
-use Application\Entity\Contribuyente;
+use Catastro\Entity\Contribuyente;
 
-class ContribuyenteModel
+class ContribuyenteManager
 {
     /**
      * Entity manager.

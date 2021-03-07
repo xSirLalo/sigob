@@ -64,9 +64,65 @@ class NavManager
                 'id' => 'login',
                 'label' => 'Sign in',
                 'link'  => $url('login'),
-                'float' => 'right'
             ];
         } else {
+            $items[] = [
+                    'header'  => "Catastro",
+                    'link'  => ""
+                ];
+
+            // Determine which items must be displayed in Admin dropdown.
+            $bibliotecaDropdownItems = [];
+
+            if ($this->rbacManager->isGranted(null, 'contribuyente.manage')) {
+                $bibliotecaDropdownItems[] = [
+                            'id' => 'categorias',
+                            'label' => 'Categorias',
+                            'link' => ""
+                        ];
+            }
+
+            if (count($bibliotecaDropdownItems)!=0) {
+                $items[] = [
+                    'id' => 'contribuyente',
+                    'label' => 'Contribuyentes',
+                    'icon' => 'feather icon-users',
+                    'link'  => $url('contribuyente')
+                ];
+
+                $items[] = [
+                    'id' => 'biblioteca',
+                    'label' => 'Biblioteca',
+                    'icon' => 'feather icon-menu"',
+                    'dropdown' => $bibliotecaDropdownItems
+                ];
+            }
+
+            // Determine which items must be displayed in Admin dropdown.
+            $aportacionDropdownItems = [];
+
+            if ($this->rbacManager->isGranted(null, 'contribuyente.manage')) {
+                $aportacionDropdownItems[] = [
+                            'id' => 'aportacion',
+                            'label' => 'Aportacion',
+                            'link' => ""
+                        ];
+
+                $aportacionDropdownItems[] = [
+                            'id' => 'validacion',
+                            'label' => 'Validacion',
+                            'link' => ""
+                        ];
+            }
+
+            if (count($aportacionDropdownItems)!=0) {
+                $items[] = [
+                    'id' => 'aportaciones',
+                    'label' => 'Aportaciones',
+                    'icon' => 'feather icon-menu"',
+                    'dropdown' => $aportacionDropdownItems
+                ];
+            }
 
             // Determine which items must be displayed in Admin dropdown.
             $adminDropdownItems = [];
@@ -97,6 +153,11 @@ class NavManager
 
             if (count($adminDropdownItems)!=0) {
                 $items[] = [
+                    'header'  => "Administración",
+                    'link'  => ""
+                ];
+
+                $items[] = [
                     'id' => 'admin',
                     'label' => 'Admin',
                     'icon' => 'feather icon-menu"',
@@ -105,9 +166,14 @@ class NavManager
             }
 
             $items[] = [
+                'header'  => "Cuenta",
+                'link'  => ""
+            ];
+
+            $items[] = [
                 'id' => 'logout',
                 'label' => $this->authService->getIdentity(),
-                'float' => 'right',
+                'icon' => 'feather icon-menu"',
                 'dropdown' => [
                     [
                         'id' => 'settings',
@@ -126,5 +192,3 @@ class NavManager
         return $items;
     }
 }
-
-

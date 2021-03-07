@@ -18,11 +18,18 @@ class IndexController extends AbstractActionController
     private $entityManager;
 
     /**
+     * Session container.
+     * @var type
+     */
+    private $i18nSessionContainer;
+
+    /**
      * Constructor. Its purpose is to inject dependencies into the controller.
      */
-    public function __construct($entityManager)
+    public function __construct($entityManager,  $i18nSessionContainer)
     {
        $this->entityManager = $entityManager;
+       $this->i18nSessionContainer = $i18nSessionContainer;
     }
 
     /**
@@ -39,8 +46,8 @@ class IndexController extends AbstractActionController
      */
     public function aboutAction()
     {
-        $appName = 'Role Demo';
-        $appDescription = 'This demo shows how to implement role-based access control with Zend Framework 3';
+        $appName = 'SIGob';
+        $appDescription = 'Sistema Gubernamental - Ventanilla Única';
 
         // Return variables to view script with the help of
         // ViewObject variable container
@@ -77,6 +84,17 @@ class IndexController extends AbstractActionController
         return new ViewModel([
             'user' => $user
         ]);
+    }
+
+    /**
+     * This action allows to change the current language.
+     */
+    public function setLanguageAction()
+    {
+        $languageId = $this->params()->fromRoute('id', 'en_US');
+        $this->i18nSessionContainer->languageId = $languageId;
+
+        return $this->redirect()->toRoute('home');
     }
 }
 

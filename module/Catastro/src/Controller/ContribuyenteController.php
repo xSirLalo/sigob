@@ -10,7 +10,7 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use Application\Entity\Contribuyente;
+use Catastro\Entity\Contribuyente;
 use Catastro\Form\ContribuyenteForm;
 use Catastro\Form\EliminarForm;
 
@@ -23,14 +23,14 @@ class ContribuyenteController extends AbstractActionController
     private $entityManager;
     /**
      * Contribuyente Model.
-     * @var Catastro\Service\ContribuyenteModel
+     * @var Catastro\Service\ContribuyenteManager
      */
-    private $contribuyenteModel;
+    private $contribuyenteManager;
 
-    public function __construct($entityManager, $contribuyenteModel)
+    public function __construct($entityManager, $contribuyenteManager)
     {
         $this->entityManager = $entityManager;
-        $this->contribuyenteModel = $contribuyenteModel;
+        $this->contribuyenteManager = $contribuyenteManager;
     }
 
     public function indexAction()
@@ -39,16 +39,17 @@ class ContribuyenteController extends AbstractActionController
         $request = $this->getRequest();
         $response = $this->getResponse();
         $requestData= $_REQUEST;
-
+        // TODO Arreglar falla con el datatables solo muestra una pagina
         $columns = [
             0 => 'nombre',
-            1 => 'apellido_paterno',
-            2 => 'apellido_materno'
+            1 => 'apellidoPaterno',
+            2 => 'apellidoMaterno'
         ];
 
         // AJAX response
         if ($request->isXmlHttpRequest()) {
-            $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
+            // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
+            $qb = $this->entityManager->createQueryBuilder()->select('c')->from('Catastro\Entity\Contribuyente', 'c');
 
             $searchKeyWord = htmlspecialchars($requestData['search']['value']);
             if (!empty($searchKeyWord)) {
@@ -58,6 +59,7 @@ class ContribuyenteController extends AbstractActionController
                     ->orWhere('c.apellidoMaterno LIKE :word')
                     ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
             }
+
             $qb ->orderBy('c.'. $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'])->setFirstResult($requestData['start'])->setMaxResults($requestData['length']);
             $query = $qb->getQuery()->getResult();
 
@@ -65,20 +67,20 @@ class ContribuyenteController extends AbstractActionController
 
             foreach ($query as $r) {
                 $data[] = [
-                    'id_contribuyente' => $r->getIdContribuyente(),
-                    'nombre'           => $r->getNombre(),
-                    'apellido_paterno' => $r->getApellidoPaterno(),
-                    'apellido_materno' => $r->getApellidoMaterno(),
-                    'genero'           => $r->getGenero(),
-                    'opciones'         => "Cargando..."
+                    'idContribuyente' => $r->getIdContribuyente(),
+                    'nombre'          => $r->getNombre(),
+                    'apellidoPaterno' => $r->getApellidoPaterno(),
+                    'apellidoMaterno' => $r->getApellidoMaterno(),
+                    'genero'          => $r->getGenero(),
+                    'opciones'        => "Cargando..."
                 ];
             }
             $result = [
-                "draw" => intval($requestData['draw']),
-                "recordsTotal" =>  count($data),
-                "recordsFiltered" => count($data),
-                'data' => $data,
-            ];
+                    "draw"            => intval($requestData['draw']),
+                    "recordsTotal"    => count($data),
+                    "recordsFiltered" => count($data),
+                    'data'            => $data,
+                ];
 
             $view = new JsonModel($result);
             $view->setTerminal(true);
@@ -91,6 +93,9 @@ class ContribuyenteController extends AbstractActionController
             $paginator->setDefaultItemCountPerPage(5);
             $paginator->setCurrentPageNumber($page);
             $view = new ViewModel(['contribuyentes' => $paginator, 'form' => $form]);
+
+            // $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
+            // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
         }
         return $view;
     }
@@ -106,7 +111,7 @@ class ContribuyenteController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $data['status'] = true;
-                $this->contribuyenteModel->agregar($data);
+                $this->contribuyenteManager->agregar($data);
             } else {
                 $data['status'] = false;
                 $data['errors'] = $form->getMessages();
@@ -120,7 +125,7 @@ class ContribuyenteController extends AbstractActionController
                 $form->setData($data);
                 if ($form->isValid()) {
                     $data = $form->getData();
-                    $this->contribuyenteModel->agregar($data);
+                    $this->contribuyenteManager->agregar($data);
                     return $this->redirect()->toRoute('contribuyente');
                 }
             }
@@ -184,7 +189,7 @@ class ContribuyenteController extends AbstractActionController
                     $data = $form->getData();
                     $data['status'] = true;
                     $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-                    $this->contribuyenteModel->actualizar($contribuyente, $data);
+                    $this->contribuyenteManager->actualizar($contribuyente, $data);
                 } else {
                     $data['status'] = false;
                     $data['errors'] = $form->getMessages();
@@ -213,7 +218,7 @@ class ContribuyenteController extends AbstractActionController
                 $form->setData($data);
                 if ($form->isValid()) {
                     $data = $form->getData();
-                    $this->contribuyenteModel->actualizar($contribuyente, $data);
+                    $this->contribuyenteManager->actualizar($contribuyente, $data);
                     return $this->redirect()->toRoute('contribuyente');
                 }
             } else {
@@ -241,7 +246,7 @@ class ContribuyenteController extends AbstractActionController
 
         if ($request->isXmlHttpRequest()) {
             $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-            $this->contribuyenteModel->eliminar($contribuyente);
+            $this->contribuyenteManager->eliminar($contribuyente);
 
             $this->flashMessenger()->addSuccessMessage('Se elimino con éxito');
             $view = new JsonModel();
@@ -267,7 +272,7 @@ class ContribuyenteController extends AbstractActionController
                 if ($form->isValid()) {
                     if ($this->getRequest()->getPost()->get('delete') == 'Yes') {
                         $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
-                        $this->contribuyenteModel->eliminar($contribuyente);
+                        $this->contribuyenteManager->eliminar($contribuyente);
                     }
                     return $this->redirect()->toRoute('contribuyente');
                 }

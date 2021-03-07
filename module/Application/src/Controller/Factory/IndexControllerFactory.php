@@ -13,9 +13,10 @@ class IndexControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        $i18nSessionContainer = $container->get('I18nSessionContainer');
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
 
         // Instantiate the controller and inject dependencies
-        return new IndexController($entityManager);
+        return new IndexController($i18nSessionContainer, $entityManager);
     }
 }

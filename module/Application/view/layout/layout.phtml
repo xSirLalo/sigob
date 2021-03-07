@@ -37,7 +37,7 @@
         // Check if the activeMenuItemId passed to layout view model
         // and if so, use it for setting active navbar item.
         if (isset($activeMenuItemId)) {
-        $this->mainMenu()->setActiveItemId($activeMenuItemId);
+            $this->mainMenu()->setActiveItemId($activeMenuItemId);
         }
 
         // Render the navbar
@@ -46,7 +46,7 @@
 	<!-- [ navigation menu ] end -->
 
     <!-- [ Header ] start -->
-	<header class="navbar pcoded-header navbar-expand-lg headerpos-fixed header-orchidgreen">
+	<header class="navbar pcoded-header navbar-expand-lg headerpos-fixed header-blue">
         <div class="m-header">
             <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
             <a href="#!" class="b-brand">
@@ -65,27 +65,35 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li>
-                    <div class="dropdown drp-user">
-                        <a href="#!" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src=<?= $this->basePath('assets/images/user/avatar-1.jpg') ?> class="img-radius wid-40" alt="User-Profile-Image">
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right profile-notification">
-                            <div class="pro-head">
-                                <img src=<?= $this->basePath('assets/images/user/avatar-1.jpg') ?> class="img-radius" alt="User-Profile-Image">
-                                <span>John Doe</span>
-                                <a href="auth-signin.html" class="dud-logout" title="Logout">
-                                    <i class="feather icon-log-out"></i>
-                                </a>
+                <?php if (!$this->identity()): ?>
+                    <li><a href="<?= $this->url('login') ?>">Login</a></li>
+                <?php else: ?>
+                    <li>
+                        <div class="dropdown drp-user">
+                            <a href="#!" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src=<?= $this->basePath('assets/images/user/avatar-1.jpg') ?> class="img-radius wid-40" alt="User-Profile-Image">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right profile-notification">
+                                <div class="pro-head">
+                                    <img src=<?= $this->basePath('assets/images/user/avatar-1.jpg') ?> class="img-radius" alt="User-Profile-Image">
+                                    <span>
+                                        <?php
+                                            if ($this->identity()) {
+                                                echo ucfirst($this->identity());
+                                            }
+                                        ?>
+                                    </span>
+                                    <a href="<?= $this->url('logout')?>" class="dud-logout" title="Logout">
+                                        <i class="feather icon-log-out"></i>
+                                    </a>
+                                </div>
+                                <ul class="pro-body">
+                                    <li><a href="<?= $this->url('application', ['action'=>'settings'])?>" class="dropdown-item"><i class="feather icon-user"></i> Settings</a></li>
+                                </ul>
                             </div>
-                            <ul class="pro-body">
-                                <li><a href="user-profile.html" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
-                                <li><a href="email_inbox.html" class="dropdown-item"><i class="feather icon-mail"></i> My Messages</a></li>
-                                <li><a href="auth-signin.html" class="dropdown-item"><i class="feather icon-lock"></i> Lock Screen</a></li>
-                            </ul>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
 	</header>

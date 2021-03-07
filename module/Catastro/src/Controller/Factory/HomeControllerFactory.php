@@ -13,10 +13,9 @@ class HomeControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $i18nSessionContainer = $container->get('I18nSessionContainer');
         $opergobserviceadapter = $container->get(OperGobServiceAdapter::class);
 
         // Instantiate the controller and inject dependencies
-        return new HomeController($i18nSessionContainer, $opergobserviceadapter);
+        return new HomeController($opergobserviceadapter);
     }
 }

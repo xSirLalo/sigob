@@ -157,6 +157,9 @@ return [
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+        'strategies' => [
+            'ViewJsonStrategy',
+        ],
     ],
     // We register module-provided view helpers under this key.
     'view_helpers' => [

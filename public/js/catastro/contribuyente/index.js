@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    setTimeout(function() {
+    // setTimeout(function() {
         // [ Configuration Option ]
         $('#contribuyentes').DataTable({
             "order": [[ 0, "desc" ]],
@@ -10,16 +10,23 @@ $(document).ready(function() {
                 [5, 10, 25],
                 [5, 10, 25]
             ],
+            pageLength: 5,
             processing: true,
             serverSide: true,
             ajax: {
             url:'contribuyente',
             type: "post",
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    console.log();
-                    alert('Error get data from ajax');
-                }
+            // dataSrc: function ( json ) {
+            //     //Make your callback here.
+            //     // alert("Done!");
+            //     console.log(json);
+            //     return json.data;
+            // }
+                // error: function (jqXHR, textStatus, errorThrown)
+                // {
+                //     console.log();
+                //     alert('Error get data from ajax');
+                // }
             },
             initComplete: function () {
                 $('#lv-links').hide();
@@ -27,11 +34,11 @@ $(document).ready(function() {
                     $(this).parent().show();
                 }
             },
-            aoColumns: [
-                {data: 'id_contribuyente', orderable: true, searchable: false,},
+            columns: [
+                {data: 'idContribuyente', orderable: true, searchable: false,},
                 {data: 'nombre'},
-                {data: 'apellido_paterno'},
-                {data: 'apellido_materno'},
+                {data: 'apellidoPaterno'},
+                {data: 'apellidoMaterno'},
                 {data: 'genero', orderable: true, searchable: false,},
                 {data: 'opciones', orderable: false, searchable: false },
             ],
@@ -67,20 +74,20 @@ $(document).ready(function() {
             },
         });
 
-        // [ New Constructor ]
-        var newcs = $('#new-cons').DataTable();
+    //     // [ New Constructor ]
+    //     var newcs = $('#new-cons').DataTable();
 
-        new $.fn.dataTable.Responsive(newcs);
+    //     new $.fn.dataTable.Responsive(newcs);
 
-        // [ Immediately Show Hidden Details ]
-        $('#show-hide-res').DataTable({
-            responsive: {
-                details: {
-                    display: $.fn.dataTable.Responsive.display.childRowImmediate,
-                    type: ''
-                }
-            }
-        });
+    //     // [ Immediately Show Hidden Details ]
+    //     $('#show-hide-res').DataTable({
+    //         responsive: {
+    //             details: {
+    //                 display: $.fn.dataTable.Responsive.display.childRowImmediate,
+    //                 type: ''
+    //             }
+    //         }
+    //     });
 
-    }, 350);
+    // }, 350);
 });

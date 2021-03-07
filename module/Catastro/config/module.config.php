@@ -139,36 +139,20 @@ return [
             'mode' => 'restrictive'
         ],
         'controllers' => [
-            Controller\IndexController::class => [
-                // Allow anyone to visit "index" and "about" actions
-                ['actions' => ['index', 'contribuyente'], 'allow' => '@'],
-                // Allow authorized users to visit "settings" action
-                ['actions' => ['settings'], 'allow' => '@']
+            Controller\HomeController::class => [
+                ['actions' => ['index'], 'allow' => '*'],
+            ],
+            Controller\ContribuyenteController::class => [
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '+contribuyente.manage']
             ],
         ]
     ],
     'service_manager' => [
         'factories' => [
-            Service\ContribuyenteModel::class => Service\Factory\ContribuyenteModelFactory::class,
+            Service\ContribuyenteManager::class => Service\Factory\ContribuyenteFactory::class,
         ]
     ],
-    // The following registers the session container for storing language settings.
-    'session_containers' => [
-        'I18nSessionContainer'
-    ],
     'view_manager' => [
-        'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
-        'template_map' => [
-            'error/404'   => __DIR__ . '/../view/error/404.phtml',
-            'error/index' => __DIR__ . '/../view/error/index.phtml',
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-        ],
-        'template_path_stack' => [
-            'catastro' => __DIR__ . '/../view',
-        ],
         'strategies' => [
             'ViewJsonStrategy',
         ],

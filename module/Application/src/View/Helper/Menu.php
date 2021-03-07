@@ -53,27 +53,27 @@ class Menu extends AbstractHelper
      */
     public function render()
     {
-        if (count($this->items)==0)
-            return ''; // Do nothing if there are no items.
+        if (count($this->items)==0) {
+            return '';
+        } // Do nothing if there are no items.
 
         $result = '<nav class="pcoded-navbar menupos-fixed menu-light ">';
-            $result .= '<div class="navbar-wrapper ">';
-                $result .= '<div class="navbar-content scroll-div ">';
-                    $result .= '<ul class="nav pcoded-inner-navbar ">';
-                        $result .= '<li class="nav-item pcoded-menu-caption"><label>Navegación</label></li>';
+        $result .= '<div class="navbar-wrapper ">';
+        $result .= '<div class="navbar-content scroll-div ">';
+        $result .= '<ul class="nav pcoded-inner-navbar ">';
+        $result .= '<li class="nav-item pcoded-menu-caption"><label>Navegación</label></li>';
 
-                    // Render items
-                    foreach ($this->items as $item) {
-                            $result .= $this->renderItem($item);
-                    }
+        // Render items
+        foreach ($this->items as $item) {
+            $result .= $this->renderItem($item);
+        }
 
-                    $result .= '</ul>';
-                $result .= '</div>';
-            $result .= '</div>';
+        $result .= '</ul>';
+        $result .= '</div>';
+        $result .= '</div>';
         $result .= '</nav>';
 
         return $result;
-
     }
 
     /**
@@ -92,42 +92,43 @@ class Menu extends AbstractHelper
         $escapeHtml = $this->getView()->plugin('escapeHtml');
 
         if (isset($item['dropdown'])) {
-
             $dropdownItems = $item['dropdown'];
 
             $result .= '<li class="nav-item pcoded-hasmenu">';
-                $result .= '<a href="#" class="nav-link ">';
-                $result .= '<span class="pcoded-micon"><i class="'.$icon.'" ></i></span>';
-                $result .= '<span class="pcoded-mtext">' . $label . '</span>';
-                $result .= '</a>';
+            $result .= '<a href="#" class="nav-link ">';
+            $result .= '<span class="pcoded-micon"><i class="'.$icon.'" ></i></span>';
+            $result .= '<span class="pcoded-mtext">' . $label . '</span>';
+            $result .= '</a>';
 
-                $result .= '<ul class="pcoded-submenu">';
+            $result .= '<ul class="pcoded-submenu">';
 
-                foreach ($dropdownItems as $item) {
-                    $link = isset($item['link']) ? $item['link'] : '#';
-                    $label = isset($item['label']) ? $item['label'] : '';
+            foreach ($dropdownItems as $item) {
+                $link = isset($item['link']) ? $item['link'] : '#';
+                $label = isset($item['label']) ? $item['label'] : '';
 
-                    $result .= '<li><a href="' . $link . '" >' . $label . '</a></li>';
-                }
+                $result .= '<li><a href="' . $link . '" >' . $label . '</a></li>';
+            }
 
-                $result .= '</ul></ul>';
+            $result .= '</ul>';
             $result .= '</li>';
-
         } else {
             $link = isset($item['link']) ? $item['link'] : '#';
 
             if ($item['link']) {
                 $result .= '<li class="nav-item">';
-                    $result .= '<a href="' . $link . '" class="nav-link">';
-                        $result .= '<span class="pcoded-micon"><i class="'.$icon.'"></i></span>';
-                    $result .= '<span class="pcoded-mtext">' . $label . '</span>';
-                    $result .= '</a>';
+                $result .= '<a href="' . $link . '" class="nav-link">';
+                $result .= '<span class="pcoded-micon"><i class="'.$icon.'"></i></span>';
+                $result .= '<span class="pcoded-mtext">' . $label . '</span>';
+                $result .= '</a>';
                 $result .= '</li>';
             } else {
                 $result = '';
             }
         }
-
+        if (isset($item['header'])) {
+            $header = isset($item['header']) ? $item['header'] : '';
+            $result = '<li class="nav-item pcoded-menu-caption"><label>' . $header . '</label></li>';
+        }
         return $result;
     }
 }

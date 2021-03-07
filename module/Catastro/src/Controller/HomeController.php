@@ -10,12 +10,10 @@ use Laminas\View\Model\JsonModel;
 
 class HomeController extends AbstractActionController
 {
-    private $i18nSessionContainer;
     private $opergobserviceadapter;
 
-    public function __construct($i18nSessionContainer, $opergobserviceadapter)
+    public function __construct($opergobserviceadapter)
     {
-        $this->i18nSessionContainer = $i18nSessionContainer;
         $this->opergobserviceadapter = $opergobserviceadapter;
     }
 
@@ -34,13 +32,5 @@ class HomeController extends AbstractActionController
         // return new ViewModel(['datos' => $resultado]);
 
         return new ViewModel();
-    }
-
-    public function setLanguageAction()
-    {
-        $languageId = $this->params()->fromRoute('id', 'en_US');
-        $this->i18nSessionContainer->languageId = $languageId;
-
-        return $this->redirect()->toRoute('home');
     }
 }
