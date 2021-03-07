@@ -1,0 +1,53 @@
+composer self-update --1
+
+composer create-project -s dev laminas/laminas-mvc-skeleton NOMBREPROyECTO
+
+composer require laminas/laminas-validator
+composer require laminas/laminas-i18n-resources
+composer require laminas/laminas-i18n
+composer require laminas/laminas-soap
+composer require laminas/laminas-math
+composer require laminas/laminas-crypt
+composer require laminas/laminas-mime
+composer require laminas/laminas-serializer
+composer require laminas/laminas-mail
+composer require laminas/laminas-permissions-rbac
+composer require doctrine/doctrine-orm-module
+composer require doctrine/migrations
+composer require tecnickcom/tcpdf
+composer require phpoffice/phpspreadsheet
+
+composer dump-autoload
+
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:convert-mapping --namespace="Application\Entity\\" --force --from-database annotation ./module/Application/src
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:generate-entities ./module/Application/src/ --generate-annotations=true
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:clear-cache:metadata
+xcopy module\Application\src\Application\Entity\* "C:\laragon\www\sigob\module\Application\src\Entity\" /q /y /c /e /r
+
+¡Cuidado con este Comando!
+
+rm -Rf module\Application\src\Application\
+
+
+¡Migraciones!
+
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:generate
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:diff
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:status
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:migrate
+
+Admini
+admin@example.com
+Secur1ty
+
+Capturista
+Director
+
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:convert-mapping --namespace="Catastro\Entity\\" --force --from-database annotation ./module/Catastro/src
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:generate-entities ./module/Catastro/src/ --generate-annotations=true
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:clear-cache:metadata
+xcopy module\Catastro\src\Catastro\Entity\* "C:\laragon\www\sigob\module\Catastro\src\Entity\" /q /y /c /e /r
+
+¡Cuidado con este Comando!
+
+rm -Rf module\Catastro\src\Catastro\

@@ -3,8 +3,8 @@ $(document).ready(function() {
         // [ Configuration Option ]
         $('#contribuyentes').DataTable({
             "order": [[ 0, "desc" ]],
-            responsive: true,
-            autoWidth: false,
+            // responsive: true,
+            // autoWidth: false,
             scrollX: true,
             lengthMenu: [
                 [5, 10, 25],
@@ -16,12 +16,12 @@ $(document).ready(function() {
             ajax: {
             url:'contribuyente',
             type: "post",
-            // dataSrc: function ( json ) {
-            //     //Make your callback here.
-            //     // alert("Done!");
-            //     console.log(json);
-            //     return json.data;
-            // }
+            dataSrc: function ( json ) {
+                //Make your callback here.
+                // alert("Done!");
+                console.log(json);
+                return json.data;
+            }
                 // error: function (jqXHR, textStatus, errorThrown)
                 // {
                 //     console.log();

@@ -1,0 +1,76 @@
+<?php
+$title = $this->translate('Contribuyentes');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Contribuyentes' => $this->url('contribuyente'),
+]);
+// Hoja de estilos requerido
+$this->headLink()
+    // Css DataTables
+    ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
+$this->inlineScript()
+    // Js DataTables
+    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
+    // Js Requerido
+    // ->prependFile($this->basePath('js/catastro/contribuyente/index.js'))
+    // ->prependFile($this->basePath('js/catastro/contribuyente/add.js'))
+    // ->prependFile($this->basePath('js/catastro/contribuyente/view.js'))
+    // ->prependFile($this->basePath('js/catastro/contribuyente/edit.js'))
+    // ->prependFile($this->basePath('js/catastro/contribuyente/delete.js'))
+    ;
+?>
+<!-- [ col ] start -->
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-1 col-xs-12 mb-4" align=center>
+                    <div class="btn-group" role="group" aria-label="Botones">
+                        <a href="<?= $this->url("aportacion/agregar") ?>" class="btn btn-primary" data-toggle="modal">Consultar</a>
+                        <a href="<?= $this->url("aportacion/pdf") ?>" class="btn btn-danger">PDF</a>
+                        <a href="<?= $this->url("aportacion/excel") ?>" class="btn btn-success">Excel</a>
+                    </div>
+                </div>
+            </div>
+            <table  class="display table table-striped table-hover dt-responsive nowrap" id="aportaciones" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($aportaciones)): ?>
+                        <?php foreach ($aportaciones as $aportacion): ?>
+                            <tr>
+                                <td>#<?= $aportacion->getIdAportacion() ?></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="<?= $this->url('aportacion/ver', ['action' => 'ver', 'id' => $aportacion->getIdAportacion()]); ?>" class="btn btn-info"> Ver</a>
+                                        <a href="<?= $this->url('aportacion/editar', ['action' => 'editar', 'id' => $aportacion->getIdAportacion()]); ?>" class="btn btn-warning"> Editar</a>
+                                        <a href="<?= $this->url('aportacion/eliminar', ['action' => 'eliminar', 'id' => $aportacion->getIdAportacion()]); ?>" class="btn btn-danger"> Eliminar</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr class="text-center">
+                            <td colspan="6">No hay datos...</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

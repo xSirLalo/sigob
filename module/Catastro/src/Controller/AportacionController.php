@@ -10,11 +10,9 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use Catastro\Entity\Contribuyente;
-use Catastro\Form\ContribuyenteForm;
-use Catastro\Form\EliminarForm;
+use Catastro\Entity\Aportacion;
 
-class ContribuyenteController extends AbstractActionController
+class AportacionController extends AbstractActionController
 {
     /**
      * Entity manager.
@@ -22,207 +20,106 @@ class ContribuyenteController extends AbstractActionController
      */
     private $entityManager;
     /**
-     * Contribuyente Manager.
-     * @var Catastro\Service\ContribuyenteManager
+     * Contribuyente Model.
+     * @var Catastro\Service\AportacionManager
      */
-    private $contribuyenteManager;
+    private $aportacionManager;
 
-    public function __construct($entityManager, $contribuyenteManager)
+    public function __construct($entityManager, $aportacionManager)
     {
         $this->entityManager = $entityManager;
-        $this->contribuyenteManager = $contribuyenteManager;
+        $this->aportacionManager = $aportacionManager;
     }
 
     public function indexAction()
     {
-        $form = new ContribuyenteForm();
-        $request = $this->getRequest();
-        $response = $this->getResponse();
-        $requestData= $_REQUEST;
-        // TODO Arreglar falla con el datatables solo muestra una pagina
-        $columns = [
-            0 => 'nombre',
-            1 => 'apellidoPaterno',
-            2 => 'apellidoMaterno'
-        ];
+        //$form = new ContribuyenteForm();
 
-        // AJAX response
-        if ($request->isXmlHttpRequest()) {
-            // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
-            $qb = $this->entityManager->createQueryBuilder()->select('c')->from('Catastro\Entity\Contribuyente', 'c');
+        // $page = $this->params()->fromQuery('page', 1);
+        // $query = $this->entityManager->getRepository(Aportacion::class)->createQueryBuilder('a')->getQuery();
 
-            $searchKeyWord = htmlspecialchars($requestData['search']['value']);
-            if (!empty($searchKeyWord)) {
-                $searchKeyWord = htmlspecialchars($requestData['search']['value']);
-                $qb ->where('c.nombre LIKE :word')
-                    ->orWhere('c.apellidoPaterno LIKE :word')
-                    ->orWhere('c.apellidoMaterno LIKE :word')
-                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
-            }
-
-            $qb ->orderBy('c.'. $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'])->setFirstResult($requestData['start'])->setMaxResults($requestData['length']);
-            $query = $qb->getQuery()->getResult();
-
-            $data = [];
-
-            foreach ($query as $r) {
-                $data[] = [
-                    'idContribuyente' => $r->getIdContribuyente(),
-                    'nombre'          => $r->getNombre(),
-                    'apellidoPaterno' => $r->getApellidoPaterno(),
-                    'apellidoMaterno' => $r->getApellidoMaterno(),
-                    'genero'          => $r->getGenero(),
-                    'opciones'        => "Cargando..."
-                ];
-            }
-            $result = [
-                    "draw"            => intval($requestData['draw']),
-                    "recordsTotal"    => count($data),
-                    "recordsFiltered" => count($data),
-                    'data'            => $data,
-                ];
-
-            $view = new JsonModel($result);
-            $view->setTerminal(true);
-        } else {
-            $page = $this->params()->fromQuery('page', 1);
-            $query = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c')->getQuery();
-
-            $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-            $paginator = new Paginator($adapter);
-            $paginator->setDefaultItemCountPerPage(5);
-            $paginator->setCurrentPageNumber($page);
-            $view = new ViewModel(['contribuyentes' => $paginator, 'form' => $form]);
-
-            // $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-            // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
-        }
-        return $view;
+        // $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+        // $paginator = new Paginator($adapter);
+        // $paginator->setDefaultItemCountPerPage(5);
+        // $paginator->setCurrentPageNumber($page);
+        // $view = new ViewModel(['aportaciones' => $paginator]);
+        $aportaciones = $this->entityManager->getRepository(Aportacion::class)->findAll();
+        // echo "<pre>";
+        // print_r($aportaciones);
+        // echo "</pre>";
+        // exit();
+        $view = new ViewModel(['aportaciones' => $aportaciones]);
     }
 
     public function addAction()
     {
         $form = new ContribuyenteForm();
         $request = $this->getRequest();
-        // AJAX response
-        if ($request->isXmlHttpRequest()) {
+
+        if ($request->isPost()) {
             $data = $this->params()->fromPost();
-            $form->setData($request->getPost());
+            $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $data['status'] = true;
                 $this->contribuyenteManager->agregar($data);
-            } else {
-                $data['status'] = false;
-                $data['errors'] = $form->getMessages();
-            };
-            $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-            $view = new JsonModel($data);
-            $view->setTerminal(true);
-        } else {
-            if ($request->isPost()) {
-                $data = $this->params()->fromPost();
-                $form->setData($data);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $this->contribuyenteManager->agregar($data);
-                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                    return $this->redirect()->toRoute('contribuyente');
-                }
+                $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                return $this->redirect()->toRoute('contribuyente');
             }
-            $view = new ViewModel(['form' => $form]);
         }
-        return $view;
+        return new ViewModel(['form' => $form]);
     }
 
     public function viewAction()
     {
-        $request = $this->getRequest();
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
-        // AJAX response
-        if ($request->isXmlHttpRequest()) {
-            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-            $data = [
-                'id_contribuyente' => $contribuyente->getIdContribuyente(),
-                'nombre'           => $contribuyente->getNombre(),
-                'apellido_paterno' => $contribuyente->getApellidoPaterno(),
-                'apellido_materno' => $contribuyente->getApellidoMaterno(),
-                'rfc'              => $contribuyente->getRfc(),
-                'curp'             => $contribuyente->getCurp(),
-                'genero'           => $contribuyente->getGenero(),
-            ];
 
-            $view = new JsonModel($data);
-            $view->setTerminal(true);
-        } else {
-            if ($contribuyenteId < 0) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
-
-            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-
-            if ($contribuyente == null) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
-
-            $view = new ViewModel(['contribuyente' => $contribuyente]);
+        if ($contribuyenteId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
         }
-        return $view;
+
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+
+        if ($contribuyente == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        return new ViewModel(['contribuyente' => $contribuyente]);
     }
 
     public function editAction()
     {
         $form = new ContribuyenteForm();
         $request = $this->getRequest();
-        $response = $this->getResponse();
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
-        // AJAX response
-        if ($request->isXmlHttpRequest()) {
+
+        if ($contribuyenteId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+
+        if ($contribuyente == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        if ($request->isPost()) {
             $data = $this->params()->fromPost();
-            if ($request->isPost()) {
-                $form->setData($request->getPost());
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $data['status'] = true;
-                    $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-                    $this->contribuyenteManager->actualizar($contribuyente, $data);
-                } else {
-                    $data['status'] = false;
-                    $data['errors'] = $form->getMessages();
-                };
-                $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
-                $view = new JsonModel($data);
-                $view->setTerminal(true);
+            $form->setData($data);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $this->contribuyenteManager->actualizar($contribuyente, $data);
+                return $this->redirect()->toRoute('contribuyente');
             }
         } else {
-            if ($contribuyenteId < 0) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
-
-            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-
-            if ($contribuyente == null) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
-
-            if ($this->getRequest()->isPost()) {
-                $data = $this->params()->fromPost();
-                $form->setData($data);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $this->contribuyenteManager->actualizar($contribuyente, $data);
-                    return $this->redirect()->toRoute('contribuyente');
-                }
-            } else {
-                $data = [
+            $data = [
                 'nombre' => $contribuyente->getNombre(),
                 'apellido_paterno' => $contribuyente->getApellidoPaterno(),
                 'apellido_materno' => $contribuyente->getApellidoMaterno(),
@@ -230,85 +127,42 @@ class ContribuyenteController extends AbstractActionController
                 'curp' => $contribuyente->getCurp(),
                 'genero' => $contribuyente->getGenero(),
                 ];
-                $form->setData($data);
-                $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
-            }
-            $view = new ViewModel(['form' => $form]);
+            $form->setData($data);
+            $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
         }
-        return $view;
+        return new ViewModel(['form' => $form]);
     }
 
     public function deleteAction()
     {
         $form = new EliminarForm();
         $request = $this->getRequest();
-        $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
+        if ($contribuyenteId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
 
-        if ($request->isXmlHttpRequest()) {
-            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-            $this->contribuyenteManager->eliminar($contribuyente);
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
 
-            $this->flashMessenger()->addSuccessMessage('Se elimino con éxito');
-            $view = new JsonModel();
-            $view->setTerminal(true);
-        } else {
-            if ($contribuyenteId < 0) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
+        if ($contribuyente == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
 
-            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-
-            if ($contribuyente == null) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
-
-            if ($this->getRequest()->isPost()) {
-                $data = $this->params()->fromPost();
-                $form->setData($data);
-                if ($form->isValid()) {
-                    if ($this->getRequest()->getPost()->get('delete') == 'Yes') {
-                        $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
-                        $this->contribuyenteManager->eliminar($contribuyente);
-                    }
-                    return $this->redirect()->toRoute('contribuyente');
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+                if ($this->getRequest()->getPost()->get('delete') == 'Yes') {
+                    $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
+                    $this->contribuyenteManager->eliminar($contribuyente);
                 }
+                return $this->redirect()->toRoute('contribuyente');
             }
-            $view = new ViewModel(['form' => $form, 'id' => $contribuyenteId]);
         }
-        return $view;
-    }
-
-    public function searchAjaxAction()
-    {
-        $name = $_REQUEST['q'];
-
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb ->select('c')
-            ->from('Catastro\Entity\Contribuyentes', 'c')
-            ->where($qb->expr()->like('c.name', ":name"))
-            ->setParameter("name", '%'.addcslashes($name, '%_').'%');
-        $query = $qb->getQuery()->getResult();
-
-        $data  = [];
-        foreach ($query as $r) {
-            $data [] = [
-            'id' => $r->getId(),
-            'name' => $r->getName(),
-            ];
-        }
-        $result = [
-            'items' => $data,
-            'total_count' => count($data),
-        ];
-
-        $json = new JsonModel($result);
-        $json->setTerminal(true);
-
-        return $json;
+        return new ViewModel(['form' => $form, 'id' => $contribuyenteId]);
     }
 
     public function pdfAction()

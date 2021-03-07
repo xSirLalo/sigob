@@ -37,7 +37,7 @@ class Module
 
 
         /** attach Front layout for 404 errors */
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function (MvcEvent $event) {
+        // $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function (MvcEvent $event) {
 
             /** here you can retrieve anything from your serviceManager */
             // $serviceManager = $event->getApplication()->getServiceManager();
@@ -48,8 +48,8 @@ class Module
             // $layout->setTemplate( 'layout' );
 
             /** here you redefine template used to the error exactly and pass custom variable into ViewModel */
-            $viewModel = $event->getViewModel();
-            $viewModel->setTemplate('error/404');
-        });
+        //     $viewModel = $event->getViewModel();
+        //     $viewModel->setTemplate('error/404');
+        // });
     }
 }

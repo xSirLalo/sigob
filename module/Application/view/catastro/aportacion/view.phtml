@@ -1,0 +1,31 @@
+<?php
+$title = $this->translate('Detalle');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Contribuyentes' => $this->url('contribuyente'),
+    'Detalle' => $this->url('contribuyente/ver'),
+]);
+?>
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Nombre</td>
+                        <td><?= $contribuyente->getNombre() ?></td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

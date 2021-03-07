@@ -1,8 +1,0 @@
-C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:convert-mapping --namespace="Application\Entities\\" --force --from-database annotation ./module/Application/src
-C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:generate-entities ./module/Application/src/ --generate-annotations=true
-C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:clear-cache:metadata
-xcopy module\Application\src\Application\Entities\* "C:\laragon\www\sigob\module\Application\src\Entities\" /q /y /c /e /r
-
-¡Cuidado con este Comando!
-
-rm -Rf module\Application\src\Application\

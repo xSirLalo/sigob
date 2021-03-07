@@ -6,6 +6,7 @@ namespace Catastro;
 
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -20,10 +21,10 @@ return [
                     ],
                 ],
             ],
-            'catastro' => [
+            'application' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/catastro[/:action]',
+                    'route'    => '/application[/:action]',
                     'defaults' => [
                         'controller'    => Controller\HomeController::class,
                         'action'        => 'index',
@@ -118,12 +119,190 @@ return [
                     ],
                 ],
             ],
+            'aportacion' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/aportacion',
+                    'defaults' => [
+                        'controller' => Controller\AportacionController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'agregar' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/agregar',
+                            'defaults' => [
+                                'action' => 'add',
+                            ],
+                        ],
+                    ],
+                    'ver' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/ver[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'view',
+                            ],
+                        ],
+                    ],
+                    'editar' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/editar[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'edit',
+                            ],
+                        ],
+                    ],
+                    'eliminar' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/eliminar[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'delete',
+                            ],
+                        ],
+                    ],
+                    'pdf' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/pdf',
+                            'defaults' => [
+                                'action' => 'pdf',
+                            ],
+                        ],
+                    ],
+                    'excel' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/excel',
+                            'defaults' => [
+                                'action' => 'excel',
+                            ],
+                        ],
+                    ],
+                    'buscar_ajax' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/buscar_ajax[/:action]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'searchAjax',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'biblioteca' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/biblioteca',
+                    'defaults' => [
+                        'controller' => Controller\BibliotecaController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'agregar' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/agregar',
+                            'defaults' => [
+                                'action' => 'add',
+                            ],
+                        ],
+                    ],
+                    'ver' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/ver[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'view',
+                            ],
+                        ],
+                    ],
+                    'editar' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/editar[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'edit',
+                            ],
+                        ],
+                    ],
+                    'eliminar' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/eliminar[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'delete',
+                            ],
+                        ],
+                    ],
+                    'pdf' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/pdf',
+                            'defaults' => [
+                                'action' => 'pdf',
+                            ],
+                        ],
+                    ],
+                    'excel' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/excel',
+                            'defaults' => [
+                                'action' => 'excel',
+                            ],
+                        ],
+                    ],
+                    'buscar_ajax' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/buscar_ajax[/:action]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'searchAjax',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\HomeController::class => Controller\Factory\HomeControllerFactory::class,
             Controller\ContribuyenteController::class => Controller\Factory\ContribuyenteControllerFactory::class,
+            Controller\AportacionController::class => Controller\Factory\AportacionControllerFactory::class,
+            Controller\BibliotecaController::class => Controller\Factory\BibliotecaControllerFactory::class,
         ],
     ],
     // The 'access_filter' key is used by the User module to restrict or permit
@@ -143,13 +322,21 @@ return [
                 ['actions' => ['index'], 'allow' => '*'],
             ],
             Controller\ContribuyenteController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '+contribuyente.manage']
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '*']
+            ],
+            Controller\AportacionController::class => [
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '*']
+            ],
+            Controller\BibliotecaController::class => [
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '*']
             ],
         ]
     ],
     'service_manager' => [
         'factories' => [
             Service\ContribuyenteManager::class => Service\Factory\ContribuyenteFactory::class,
+            Service\AportacionManager::class => Service\Factory\AportacionFactory::class,
+            Service\BibliotecaManager::class => Service\Factory\BibliotecaFactory::class,
         ]
     ],
     'view_manager' => [

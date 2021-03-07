@@ -1,0 +1,38 @@
+<?php
+$title = $this->translate('Eliminar');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Contribuyentes' => $this->url('contribuyente'),
+    'Eliminar' => $this->url('contribuyente/eliminar'),
+]);
+$form = $this->form;
+$form->setAttribute('action', $this->url('contribuyente/eliminar', ['action' => 'delete', 'id' => $this->id]));
+$form->prepare();
+?>
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <?= $this->form()->openTag($form); ?>
+            <div class="card-body">
+                <!-- CSRF -->
+                <?= $this->formHidden($form->get('csrf')); ?>
+                <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('csrf')); ?>
+                </div>
+                <div class="form-group">
+                    <?= $this->formSubmit($form->get('delete')->setValue('Yes')->setAttribute('class', 'btn btn-danger')); ?>
+                    <?= $this->formSubmit($form->get('delete')->setValue('No')->setAttribute('class', 'btn btn-secondary')); ?>
+                </div>
+            </div>
+            <?= $this->form()->closeTag(); ?>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
