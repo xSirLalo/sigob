@@ -1,0 +1,68 @@
+<?php
+$title = $this->translate('Permissions');
+
+$this->headMeta()->appendName('keywords', '');
+
+$this->headMeta()->appendName('description', '');
+
+$this->headTitle($this->escapeHtml($title));
+
+$this->mainMenu()->setActiveItemId('permissions');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home'=>$this->url('home'),
+    'Manage Permissions'=>$this->url('permissions'),
+]);
+?>
+<?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
+<?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
+<?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
+<!-- [ col ] start -->
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h1>Manage Permissions</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-1 col-xs-12 mb-4" align=center>
+                    <a class="btn btn-primary" href="<?= $this->url('permissions', ['action'=>'add']); ?>"> New Permission</a>
+                </div>
+            </div>
+            <table class="table table-light">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($permissions as $permission): ?>
+                        <tr>
+                            <td><?= $this->escapeHtml($permission->getId()); ?></td>
+                            <td>
+                                <a href="<?= $this->url('permissions', ['action'=>'view', 'id'=>$permission->getId()]); ?>">
+                                    <?= $this->escapeHtml($permission->getName()); ?>
+                                </a>
+                            </td>
+                            <td>
+                                <?= $this->escapeHtml($permission->getDescription()); ?></a>
+                            </td>
+                            <td><nobr><?= $this->escapeHtml($permission->getDateCreated()); ?></nobr></td>
+                            <td>
+                                <nobr>
+                                    <a class="btn btn-info" href="<?= $this->url('permissions', ['action'=>'edit', 'id'=>$permission->getId()]); ?>"> Edit</a>
+                                    <a class="btn btn-danger" href="<?= $this->url('permissions', ['action'=>'delete', 'id'=>$permission->getId()]); ?>"> Delete</a>
+                                </nobr>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

@@ -1,12 +1,9 @@
 <?php
-
 /**
- * @see       https://github.com/laminas/laminas-mvc-skeleton for the canonical source repository
- * @copyright https://github.com/laminas/laminas-mvc-skeleton/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-mvc-skeleton/blob/master/LICENSE.md New BSD License
+ * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-
-declare(strict_types=1);
 
 namespace Application;
 
@@ -18,7 +15,7 @@ return [
     'router' => [
         'routes' => [
             'home' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
                     'route'    => '/',
                     'defaults' => [
@@ -30,10 +27,24 @@ return [
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/application[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\IndexController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
+            'about' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/about',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'action'     => 'about',
                     ],
                 ],
             ],
@@ -41,7 +52,48 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
+            Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
+        ],
+    ],
+    // The 'access_filter' key is used by the User module to restrict or permit
+    // access to certain controller actions for unauthorized visitors.
+    'access_filter' => [
+        'options' => [
+            // The access filter can work in 'restrictive' (recommended) or 'permissive'
+            // mode. In restrictive mode all controller actions must be explicitly listed
+            // under the 'access_filter' config key, and access is denied to any not listed
+            // action for not logged in users. In permissive mode, if an action is not listed
+            // under the 'access_filter' key, access to it is permitted to anyone (even for
+            // not logged in users. Restrictive mode is more secure and recommended to use.
+            'mode' => 'restrictive'
+        ],
+        'controllers' => [
+            Controller\IndexController::class => [
+                // Allow anyone to visit "index" and "about" actions
+                ['actions' => ['index', 'about'], 'allow' => '@'],
+                // Allow authorized users to visit "settings" action
+                ['actions' => ['settings'], 'allow' => '@']
+            ],
+        ]
+    ],
+    // This key stores configuration for RBAC manager.
+    'rbac_manager' => [
+        'assertions' => [Service\RbacAssertionManager::class],
+    ],
+    'service_manager' => [
+        'factories' => [
+            Service\NavManager::class => Service\Factory\NavManagerFactory::class,
+            Service\RbacAssertionManager::class => Service\Factory\RbacAssertionManagerFactory::class,
+        ],
+    ],
+    'view_helpers' => [
+        'factories' => [
+            View\Helper\Menu::class => View\Helper\Factory\MenuFactory::class,
+            View\Helper\Breadcrumbs::class => InvokableFactory::class,
+        ],
+        'aliases' => [
+            'mainMenu' => View\Helper\Menu::class,
+            'pageBreadcrumbs' => View\Helper\Breadcrumbs::class,
         ],
     ],
     'view_manager' => [
@@ -60,35 +112,12 @@ return [
             __DIR__ . '/../view',
         ],
     ],
-    'view_helpers' => [
-        'factories' => [
-            View\Helper\Breadcrumbs::class => InvokableFactory::class,
-        ],
-        'aliases' => [
-            'pageBreadcrumbs' => View\Helper\Breadcrumbs::class,
+    // The following key allows to define custom styling for FlashMessenger view helper.
+    'view_helper_config' => [
+        'flashmessenger' => [
+            'message_open_format'      => '<div%s><ul><li>',
+            'message_close_string'     => '</li></ul></div>',
+            'message_separator_string' => '</li><li>'
         ]
-    ],
-    'service_manager' => [
-        'factories' => [
-            Service\ContribuyenteModel::class => Service\Factory\ContribuyenteModelFactory::class,
-        ]
-    ],
-    'doctrine' => [
-        'driver' => [
-            // defines an annotation driver with two paths, and names it `my_annotation_driver`
-            __NAMESPACE__ . '_driver' => [
-                'class' => \Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
-                'cache' => 'array',
-                'paths' => [__DIR__ . '\..\src\\'],
-            ],
-            // default metadata driver, aggregates all other drivers into a single one.
-            // Override `orm_default` only if you know what you're doing
-            'orm_default' => [
-                'drivers' => [
-                // register `my_annotation_driver` for any entity under namespace `My\Namespace`
-                __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver',
-                ],
-            ],
-        ],
     ],
 ];

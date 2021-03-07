@@ -1,12 +1,9 @@
 <?php
-
 /**
- * @see       https://github.com/laminas/laminas-mvc-skeleton for the canonical source repository
- * @copyright https://github.com/laminas/laminas-mvc-skeleton/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-mvc-skeleton/blob/master/LICENSE.md New BSD License
+ * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-
-declare(strict_types=1);
 
 namespace ApplicationTest\Controller;
 
@@ -16,7 +13,7 @@ use Laminas\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class IndexControllerTest extends AbstractHttpControllerTestCase
 {
-    public function setUp() : void
+    public function setUp()
     {
         // The module configuration should still be applicable for tests.
         // You can override configuration here with test case specific values,

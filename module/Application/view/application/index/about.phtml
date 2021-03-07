@@ -1,0 +1,25 @@
+<?php
+$title = $this->translate('About');
+$this->headTitle($title);
+
+$this->mainMenu()->setActiveItemId('about');
+
+$this->pageBreadcrumbs()->setItems([
+            'Home'=>$this->url('home'),
+            'About'=>$this->url('about'),
+            ]);
+?>
+<!-- [ col ] start -->
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <h1>About</h1>
+            <p>Application name: <?= $this->escapeHtml($appName) ?></p>
+            <p>Application description: <?= $this->escapeHtml($appDescription) ?></p>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

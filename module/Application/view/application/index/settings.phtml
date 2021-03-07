@@ -1,0 +1,40 @@
+<?php
+$title = $this->translate('Settings');
+$this->headTitle($title);
+
+$this->mainMenu()->setActiveItemId('settings');
+
+$this->pageBreadcrumbs()->setItems([
+            'Home'=>$this->url('home'),
+            'Settings'=>$this->url('application', ['action'=>'settings']),
+            ]);
+?>
+<!-- [ col ] start -->
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>ID:</th>
+                    <td><?= $this->escapeHtml($user->getId()) ?></th>
+                </tr>
+                <tr>
+                    <th>E-mail:</th>
+                    <td><?= $this->escapeHtml($user->getEmail()) ?></th>
+                </tr>
+                <tr>
+                    <th>Full Name:</th>
+                    <td><?= $this->escapeHtml($user->getFullName()) ?></th>
+                </tr>
+                <tr>
+                    <th>Date Created:</th>
+                    <td><?= $this->escapeHtml($user->getDateCreated()) ?></th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

@@ -30,24 +30,4 @@ $conn = array(
 
 $entityManager = EntityManager::create($conn, $config);
 
-$migrationsConfiguration = $container->get('config')['doctrine']['migrations'];
-$configuration = new \Doctrine\Migrations\Configuration\Configuration($entityManager->getConnection());
-$configuration->setMigrationsDirectory($migrationsConfiguration['directory']);
-$configuration->setName($migrationsConfiguration['name']);
-$configuration->setMigrationsNamespace($migrationsConfiguration['namespace']);
-$configuration->setMigrationsTableName($migrationsConfiguration['table']);
-$configuration->setMigrationsColumnName($migrationsConfiguration['column']);
-$configuration->createMigrationTable();
-return new \Symfony\Component\Console\Helper\HelperSet([
-    'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper(
-        $entityManager
-    ),
-    'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper(
-        $entityManager->getConnection()
-    ),
-    'configuration' => new \Doctrine\Migrations\Tools\Console\Helper\ConfigurationHelper(
-        $entityManager->getConnection(),
-        $configuration
-    )
-]);
-// return ConsoleRunner::createHelperSet($entityManager);
+return ConsoleRunner::createHelperSet($entityManager);

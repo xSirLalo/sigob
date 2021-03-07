@@ -1,0 +1,61 @@
+<?php
+$this->headTitle('Sign in');
+
+$form->get('email')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Email address',
+    'required' => true,
+    'autofocus' => true
+    ])
+    ->setLabelAttributes([
+        'class' => 'sr-only'
+    ]);
+
+$form->get('password')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Password',
+    'required' => true,
+    ])
+    ->setLabelAttributes([
+        'class' => 'sr-only'
+    ]);
+?>
+
+    <div class="auth-side-form">
+        <div class=" auth-content">
+            <img src=<?= $this->basePath('assets/images/auth/auth-logo-dark.png') ?> alt="" class="img-fluid mb-4 d-block d-xl-none d-lg-none">
+            <h3 class="mb-4 f-w-400">Sign In</h3>
+            <?php if ($isLoginError): ?>
+            <div class="alert alert-warning" role="alert">
+                Incorrect login and/or password.
+                <a href="<?= $this->url('reset-password') ?>">Forgot password?</a>
+            </div>
+            <?php endif; ?>
+            <form class="form-signin" method="post">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="feather icon-mail"></i></span>
+                </div>
+                <?= $this->formElement($form->get('email')); ?>
+            </div>
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="feather icon-lock"></i></span>
+                </div>
+                <?= $this->formElement($form->get('password')); ?>
+            </div>
+            <div class="form-group text-left mt-2">
+                <div class="checkbox checkbox-primary d-inline">
+                    <input type="checkbox" name="checkbox-p-1" id="checkbox-p-1">
+                    <label for="checkbox-p-1" class="cr">
+                        <?= $this->formElement($form->get('remember_me')); ?> Remember me
+                    </label>
+                </div>
+            </div>
+            <?= $this->formElement($form->get('redirect_url')); ?>
+            <?= $this->formElement($form->get('csrf')) ?>
+            <button class="btn btn-block btn-primary mb-0" >Sign in</button>
+            </form>
+        </div>
+    </div>
+

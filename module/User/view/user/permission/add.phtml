@@ -1,0 +1,61 @@
+<?php
+$title = $this->translate('Add Permission');
+
+$this->headMeta()->appendName('keywords', '');
+
+$this->headMeta()->appendName('description', '');
+
+$this->headTitle($this->escapeHtml($title));
+
+$this->mainMenu()->setActiveItemId('permissions');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home'=>$this->url('home'),
+    'Manage Permissions'=>$this->url('permissions'),
+    'Add Permission'=>$this->url('permissions', ['action'=>'add'])
+]);
+
+$form->get('name')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Enter name'
+    ]);
+
+$form->get('description')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Enter description'
+    ]);
+
+$form->get('submit')
+        ->setAttributes(['class'=>'btn btn-primary']);
+
+$form->prepare();
+?>
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <p>Please fill out the following form and click the <i>Create</i> button.</p>
+            <!-- [ openTag ] start -->
+            <?= $this->form()->openTag($form); ?>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('name')); ?>
+                    <?= $this->formElement($form->get('name')); ?>
+                    <?= $this->formElementErrors($form->get('name')); ?>
+                </div>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('description')); ?>
+                    <?= $this->formElement($form->get('description')); ?>
+                    <?= $this->formElementErrors($form->get('description')); ?>
+                </div>
+
+                <?= $this->formElement($form->get('csrf')); ?>
+                <?= $this->formElement($form->get('submit')); ?>
+            <?= $this->form()->closeTag(); ?>
+            <!-- [ closeTag ] start -->
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
