@@ -110,8 +110,9 @@ class AuthManager
         // access to it is permitted to anyone (even for not logged in users.
         // Restrictive mode is more secure and recommended to use.
         $mode = isset($this->config['options']['mode'])?$this->config['options']['mode']:'restrictive';
-        if ($mode!='restrictive' && $mode!='permissive')
+        if ($mode!='restrictive' && $mode!='permissive') {
             throw new \Exception('Invalid access filter mode (expected either restrictive or permissive mode');
+        }
 
         if (isset($this->config['controllers'][$controllerName])) {
             $items = $this->config['controllers'][$controllerName];
@@ -120,10 +121,10 @@ class AuthManager
                 $allow = $item['allow'];
                 if (is_array($actionList) && in_array($actionName, $actionList) ||
                     $actionList=='*') {
-                    if ($allow=='*')
+                    if ($allow=='*') {
                         // Anyone is allowed to see the page.
                         return self::ACCESS_GRANTED;
-                    else if (!$this->authService->hasIdentity()) {
+                    } elseif (!$this->authService->hasIdentity()) {
                         // Only authenticated user is allowed to see the page.
                         return self::AUTH_REQUIRED;
                     }
@@ -131,20 +132,22 @@ class AuthManager
                     if ($allow=='@') {
                         // Any authenticated user is allowed to see the page.
                         return self::ACCESS_GRANTED;
-                    } else if (substr($allow, 0, 1)=='@') {
+                    } elseif (substr($allow, 0, 1)=='@') {
                         // Only the user with specific identity is allowed to see the page.
                         $identity = substr($allow, 1);
-                        if ($this->authService->getIdentity()==$identity)
+                        if ($this->authService->getIdentity()==$identity) {
                             return self::ACCESS_GRANTED;
-                        else
+                        } else {
                             return self::ACCESS_DENIED;
-                    } else if (substr($allow, 0, 1)=='+') {
+                        }
+                    } elseif (substr($allow, 0, 1)=='+') {
                         // Only the user with this permission is allowed to see the page.
                         $permission = substr($allow, 1);
-                        if ($this->rbacManager->isGranted(null, $permission))
+                        if ($this->rbacManager->isGranted(null, $permission)) {
                             return self::ACCESS_GRANTED;
-                        else
+                        } else {
                             return self::ACCESS_DENIED;
+                        }
                     } else {
                         throw new \Exception('Unexpected value for "allow" - expected ' .
                                 'either "?", "@", "@identity" or "+permission"');
@@ -157,10 +160,11 @@ class AuthManager
         // listed under 'access_filter' key and deny access to authorized users
         // (for security reasons).
         if ($mode=='restrictive') {
-            if(!$this->authService->hasIdentity())
+            if (!$this->authService->hasIdentity()) {
                 return self::AUTH_REQUIRED;
-            else
+            } else {
                 return self::ACCESS_DENIED;
+            }
         }
 
         // Permit access to this page.

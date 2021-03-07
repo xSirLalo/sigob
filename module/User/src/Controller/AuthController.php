@@ -47,7 +47,12 @@ class AuthController extends AbstractActionController
      */
     public function loginAction()
     {
+        if (($this->identity())) {
+            return $this->redirect()->toRoute('home');
+        }
+
         $this->layout()->setTemplate('layout/login');
+
         // Retrieve the redirect URL (if passed). We will redirect the user to this
         // URL after successfull login.
         $redirectUrl = (string)$this->params()->fromQuery('redirectUrl', '');
@@ -75,14 +80,17 @@ class AuthController extends AbstractActionController
             $form->setData($data);
 
             // Validate form
-            if($form->isValid()) {
+            if ($form->isValid()) {
 
                 // Get filtered and validated data
                 $data = $form->getData();
 
                 // Perform login attempt.
-                $result = $this->authManager->login($data['email'],
-                        $data['password'], $data['remember_me']);
+                $result = $this->authManager->login(
+                    $data['email'],
+                    $data['password'],
+                    $data['remember_me']
+                );
 
                 // Check result.
                 if ($result->getCode() == Result::SUCCESS) {
@@ -94,13 +102,14 @@ class AuthController extends AbstractActionController
                         // The below check is to prevent possible redirect attack
                         // (if someone tries to redirect user to another domain).
                         $uri = new Uri($redirectUrl);
-                        if (!$uri->isValid() || $uri->getHost()!=null)
+                        if (!$uri->isValid() || $uri->getHost()!=null) {
                             throw new \Exception('Incorrect redirect URL: ' . $redirectUrl);
+                        }
                     }
 
                     // If redirect URL is provided, redirect the user to that URL;
                     // otherwise redirect to Home page.
-                    if(empty($redirectUrl)) {
+                    if (empty($redirectUrl)) {
                         return $this->redirect()->toRoute('home');
                     } else {
                         $this->redirect()->toUrl($redirectUrl);

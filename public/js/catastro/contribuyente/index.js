@@ -49,9 +49,9 @@ $(document).ready(function() {
                     "render": function(data, type, row, meta){
                     $actionBtn = `
                         <div class="btn-group">
-                            <a href="/contribuyente/ver/` + row['id_contribuyente'] + `"  class="btn btn-info" data-toggle="modal" onclick="view_contribuyente(` + row['id_contribuyente'] + `)">Ver</a>
-                            <a href="/contribuyente/editar/` + row['id_contribuyente'] + `" class="btn btn-warning" data-toggle="modal" onclick="edit_contribuyente(` + row['id_contribuyente'] + `)">Editar</a>
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="` + row['id_contribuyente'] + `">Eliminar</button>
+                            <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info" data-toggle="modal" onclick="view_contribuyente(` + row['idContribuyente'] + `)">Ver</a>
+                            <a href="/contribuyente/editar/` + row['idContribuyente'] + `" class="btn btn-warning" data-toggle="modal" onclick="edit_contribuyente(` + row['idContribuyente'] + `)">Editar</a>
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `">Eliminar</button>
                         </div>
                     `;
                         return $actionBtn;

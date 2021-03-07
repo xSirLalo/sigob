@@ -126,10 +126,10 @@ class ContribuyenteController extends AbstractActionController
                 if ($form->isValid()) {
                     $data = $form->getData();
                     $this->contribuyenteManager->agregar($data);
+                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                     return $this->redirect()->toRoute('contribuyente');
                 }
             }
-            $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
             $view = new ViewModel(['form' => $form]);
         }
         return $view;

@@ -21,7 +21,7 @@ class HomeController extends AbstractActionController
     {
         //$resultado = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
         // $resultado = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
-        // $resultado = $this->opergobserviceadapter->obtenerPersonaPorRfc("SAAM920510QQ6");
+        $resultadoWebService = $this->opergobserviceadapter->obtenerPersonaPorRfc("SAAM920510QQ6");
         // $resultado = $this->opergobserviceadapter->obtenerPredio("109006000020047-");
         // $resultado = $this->opergobserviceadapter->obtenerColindancia("730");
 
@@ -29,7 +29,7 @@ class HomeController extends AbstractActionController
         // print_r($resultado->PredioColindancia[0]->Descripcion);
         // echo "</pre>";
         // exit();
-        // return new ViewModel(['datos' => $resultado]);
+        return new ViewModel(['datos' => $resultadoWebService]);
 
         return new ViewModel();
     }
