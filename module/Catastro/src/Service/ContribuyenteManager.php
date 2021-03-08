@@ -31,6 +31,10 @@ class ContribuyenteManager
         $contribuyente->setCurp($data['curp']);
         $contribuyente->setGenero($data['genero']);
 
+        $currentDate = new \DateTime();
+        $contribuyente->setCreatedAt($currentDate);
+        $contribuyente->setUpdatedAt($currentDate);
+
         $this->entityManager->persist($contribuyente);
         $this->entityManager->flush();
     }
@@ -43,6 +47,9 @@ class ContribuyenteManager
         $contribuyente->setRfc($data['rfc']);
         $contribuyente->setCurp($data['curp']);
         $contribuyente->setGenero($data['genero']);
+
+        $currentDate = new \DateTime();
+        $contribuyente->setUpdatedAt($currentDate);
 
         $this->entityManager->flush();
     }

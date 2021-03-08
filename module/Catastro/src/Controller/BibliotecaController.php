@@ -8,10 +8,13 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
+use Laminas\Filter;
+use Laminas\InputFilter\OptionalInputFilter;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Entity\Archivo as Biblioteca;
 use Catastro\Entity\Contribuyente;
+use Catastro\Form\BibliotecaForm;
 
 class BibliotecaController extends AbstractActionController
 {
@@ -57,20 +60,80 @@ class BibliotecaController extends AbstractActionController
 
     public function addAction()
     {
-        $form = new ContribuyenteForm();
+        $form = new BibliotecaForm();
         $request = $this->getRequest();
+        $categorias = $this->bibliotecaManager->categorias();
+
+        // $destination = './public/img';
+
+        // $archivos = (array) $this->params()->fromFiles('archivo');
+        // $archivos = array_slice($archivos, 0, 5); # we restrict to 5 fields i meant
+
+        // $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+        // $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+
+        // $num = (int) count($archivos);
+        // for ($i=0; $i < $num; $i++) {
+        //     $ext = pathinfo($archivos[$i]['name'], PATHINFO_EXTENSION);
+        //     // $newName = md5(rand(). $archivos[$i]['name']) . '.' . $ext;
+        //     $newName = strtolower(str_replace(" ", "-", rand(). $archivos[$i]['name'])) . '.' . $ext;
+        //     $inputFilter = new OptionalInputFilter();
+        //     $inputFilter->add([
+        //         'name' => 'archivo',
+        //         'filters' => [
+        //             [
+        //                 'name' => Filter\File\Rename::class,
+        //                 'options' => [
+        //                     // 'target' => './public/img/222.asd',
+        //                     'target' => $destination . '/' . $newName,
+        //                 ]
+        //             ]
+        //         ]
+        //     ]);
+        //     $form->setInputFilter($inputFilter);
+        // }
 
         if ($request->isPost()) {
-            $data = $this->params()->fromPost();
+            // $File = $this->params()->fromFiles('archivo');
+            $data = \array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->bibliotecaManager->agregar($data);
+                $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+
+                $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
+                $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
+
+                $num = (int) count($archivoUrl);
+                for ($i=0; $i < $num; $i++) {
+                    $filename = $_FILES['archivo']['name'][$i];
+                    $filesize = $_FILES['archivo']['size'][$i];
+                    $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                    $file_type = $_FILES['archivo']['type'][$i];
+
+                    $temp = explode(".", $filename);
+                    $new_filename = strtolower(str_replace(" ", "-", $temp[0])) . '-' . "INE" . '.' . $temp[count($temp)-1];
+
+                    // $tempFile = $_FILES['archivo']['tmp_name'][$i];
+                    $tempFile = $_FILES['archivo']['name'][$i];
+
+                    $data['archivoBlob'] = file_get_contents('./public/img/' . $new_filename, true);
+                    $data['extension'] = $temp[count($temp)-1];
+                    $data['size'] = $_FILES['archivo']['size'][$i];
+                    $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                    // $data['categoria'] = $categorias[$i];
+
+                    $this->bibliotecaManager->guardarArchivos($data, $categorias[$i]);
+                }
                 $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                return $this->redirect()->toRoute('contribuyente');
+                return $this->redirect()->toRoute('biblioteca');
             }
         }
-        return new ViewModel(['form' => $form]);
+        return new ViewModel(['form' => $form, 'categorias' => $categorias]);
     }
 
     public function viewAction()
@@ -91,50 +154,22 @@ class BibliotecaController extends AbstractActionController
             return $response->setTemplate('error/404');
         }
 
-        return new ViewModel(['contribuyente' => $contribuyente]);
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->select('a')
+            ->from('Catastro\Entity\Archivo', 'a')
+            ->join('Catastro\Entity\Contribuyente', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idContribuyente = c.idContribuyente')
+            ->where('a.idContribuyente = :idParam')
+            ->setParameter('idParam', $contribuyenteId)
+            ->orderBy('a.createdAt', 'ASC');
+
+        $resultados = $qb->getQuery()->getResult();
+
+        return new ViewModel(['resultados' => $resultados, 'contribuyenteId' => $contribuyenteId]);
     }
 
     public function editAction()
     {
-        $form = new ContribuyenteForm();
-        $request = $this->getRequest();
-        $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
-
-        if ($contribuyenteId < 0) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
-        }
-
-        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-
-        if ($contribuyente == null) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
-        }
-
-        if ($request->isPost()) {
-            $data = $this->params()->fromPost();
-            $form->setData($data);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $this->bibliotecaManager->actualizar($contribuyente, $data);
-                return $this->redirect()->toRoute('contribuyente');
-            }
-        } else {
-            $data = [
-                'nombre' => $contribuyente->getNombre(),
-                'apellido_paterno' => $contribuyente->getApellidoPaterno(),
-                'apellido_materno' => $contribuyente->getApellidoMaterno(),
-                'rfc' => $contribuyente->getRfc(),
-                'curp' => $contribuyente->getCurp(),
-                'genero' => $contribuyente->getGenero(),
-                ];
-            $form->setData($data);
-            $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
-        }
-        return new ViewModel(['form' => $form]);
+        return new ViewModel();
     }
 
     public function deleteAction()
@@ -167,6 +202,38 @@ class BibliotecaController extends AbstractActionController
             }
         }
         return new ViewModel(['form' => $form, 'id' => $contribuyenteId]);
+    }
+
+    public function deleteFileAction()
+    {
+        $contribuyenteId = (int)$this->params()->fromRoute('contribuyente', -1);
+        $archivoId = (int)$this->params()->fromRoute('archivo', -1);
+
+        if ($contribuyenteId < 0 || $archivoId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
+
+        if ($contribuyente == null || $archivoId == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->delete('Catastro\Entity\Archivos', 'a')
+            ->where('a.IdContribuyente = :idParam1')
+            ->andWhere('a.idArchivo', ':idParam2')
+            ->setParameter('idParam1', $contribuyenteId)
+            ->setParameter('idParam2', $archivoId);
+        $qb->getQuery()->execute();
+
+        \unlink('public/img/'. $file->getFile());
+
+        return $this->redirect()->toRoute('biblioteca/ver', ['id' => $contribuyenteId]);
     }
 
     public function pdfAction()

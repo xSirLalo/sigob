@@ -43,6 +43,13 @@ class Archivo
     private $size;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     */
+    private $url;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
@@ -168,6 +175,30 @@ class Archivo
     public function getSize()
     {
         return $this->size;
+    }
+
+    /**
+     * Set url.
+     *
+     * @param string|null $url
+     *
+     * @return Archivo
+     */
+    public function setUrl($url = null)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url.
+     *
+     * @return string|null
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     /**

@@ -5,8 +5,8 @@ $this->headMeta()->appendName('description', '');
 $this->headTitle($this->escapeHtml($title));
 $this->pageBreadcrumbs()->setItems([
     'Home' => $this->url('home'),
-    'Contribuyentes' => $this->url('contribuyente'),
-    'Detalle' => $this->url('contribuyente/ver'),
+    'Biblioteca' => $this->url('biblioteca'),
+    'Detalle' => $this->url('biblioteca/ver'),
 ]);
 ?>
 <!-- [ col ] start -->
@@ -16,15 +16,36 @@ $this->pageBreadcrumbs()->setItems([
             <h5><?= $title ?></h5>
         </div>
         <div class="card-body">
-            <table class="table">
-                <tbody>
+            <table class="table table-light">
+                <thead class="thead-dark">
                     <tr>
-                        <td>Nombre</td>
-                        <td><?= $contribuyente->getNombre() ?></td>
+                        <th>Tipo</th>
+                        <th>Archivo</th>
+                        <th>Fecha de subida</th>
+                        <th>Acciones</th>
                     </tr>
+                </thead>
+                <tbody>
+                    <?php if ($resultados): ?>
+                        <?php foreach ($resultados as $resultado): ?>
+                            <tr>
+                                <td><?= $resultado->getIdArchivoCategoria()->getNombre() ?></td>
+                                <td><?= $resultado->getUrl() ?></td>
+                                <td><?= $resultado->getCreatedAt()->format('Y-m-d h:m:s') ?></td>
+                                <td>
+                                    <a href="<?= $this->url('biblioteca/eliminar-archivo', ['action' => 'eliminar-archivo', 'contribuyente' => $resultado->getIdContribuyente()->getIdContribuyente(), 'archivo' => $resultado->getIdArchivo()]); ?>" class="btn btn-danger btn-sm"> Eliminar</a>
+                                    <a href="<?= $this->url('biblioteca/imprimir-archivo', ['action' => 'imprimir-archivo', 'contribuyente' => $resultado->getIdContribuyente()->getIdContribuyente(), 'archivo' => $resultado->getIdArchivo()]); ?>" class="btn btn-success btn-sm"> Imprimir</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="3" class="text-center">No hay archivos...</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
-            <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
+            <a href="<?= $this->url('biblioteca') ?>" class="btn btn-secondary">Volver al listado</a>
         </div>
     </div>
 </div>

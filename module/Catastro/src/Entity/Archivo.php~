@@ -43,6 +43,13 @@ class Archivo
     private $size;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     */
+    private $url;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)

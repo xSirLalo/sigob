@@ -87,15 +87,6 @@ return [
                             ],
                         ],
                     ],
-                    'datatable' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/datatable',
-                            'defaults' => [
-                                'action' => 'datatable',
-                            ],
-                        ],
-                    ],
                     'pdf' => [
                         'type' => 'literal',
                         'options' => [
@@ -114,15 +105,24 @@ return [
                             ],
                         ],
                     ],
-                    'buscar_ajax' => [
+                    'datatable' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/datatable',
+                            'defaults' => [
+                                'action' => 'datatable',
+                            ],
+                        ],
+                    ],
+                    'buscar' => [
                         'type' => 'segment',
                         'options' => [
-                            'route' => '/buscar_ajax[/:action]',
+                            'route' => '/buscar[/:action]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
                             ],
                             'defaults' => [
-                                'action' => 'searchAjax',
+                                'action' => 'search',
                             ],
                         ],
                     ],
@@ -202,18 +202,6 @@ return [
                             ],
                         ],
                     ],
-                    'buscar_ajax' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/buscar_ajax[/:action]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'searchAjax',
-                            ],
-                        ],
-                    ],
                 ],
             ],
             'biblioteca' => [
@@ -290,15 +278,29 @@ return [
                             ],
                         ],
                     ],
-                    'buscar_ajax' => [
+                    'eliminar-archivo' => [
                         'type' => 'segment',
                         'options' => [
-                            'route' => '/buscar_ajax[/:action]',
+                            'route' => '/eliminar-archivo[/:contribuyente[/:archivo]]',
                             'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                                'contribuyente' => '[0-9]+',
+                                'archivo' => '[0-9]+',
                             ],
                             'defaults' => [
-                                'action' => 'searchAjax',
+                                'action' => 'deleteFile',
+                            ],
+                        ],
+                    ],
+                    'imprimir-archivo' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/imprimir-archivo[/:contribuyente[/:archivo]]',
+                            'constraints' => [
+                                'contribuyente' => '[0-9]+',
+                                'archivo' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'printFile',
                             ],
                         ],
                     ],
@@ -378,18 +380,6 @@ return [
                             ],
                         ],
                     ],
-                    'buscar_ajax' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/buscar_ajax[/:action]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'searchAjax',
-                            ],
-                        ],
-                    ],
                 ],
             ],
         ],
@@ -420,7 +410,7 @@ return [
                 ['actions' => ['index'], 'allow' => '*'],
             ],
             Controller\ContribuyenteController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '*']

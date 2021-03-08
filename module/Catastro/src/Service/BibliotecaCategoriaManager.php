@@ -26,13 +26,21 @@ class BibliotecaCategoriaManager
 
         $categoria->setNombre($data['nombre']);
 
+        $currentDate = new \DateTime();
+        $categoria->setCreatedAt($currentDate);
+        $categoria->setUpdatedAt($currentDate);
+
         $this->entityManager->persist($categoria);
+
         $this->entityManager->flush();
     }
 
     public function actualizar($categoria, $data)
     {
         $categoria->setNombre($data['nombre']);
+
+        $currentDate = new \DateTime();
+        $contribuyente->setUpdatedAt($currentDate);
 
         $this->entityManager->flush();
     }

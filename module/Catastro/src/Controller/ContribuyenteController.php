@@ -38,33 +38,45 @@ class ContribuyenteController extends AbstractActionController
         $form = new ContribuyenteForm();
         $request = $this->getRequest();
         $response = $this->getResponse();
-        $requestData= $_REQUEST;
+        $postData= $_POST;
         // TODO Arreglar falla con el datatables solo muestra una pagina
         $columns = [
-            0 => 'nombre',
-            1 => 'apellidoPaterno',
-            2 => 'apellidoMaterno'
+            0 => 'idContribuyente',
+            1 => 'nombre',
+            2 => 'apellidoPaterno',
+            3 => 'apellidoMaterno'
         ];
 
         // AJAX response
         if ($request->isXmlHttpRequest()) {
+            // $fields = ['c.idContribuyente', 'c.nombre', 'c.apellidoPaterno', 'c.apellidoMaterno', 'c.genero'];
+            $fields = ['c'];
             // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
-            $qb = $this->entityManager->createQueryBuilder()->select('c')->from('Catastro\Entity\Contribuyente', 'c');
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb ->select($fields)->from('Catastro\Entity\Contribuyente', 'c');
 
-            $searchKeyWord = htmlspecialchars($requestData['search']['value']);
-            if (!empty($searchKeyWord)) {
-                $searchKeyWord = htmlspecialchars($requestData['search']['value']);
+            $searchKeyWord = htmlspecialchars($postData['search']['value']);
+            if (isset($searchKeyWord)) {
+                $searchKeyWord = htmlspecialchars($postData['search']['value']);
                 $qb ->where('c.nombre LIKE :word')
                     ->orWhere('c.apellidoPaterno LIKE :word')
                     ->orWhere('c.apellidoMaterno LIKE :word')
                     ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
             }
-            // $qb ->orderBy('c.idContribuyente', 'ASC')->setFirstResult(0)->setMaxResults(20);
-            $qb ->orderBy('c.'. $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'])->setFirstResult($requestData['start'])->setMaxResults($requestData['length']);
+
+            if (isset($postData['order'])) {
+                $qb ->orderBy('c.'. $columns[$postData['order'][0]['column']], $postData['order'][0]['dir']);
+            } else {
+                $qb ->orderBy('c.idContribuyente', 'DESC');
+            }
+
+            if ($postData['length'] != -1) {
+                $qb ->setFirstResult($postData['start'])->setMaxResults($postData['length']);
+            }
+
             $query = $qb->getQuery()->getResult();
 
             $data = [];
-
             foreach ($query as $r) {
                 $data[] = [
                     'idContribuyente' => $r->getIdContribuyente(),
@@ -76,7 +88,7 @@ class ContribuyenteController extends AbstractActionController
                 ];
             }
             $result = [
-                    "draw"            => intval($requestData['draw']),
+                    "draw"            => intval($postData['draw']),
                     "recordsTotal"    => count($data),
                     "recordsFiltered" => count($data),
                     'data'            => $data,
@@ -90,7 +102,7 @@ class ContribuyenteController extends AbstractActionController
 
             $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
             $paginator = new Paginator($adapter);
-            $paginator->setDefaultItemCountPerPage(25);
+            $paginator->setDefaultItemCountPerPage(10);
             $paginator->setCurrentPageNumber($page);
             $view = new ViewModel(['contribuyentes' => $paginator, 'form' => $form]);
 
@@ -104,35 +116,14 @@ class ContribuyenteController extends AbstractActionController
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
-        $requestData= $_REQUEST;
+        // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
+        $qb = $this->entityManager->createQueryBuilder()->select('c')->from('Catastro\Entity\Contribuyente', 'c');
+        $query = $qb->getQuery()->getResult();
 
-        $columns = [
-            0 => 'nombre',
-            1 => 'apellidoPaterno',
-            2 => 'apellidoMaterno'
-        ];
+        $data = [];
 
-        // AJAX response
-        if ($request->isXmlHttpRequest()) {
-            // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
-            $qb = $this->entityManager->createQueryBuilder()->select('c')->from('Catastro\Entity\Contribuyente', 'c');
-
-            $searchKeyWord = htmlspecialchars($requestData['search']['value']);
-            if (!empty($searchKeyWord)) {
-                $searchKeyWord = htmlspecialchars($requestData['search']['value']);
-                $qb ->where('c.nombre LIKE :word')
-                    ->orWhere('c.apellidoPaterno LIKE :word')
-                    ->orWhere('c.apellidoMaterno LIKE :word')
-                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
-            }
-            // $qb ->orderBy('c.idContribuyente', 'ASC')->setFirstResult(0)->setMaxResults(20);
-            // $qb ->orderBy('c.'. $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'])->setFirstResult($requestData['start'])->setMaxResults($requestData['length']);
-            $query = $qb->getQuery()->getResult();
-
-            $data = [];
-
-            foreach ($query as $r) {
-                $data[] = [
+        foreach ($query as $r) {
+            $data[] = [
                     'idContribuyente' => $r->getIdContribuyente(),
                     'nombre'          => $r->getNombre(),
                     'apellidoPaterno' => $r->getApellidoPaterno(),
@@ -140,26 +131,23 @@ class ContribuyenteController extends AbstractActionController
                     'genero'          => $r->getGenero(),
                     'opciones'        => "Cargando..."
                 ];
-            }
-            $result = [
-                    "draw"            => 0,
+        }
+        $result = [
+                    "draw"            => 1,
                     "recordsTotal"    => count($data),
                     "recordsFiltered" => count($data),
                     'aaData'            => $data,
                 ];
-            return $response->setContent(json_encode($result));
+
+        // return $response->setContent(json_encode($result));
+
         // $response->setStatusCode(200);
         // $response->setContent(\Laminas\Json\Json::encode($result));
         // return $response;
 
-        // $view = new JsonModel($result);
-        // $view->setTerminal(true);
-
-        // return $view;
-        } else {
-            echo "fail";
-        }
-        // return $view;
+        $json = new JsonModel($result);
+        $json->setTerminal(true);
+        return $json;
     }
 
     public function addAction()
@@ -285,12 +273,12 @@ class ContribuyenteController extends AbstractActionController
                 }
             } else {
                 $data = [
-                'nombre' => $contribuyente->getNombre(),
-                'apellido_paterno' => $contribuyente->getApellidoPaterno(),
-                'apellido_materno' => $contribuyente->getApellidoMaterno(),
-                'rfc' => $contribuyente->getRfc(),
-                'curp' => $contribuyente->getCurp(),
-                'genero' => $contribuyente->getGenero(),
+                    'nombre' => $contribuyente->getNombre(),
+                    'apellido_paterno' => $contribuyente->getApellidoPaterno(),
+                    'apellido_materno' => $contribuyente->getApellidoMaterno(),
+                    'rfc' => $contribuyente->getRfc(),
+                    'curp' => $contribuyente->getCurp(),
+                    'genero' => $contribuyente->getGenero(),
                 ];
                 $form->setData($data);
                 $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
@@ -344,30 +332,32 @@ class ContribuyenteController extends AbstractActionController
         return $view;
     }
 
-    public function searchAjaxAction()
+    public function searchAction()
     {
-        $name = $_REQUEST['q'];
+        $word = $_REQUEST['q'];
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb ->select('c')
-            ->from('Catastro\Entity\Contribuyentes', 'c')
-            ->where($qb->expr()->like('c.name', ":name"))
-            ->setParameter("name", '%'.addcslashes($name, '%_').'%');
+            ->from('Catastro\Entity\Contribuyente', 'c')
+                ->where('c.nombre LIKE :word')
+                ->orWhere('c.apellidoPaterno LIKE :word')
+                ->orWhere('c.apellidoMaterno LIKE :word')
+                ->setParameter("word", '%'.addcslashes($word, '%_').'%');
         $query = $qb->getQuery()->getResult();
 
-        $data  = [];
+        $arreglo  = [];
         foreach ($query as $r) {
-            $data [] = [
-            'id' => $r->getId(),
-            'name' => $r->getName(),
+            $arreglo [] = [
+                'id' => $r->getIdContribuyente(),
+                'full_name'=> $r->getNombre() . ' ' . $r->getApellidoPaterno() . ' ' . $r->getApellidoMaterno(),
             ];
         }
-        $result = [
-            'items' => $data,
-            'total_count' => count($data),
-        ];
+        $data = [
+                    'items'       => $arreglo,
+                    'total_count' => count($arreglo),
+            ];
 
-        $json = new JsonModel($result);
+        $json = new JsonModel($data);
         $json->setTerminal(true);
 
         return $json;
