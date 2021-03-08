@@ -44,6 +44,11 @@ class BibliotecaManager
         $this->entityManager->flush();
     }
 
+    public function getImageFileContent($filePath)
+    {
+        return file_get_contents($filePath);
+    }
+
     public function guardarArchivos($data, $categoria)
     {
         $file = new Biblioteca();

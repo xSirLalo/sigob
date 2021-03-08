@@ -66,15 +66,16 @@ class NavManager
                 'link'  => $url('login'),
             ];
         } else {
-            $items[] = [
-                    'header'  => "Catastro",
-                    'link'  => ""
-                ];
 
             // Determine which items must be displayed in Admin dropdown.
             $bibliotecaDropdownItems = [];
 
             if ($this->rbacManager->isGranted(null, 'contribuyente.manage')) {
+                $items[] = [
+                        'header'  => "Catastro",
+                        'link'  => ""
+                    ];
+
                 $bibliotecaDropdownItems[] = [
                             'id' => 'biblioteca',
                             'label' => 'Biblioteca',

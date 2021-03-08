@@ -66,10 +66,10 @@ class Contribuyente extends \Catastro\Entity\Contribuyente implements \Doctrine\
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'idContribuyente', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoPaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoMaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'rfc', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'curp', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'genero'];
+            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'idContribuyente', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoPaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoMaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'rfc', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'curp', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'genero', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'updatedAt'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'idContribuyente', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoPaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoMaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'rfc', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'curp', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'genero'];
+        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'idContribuyente', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoPaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoMaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'rfc', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'curp', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'genero', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'updatedAt'];
     }
 
     /**
@@ -321,6 +321,50 @@ class Contribuyente extends \Catastro\Entity\Contribuyente implements \Doctrine\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGenero', []);
 
         return parent::getGenero();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCreatedAt($createdAt = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCreatedAt', [$createdAt]);
+
+        return parent::setCreatedAt($createdAt);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedAt', []);
+
+        return parent::getCreatedAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUpdatedAt($updatedAt = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUpdatedAt', [$updatedAt]);
+
+        return parent::setUpdatedAt($updatedAt);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedAt', []);
+
+        return parent::getUpdatedAt();
     }
 
 }

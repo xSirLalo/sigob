@@ -236,48 +236,6 @@ return [
                             ],
                         ],
                     ],
-                    'editar' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/editar[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'edit',
-                            ],
-                        ],
-                    ],
-                    'eliminar' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/eliminar[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'delete',
-                            ],
-                        ],
-                    ],
-                    'pdf' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/pdf',
-                            'defaults' => [
-                                'action' => 'pdf',
-                            ],
-                        ],
-                    ],
-                    'excel' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/excel',
-                            'defaults' => [
-                                'action' => 'excel',
-                            ],
-                        ],
-                    ],
                     'eliminar-archivo' => [
                         'type' => 'segment',
                         'options' => [
@@ -416,10 +374,10 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '*']
             ],
             Controller\BibliotecaController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'deleteFile', 'downloadFile'], 'allow' => '*']
             ],
             Controller\BibliotecaCategoriaController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
         ]
     ],

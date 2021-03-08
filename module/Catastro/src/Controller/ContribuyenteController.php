@@ -39,7 +39,9 @@ class ContribuyenteController extends AbstractActionController
         $request = $this->getRequest();
         $response = $this->getResponse();
         $postData= $_POST;
-        // TODO Arreglar falla con el datatables solo muestra una pagina
+
+        // FIXME: Arreglar falla con el datatables solo muestra una pagina
+
         $columns = [
             0 => 'idContribuyente',
             1 => 'nombre',
@@ -281,7 +283,7 @@ class ContribuyenteController extends AbstractActionController
                     'genero' => $contribuyente->getGenero(),
                 ];
                 $form->setData($data);
-                $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
+                $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
             }
             $view = new ViewModel(['form' => $form]);
         }

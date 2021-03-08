@@ -103,14 +103,14 @@ class BibliotecaForm extends Form
             'required' => true,
             # note for files we start with validators before we use filters
             'validators' => [
-                // ['name' => Validator\NotEmpty::class],
-                // ['name' => Validator\File\IsImage::class],
-                /*[
+                ['name' => Validator\NotEmpty::class],
+                ['name' => Validator\File\IsImage::class],
+                [
                     'name' => Validator\File\MimeType::class,
                     'options' => [
                         'mimeType' => 'image/png. image/jpeg, image/jpg, image/gif'
                     ],
-                ],*/ # just uncomment this one. I forgot. It always gives issues.
+                ], # just uncomment this one. I forgot. It always gives issues.
                 [
                     'name' => Validator\File\Size::class,
                     'options' => [
