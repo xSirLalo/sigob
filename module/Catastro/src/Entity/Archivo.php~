@@ -24,23 +24,37 @@ class Archivo
     /**
      * @var string|null
      *
-     * @ORM\Column(name="archivo", type="blob", length=0, nullable=true)
+     * @ORM\Column(name="file", type="blob", length=0, nullable=true)
      */
-    private $archivo;
+    private $file;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="estension", type="string", length=45, nullable=true)
+     * @ORM\Column(name="extension", type="string", length=45, nullable=true)
      */
-    private $estension;
+    private $extension;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="tamanio", type="string", length=45, nullable=true)
+     * @ORM\Column(name="size", type="string", length=45, nullable=true)
      */
-    private $tamanio;
+    private $size;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     /**
      * @var \Catastro\Entity\ArchivoCategoria

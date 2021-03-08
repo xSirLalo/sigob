@@ -2,7 +2,7 @@
 
 namespace Catastro\Service;
 
-use Catastro\Entity\Contribuyente;
+use Catastro\Entity\ArchivoCategoria as Categoria;
 
 class BibliotecaCategoriaManager
 {
@@ -22,34 +22,24 @@ class BibliotecaCategoriaManager
 
     public function agregar($data)
     {
-        $contribuyente = new Contribuyente();
+        $categoria = new Categoria();
 
-        $contribuyente->setNombre($data['nombre']);
-        $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-        $contribuyente->setApellidoMaterno($data['apellido_materno']);
-        $contribuyente->setRfc($data['rfc']);
-        $contribuyente->setCurp($data['curp']);
-        $contribuyente->setGenero($data['genero']);
+        $categoria->setNombre($data['nombre']);
 
-        $this->entityManager->persist($contribuyente);
+        $this->entityManager->persist($categoria);
         $this->entityManager->flush();
     }
 
-    public function actualizar($contribuyente, $data)
+    public function actualizar($categoria, $data)
     {
-        $contribuyente->setNombre($data['nombre']);
-        $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-        $contribuyente->setApellidoMaterno($data['apellido_materno']);
-        $contribuyente->setRfc($data['rfc']);
-        $contribuyente->setCurp($data['curp']);
-        $contribuyente->setGenero($data['genero']);
+        $categoria->setNombre($data['nombre']);
 
         $this->entityManager->flush();
     }
 
-    public function eliminar($contribuyente)
+    public function eliminar($categoria)
     {
-        $this->entityManager->remove($contribuyente);
+        $this->entityManager->remove($categoria);
 
         $this->entityManager->flush();
     }

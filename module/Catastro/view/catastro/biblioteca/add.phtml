@@ -1,0 +1,104 @@
+<?php
+$title = $this->translate('Agregar');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Bibliotecas' => $this->url('biblioteca'),
+    'Agregar' => $this->url('biblioteca/agregar'),
+]);
+// Hoja de estilos requerido
+$this->headLink()
+    // Css Select2
+    ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'))
+    // Css FileInput
+    ->prependStylesheet($this->basePath('js/plugins/FileInput/css/fileinput.min.css'));
+// Js Requerido
+$this ->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/biblioteca/add.js'))
+    // Js FileInput
+    ->prependFile($this->basePath('js/plugins/FileInput/js/locales/es.js'))
+    ->prependFile($this->basePath('js/plugins/FileInput/js/fileinput.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'))
+    // Js Select2
+    ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'));
+// Instancia del form
+$form = $this->form;
+$form->setAttribute('action', $this->url('biblioteca/agregar'));
+$form->prepare();
+?>
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+        <!-- [ openTag ] start -->
+            <?= $this->form()->openTag($form); ?>
+            <div class="form-group">
+                <?= $this->formLabel($form->get('contribuyente_id')); ?>
+                <?= $this->formSelect($form->get('contribuyente_id')->setAttributes(['class' => "custom-select js-data-example-ajax2 col-sm-12"])); ?>
+                <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('contribuyente_id')); ?>
+                </div>
+            </div>
+            <?= $this->formLabel($form->get('archivo')); ?>
+                <div class="form-group" id="select">
+                    <div class="input-group">
+                        <div class="input-group-append delete">
+                            <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
+                        </div>
+                        <?= $this->formSelect($form->get('category_id')->setName("category_id[]")->setValueOptions($this->categorias)); ?>
+                        <div class="file-loading">
+                            <?= $this->formFile($form->get('archivo')); ?>
+                        </div>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('archivo')); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="additionalselects">
+                    <!-- dynamically created archivos field will be placed here -->
+                </div>
+                <div class="btn-group float-right">
+
+                <?= $this->formButton($form->get('add_more')); ?>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
+                <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
+            <?= $this->form()->closeTag(); ?>
+            <!-- [ closeTag ] start -->
+            <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
+
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <!-- [ openTag ] start -->
+            <?= $this->form()->openTag($form); ?>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('nombre')); ?>
+                    <?= $this->formText($form->get('nombre')); ?>
+                    <?= $this->formElementErrors($form->get('nombre', ['class' => 'text-danger'])); ?>
+                </div>
+                <?= $this->formHidden($form->get('csrf')); ?>
+                <?= $this->formElementErrors($form->get('csrf')); ?>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
+                <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
+            <?= $this->form()->closeTag(); ?>
+            <!-- [ closeTag ] start -->
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

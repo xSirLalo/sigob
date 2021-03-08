@@ -30,7 +30,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Nombre',
             ],
             'attributes' => [
-                // 'required' => true,
+                'required' => true,
                 'class' => 'form-control',
                 'title' => 'Nombre',
                 'placeholder' => 'Nombre',
@@ -44,7 +44,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Apellido Paterno',
             ],
             'attributes' => [
-                // 'required' => true,
+                'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Apellido Paterno',
             ]
@@ -57,7 +57,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Apellido Materno',
             ],
             'attributes' => [
-                // 'required' => true,
+                'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Apellido Materno',
             ]
@@ -70,7 +70,7 @@ class ContribuyenteForm extends Form
                 'label' => 'R.F.C.',
             ],
             'attributes' => [
-                // 'required' => true,
+                'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'R.F.C.',
             ]
@@ -83,7 +83,7 @@ class ContribuyenteForm extends Form
                 'label' => 'C.U.R.P.',
             ],
             'attributes' => [
-                // 'required' => true,
+                'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'C.U.R.P',
             ]
@@ -96,7 +96,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Genero',
             ],
             'attributes' => [
-                // 'required' => true,
+                'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Genero',
             ]

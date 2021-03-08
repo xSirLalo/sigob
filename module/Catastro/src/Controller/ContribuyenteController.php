@@ -59,7 +59,7 @@ class ContribuyenteController extends AbstractActionController
                     ->orWhere('c.apellidoMaterno LIKE :word')
                     ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
             }
-
+            // $qb ->orderBy('c.idContribuyente', 'ASC')->setFirstResult(0)->setMaxResults(20);
             $qb ->orderBy('c.'. $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'])->setFirstResult($requestData['start'])->setMaxResults($requestData['length']);
             $query = $qb->getQuery()->getResult();
 
@@ -90,7 +90,7 @@ class ContribuyenteController extends AbstractActionController
 
             $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
             $paginator = new Paginator($adapter);
-            $paginator->setDefaultItemCountPerPage(5);
+            $paginator->setDefaultItemCountPerPage(25);
             $paginator->setCurrentPageNumber($page);
             $view = new ViewModel(['contribuyentes' => $paginator, 'form' => $form]);
 
@@ -98,6 +98,68 @@ class ContribuyenteController extends AbstractActionController
             // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
         }
         return $view;
+    }
+
+    public function datatableAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        $requestData= $_REQUEST;
+
+        $columns = [
+            0 => 'nombre',
+            1 => 'apellidoPaterno',
+            2 => 'apellidoMaterno'
+        ];
+
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
+            $qb = $this->entityManager->createQueryBuilder()->select('c')->from('Catastro\Entity\Contribuyente', 'c');
+
+            $searchKeyWord = htmlspecialchars($requestData['search']['value']);
+            if (!empty($searchKeyWord)) {
+                $searchKeyWord = htmlspecialchars($requestData['search']['value']);
+                $qb ->where('c.nombre LIKE :word')
+                    ->orWhere('c.apellidoPaterno LIKE :word')
+                    ->orWhere('c.apellidoMaterno LIKE :word')
+                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
+            }
+            // $qb ->orderBy('c.idContribuyente', 'ASC')->setFirstResult(0)->setMaxResults(20);
+            // $qb ->orderBy('c.'. $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'])->setFirstResult($requestData['start'])->setMaxResults($requestData['length']);
+            $query = $qb->getQuery()->getResult();
+
+            $data = [];
+
+            foreach ($query as $r) {
+                $data[] = [
+                    'idContribuyente' => $r->getIdContribuyente(),
+                    'nombre'          => $r->getNombre(),
+                    'apellidoPaterno' => $r->getApellidoPaterno(),
+                    'apellidoMaterno' => $r->getApellidoMaterno(),
+                    'genero'          => $r->getGenero(),
+                    'opciones'        => "Cargando..."
+                ];
+            }
+            $result = [
+                    "draw"            => 0,
+                    "recordsTotal"    => count($data),
+                    "recordsFiltered" => count($data),
+                    'aaData'            => $data,
+                ];
+            return $response->setContent(json_encode($result));
+        // $response->setStatusCode(200);
+        // $response->setContent(\Laminas\Json\Json::encode($result));
+        // return $response;
+
+        // $view = new JsonModel($result);
+        // $view->setTerminal(true);
+
+        // return $view;
+        } else {
+            echo "fail";
+        }
+        // return $view;
     }
 
     public function addAction()
@@ -189,12 +251,12 @@ class ContribuyenteController extends AbstractActionController
                     $data = $form->getData();
                     $data['status'] = true;
                     $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
                     $this->contribuyenteManager->actualizar($contribuyente, $data);
                 } else {
                     $data['status'] = false;
                     $data['errors'] = $form->getMessages();
                 };
-                $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
                 $view = new JsonModel($data);
                 $view->setTerminal(true);
             }

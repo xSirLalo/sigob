@@ -45,9 +45,23 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="titular_anterio", type="string", length=255, nullable=true)
+     * @ORM\Column(name="titular_anterior", type="string", length=255, nullable=true)
      */
-    private $titularAnterio;
+    private $titularAnterior;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     /**
      * @var \Catastro\Entity\Contribuyente
@@ -144,27 +158,75 @@ class Predio
     }
 
     /**
-     * Set titularAnterio.
+     * Set titularAnterior.
      *
-     * @param string|null $titularAnterio
+     * @param string|null $titularAnterior
      *
      * @return Predio
      */
-    public function setTitularAnterio($titularAnterio = null)
+    public function setTitularAnterior($titularAnterior = null)
     {
-        $this->titularAnterio = $titularAnterio;
+        $this->titularAnterior = $titularAnterior;
 
         return $this;
     }
 
     /**
-     * Get titularAnterio.
+     * Get titularAnterior.
      *
      * @return string|null
      */
-    public function getTitularAnterio()
+    public function getTitularAnterior()
     {
-        return $this->titularAnterio;
+        return $this->titularAnterior;
+    }
+
+    /**
+     * Set createdAt.
+     *
+     * @param \DateTime|null $createdAt
+     *
+     * @return Predio
+     */
+    public function setCreatedAt($createdAt = null)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt.
+     *
+     * @return \DateTime|null
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt.
+     *
+     * @param \DateTime|null $updatedAt
+     *
+     * @return Predio
+     */
+    public function setUpdatedAt($updatedAt = null)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt.
+     *
+     * @return \DateTime|null
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**

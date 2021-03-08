@@ -45,9 +45,23 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="titular_anterio", type="string", length=255, nullable=true)
+     * @ORM\Column(name="titular_anterior", type="string", length=255, nullable=true)
      */
-    private $titularAnterio;
+    private $titularAnterior;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     /**
      * @var \Catastro\Entity\Contribuyente

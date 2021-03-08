@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MyProject\Migrations;
+namespace Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -33,13 +33,12 @@ final class Version20210307002200 extends AbstractMigration
         $table->addColumn('pwd_reset_token_creation_date', 'datetime', ['notnull'=>false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['email'], 'email_idx');
-        $table->addOption('engine' , 'InnoDB');
-
+        $table->addOption('engine', 'InnoDB');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
- $schema->dropTable('user');
+        $schema->dropTable('user');
     }
 }

@@ -84,7 +84,7 @@ class NavManager
                 $bibliotecaDropdownItems[] = [
                             'id' => 'categoria',
                             'label' => 'Categoria',
-                            'link' => ""
+                            'link'  => $url('categoria')
                         ];
             }
 

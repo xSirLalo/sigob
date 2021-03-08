@@ -22,12 +22,14 @@ CREATE TABLE aportacion
 	id_contribuyente bigint NOT NULL,
 	pago float,
 	fecha date,
-	m2_terreno float,
-	m2_construccion float,
+	metros_terreno float,
+	metros_construccion float,
 	valor_terreno float,
 	valor_construccion float,
 	avaluo float,
 	estatus int,
+	created_at timestamp,
+	updated_at timestamp,
 	PRIMARY KEY (id_aportacion)
 );
 
@@ -38,9 +40,11 @@ CREATE TABLE archivo
 	id_contribuyente bigint NOT NULL,
 	id_predio bigint NOT NULL,
 	id_archivo_categoria bigint NOT NULL,
-	archivo longblob,
-	estension varchar(45),
-	tamanio varchar(45),
+	file longblob,
+	extension varchar(45),
+	size varchar(45),
+	created_at timestamp,
+	updated_at timestamp,
 	PRIMARY KEY (id_archivo)
 );
 
@@ -49,6 +53,8 @@ CREATE TABLE archivo_categoria
 (
 	id_archivo_categoria bigint NOT NULL AUTO_INCREMENT,
 	nombre varchar(255),
+	created_at timestamp,
+	updated_at timestamp,
 	PRIMARY KEY (id_archivo_categoria)
 );
 
@@ -62,6 +68,8 @@ CREATE TABLE contribuyente
 	rfc varchar(255),
 	curp varchar(255),
 	genero int DEFAULT 0 NOT NULL,
+	created_at timestamp,
+	updated_at timestamp,
 	PRIMARY KEY (id_contribuyente)
 );
 
@@ -73,7 +81,9 @@ CREATE TABLE predio
 	clave_catastral varchar(255),
 	ubicacion varchar(255),
 	titular varchar(255),
-	titular_anterio varchar(255),
+	titular_anterior varchar(255),
+	created_at timestamp,
+	updated_at timestamp,
 	PRIMARY KEY (id_predio)
 );
 

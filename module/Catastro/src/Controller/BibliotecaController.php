@@ -11,6 +11,7 @@ use Laminas\Paginator\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Entity\Archivo as Biblioteca;
+use Catastro\Entity\Contribuyente;
 
 class BibliotecaController extends AbstractActionController
 {
@@ -33,18 +34,25 @@ class BibliotecaController extends AbstractActionController
 
     public function indexAction()
     {
-        // $form = new ContribuyenteForm();
 
         // $page = $this->params()->fromQuery('page', 1);
-        // $query = $this->entityManager->getRepository(Biblioteca::class)->createQueryBuilder('a')->getQuery();
+        // $query = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('a')->getQuery();
 
         // $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
         // $paginator = new Paginator($adapter);
-        // $paginator->setDefaultItemCountPerPage(5);
+        // $paginator->setDefaultItemCountPerPage(25);
         // $paginator->setCurrentPageNumber($page);
-        // return new ViewModel(['bibliotecas' => $paginator]);
-        $bibliotecas = $this->entityManager->getRepository(Biblioteca::class)->findAll();
-        $view = new ViewModel(['bibliotecas' => $bibliotecas, 'form' => $form]);
+        // return new ViewModel(['contribuyentes' => $paginator]);
+
+        // $predios        = $this->entityManager->createQuery("SELECT p FROM Catastro\\Entity\\Predio f")->getResult();
+        // $contribuyentes = $this->entityManager->createQuery("SELECT c FROM Catastro\\Entity\\Contribuyente c")->getResult();
+
+        // $bibliotecas = $this->entityManager->getRepository(Biblioteca::class)->findAll();
+        // $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
+        // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'asd' => "asdaosdkokasd"]);
+
+        $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
+        return new ViewModel(['contribuyentes' => $contribuyentes]);
     }
 
     public function addAction()

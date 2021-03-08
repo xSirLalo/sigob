@@ -1,33 +1,47 @@
 $(document).ready(function() {
-    // setTimeout(function() {
+    // var info = (myTable == null) ? { "start": 0, "length": 10 } : myTable.page.info();
+    setTimeout(function() {
         // [ Configuration Option ]
         $('#contribuyentes').DataTable({
-            "order": [[ 0, "desc" ]],
             // responsive: true,
             // autoWidth: false,
-            scrollX: true,
-            lengthMenu: [
-                [5, 10, 25],
-                [5, 10, 25]
-            ],
-            pageLength: 5,
+            // scrollX: true,
             processing: true,
             serverSide: true,
-            ajax: {
-            url:'contribuyente',
-            type: "post",
-            dataSrc: function ( json ) {
-                //Make your callback here.
-                // alert("Done!");
-                console.log(json);
-                return json.data;
-            }
-                // error: function (jqXHR, textStatus, errorThrown)
-                // {
-                //     console.log();
-                //     alert('Error get data from ajax');
-                // }
-            },
+            deferRender: true,
+            paging: true,
+            // ajax: "/contribuyente",
+            // ajax: {
+            //     "type": "GET",
+            //     "url": "/contribuyente",
+            //     "dataType": "JSON",
+            //     // "contentType": 'application/json; charset=utf-8',
+            //     "data": function (data) {
+            //         // Grab form values containing user options
+            //         // var form = {};
+            //         // $.each($("form").serializeArray(), function (i, field) {
+            //         //     form[field.name] = field.value || "";
+            //         // });
+            //         // Add options used by Datatables
+            //         var info = { "start": 0, "length": 10, "draw": 1 };
+            //         // $.extend(form, info);
+            //         // return JSON.stringify(form);
+            //     },
+            //     "complete": function(response) {
+            //         console.log(response);
+            //     }
+            // },
+            sAjaxSource:"/contribuyente/datatable",
+            // ajax:{
+            //     url :"/contribuyente",
+            //     type: "post",
+            //     error: function(){
+            //         $(".contribuyentes-error").html("");
+            //         $("#contribuyentes").append('<tbody class="contribuyentes-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
+            //         $(".dataTables_empty").css("display","none");
+            //         $("#contribuyentes_processing").css("display","none");
+            //     }
+            // },
             initComplete: function () {
                 $('#lv-links').hide();
                 if ($(this).find('tbody tr').length<=1) {
@@ -42,52 +56,41 @@ $(document).ready(function() {
                 {data: 'genero', orderable: true, searchable: false,},
                 {data: 'opciones', orderable: false, searchable: false },
             ],
-            columnDefs: [
-                {
-                    "targets": 5,
-                    orderable: false,
-                    "render": function(data, type, row, meta){
-                    $actionBtn = `
-                        <div class="btn-group">
-                            <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info" data-toggle="modal" onclick="view_contribuyente(` + row['idContribuyente'] + `)">Ver</a>
-                            <a href="/contribuyente/editar/` + row['idContribuyente'] + `" class="btn btn-warning" data-toggle="modal" onclick="edit_contribuyente(` + row['idContribuyente'] + `)">Editar</a>
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `">Eliminar</button>
-                        </div>
-                    `;
-                        return $actionBtn;
-                    }
-                }
-            ],
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"
-                // "lengthMenu": "Mostrar _MENU_ registros por página",
-                // "zeroRecords": "Nada encontrado - disculpa.",
-                // "info": "Mostrando la página _PAGE_ de _PAGES_",
-                // "infoEmpty": "No hay datos...",
-                // "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                // "search": "Buscar:",
-                // "processing": '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> ',
-                // "paginate":{
-                //     'next': 'Siguiente',
-                //     'previous': 'Anterior',
-                // },
-            },
+            // columnDefs: [
+            //     {
+            //         "targets": 5,
+            //         orderable: false,
+            //         "render": function(data, type, row, meta){
+            //         $actionBtn = `
+            //             <div class="btn-group">
+            //                 <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info" data-toggle="modal" onclick="view_contribuyente(` + row['idContribuyente'] + `)">Ver</a>
+            //                 <a href="/contribuyente/editar/` + row['idContribuyente'] + `" class="btn btn-warning" data-toggle="modal" onclick="edit_contribuyente(` + row['idContribuyente'] + `)">Editar</a>
+            //                 <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `">Eliminar</button>
+            //             </div>
+            //         `;
+            //             return $actionBtn;
+            //         }
+            //     }
+            // ],
+            // language: {
+            //     url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"
+            // },
         });
 
-    //     // [ New Constructor ]
-    //     var newcs = $('#new-cons').DataTable();
+        // [ New Constructor ]
+        var newcs = $('#new-cons').DataTable();
 
-    //     new $.fn.dataTable.Responsive(newcs);
+        new $.fn.dataTable.Responsive(newcs);
 
-    //     // [ Immediately Show Hidden Details ]
-    //     $('#show-hide-res').DataTable({
-    //         responsive: {
-    //             details: {
-    //                 display: $.fn.dataTable.Responsive.display.childRowImmediate,
-    //                 type: ''
-    //             }
-    //         }
-    //     });
+        // [ Immediately Show Hidden Details ]
+        $('#show-hide-res').DataTable({
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.childRowImmediate,
+                    type: ''
+                }
+            }
+        });
 
-    // }, 350);
+    }, 350);
 });

@@ -4,7 +4,7 @@ namespace Catastro\Service\Factory;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Catastro\Service\ContribuyenteManager;
+use Catastro\Service\BibliotecaCategoriaManager;
 
 class BibliotecaCategoriaFactory implements FactoryInterface
 {
@@ -12,6 +12,6 @@ class BibliotecaCategoriaFactory implements FactoryInterface
     {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
 
-        return new ContribuyenteManager($entityManager);
+        return new BibliotecaCategoriaManager($entityManager);
     }
 }

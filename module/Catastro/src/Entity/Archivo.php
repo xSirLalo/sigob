@@ -24,23 +24,37 @@ class Archivo
     /**
      * @var string|null
      *
-     * @ORM\Column(name="archivo", type="blob", length=0, nullable=true)
+     * @ORM\Column(name="file", type="blob", length=0, nullable=true)
      */
-    private $archivo;
+    private $file;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="estension", type="string", length=45, nullable=true)
+     * @ORM\Column(name="extension", type="string", length=45, nullable=true)
      */
-    private $estension;
+    private $extension;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="tamanio", type="string", length=45, nullable=true)
+     * @ORM\Column(name="size", type="string", length=45, nullable=true)
      */
-    private $tamanio;
+    private $size;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     /**
      * @var \Catastro\Entity\ArchivoCategoria
@@ -85,75 +99,123 @@ class Archivo
     }
 
     /**
-     * Set archivo.
+     * Set file.
      *
-     * @param string|null $archivo
+     * @param string|null $file
      *
      * @return Archivo
      */
-    public function setArchivo($archivo = null)
+    public function setFile($file = null)
     {
-        $this->archivo = $archivo;
+        $this->file = $file;
 
         return $this;
     }
 
     /**
-     * Get archivo.
+     * Get file.
      *
      * @return string|null
      */
-    public function getArchivo()
+    public function getFile()
     {
-        return $this->archivo;
+        return $this->file;
     }
 
     /**
-     * Set estension.
+     * Set extension.
      *
-     * @param string|null $estension
+     * @param string|null $extension
      *
      * @return Archivo
      */
-    public function setEstension($estension = null)
+    public function setExtension($extension = null)
     {
-        $this->estension = $estension;
+        $this->extension = $extension;
 
         return $this;
     }
 
     /**
-     * Get estension.
+     * Get extension.
      *
      * @return string|null
      */
-    public function getEstension()
+    public function getExtension()
     {
-        return $this->estension;
+        return $this->extension;
     }
 
     /**
-     * Set tamanio.
+     * Set size.
      *
-     * @param string|null $tamanio
+     * @param string|null $size
      *
      * @return Archivo
      */
-    public function setTamanio($tamanio = null)
+    public function setSize($size = null)
     {
-        $this->tamanio = $tamanio;
+        $this->size = $size;
 
         return $this;
     }
 
     /**
-     * Get tamanio.
+     * Get size.
      *
      * @return string|null
      */
-    public function getTamanio()
+    public function getSize()
     {
-        return $this->tamanio;
+        return $this->size;
+    }
+
+    /**
+     * Set createdAt.
+     *
+     * @param \DateTime|null $createdAt
+     *
+     * @return Archivo
+     */
+    public function setCreatedAt($createdAt = null)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt.
+     *
+     * @return \DateTime|null
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt.
+     *
+     * @param \DateTime|null $updatedAt
+     *
+     * @return Archivo
+     */
+    public function setUpdatedAt($updatedAt = null)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt.
+     *
+     * @return \DateTime|null
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**

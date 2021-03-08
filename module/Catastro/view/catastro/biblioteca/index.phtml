@@ -1,0 +1,74 @@
+<?php
+$title = $this->translate('Bibliotecas');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Bibliotecas' => $this->url('biblioteca'),
+]);
+// Hoja de estilos requerido
+$this->headLink()
+    // Css DataTables
+    ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
+$this->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/biblioteca/index.js'))
+    // Js DataTables
+    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
+    ;
+?>
+<!-- [ col ] start -->
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-1 col-xs-12 mb-4" align=center>
+                    <div class="btn-group" role="group" aria-label="Botones">
+                        <a href="<?= $this->url("biblioteca/agregar") ?>" class="btn btn-primary" >Agregar</a>
+                        <?= $this->asd ?>
+                    </div>
+                </div>
+            </div>
+            <table  class="display table table-striped table-hover dt-responsive nowrap" id="bibliotecas" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($contribuyentes)): ?>
+                        <?php foreach ($contribuyentes as $contribuyente): ?>
+                            <tr>
+                                <td><?= $contribuyente->getIdContribuyente() ?></td>
+                                <td><?= $contribuyente->getNombre() ?></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="<?= $this->url('biblioteca/ver', ['action' => 'ver', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-info"> Ver Archivos</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr class="text-center">
+                            <td colspan="6">No hay datos...</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <div class="float-right" id="lv-links">
+                <!-- <?php  // $this->paginationControl($contribuyentes, 'Sliding', 'catastro/partial/paginator', ['route' => 'biblioteca']);?> -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

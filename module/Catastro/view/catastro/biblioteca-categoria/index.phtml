@@ -1,0 +1,72 @@
+<?php
+$title = $this->translate('Categorias');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Categorias' => $this->url('categoria'),
+]);
+// Hoja de estilos requerido
+$this->headLink()
+    // Css DataTables
+    ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
+$this->inlineScript()
+    // Js DataTables
+    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
+    ;
+?>
+<!-- [ col ] start -->
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-1 col-xs-12 mb-4" align=center>
+                    <div class="btn-group" role="group" aria-label="Botones">
+                        <a href="<?= $this->url("categoria/agregar") ?>" class="btn btn-primary" >Agregar</a>
+                        <a href="<?= $this->url("categoria/pdf") ?>" class="btn btn-danger">PDF</a>
+                        <a href="<?= $this->url("categoria/excel") ?>" class="btn btn-success">Excel</a>
+                    </div>
+                </div>
+            </div>
+            <table  class="display table table-striped table-hover dt-responsive nowrap" id="bibliotecas" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($categorias)): ?>
+                        <?php foreach ($categorias as $categoria): ?>
+                            <tr>
+                                <td><?= $categoria->getIdArchivoCategoria() ?></td>
+                                <td><?= $categoria->getNombre() ?></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="<?= $this->url('categoria/ver', ['action' => 'ver', 'id' => $categoria->getIdArchivoCategoria()]); ?>" class="btn btn-info" > Ver</a>
+                                        <a href="<?= $this->url('categoria/editar', ['action' => 'editar', 'id' => $categoria->getIdArchivoCategoria()]); ?>" class="btn btn-warning" > Editar</a>
+                                        <a href="<?= $this->url('categoria/eliminar', ['action' => 'eliminar', 'id' => $categoria->getIdArchivoCategoria()]); ?>" class="btn btn-danger" > Eliminar</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr class="text-center">
+                            <td colspan="6">No hay datos...</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
