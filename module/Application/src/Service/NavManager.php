@@ -70,7 +70,7 @@ class NavManager
             // Determine which items must be displayed in Admin dropdown.
             $bibliotecaDropdownItems = [];
 
-            if ($this->rbacManager->isGranted(null, 'contribuyente.manage')) {
+            if ($this->rbacManager->isGranted(null, 'catastro.manage')) {
                 $bibliotecaDropdownItems[] = [
                             'id' => 'biblioteca',
                             'label' => 'Biblioteca',
@@ -115,7 +115,7 @@ class NavManager
             // Determine which items must be displayed in Admin dropdown.
             $aportacionDropdownItems = [];
 
-            if ($this->rbacManager->isGranted(null, 'contribuyente.manage')) {
+            if ($this->rbacManager->isGranted(null, 'catastro.manage')) {
                 $aportacionDropdownItems[] = [
                             'id' => 'aportacion',
                             'label' => 'Aportacion',
