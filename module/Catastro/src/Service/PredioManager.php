@@ -23,15 +23,15 @@ class PredioManager
 
     public function agregar($data)
     {
-        $Predio = new Predio();
+        $predio = new Predio();
 
-        $Predio->setNombre($data['nombre']);
+        $predio->setNombre($data['nombre']);
 
         $currentDate = new \DateTime();
-        $Predio->setCreatedAt($currentDate);
-        $Predio->setUpdatedAt($currentDate);
+        $predio->setCreatedAt($currentDate);
+        $predio->setUpdatedAt($currentDate);
 
-        $this->entityManager->persist($Predio);
+        $this->entityManager->persist($predio);
         $this->entityManager->flush();
     }
 

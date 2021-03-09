@@ -125,7 +125,7 @@ class NavManager
                 $aportacionDropdownItems[] = [
                             'id' => 'validacion',
                             'label' => 'Validacion',
-                            'link' => ""
+                            'link'  => $url('aportacion/validacion')
                         ];
             }
 

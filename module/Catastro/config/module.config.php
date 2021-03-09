@@ -228,82 +228,6 @@ return [
                     ],
                 ],
             ],
-            'aportacion' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/aportacion',
-                    'defaults' => [
-                        'controller' => Controller\AportacionController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'agregar' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/agregar',
-                            'defaults' => [
-                                'action' => 'add',
-                            ],
-                        ],
-                    ],
-                    'ver' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/ver[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'view',
-                            ],
-                        ],
-                    ],
-                    'editar' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/editar[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'edit',
-                            ],
-                        ],
-                    ],
-                    'eliminar' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/eliminar[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'delete',
-                            ],
-                        ],
-                    ],
-                    'pdf' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/pdf',
-                            'defaults' => [
-                                'action' => 'pdf',
-                            ],
-                        ],
-                    ],
-                    'excel' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/excel',
-                            'defaults' => [
-                                'action' => 'excel',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
             'biblioteca' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -440,6 +364,118 @@ return [
                     ],
                 ],
             ],
+            'aportacion' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/aportacion',
+                    'defaults' => [
+                        'controller' => Controller\AportacionController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'agregar' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/agregar',
+                            'defaults' => [
+                                'action' => 'add',
+                            ],
+                        ],
+                    ],
+                    'ver' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/ver[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'view',
+                            ],
+                        ],
+                    ],
+                    'editar' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/editar[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'edit',
+                            ],
+                        ],
+                    ],
+                    'eliminar' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/eliminar[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'delete',
+                            ],
+                        ],
+                    ],
+                    'validacion' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/validacion[/:id]',
+                            'constraints' => [
+                                'slug' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'validation',
+                            ],
+                        ],
+                    ],
+                    'pdf' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/pdf',
+                            'defaults' => [
+                                'action' => 'pdf',
+                            ],
+                        ],
+                    ],
+                    'excel' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/excel',
+                            'defaults' => [
+                                'action' => 'excel',
+                            ],
+                        ],
+                    ],
+                    'claveCatastral' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/claveCatastral[/:action]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'claveCatastral',
+                            ],
+                        ],
+                    ],
+                    'cveCatastral' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/cveCatastral[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9,-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'cveCatastral',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -447,9 +483,9 @@ return [
             Controller\HomeController::class => Controller\Factory\HomeControllerFactory::class,
             Controller\ContribuyenteController::class => Controller\Factory\ContribuyenteControllerFactory::class,
             Controller\PredioController::class => Controller\Factory\PredioControllerFactory::class,
-            Controller\AportacionController::class => Controller\Factory\AportacionControllerFactory::class,
             Controller\BibliotecaController::class => Controller\Factory\BibliotecaControllerFactory::class,
             Controller\BibliotecaCategoriaController::class => Controller\Factory\BibliotecaCategoriaControllerFactory::class,
+            Controller\AportacionController::class => Controller\Factory\AportacionControllerFactory::class,
         ],
     ],
     // The 'access_filter' key is used by the User module to restrict or permit
@@ -474,14 +510,14 @@ return [
             Controller\PredioController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'claveCatastral', 'cveCatastral'], 'allow' => '*']
             ],
-            Controller\AportacionController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel'], 'allow' => '*']
-            ],
             Controller\BibliotecaController::class => [
                 ['actions' => ['index', 'add', 'view', 'deleteFile', 'downloadFile'], 'allow' => '*']
             ],
             Controller\BibliotecaCategoriaController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
+            ],
+            Controller\AportacionController::class => [
+                ['actions' => ['index', 'validation', 'add', 'pdf', 'excel',], 'allow' => '*']
             ],
         ]
     ],
@@ -492,6 +528,7 @@ return [
             Service\AportacionManager::class => Service\Factory\AportacionFactory::class,
             Service\BibliotecaManager::class => Service\Factory\BibliotecaFactory::class,
             Service\BibliotecaCategoriaManager::class => Service\Factory\BibliotecaCategoriaFactory::class,
+            Service\AportacionControllerManager::class => Service\Factory\AportacionFactory::class,
         ]
     ],
     'view_manager' => [

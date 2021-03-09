@@ -8,6 +8,7 @@ use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Catastro\Service\AportacionManager;
 use Catastro\Controller\AportacionController;
+use Catastro\Model\Backend\OperGobServiceAdapter;
 
 class AportacionControllerFactory implements FactoryInterface
 {
@@ -15,8 +16,9 @@ class AportacionControllerFactory implements FactoryInterface
     {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $aportacionManager = $container->get(AportacionManager::class);
+        $opergobserviceadapter = $container->get(OperGobServiceAdapter::class);
 
         // Instantiate the controller and inject dependencies
-        return new AportacionController($entityManager, $aportacionManager);
+        return new AportacionController($entityManager, $aportacionManager, $opergobserviceadapter);
     }
 }

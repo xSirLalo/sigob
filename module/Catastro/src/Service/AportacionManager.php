@@ -2,6 +2,8 @@
 
 namespace Catastro\Service;
 
+use Catastro\Entity\Predio;
+use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
 
 class AportacionManager
@@ -22,14 +24,13 @@ class AportacionManager
 
     public function agregar($data)
     {
-        $aportacion = new Aportacion();
+        $Aportacion = new Aportacion();
 
-        $aportacion->setNombre($data['nombre']);
-        $aportacion->setApellidoPaterno($data['apellido_paterno']);
-        $aportacion->setApellidoMaterno($data['apellido_materno']);
-        $aportacion->setRfc($data['rfc']);
-        $aportacion->setCurp($data['curp']);
-        $aportacion->setGenero($data['genero']);
+        $aportacion->setPago($data['pago']);
+
+        $currentDate = new \DateTime();
+        $aportacion->setCreatedAt($currentDate);
+        $aportacion->setUpdatedAt($currentDate);
 
         $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
@@ -37,12 +38,10 @@ class AportacionManager
 
     public function actualizar($aportacion, $data)
     {
-        $aportacion->setNombre($data['nombre']);
-        $aportacion->setApellidoPaterno($data['apellido_paterno']);
-        $aportacion->setApellidoMaterno($data['apellido_materno']);
-        $aportacion->setRfc($data['rfc']);
-        $aportacion->setCurp($data['curp']);
-        $aportacion->setGenero($data['genero']);
+        $aportacion->setPago($data['pago']);
+
+        $currentDate = new \DateTime();
+        $aportacion->setUpdatedAt($currentDate);
 
         $this->entityManager->flush();
     }
