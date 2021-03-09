@@ -1,26 +1,12 @@
 <?php
-$title = $this->translate('Bibliotecas');
+$title = $this->translate('Predios');
 $this->headMeta()->appendName('keywords', '');
 $this->headMeta()->appendName('description', '');
 $this->headTitle($this->escapeHtml($title));
 $this->pageBreadcrumbs()->setItems([
     'Home' => $this->url('home'),
-    'Bibliotecas' => $this->url('biblioteca'),
+    'Predios' => $this->url('predio'),
 ]);
-// Css Requerido
-$this->headLink()
-    // Css DataTables
-    ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
-    ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
-$this->inlineScript()
-    // Js de la vista
-    ->prependFile($this->basePath('js/catastro/biblioteca/index.js'))
-    // Js DataTables
-    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
-    ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
-    ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
-    ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
-    ;
 ?>
 <!-- [ col ] start -->
 <div class="col-md-12">
@@ -32,7 +18,7 @@ $this->inlineScript()
             <div class="row">
                 <div class="col-md-1 col-xs-12 mb-4" align=center>
                     <div class="btn-group" role="group" aria-label="Botones">
-                        <a href="<?= $this->url("biblioteca/agregar") ?>" class="btn btn-primary" >Agregar</a>
+                        <a href="<?= $this->url("predio/agregar") ?>" class="btn btn-primary" >Agregar</a>
                     </div>
                 </div>
             </div>
@@ -40,19 +26,25 @@ $this->inlineScript()
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
+                        <th>Contribuyente</th>
+                        <th>Clave Catastral</th>
+                        <th>Ubicacion</th>
                         <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($contribuyentes)): ?>
-                        <?php foreach ($contribuyentes as $contribuyente): ?>
+                    <?php if (!empty($predios)): ?>
+                        <?php foreach ($predios as $predio): ?>
                             <tr>
-                                <td><?= $contribuyente->getIdContribuyente() ?></td>
-                                <td><?= $contribuyente->getNombre() ?></td>
+                                <td><?= $predio->getIdPredio() ?></td>
+                                <td><?= $predio->getIdContribuyente()->getNombre() ?></td>
+                                <td><?= $predio->getClaveCatastral() ?></td>
+                                <td><?= $predio->getUbicacion() ?></td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="<?= $this->url('biblioteca/ver', ['action' => 'ver', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-info"> Ver Archivos</a>
+                                        <a href="<?= $this->url('predio/ver', ['action' => 'ver', 'id' => $predio->getIdPredio()]); ?>" class="btn btn-info"> Ver</a>
+                                        <a href="<?= $this->url('predio/editar', ['action' => 'editar', 'id' => $predio->getIdPredio()]); ?>" class="btn btn-warning"> Editar</a>
+                                        <a href="<?= $this->url('predio/eliminar', ['action' => 'eliminar', 'id' => $predio->getIdPredio()]); ?>" class="btn btn-danger"> Eliminar</a>
                                     </div>
                                 </td>
                             </tr>
@@ -65,7 +57,7 @@ $this->inlineScript()
                 </tbody>
             </table>
             <div class="float-right" id="lv-links">
-                <!-- <?php  // $this->paginationControl($contribuyentes, 'Sliding', 'catastro/partial/paginator', ['route' => 'biblioteca']);?> -->
+                <?= $this->paginationControl($predios, 'Sliding', 'catastro/partial/paginator', ['route' => 'predio']);?>
             </div>
         </div>
     </div>

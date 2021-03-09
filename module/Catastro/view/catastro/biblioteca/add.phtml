@@ -8,7 +8,7 @@ $this->pageBreadcrumbs()->setItems([
     'Bibliotecas' => $this->url('biblioteca'),
     'Agregar' => $this->url('biblioteca/agregar'),
 ]);
-// Hoja de estilos requerido
+// Css Requerido
 $this->headLink()
     // Css Select2
     ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'))
@@ -22,9 +22,8 @@ $this ->inlineScript()
     // Js FileInput
     // ->prependFile($this->basePath('js/plugins/FileInput/js/locales/es.js'))
     // ->prependFile($this->basePath('js/plugins/FileInput/js/fileinput.min.js'))
-    ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'))
     // Js Select2
-    // ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'))
     ;
 // Instancia del form
 $form = $this->form;
@@ -38,7 +37,7 @@ $form->prepare();
             <h5><?= $title ?></h5>
         </div>
         <div class="card-body">
-        <!-- [ openTag ] start -->
+            <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form); ?>
                 <div class="form-group">
                     <?= $this->formLabel($form->get('id_contribuyente')); ?>

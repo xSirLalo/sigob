@@ -132,15 +132,5 @@
         ->prependFile($this->basePath('assets/js/plugins/bootstrap.min.js'))
         ->prependFile($this->basePath('assets/js/vendor-all.min.js'))
     ?>
-    <script>
-        $(function() {
-            $('.wAlert').fadeOut(5000, function() {
-                $(this).remove();
-            });
-            $('.timeago').timeago();
-            /** if you want to display cool tooltips do this */
-            $('[data-toggle="tooltip"]').tooltip({placement: 'bottom'});
-        });
-    </script>
 </body>
 </html>

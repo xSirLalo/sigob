@@ -28,33 +28,23 @@ xcopy module\Application\src\Application\Entity\* "C:\laragon\www\sigob\module\A
 
 rm -Rf module\Application\src\Application\
 
-
 ¡Migraciones!
 
-C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:migrate
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:generate
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:diff
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:status
-
-Admini
-admin@example.com
-Secur1ty
-
-Capturista
-Director
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:migrate
 
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:convert-mapping --namespace="Catastro\Entity\\" --force --from-database annotation ./module/Catastro/src
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:generate-entities ./module/Catastro/src/ --generate-annotations=true
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:clear-cache:metadata
+
 xcopy module\Catastro\src\Catastro\Entity\* "C:\laragon\www\sigob\module\Catastro\src\Entity\" /q /y /c /e /r
 
 ¡Cuidado con este Comando!
 
 rm -Rf module\Catastro\src\Catastro\
 
-¡Borrar Duplicados!
 cd module\Catastro\src\Catastro\Entity
 rm -f User.php UserRole.php RolePermission.php RoleHierarchy.php Role.php Permission.php Migrations.php Migrations.php
 cd C:/laragon/www/sigob/
-
-rm -Rf module\Catastro\src\Catastro\

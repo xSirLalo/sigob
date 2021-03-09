@@ -1,0 +1,119 @@
+<?php
+$title = $this->translate('Agregar');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Predios' => $this->url('predio'),
+    'Agregar' => $this->url('predio/agregar'),
+]);
+// Css Requerido
+$this->headLink()
+    // Css Select2
+    ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'));
+// Js Requerido
+$this ->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/predio/add.js'))
+    // Js Select2
+    ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'));
+// Instancia del form
+$form = $this->form;
+$form->setAttribute('action', $this->url('predio/agregar'));
+$form->prepare();
+?>
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <!-- [ openTag ] start -->
+            <?= $this->form()->openTag($form); ?>
+                <?= $this->formLabel($form->get('cve_catastral')); ?>
+                <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-data-example-ajax2 col-sm-12"])); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('cve_catastral')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('titular')); ?>
+                <?= $this->formText($form->get('titular')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('titular')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('ubicacion')); ?>
+                <?= $this->formText($form->get('ubicacion')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('ubicacion')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('titular_anterior')); ?>
+                <?= $this->formText($form->get('titular_anterior')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('titular_anterior')); ?>
+                </div>
+                <hr>
+
+                <?= $this->formLabel($form->get('norte')); ?>
+                <?= $this->formText($form->get('norte')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('norte')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('con_norte')); ?>
+                <?= $this->formText($form->get('con_norte')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('con_norte')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('sur')); ?>
+                <?= $this->formText($form->get('sur')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('sur')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('con_sur')); ?>
+                <?= $this->formText($form->get('con_sur')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('con_sur')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('este')); ?>
+                <?= $this->formText($form->get('este')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('este')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('con_este')); ?>
+                <?= $this->formText($form->get('con_este')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('con_este')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('oeste')); ?>
+                <?= $this->formText($form->get('oeste')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('oeste')); ?>
+                </div>
+
+                <?= $this->formLabel($form->get('con_oeste')); ?>
+                <?= $this->formText($form->get('con_oeste')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('con_oeste')); ?>
+                </div>
+
+                <?= $this->formHidden($form->get('csrf')); ?>
+                <?= $this->formElementErrors($form->get('csrf')); ?>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
+                <a href="<?= $this->url("predio") ?>" class="btn btn-secondary"> Volver atrás</a>
+            <?= $this->form()->closeTag(); ?>
+            <!-- [ closeTag ] start -->
+            <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

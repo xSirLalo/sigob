@@ -71,11 +71,6 @@ class NavManager
             $bibliotecaDropdownItems = [];
 
             if ($this->rbacManager->isGranted(null, 'contribuyente.manage')) {
-                $items[] = [
-                        'header'  => "Catastro",
-                        'link'  => ""
-                    ];
-
                 $bibliotecaDropdownItems[] = [
                             'id' => 'biblioteca',
                             'label' => 'Biblioteca',
@@ -91,10 +86,22 @@ class NavManager
 
             if (count($bibliotecaDropdownItems)!=0) {
                 $items[] = [
+                    'header'  => "Catastro",
+                    'link'  => ""
+                ];
+
+                $items[] = [
                     'id' => 'contribuyente',
                     'label' => 'Contribuyentes',
                     'icon' => 'feather icon-users',
                     'link'  => $url('contribuyente')
+                ];
+
+                $items[] = [
+                    'id' => 'predio',
+                    'label' => 'Predios',
+                    'icon' => 'feather icon-codepen',
+                    'link'  => $url('predio')
                 ];
 
                 $items[] = [
@@ -180,7 +187,7 @@ class NavManager
             $items[] = [
                 'id' => 'logout',
                 'label' => $this->authService->getIdentity(),
-                'icon' => 'feather icon-menu"',
+                'icon' => '"',
                 'dropdown' => [
                     [
                         'id' => 'settings',
