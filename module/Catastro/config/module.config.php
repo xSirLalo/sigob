@@ -32,12 +32,24 @@ return [
                 ],
             ],
             'prueba' => [
-                'type'    => Segment::class,
+                'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/prueba[/:action]',
+                    'route'    => '/prueba',
                     'defaults' => [
-                        'controller'    => Controller\PruebaController::class,
-                        'action'        => 'index',
+                        'controller' => Controller\PruebaController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'agregar' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/agregar',
+                            'defaults' => [
+                                'action' => 'add',
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -540,7 +552,7 @@ return [
                 ['actions' => ['index'], 'allow' => '*'],
             ],
             Controller\PruebaController::class => [
-                ['actions' => ['index'], 'allow' => '*'],
+                ['actions' => ['index', 'add'], 'allow' => '*'],
             ],
             Controller\ContribuyenteController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search'], 'allow' => '*']

@@ -18,20 +18,27 @@ $this->pageBreadcrumbs()->setItems([
 'Home'=>$this->url('home'),
 'Pruebas'=>$this->url('prueba'),
 ]);
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('prueba/agregar'));
+$form->prepare();
 ?>
 <!-- [ col ] start -->
 <div class="col-md-12">
 <div class="card">
 <div class="card-header">
-<a class="btn btn-warning" href="<?=$this->url('prueba/agregar')?>">Agregar un dato de prueba</a>
-<hr>
-<br>
 <?php
 
-echo "<pre>";
-print_r($data);
-echo "</pre>";
+echo $this->form()->openTag($form);
 
+echo $this->formText($form->get('input1'));
+echo $this->formElementErrors($form->get('input1'));
+
+echo $this->formText($form->get('input2'));
+echo $this->formElementErrors($form->get('input2'));
+
+echo $this->formSubmit($form->get('btnGuardar'));
+echo $this->form()->closeTag();
 ?>
 </div>
 <div class="card-body">

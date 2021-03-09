@@ -25,8 +25,7 @@ use Catastro\Entity\Aportacion;
 use Catastro\Entity\Biblioteca;
 use Catastro\Entity\BibliotecaCategoria;
 use Catastro\Entity\PredioColindancia;
-use Catastro\Form\PredioForm;
-use Catastro\Form\BibliotecaForm;
+use Catastro\Form\PruebaForm;
 
 class PruebaController extends AbstractActionController
 {
@@ -51,6 +50,43 @@ class PruebaController extends AbstractActionController
 
     public function indexAction()
     {
-        return new ViewModel();
+        // $data = $this->opergobserviceadapter->obtenerPredio("109015000050035-61");
+        // $data = $this->opergobserviceadapter->obtenerColindancia("1714");
+        $data = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
+
+        // echo "<pre>";
+
+        // print_r($data);
+
+        // echo "</pre>";
+        // exit();
+        return new ViewModel(['data' => $data]);
+    }
+
+    public function addAction()
+    {
+        $form = new PruebaForm();
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+
+                // echo "<pre>";
+                // print_r($data);
+                // echo "</pre>";
+                // exit();
+
+
+                $this->pruebaManager->guardarPrueba($data);
+                $this->flashMessenger()->addWarningMessage('Se agrego Dato de éxito!');
+                return $this->redirect()->toRoute('prueba');
+            }
+        }
+
+        return new ViewModel(['form' => $form]);
     }
 }

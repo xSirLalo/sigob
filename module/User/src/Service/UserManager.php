@@ -152,7 +152,7 @@ class UserManager
             $this->roleManager->createDefaultRolesIfNotExist();
 
             $user = new User();
-            $user->setEmail('lalo_lego@hotmail.com');
+            $user->setEmail('admin@admin.com');
             $user->setFullName('Admin');
             $bcrypt = new Bcrypt();
             $passwordHash = $bcrypt->create('password');

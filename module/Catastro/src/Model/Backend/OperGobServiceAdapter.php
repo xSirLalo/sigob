@@ -31,6 +31,24 @@ class OperGobServiceAdapter{
         return $respuesta->GetPersonaByRfcResult;
     }
 
+    public function obtenerPersonaPorCve($id) {
+        $respuesta = array();
+
+        $parametros = [
+            "PersonaId" => $id
+        ];
+
+        $client = new Client();
+        $client->setWsdl(self::URI_SERVICE_OPER);
+        $client->setOptions([
+            "soap_version" => \SOAP_1_1,
+            "encoding" => 'UTF-8',
+        ]);
+
+        $respuesta = $client->GetPersonaById($parametros);
+        return $respuesta->GetPersonaByIdResult;
+    }
+
     public function obtenerPredio($clave_catastral) {
         $respuesta = array();
 

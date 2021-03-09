@@ -33,8 +33,18 @@ class PruebaManager
     {
         $this->entityManager = $entityManager;
     }
-
-    public function test($data)
+    public function guardarPrueba($data)
     {
+        $contribuyente = new Contribuyente();
+
+        $contribuyente->setNombre($data['input1']);
+        $contribuyente->setApellidoPaterno($data['input2']);
+
+        $currentDate = new \DateTime();
+        $contribuyente->setCreatedAt($currentDate);
+        $contribuyente->setUpdatedAt($currentDate);
+
+        $this->entityManager->persist($contribuyente);
+        $this->entityManager->flush();
     }
 }
