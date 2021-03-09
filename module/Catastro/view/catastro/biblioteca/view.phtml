@@ -34,7 +34,7 @@ $this->pageBreadcrumbs()->setItems([
                                 <td><?= $resultado->getCreatedAt()->format('Y-m-d h:m:s') ?></td>
                                 <td>
                                     <a href="<?= $this->url('biblioteca/eliminar-archivo', ['action' => 'eliminar-archivo', 'contribuyente' => $resultado->getIdContribuyente()->getIdContribuyente(), 'archivo' => $resultado->getIdArchivo()]); ?>" class="btn btn-danger btn-sm"> Eliminar</a>
-                                    <a href="<?= $this->url('biblioteca/imprimir-archivo', ['action' => 'imprimir-archivo', 'contribuyente' => $resultado->getIdContribuyente()->getIdContribuyente(), 'archivo' => $resultado->getIdArchivo()]); ?>" class="btn btn-success btn-sm"> Imprimir</a>
+                                    <a href="<?= $this->url('biblioteca/imprimir-archivo', ['action' => 'imprimir-archivo', 'contribuyente' => $resultado->getIdContribuyente()->getIdContribuyente(), 'archivo' => $resultado->getIdArchivo()]); ?>" class="btn btn-success btn-sm"> Descargar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

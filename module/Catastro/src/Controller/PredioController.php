@@ -13,6 +13,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Form\PredioForm;
 use Catastro\Entity\Predio;
 use Catastro\Entity\PredioColindancia;
+use Catastro\Form\BibliotecaForm;
 
 class PredioController extends AbstractActionController
 {
@@ -50,7 +51,10 @@ class PredioController extends AbstractActionController
 
     public function addAction()
     {
-        $form = new PredioForm();
+        // https://stackoverflow.com/questions/2194317/how-to-combine-two-zend-forms-into-one-zend-form
+        $form1 = new PredioForm();
+        $form2 = new BibliotecaForm();
+
         $request = $this->getRequest();
 
         if ($request->isPost()) {

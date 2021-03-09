@@ -117,3 +117,52 @@ $form->prepare();
     </div>
 </div>
 <!-- [ col] end -->
+
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <!-- [ openTag ] start -->
+            <?= $this->form()->openTag($form); ?>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('id_contribuyente')); ?>
+                    <?= $this->formSelect($form->get('id_contribuyente')->setAttributes(['class' => "custom-select js-data-example-ajax2 col-sm-12"])); ?>
+                    <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('id_contribuyente')); ?>
+                    </div>
+                </div>
+                <hr>
+                <?= $this->formLabel($form->get('archivo')); ?>
+                <div class="form-group" id="select">
+                    <div class="input-group">
+                        <div class="input-group-append delete">
+                            <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
+                        </div>
+                        <?= $this->formSelect($form->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)); ?>
+                        <div class="file-loading">
+                            <?= $this->formFile($form->get('archivo')); ?>
+                        </div>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('archivo')); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="additionalselects">
+                    <!-- dynamically created archivos field will be placed here -->
+                </div>
+                <div class="btn-group float-right">
+
+                <?= $this->formButton($form->get('add_more')); ?>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
+                <a href="<?= $this->url("biblioteca") ?>" class="btn btn-secondary"> Volver atrás</a>
+            <?= $this->form()->closeTag(); ?>
+            <!-- [ closeTag ] start -->
+            <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
