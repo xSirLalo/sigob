@@ -10,10 +10,12 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use Catastro\Form\PredioForm;
+use Catastro\Form\AportacionModalForm;
+use Catastro\Form\AportacionForm;
 use Catastro\Entity\Predio;
 use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
+use Catastro\Entity\TablaValorConstruccion;
 
 class AportacionController extends AbstractActionController
 {
@@ -38,6 +40,7 @@ class AportacionController extends AbstractActionController
 
     public function indexAction()
     {
+        $form = new AportacionModalForm();
         $page = $this->params()->fromQuery('page', 1);
         $query = $this->entityManager->getRepository(Aportacion::class)->createQueryBuilder('a')->getQuery();
 
@@ -46,12 +49,51 @@ class AportacionController extends AbstractActionController
         $paginator->setDefaultItemCountPerPage(10);
         $paginator->setCurrentPageNumber($page);
 
-        return new ViewModel(['aportaciones' => $paginator]);
+        return new ViewModel(['aportaciones' => $paginator, 'form' => $form]);
+    }
+
+    public function datatableAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+        $qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
+
+        $query = $qb->getQuery()->getResult();
+
+        $data = [];
+
+        foreach ($query as $r) {
+            $data[] = [
+                    'idAportacion'  => $r->getIdAportacion(),
+                    'Contribuyente' => $r->getIdContribuyente()->getNombre(),
+                    'Titular'       => $r->getIdPredio()->getTitular(),
+                    'Fecha'         => $r->getFecha()->format('d-m-Y'),
+                    'Estatus'       => $r->getEstatus(),
+                    'opciones'      => "Cargando..."
+                ];
+        }
+        $result = [
+                    "draw"            => 1,
+                    "recordsTotal"    => count($data),
+                    "recordsFiltered" => count($data),
+                    'aaData'            => $data,
+                ];
+
+        $json = new JsonModel($result);
+        $json->setTerminal(true);
+        return $json;
     }
 
     public function addAction()
     {
-        $form = new PredioForm();
+        $form = new AportacionForm();
+
+        $parametro = (string)$this->params()->fromRoute('id');
+
+        $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
+        $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
+
         $request = $this->getRequest();
 
         if ($request->isPost()) {
@@ -59,12 +101,12 @@ class AportacionController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->predioManager->agregar($data);
+                $this->aportacionManager->agregarAportacion($data);
                 $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                return $this->redirect()->toRoute('predio');
+                return $this->redirect()->toRoute('aportacion');
             }
         }
-        return new ViewModel(['form' => $form]);
+        return new ViewModel(['form' => $form, 'parametro' => $parametro, 'valorConstruccions' => $valorConstruccion]);
     }
 
     public function validationAction()
@@ -72,7 +114,53 @@ class AportacionController extends AbstractActionController
         return new ViewModel();
     }
 
-    public function claveCatastralAction()
+    public function searchRfcAction()
+    {
+        $name = $_REQUEST['q'];
+
+        ///Join ala base de datos para hacer el select
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('c')->from('Catastro\Entity\Contribuyente', 'c')
+                ->where($qb->expr()->like('c.nombre', ":word"))
+                ->orWhere($qb->expr()->like('c.apellidoPaterno', ":word"))
+                ->orWhere($qb->expr()->like('c.apellidoMaterno', ":word"))
+                ->orWhere($qb->expr()->like('c.rfc', ":word"))
+            ->setParameter("word", '%' . addcslashes($name, '%_') . '%');
+        $datos = $qb->getQuery()->getResult();
+
+        //si no exciste el contribuyente en la base datos buscar por rfc en el web service
+        if ($datos == null) {
+            $resultados = $this->opergobserviceadapter->obtenerPersonaPorRfc($name);
+            $arreglo = [];
+            $arreglo[] = [
+                'id' => $resultados->Persona[0]->RFCPersona,
+                'titular' => $resultados->Persona[0]->RFCPersona . ' - '. $resultados->Persona[0]->RazonSocialPersona,
+            ];
+            $data = [
+                'items' => $arreglo,
+                'total_count' => count($arreglo),
+            ];
+        } else {
+            $arreglo = [];
+            foreach ($datos as $dato) {
+                $arreglo[] = [
+                    'id' => $dato->getIdContribuyente(),
+                    'titular' => $dato->getNombre(). ' ' .$dato->getApellidoPaterno(). ' ' .$dato->getApellidoMaterno() ,
+                ];
+            }
+            $data = [
+                'items' => $arreglo,
+                'total_count' => count($arreglo),
+            ];
+        }
+        $json = new JsonModel($data);
+        $json->setTerminal(true);
+
+
+        return $json;
+    }
+
+    public function searchCatastralAction()
     {
         $name = $_REQUEST['q'];
         $resultados = $this->opergobserviceadapter->obtenerPredio($name);
@@ -90,16 +178,39 @@ class AportacionController extends AbstractActionController
         return $json;
     }
 
-    public function cveCatastralAction()
+    public function autofillRfcAction()
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
         // AJAX response
         if ($request->isXmlHttpRequest()) {
             $id = $this->params()->fromRoute('id');
+            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($id);
+            $predioColindacias = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredio($id);
+            $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($id);
+            $data = [
+                'titular' => $aportacion->getIdPredio()->getTitular(),
+                'ubicacion' => $aportacion->getIdPredio()->getUbicacion(),
+                't_anterior' => $aportacion->getIdPredio()->getTitularAnterior(),
+            ];
+
+            return $response->setContent(json_encode($data));
+        } else {
+            echo 'Error get data from ajax';
+        }
+    }
+
+    public function autofillCatastralAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            $id = $this->params()->fromRoute('id');
+
             $resultados = $this->opergobserviceadapter->obtenerPredio($id);
             $colindancia = $this->opergobserviceadapter->obtenerColindancia($resultados->Predio->PredioId);
-
+            // TODO: Corregir Titular anterior
             $data = [
                 'titular'          => $resultados->Predio->Titular,
                 'ubicacion'        => $resultados->Predio->NombreLocalidad,
@@ -120,5 +231,22 @@ class AportacionController extends AbstractActionController
         } else {
             echo 'Error get data from ajax';
         }
+    }
+
+    public function validateAction()
+    {
+        $aportacion = $this->entityManager->getRepository(Aportacion::class)->findAll();
+        $form = new ValidacionForm();
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($data['padron_id']);
+                $this->aportacion->update($aportacion, $data);
+                return $this->redirect()->toRoute('aportacion/validacion');
+            }
+        }
+        return new ViewModel(['aportaciones' => $aportacion, 'form' => $form]);
     }
 }

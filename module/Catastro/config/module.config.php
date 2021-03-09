@@ -21,10 +21,10 @@ return [
                     ],
                 ],
             ],
-            'application' => [
+            'catastro' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/catastro[/:action]',
                     'defaults' => [
                         'controller'    => Controller\HomeController::class,
                         'action'        => 'index',
@@ -282,7 +282,7 @@ return [
                                 'archivo' => '[0-9]+',
                             ],
                             'defaults' => [
-                                'action' => 'printFile',
+                                'action' => 'downloadFile',
                             ],
                         ],
                     ],
@@ -375,10 +375,13 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
-                    'agregar' => [
-                        'type' => 'literal',
+                    'nueva-aportacion' => [
+                        'type' => 'segment',
                         'options' => [
-                            'route' => '/agregar',
+                            'route' => '/nueva-aportacion[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9,a-z,A-Z,-]+',
+                            ],
                             'defaults' => [
                                 'action' => 'add',
                             ],
@@ -432,6 +435,15 @@ return [
                             ],
                         ],
                     ],
+                    'datatable' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/datatable',
+                            'defaults' => [
+                                'action' => 'datatable',
+                            ],
+                        ],
+                    ],
                     'pdf' => [
                         'type' => 'literal',
                         'options' => [
@@ -450,27 +462,51 @@ return [
                             ],
                         ],
                     ],
-                    'claveCatastral' => [
+                    'buscarRfc' => [
                         'type' => 'segment',
                         'options' => [
-                            'route' => '/claveCatastral[/:action]',
+                            'route' => '/buscarRfc[/:action]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
                             ],
                             'defaults' => [
-                                'action' => 'claveCatastral',
+                                'action' => 'searchRfc',
                             ],
                         ],
                     ],
-                    'cveCatastral' => [
+                    'autorellaRfc' => [
                         'type' => 'segment',
                         'options' => [
-                            'route' => '/cveCatastral[/:id]',
+                            'route' => '/autorellaRfc[/:id]',
                             'constraints' => [
-                                'id' => '[0-9,-]+',
+                                'id' => '[0-9]+',
                             ],
                             'defaults' => [
-                                'action' => 'cveCatastral',
+                                'action' => 'autofillRfc',
+                            ],
+                        ],
+                    ],
+                    'buscarCatastral' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/buscarCatastral[/:action]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'searchCatastral',
+                            ],
+                        ],
+                    ],
+                    'autorellenaCatastral' => [
+                        'type' => 'segment',
+                        'options' => [
+                                'route' => '/autorellenaCatastral[/:id]',
+                                'constraints' => [
+                                    'id' => '[0-9,-]+',
+                                ],
+                            'defaults' => [
+                                'action' => 'autofillCatastral',
                             ],
                         ],
                     ],
@@ -517,7 +553,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'validation', 'add', 'pdf', 'excel',], 'allow' => '*']
+                ['actions' => ['index', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'pdf', 'excel',], 'allow' => '*']
             ],
         ]
     ],

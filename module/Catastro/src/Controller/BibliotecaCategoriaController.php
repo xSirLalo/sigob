@@ -114,6 +114,7 @@ class BibliotecaCategoriaController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
+                $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
                 $this->bibliotecaCategoriaManager->actualizar($categoria, $data);
                 return $this->redirect()->toRoute('categoria');
             }
@@ -122,7 +123,6 @@ class BibliotecaCategoriaController extends AbstractActionController
                 'nombre' => $categoria->getNombre(),
                 ];
             $form->setData($data);
-            $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
         }
         return new ViewModel(['form' => $form]);
     }
