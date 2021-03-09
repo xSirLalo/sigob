@@ -21,11 +21,14 @@ class PredioManager
         $this->entityManager = $entityManager;
     }
 
-    public function agregar($data)
+    public function guardar($data)
     {
         $predio = new Predio();
 
-        $predio->setNombre($data['nombre']);
+        $predio->setClaveCatastral($data['cve_catastral']);
+        $predio->setUbicacion($data['ubicacion']);
+        $predio->setTitular($data['titular']);
+        $predio->setTitularAnterior($data['titular_anterior']);
 
         $currentDate = new \DateTime();
         $predio->setCreatedAt($currentDate);

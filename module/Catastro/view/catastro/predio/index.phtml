@@ -37,14 +37,14 @@ $this->pageBreadcrumbs()->setItems([
                         <?php foreach ($predios as $predio): ?>
                             <tr>
                                 <td><?= $predio->getIdPredio() ?></td>
-                                <td><?= $predio->getIdContribuyente()->getNombre() ?></td>
+                                <!-- TODO: Consultar desde el Webservice antes te mostrarlo en la tabla de predios -->
+                                <td><?php //echo $predio->getIdContribuyente()->getNombre()?></td>
                                 <td><?= $predio->getClaveCatastral() ?></td>
                                 <td><?= $predio->getUbicacion() ?></td>
                                 <td>
                                     <div class="btn-group">
                                         <a href="<?= $this->url('predio/ver', ['action' => 'ver', 'id' => $predio->getIdPredio()]); ?>" class="btn btn-info"> Ver</a>
                                         <a href="<?= $this->url('predio/editar', ['action' => 'editar', 'id' => $predio->getIdPredio()]); ?>" class="btn btn-warning"> Editar</a>
-                                        <a href="<?= $this->url('predio/eliminar', ['action' => 'eliminar', 'id' => $predio->getIdPredio()]); ?>" class="btn btn-danger"> Eliminar</a>
                                     </div>
                                 </td>
                             </tr>

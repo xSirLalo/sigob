@@ -53,8 +53,15 @@ class NavManager
         $items[] = [
             'id' => 'about',
             'label' => 'About',
-            'icon' => 'feather icon-info',
+            'icon' => 'feather icon-message-circle',
             'link'  => $url('about')
+        ];
+
+        $items[] = [
+            'id' => 'test',
+            'label' => 'Pruebas',
+            'icon' => 'feather icon-alert-triangle',
+            'link'  => $url('prueba')
         ];
 
         // Display "Login" menu item for not authorized user only. On the other hand,

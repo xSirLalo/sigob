@@ -27,12 +27,14 @@ class PredioController extends AbstractActionController
      * @var Catastro\Service\PredioManager
      */
     private $predioManager;
+    private $bibliotecaManager;
     private $opergobserviceadapter;
 
-    public function __construct($entityManager, $predioManager, $opergobserviceadapter)
+    public function __construct($entityManager, $predioManager, $bibliotecaManager, $opergobserviceadapter)
     {
         $this->entityManager = $entityManager;
         $this->predioManager = $predioManager;
+        $this->bibliotecaManager = $bibliotecaManager;
         $this->opergobserviceadapter = $opergobserviceadapter;
     }
 
@@ -52,8 +54,9 @@ class PredioController extends AbstractActionController
     public function addAction()
     {
         // https://stackoverflow.com/questions/2194317/how-to-combine-two-zend-forms-into-one-zend-form
-        $form1 = new PredioForm();
+        $form = new PredioForm();
         $form2 = new BibliotecaForm();
+        $categorias = $this->bibliotecaManager->categorias();
 
         $request = $this->getRequest();
 
@@ -62,12 +65,16 @@ class PredioController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->predioManager->agregar($data);
+                echo "<pre>";
+                print_r($data);
+                echo "</pre>";
+                exit();
+                $this->predioManager->guardar($data);
                 $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                 return $this->redirect()->toRoute('predio');
             }
         }
-        return new ViewModel(['form' => $form]);
+        return new ViewModel(['form' => $form, 'form2' => $form2, 'categorias' => $categorias]);
     }
 
     public function viewAction()
@@ -80,12 +87,7 @@ class PredioController extends AbstractActionController
         return new ViewModel();
     }
 
-    public function deleteAction()
-    {
-        return new ViewModel();
-    }
-
-    public function claveCatastralAction()
+    public function searchCatastralAction()
     {
         $name = $_REQUEST['q'];
         $resultados = $this->opergobserviceadapter->obtenerPredio($name);
@@ -103,7 +105,7 @@ class PredioController extends AbstractActionController
         return $json;
     }
 
-    public function cveCatastralAction()
+    public function autofillCatastralAction()
     {
         $request = $this->getRequest();
         $response = $this->getResponse();

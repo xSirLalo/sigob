@@ -31,6 +31,16 @@ return [
                     ],
                 ],
             ],
+            'prueba' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/prueba[/:action]',
+                    'defaults' => [
+                        'controller'    => Controller\PruebaController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
             'contribuyente' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -172,18 +182,6 @@ return [
                             ],
                         ],
                     ],
-                    'eliminar' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/eliminar[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'delete',
-                            ],
-                        ],
-                    ],
                     'pdf' => [
                         'type' => 'literal',
                         'options' => [
@@ -202,27 +200,27 @@ return [
                             ],
                         ],
                     ],
-                    'claveCatastral' => [
+                    'buscarCatastral' => [
                         'type' => 'segment',
                         'options' => [
-                            'route' => '/claveCatastral[/:action]',
+                            'route' => '/buscarCatastral[/:action]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
                             ],
                             'defaults' => [
-                                'action' => 'claveCatastral',
+                                'action' => 'searchCatastral',
                             ],
                         ],
                     ],
-                    'cveCatastral' => [
+                    'autorellenaCatastral' => [
                         'type' => 'segment',
                         'options' => [
-                            'route' => '/cveCatastral[/:id]',
+                            'route' => '/autorellenaCatastral[/:id]',
                             'constraints' => [
                                 'id' => '[0-9,-]+',
                             ],
                             'defaults' => [
-                                'action' => 'cveCatastral',
+                                'action' => 'autofillCatastral',
                             ],
                         ],
                     ],
@@ -517,6 +515,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\HomeController::class => Controller\Factory\HomeControllerFactory::class,
+            Controller\PruebaController::class => Controller\Factory\PruebaControllerFactory::class,
             Controller\ContribuyenteController::class => Controller\Factory\ContribuyenteControllerFactory::class,
             Controller\PredioController::class => Controller\Factory\PredioControllerFactory::class,
             Controller\BibliotecaController::class => Controller\Factory\BibliotecaControllerFactory::class,
@@ -540,11 +539,14 @@ return [
             Controller\HomeController::class => [
                 ['actions' => ['index'], 'allow' => '*'],
             ],
+            Controller\PruebaController::class => [
+                ['actions' => ['index'], 'allow' => '*'],
+            ],
             Controller\ContribuyenteController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search'], 'allow' => '*']
             ],
             Controller\PredioController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'claveCatastral', 'cveCatastral'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'searchCatastral', 'autofillCatastral'], 'allow' => '*']
             ],
             Controller\BibliotecaController::class => [
                 ['actions' => ['index', 'add', 'view', 'deleteFile', 'downloadFile'], 'allow' => '*']
@@ -559,6 +561,7 @@ return [
     ],
     'service_manager' => [
         'factories' => [
+            Service\PruebaManager::class => Service\Factory\PruebaFactory::class,
             Service\ContribuyenteManager::class => Service\Factory\ContribuyenteFactory::class,
             Service\PredioManager::class => Service\Factory\PredioFactory::class,
             Service\AportacionManager::class => Service\Factory\AportacionFactory::class,

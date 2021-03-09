@@ -17,7 +17,7 @@ $(document).ready(function () {
         width: '100%',
         ajax: {
         //url: "/aportacion/buscar_ajax",
-            url: "/predio/claveCatastral",
+            url: "/predio/buscarCatastral",
             dataType: 'JSON',
             delay: 250,
             data: function(params) {
@@ -49,7 +49,7 @@ $(document).ready(function () {
 
     $('.js-data-example-ajax2').change(function(){
         var id = $(this).val();
-        var url = '/predio/cveCatastral/'+id;
+        var url = '/predio/autorellenaCatastral/'+id;
         // AJAX request
         $.ajax({
             url: url,
