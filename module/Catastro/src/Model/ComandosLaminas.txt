@@ -35,7 +35,7 @@ C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:diff
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:status
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat migrations:migrate
 
-C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:convert-mapping --namespace="Catastro\Entity\\" --force --from-database annotation ./module/Catastro/src
+C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:convert-mapping --namespace="Catastro\Entity\" --force --from-database annotation ./module/Catastro/src
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:generate-entities ./module/Catastro/src/ --generate-annotations=true
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:clear-cache:metadata
 
