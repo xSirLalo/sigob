@@ -150,10 +150,10 @@ document.getElementById('p_hide').value==""
 
 )
 {
-document.getElementById('guardar').disabled=true;
+document.getElementById('btn-ok').disabled=true;
 }
 else {
-document.getElementById('guardar').disabled=false;
+document.getElementById('btn-ok').disabled=false;
 }
 
 }

@@ -6,7 +6,7 @@ $(document).ready(function() {
     });
     // [ sweet-success ]
     $('.sweet-success').on('click', function() {
-        swal("Bien Hecho!", "Se a Generado la Aportacion Correctamente!", "success");
+        swal("Good job!", "You clicked the button!", "success");
     });
     // [ sweet-warning ]
     $('.sweet-warning').on('click', function() {

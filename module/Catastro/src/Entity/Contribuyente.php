@@ -17,7 +17,7 @@ class Contribuyente
      *
      * @ORM\Column(name="id_contribuyente", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idContribuyente;
 
@@ -115,6 +115,19 @@ class Contribuyente
     public function getIdContribuyente()
     {
         return $this->idContribuyente;
+    }
+
+    /**
+     * Set idContribuyente.
+     *
+     * @param bigint|null $idContribuyente
+     *
+     * @return Contribuyente
+     */
+    public function setIdContribuyente($idContribuyente)
+    {
+        $this->idContribuyente = $idContribuyente;
+        return $this;
     }
 
     /**

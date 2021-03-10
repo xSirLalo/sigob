@@ -37,6 +37,7 @@ $form2->prepare();
             <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form); ?>
                 <div class="form-group">
+                <?= $this->formLabel($form->get('persona')); ?>
                 <?= $this->formSelect($form->get('persona')->setAttributes(['class' => "custom-select js-select2-persona col-sm-12"])); ?>
                 <?= $this->formElementErrors($form->get('persona')); ?>
                 </div>

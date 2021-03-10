@@ -27,10 +27,12 @@ class ContribuyenteForm extends Form
             'type' => Element\Select::class,
             'name' => 'persona',
             'options' => [
+                'label' => 'Buscar...',
                 'empty_option' => 'Buscar Persona por Clave o R.F.C',
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [
+                'id' => 'persona',
                 'required' => true,
                 'class' => 'custom-select'
             ]

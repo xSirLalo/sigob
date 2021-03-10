@@ -478,8 +478,8 @@ class AportacionForm extends Form
             'name' => 'btnGuardar',
             'attributes' => [
                 'value' => 'Guardar',
-                'class' => 'btn  btn-success sweet-success',
-                'id' =>'guardar',
+                'class' => 'btn btn-success sweet-success',
+                'id' =>'btn-ok',
                 'disabled' => 'true',
             ]
         ]);

@@ -125,9 +125,9 @@ class BibliotecaController extends AbstractActionController
                     $date = date("d-m-Y_H-i");
                     $temp = explode(".", $filename);
                     $new_filename =   strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
-                    $f_folder = $destination . '/' . $new_filename;
+                    $file_folder = $destination . '/' . $new_filename;
 
-                    $data['archivoBlob'] = file_get_contents($f_folder, true);
+                    $data['archivoBlob'] = file_get_contents($file_folder, true);
                     $data['extension'] = $temp[count($temp)-1];
                     $data['size'] = $filesize;
                     $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));

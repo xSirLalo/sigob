@@ -36,9 +36,10 @@ $form2->prepare();
         <div class="card-body">
             <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form); ?>
-                <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-data-example-ajax2 col-sm-12"])); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('cve_catastral')); ?>
+                <div class="form-group">
+                <?= $this->formLabel($form->get('predio')); ?>
+                <?= $this->formSelect($form->get('predio')->setAttributes(['class' => "custom-select js-select2-predio col-sm-12"])); ?>
+                <?= $this->formElementErrors($form->get('predio')); ?>
                 </div>
                 <hr>
                 <?= $this->formLabel($form->get('titular')); ?>
@@ -128,11 +129,8 @@ $form2->prepare();
             <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form2); ?>
                 <div class="form-group">
-                    <?= $this->formLabel($form2->get('id_contribuyente')); ?>
-                    <?= $this->formSelect($form2->get('id_contribuyente')->setAttributes(['class' => "custom-select js-data-example-ajax2 col-sm-12"])); ?>
-                    <div class="text-danger">
-                        <?= $this->formElementErrors($form2->get('id_contribuyente')); ?>
-                    </div>
+                    <?= $this->formText($form->get('input1')); ?>
+                    <?= $this->formElementErrors($form->get('input1')); ?>
                 </div>
                 <hr>
                 <?= $this->formLabel($form2->get('archivo')); ?>

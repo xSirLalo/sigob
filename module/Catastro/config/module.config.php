@@ -168,7 +168,7 @@ return [
                                 'id' => '[0-9,-]+',
                             ],
                             'defaults' => [
-                                'action' => 'autofillPersonaAction',
+                                'action' => 'autofillPersona',
                             ],
                         ],
                     ],
@@ -588,7 +588,7 @@ return [
                 ['actions' => ['index', 'add'], 'allow' => '*'],
             ],
             Controller\ContribuyenteController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search', 'searchPersona', 'autofillPersonaAction'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search', 'searchPersona', 'autofillPersona'], 'allow' => '*']
             ],
             Controller\PredioController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'searchCatastral', 'autofillCatastral'], 'allow' => '*']

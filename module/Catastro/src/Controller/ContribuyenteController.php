@@ -403,27 +403,25 @@ class ContribuyenteController extends AbstractActionController
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
+        $id = $this->params()->fromRoute('id');
+
         // AJAX response
         if ($request->isXmlHttpRequest()) {
-            $id = $this->params()->fromRoute('id');
-            $r1WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($id);
+            $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($id);
 
             $data = [
-                'cve_persona'      => $r1WebService->Persona[0]->CvePersona,
-                'nombre'           => $r1WebService->Persona[0]->NombrePersona,
-                'apellido_paterno' => $r1WebService->Persona[0]->ApellidoPaternoPersona,
-                'apellido_materno' => $r1WebService->Persona[0]->ApellidoMaternoPersona,
-                'rfc'              => $r1WebService->Persona[0]->RFCPersona,
-                'curp'             => $r1WebService->Persona[0]->CURPPersona,
-                'razon_social'     => $r1WebService->Persona[0]->RazonSocialPersona,
-                'correo'           => $r1WebService->Persona[0]->PersonaCorreo,
-                'telefono'         => $r1WebService->Persona[0]->PersonaTelefono,
-                'genero'           => $r1WebService->Persona[0]->GeneroPersona,
+                'cve_persona'      => $WebService->Persona->CvePersona,
+                'nombre'           => $WebService->Persona->NombrePersona,
+                'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
+                'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
+                'rfc'              => $WebService->Persona->RFCPersona,
+                'curp'             => $WebService->Persona->CURPPersona,
+                'razon_social'     => $WebService->Persona->RazonSocialPersona,
+                'correo'           => $WebService->Persona->PersonaCorreo,
+                'telefono'         => $WebService->Persona->PersonaTelefono,
+                'genero'           => $WebService->Persona->GeneroPersona,
             ];
-            echo "<pre>";
-            print_r($data);
-            echo "</pre>";
-            exit();
+
             return $response->setContent(json_encode($data));
         } else {
             echo 'Error get data from ajax';

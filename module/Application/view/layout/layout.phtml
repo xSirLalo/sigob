@@ -127,6 +127,7 @@
     <!-- [ Main Content ] end -->
     <!-- Required Js -->
     <?= $this->inlineScript()
+        ->prependFile($this->basePath('js/app.js'))
         ->prependFile($this->basePath('assets/js/menu-setting.min.js'))
         ->prependFile($this->basePath('assets/js/pcoded.min.js'))
         ->prependFile($this->basePath('assets/js/plugins/bootstrap.min.js'))

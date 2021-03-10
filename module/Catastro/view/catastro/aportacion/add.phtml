@@ -23,10 +23,10 @@ $this->inlineScript()
     ->prependFile($this->basePath('assets/js/plugins/jquery.validate.min.js'))
     // Js Bootstrap wizard
     ->prependFile($this->basePath('assets/js/plugins/jquery.bootstrap.wizard.min.js'))
-    //sweet alert Js
-   // ->prependFile($this->basePath('assets/js/plugins/sweetalert.min.js'))
-    ->prependFile($this->basePath('assets/js/plugins/sweetalertDecomprimido.min.js'))
-    ->prependFile($this->basePath('assets/js/pages/ac-alert.js'));
+    // Js sweet alert
+    ->prependFile($this->basePath('assets/js/plugins/sweetalert.min.js'))
+    // ->prependFile($this->basePath('assets/js/pages/ac-alert.js'))
+    ;
 $form = $this->form;
 $form->setAttribute('action', $this->url('aportacion/nueva-aportacion'));
 $form->prepare();
@@ -49,7 +49,7 @@ $form->prepare();
                 <div class="tab-pane active show" id="b-w-tab1">
             <!--Inicio Tab 1  -->
                 <h1 class="text-center bg-secondary">Requisitos</h1><br>
-                <div class="to-do-list mb-3">
+                <div class="to-do-list mb-3 none">
                     <div class="d-inline-block">
                         <label class="check-task custom-control custom-checkbox d-flex justify-content-center">
                             <input type="checkbox" class="custom-control-input" id="val1"  onchange="javascript:showContent()" >
@@ -458,7 +458,7 @@ $form->prepare();
                                 <div class="form-group">
                                 <!-- Select Tasa Impositiva -->
                                     <label class="form-label">Tasa Impositiva</label>
-                                    <select class="form-control" name="validation-select" id="tasa_i" onchange="timpositiva()">
+                                    <select class="form-control" name="tasa_i" id="tasa_i" onchange="timpositiva()">
                                         <option value="0">Selecione uno..</option>
                                         <optgroup label="Predios Urbanos Edificados">
                                             <option value="0.0017">0.0017</option>
@@ -527,6 +527,7 @@ $form->prepare();
                             </div>
                             <div class="col-sm-12 text-md-right mb-3">
                             <!-- Buton Guardar -->
+                            <!-- <?php // echo $this->formSubmit($form->get('btnGuardar')->setAttributes(['onclick' => "confirmReset()"]));?> -->
                             <?= $this->formSubmit($form->get('btnGuardar')); ?>
                             </div>
                         </div>

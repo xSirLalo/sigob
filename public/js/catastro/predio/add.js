@@ -13,7 +13,7 @@ $(document).ready(function () {
         return repo.titular || repo.text;
     }
 
-    $(".js-data-example-ajax2").select2({
+    $(".js-select2-predio").select2({
         width: '100%',
         ajax: {
         //url: "/aportacion/buscar_ajax",
@@ -47,7 +47,7 @@ $(document).ready(function () {
         templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
     });
 
-    $('.js-data-example-ajax2').change(function(){
+    $('.js-select2-predio').change(function(){
         var id = $(this).val();
         var url = '/predio/autorellenaCatastral/'+id;
         // AJAX request
@@ -59,6 +59,7 @@ $(document).ready(function () {
         success: function(data)
         {
                 console.log(data);
+                $('[name ="input1"]').val(data.predio_id);
                 $('[name ="titular"]').val(data.titular);
                 $('[name ="ubicacion"]').val(data.ubicacion);
                 $('[name ="titular_anterior"]').val(data.titular_anterior);
@@ -77,5 +78,19 @@ $(document).ready(function () {
                 // $('#modal_alert').modal('show'); // show bootstrap modal
             }
         });
+    });
+});
+
+$('.btn-ok').on('click', function(e) {
+    event.preventDefault(e);
+    swal({
+        title: "Are you sure you want to reset your game?",
+        text: "You will not be able to recover your game!",
+        type:  "success",
+        }).then((result) => {
+        if (result.value) {
+            console.log('asd');
+        }
+        return false;
     });
 });

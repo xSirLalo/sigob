@@ -17,7 +17,7 @@ class Predio
      *
      * @ORM\Column(name="id_predio", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idPredio;
 
@@ -160,6 +160,19 @@ class Predio
     public function getIdPredio()
     {
         return $this->idPredio;
+    }
+    /**
+     * Set idPredio.
+     *
+     * @param bigint|null $idPredio
+     *
+     * @return Predio
+     */
+    public function setIdPredio($idPredio)
+    {
+        $this->idPredio = $idPredio;
+
+        return $this;
     }
 
     /**

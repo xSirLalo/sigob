@@ -47,15 +47,19 @@ $(document).ready(function () {
         templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
     });
 
-    $('.js-data-example-ajax2').change(function(){
+    // $('#persona').on('select2:select', function (e) {
+    //     console.log('asd');
+    // });
+
+    $('.js-select2-persona').change(function(){
         var id = $(this).val();
         var url = '/contribuyente/autorellenaPersona/'+id;
         // AJAX request
         $.ajax({
-            url: url,
-            method: 'POST',
-            dataType: 'JSON',
-            async: true,
+        url: url,
+        method: 'POST',
+        dataType: 'JSON',
+        async: true,
         success: function(data)
         {
                 console.log(data);

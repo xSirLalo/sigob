@@ -65,10 +65,6 @@ class PredioController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                // echo "<pre>";
-                // print_r($data);
-                // echo "</pre>";
-                // exit();
                 $this->predioManager->guardar($data);
                 $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                 return $this->redirect()->toRoute('predio');
@@ -112,23 +108,22 @@ class PredioController extends AbstractActionController
         // AJAX response
         if ($request->isXmlHttpRequest()) {
             $id = $this->params()->fromRoute('id');
-            $resultados = $this->opergobserviceadapter->obtenerPredio($id);
-            $colindancia = $this->opergobserviceadapter->obtenerColindancia($resultados->Predio->PredioId);
+            $WebService = $this->opergobserviceadapter->obtenerPredio($id);
+            $WebService2 = $this->opergobserviceadapter->obtenerColindancia($WebService->Predio->PredioId);
 
             $data = [
-                'titular'          => $resultados->Predio->Titular,
-                'ubicacion'        => $resultados->Predio->NombreLocalidad,
-                'titular_anterior' => $resultados->Predio->TitularCompleto,
-
-                'con_norte'        => $colindancia->PredioColindancia[0]->Descripcion,
-                'con_sur'          => $colindancia->PredioColindancia[1]->Descripcion,
-                'con_este'         => $colindancia->PredioColindancia[2]->Descripcion,
-                'con_oeste'        => $colindancia->PredioColindancia[3]->Descripcion,
-
-                'norte'            => $colindancia->PredioColindancia[0]->MedidaMts,
-                'sur'              => $colindancia->PredioColindancia[1]->MedidaMts,
-                'este'             => $colindancia->PredioColindancia[2]->MedidaMts,
-                'oeste'            => $colindancia->PredioColindancia[3]->MedidaMts,
+                'titular'          => $WebService->Predio->Titular,
+                'ubicacion'        => $WebService->Predio->NombreLocalidad,
+                'titular_anterior' => $WebService->Predio->TitularCompleto,
+                'predio_id'        => $WebService->Predio->PredioId,
+                'con_norte'        => $WebService2->PredioColindancia[0]->Descripcion,
+                'con_sur'          => $WebService2->PredioColindancia[1]->Descripcion,
+                'con_este'         => $WebService2->PredioColindancia[2]->Descripcion,
+                'con_oeste'        => $WebService2->PredioColindancia[3]->Descripcion,
+                'norte'            => $WebService2->PredioColindancia[0]->MedidaMts,
+                'sur'              => $WebService2->PredioColindancia[1]->MedidaMts,
+                'este'             => $WebService2->PredioColindancia[2]->MedidaMts,
+                'oeste'            => $WebService2->PredioColindancia[3]->MedidaMts,
             ];
 
             return $response->setContent(json_encode($data));
