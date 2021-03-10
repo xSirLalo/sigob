@@ -36,12 +36,11 @@ $form2->prepare();
         <div class="card-body">
             <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form); ?>
-                <?= $this->formLabel($form->get('cve_catastral')); ?>
                 <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-data-example-ajax2 col-sm-12"])); ?>
                 <div class="text-danger">
                 <?= $this->formElementErrors($form->get('cve_catastral')); ?>
                 </div>
-
+                <hr>
                 <?= $this->formLabel($form->get('titular')); ?>
                 <?= $this->formText($form->get('titular')); ?>
                 <div class="text-danger">

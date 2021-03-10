@@ -24,13 +24,6 @@ class Predio
     /**
      * @var int|null
      *
-     * @ORM\Column(name="cve_persona", type="bigint", nullable=true)
-     */
-    private $cvePersona;
-
-    /**
-     * @var int|null
-     *
      * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
      */
     private $cvePredio;
@@ -167,30 +160,6 @@ class Predio
     public function getIdPredio()
     {
         return $this->idPredio;
-    }
-
-    /**
-     * Set cvePersona.
-     *
-     * @param int|null $cvePersona
-     *
-     * @return Predio
-     */
-    public function setCvePersona($cvePersona = null)
-    {
-        $this->cvePersona = $cvePersona;
-
-        return $this;
-    }
-
-    /**
-     * Get cvePersona.
-     *
-     * @return int|null
-     */
-    public function getCvePersona()
-    {
-        return $this->cvePersona;
     }
 
     /**

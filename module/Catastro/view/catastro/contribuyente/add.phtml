@@ -8,9 +8,24 @@ $this->pageBreadcrumbs()->setItems([
     'Contribuyentes' => $this->url('contribuyente'),
     'Agregar' => $this->url('contribuyente/agregar'),
 ]);
+// Css Requerido
+$this->headLink()
+    // Css Select2
+    ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'));
+// Js Requerido
+$this ->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/contribuyente/add.js'))
+    // Js Select2
+    ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'));
+// Instancia del form
 $form = $this->form;
 $form->setAttribute('action', $this->url('contribuyente/agregar'));
 $form->prepare();
+
+$form2 = $this->form2;
+$form2->setAttribute('action', $this->url('biblioteca/agregar'));
+$form2->prepare();
 ?>
 <!-- [ col ] start -->
 <div class="col-md-6">
@@ -21,6 +36,11 @@ $form->prepare();
         <div class="card-body">
             <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form); ?>
+                <div class="form-group">
+                <?= $this->formSelect($form->get('persona')->setAttributes(['class' => "custom-select js-select2-persona col-sm-12"])); ?>
+                <?= $this->formElementErrors($form->get('persona')); ?>
+                </div>
+                <hr>
                 <div class="form-group">
                     <?= $this->formLabel($form->get('nombre')); ?>
                     <?= $this->formText($form->get('nombre')); ?>
@@ -47,6 +67,21 @@ $form->prepare();
                     <?= $this->formElementErrors($form->get('curp')); ?>
                 </div>
                 <div class="form-group">
+                    <?= $this->formLabel($form->get('razon_social')); ?>
+                    <?= $this->formText($form->get('razon_social')); ?>
+                    <?= $this->formElementErrors($form->get('razon_social')); ?>
+                </div>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('correo')); ?>
+                    <?= $this->formText($form->get('correo')); ?>
+                    <?= $this->formElementErrors($form->get('correo')); ?>
+                </div>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('telefono')); ?>
+                    <?= $this->formText($form->get('telefono')); ?>
+                    <?= $this->formElementErrors($form->get('telefono')); ?>
+                </div>
+                <div class="form-group">
                     <?= $this->formLabel($form->get('genero')); ?>
                     <?= $this->formText($form->get('genero')); ?>
                     <?= $this->formElementErrors($form->get('genero')); ?>
@@ -55,6 +90,47 @@ $form->prepare();
                 <?= $this->formElementErrors($form->get('csrf')); ?>
                 <?= $this->formSubmit($form->get('btnGuardar')); ?>
                 <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
+            <?= $this->form()->closeTag(); ?>
+            <!-- [ closeTag ] start -->
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
+
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-body">
+            <!-- [ openTag ] start -->
+            <?= $this->form()->openTag($form2); ?>
+                <div class="form-group">
+                    <?= $this->formText($form->get('input1')); ?>
+                    <?= $this->formElementErrors($form->get('input1')); ?>
+                </div>
+                <hr>
+                <?= $this->formLabel($form2->get('archivo')); ?>
+                <div class="form-group" id="select">
+                    <div class="input-group">
+                        <div class="input-group-append delete">
+                            <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
+                        </div>
+                        <?= $this->formSelect($form2->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)); ?>
+                        <div class="file-loading">
+                            <?= $this->formFile($form2->get('archivo')); ?>
+                        </div>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form2->get('archivo')); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="additionalselects">
+                    <!-- dynamically created archivos field will be placed here -->
+                </div>
+                <div class="btn-group float-right">
+
+                <?= $this->formButton($form2->get('add_more')); ?>
+                <?= $this->formSubmit($form2->get('btnGuardar')); ?>
+                <a href="<?= $this->url("biblioteca") ?>" class="btn btn-secondary"> Volver atrás</a>
             <?= $this->form()->closeTag(); ?>
             <!-- [ closeTag ] start -->
         </div>

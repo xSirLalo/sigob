@@ -1,51 +1,82 @@
-function add_contribuyente()
-{
-    save_method = 'add';
-    $('#btnGuardar').show();
-    $('#btnGuardar').removeClass('invisible');
-    $('#contribuyente_form')[0].reset(); // reset form on modals
-    $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
-    $('.text-danger').empty(); // clear error string
-    $("#contribuyente_form :input").prop("disabled", false);
-    $('#myModal').modal('show'); // show bootstrap modal
-    $('.modal-title').text('Agregar'); // Set Title to Bootstrap modal title
-    $('#form_update').attr('id','contribuyente_form');
 
-    if(save_method == 'add') {
-    $("#contribuyente_form").submit(function(event){
-        event.preventDefault();
-        var URL = 'contribuyente/agregar';
-        //Ajax Load data from ajax
+'use strict';
+$(document).ready(function () {
+    function formatRepo(repo) {
+        if (repo.loading) return repo.text;
+
+        var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__title'>" + repo.palabra_respuesta + "</div>";
+
+        return markup;
+    }
+
+    function formatRepoSelection(repo) {
+        return repo.palabra_respuesta || repo.text;
+    }
+
+    $(".js-select2-persona").select2({
+        width: '100%',
+        ajax: {
+            url: "/contribuyente/buscar-persona",
+            dataType: 'JSON',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                params.page = params.page || 1;
+
+                return {
+                    //results: data.items2,
+                    results: data.items,
+                    pagination: {
+                        more: (params.page * 30) < data.total_count
+                    }
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function(markup) {
+            return markup;
+        }, // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: formatRepo, // omitted for brevity, see the source of this page
+        templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+    });
+
+    $('.js-data-example-ajax2').change(function(){
+        var id = $(this).val();
+        var url = '/contribuyente/autorellenaPersona/'+id;
+        // AJAX request
         $.ajax({
-            url: URL,
-            type: 'POST',
+            url: url,
+            method: 'POST',
             dataType: 'JSON',
             async: true,
-            data: $("#contribuyente_form").serialize(),
-            success: function (data) {
-                if(data.status) //if success close modal and reload ajax table
-                {
-                    location.reload();
-                    $('#myModal').modal('hide'); // show bootstrap modal when complete loaded
-                } else {
-                    $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
-                    $('.text-danger').empty(); // clear error string
-                    $.each(data.errors, function(key, value) {
-                        $('[name="'+ key +'"]').addClass('is-invalid');
-                        for(var i in value) {
-                            $('[name="'+ key +'"]').parents('.form-group').find('.text-danger').append('<li>' + value[i] + '</li>');
-                        }
-                    });
-                }
-                $('#btnGuardar').val('Guardar'); //change button text
-                $('#btnGuardar').attr('disabled',false); //set button enable
-            },
-            error: function (jqXHR, textStatus, errorThrown)
+        success: function(data)
+        {
+                console.log(data);
+                $('[name ="cve_persona"]').val(data.cve_persona);
+                $('[name ="nombre"]').val(data.nombre);
+                $('[name ="apellido_paterno"]').val(data.apellido_paterno);
+                $('[name ="apellido_materno"]').val(data.apellido_matero);
+                $('[name ="rfc"]').val(data.rfc);
+                $('[name ="curp"]').val(data.curp);
+                $('[name ="razon_social"]').val(data.razon_social);
+                $('[name ="correo"]').val(data.correo);
+                $('[name ="telefono"]').val(data.telefono);
+                $('[name ="genero"]').val(data.genero);
+                $('[name ="input1"]').val(data.cve_persona);
+
+        },
+        error: function (jqXHR, textStatus, errorThrown)
             {
                 console.log(data);
-                alert('Error get data from ajax');
+                // $('#modal_alert').modal('show'); // show bootstrap modal
             }
         });
     });
-    }
-}
+});

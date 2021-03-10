@@ -13,6 +13,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Entity\Contribuyente;
 use Catastro\Form\ContribuyenteForm;
 use Catastro\Form\EliminarForm;
+use Catastro\Form\BibliotecaForm;
 
 class ContribuyenteController extends AbstractActionController
 {
@@ -26,11 +27,15 @@ class ContribuyenteController extends AbstractActionController
      * @var Catastro\Service\ContribuyenteManager
      */
     private $contribuyenteManager;
+    private $bibliotecaManager;
+    private $opergobserviceadapter;
 
-    public function __construct($entityManager, $contribuyenteManager)
+    public function __construct($entityManager, $contribuyenteManager, $bibliotecaManager, $opergobserviceadapter)
     {
         $this->entityManager = $entityManager;
         $this->contribuyenteManager = $contribuyenteManager;
+        $this->bibliotecaManager = $bibliotecaManager;
+        $this->opergobserviceadapter = $opergobserviceadapter;
     }
 
     public function indexAction()
@@ -155,6 +160,9 @@ class ContribuyenteController extends AbstractActionController
     public function addAction()
     {
         $form = new ContribuyenteForm();
+        $form2 = new BibliotecaForm();
+        $categorias = $this->bibliotecaManager->categorias();
+
         $request = $this->getRequest();
         // AJAX response
         if ($request->isXmlHttpRequest()) {
@@ -182,7 +190,7 @@ class ContribuyenteController extends AbstractActionController
                     return $this->redirect()->toRoute('contribuyente');
                 }
             }
-            $view = new ViewModel(['form' => $form]);
+            $view = new ViewModel(['form' => $form, 'form2' => $form2, 'categorias' => $categorias]);
         }
         return $view;
     }
@@ -355,14 +363,71 @@ class ContribuyenteController extends AbstractActionController
             ];
         }
         $data = [
-                    'items'       => $arreglo,
-                    'total_count' => count($arreglo),
+                'items'       => $arreglo,
+                'total_count' => count($arreglo),
             ];
 
         $json = new JsonModel($data);
         $json->setTerminal(true);
 
         return $json;
+    }
+
+    public function searchPersonaAction()
+    {
+        $word = $_REQUEST['q'];
+
+        $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($word);
+        if (isset($WebService->Persona)) {
+            if (is_array($WebService->Persona)) {
+                $arreglo = [];
+                // foreach ($WebService->Persona as $item) {
+                $arreglo[] = [
+                        'id' => $WebService->Persona[0]->CvePersona,
+                        'palabra_respuesta' =>  $WebService->Persona[0]->RazonSocialPersona,
+                    ];
+                // }
+                $data = [
+                        'items' => $arreglo,
+                        'total_count' => count($arreglo),
+                    ];
+            }
+        }
+
+        $json = new JsonModel($data);
+        $json->setTerminal(true);
+        return $json;
+    }
+
+    public function autofillPersonaAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            $id = $this->params()->fromRoute('id');
+            $r1WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($id);
+
+            $data = [
+                'cve_persona'      => $r1WebService->Persona[0]->CvePersona,
+                'nombre'           => $r1WebService->Persona[0]->NombrePersona,
+                'apellido_paterno' => $r1WebService->Persona[0]->ApellidoPaternoPersona,
+                'apellido_materno' => $r1WebService->Persona[0]->ApellidoMaternoPersona,
+                'rfc'              => $r1WebService->Persona[0]->RFCPersona,
+                'curp'             => $r1WebService->Persona[0]->CURPPersona,
+                'razon_social'     => $r1WebService->Persona[0]->RazonSocialPersona,
+                'correo'           => $r1WebService->Persona[0]->PersonaCorreo,
+                'telefono'         => $r1WebService->Persona[0]->PersonaTelefono,
+                'genero'           => $r1WebService->Persona[0]->GeneroPersona,
+            ];
+            echo "<pre>";
+            print_r($data);
+            echo "</pre>";
+            exit();
+            return $response->setContent(json_encode($data));
+        } else {
+            echo 'Error get data from ajax';
+        }
     }
 
     public function pdfAction()

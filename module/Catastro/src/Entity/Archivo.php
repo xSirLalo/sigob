@@ -22,20 +22,6 @@ class Archivo
     private $idArchivo;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cve_persona", type="bigint", nullable=true)
-     */
-    private $cvePersona;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
-     */
-    private $cvePredio;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(name="file", type="blob", length=0, nullable=true)
@@ -117,54 +103,6 @@ class Archivo
     public function getIdArchivo()
     {
         return $this->idArchivo;
-    }
-
-    /**
-     * Set cvePersona.
-     *
-     * @param int|null $cvePersona
-     *
-     * @return Archivo
-     */
-    public function setCvePersona($cvePersona = null)
-    {
-        $this->cvePersona = $cvePersona;
-
-        return $this;
-    }
-
-    /**
-     * Get cvePersona.
-     *
-     * @return int|null
-     */
-    public function getCvePersona()
-    {
-        return $this->cvePersona;
-    }
-
-    /**
-     * Set cvePredio.
-     *
-     * @param int|null $cvePredio
-     *
-     * @return Archivo
-     */
-    public function setCvePredio($cvePredio = null)
-    {
-        $this->cvePredio = $cvePredio;
-
-        return $this;
-    }
-
-    /**
-     * Get cvePredio.
-     *
-     * @return int|null
-     */
-    public function getCvePredio()
-    {
-        return $this->cvePredio;
     }
 
     /**

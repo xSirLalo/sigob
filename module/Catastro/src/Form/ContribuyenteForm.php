@@ -24,6 +24,44 @@ class ContribuyenteForm extends Form
     protected function addElements()
     {
         $this->add([
+            'type' => Element\Select::class,
+            'name' => 'persona',
+            'options' => [
+                'empty_option' => 'Buscar Persona por Clave o R.F.C',
+                'disable_inarray_validator' => true,
+            ],
+            'attributes' => [
+                'required' => true,
+                'class' => 'custom-select'
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'input1',
+            'attributes' => [
+                'class' => 'form-control',
+                'title' => 'input1',
+                'placeholder' => 'input1',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Number::class,
+            'name' => 'nombre',
+            'options' => [
+                'label' => 'Nombre',
+            ],
+            'attributes' => [
+                // 'required' => true,
+                'readonly' => true,
+                'class' => 'form-control',
+                'title' => 'Nombre',
+                'placeholder' => 'Nombre',
+            ]
+        ]);
+
+        $this->add([
             'type' => Element\Text::class,
             'name' => 'nombre',
             'options' => [
@@ -86,6 +124,45 @@ class ContribuyenteForm extends Form
                 'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'C.U.R.P',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'razon_social',
+            'options' => [
+                'label' => 'Razón Social',
+            ],
+            'attributes' => [
+                'required' => true,
+                'class' => 'form-control',
+                'placeholder' => 'Razón Social',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'correo',
+            'options' => [
+                'label' => 'Correo Electrónico',
+            ],
+            'attributes' => [
+                'required' => true,
+                'class' => 'form-control',
+                'placeholder' => 'Correo Electrónico',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'telefono',
+            'options' => [
+                'label' => 'Teléfono',
+            ],
+            'attributes' => [
+                'required' => true,
+                'class' => 'form-control',
+                'placeholder' => 'Teléfono',
             ]
         ]);
 

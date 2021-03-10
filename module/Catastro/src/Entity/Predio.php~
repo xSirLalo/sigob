@@ -24,13 +24,6 @@ class Predio
     /**
      * @var int|null
      *
-     * @ORM\Column(name="cve_persona", type="bigint", nullable=true)
-     */
-    private $cvePersona;
-
-    /**
-     * @var int|null
-     *
      * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
      */
     private $cvePredio;

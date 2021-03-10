@@ -28,6 +28,49 @@ $this->pageBreadcrumbs()->setItems([
 <br>
 <?php
 
+if (isset($data->Persona)) {
+    if (is_array($data->Persona)) {
+        echo $data->Persona[0]->CvePersona;
+        // foreach ($data->Persona as $item) {
+        //     echo $item->CvePersona;
+        //     echo "<br>";
+        // }
+    }
+    echo "<br>";
+    echo "seteado";
+}
+
+if (isset($data->Predio)) {
+    if (is_array($data->Predio)) {
+        foreach ($data->Predio as $item) {
+            echo $item->PredioId;
+            echo "<br>";
+        }
+    } else {
+        echo $data->Predio->PredioId;
+        echo "<br>";
+    }
+    echo "<br>";
+    echo "seteado";
+}
+
+if (isset($data->PredioColindancia)) {
+    if (is_array($data->PredioColindancia)) {
+        foreach ($data->PredioColindancia as $item) {
+            echo $item->Descripcion;
+            echo "<br>";
+        }
+    } else {
+        echo $data->PredioColindancia->Descripcion;
+        echo "<br>";
+    }
+    echo "<br>";
+    echo "seteado";
+}
+
+echo "<br>";
+echo "<hr>";
+
 echo "<pre>";
 print_r($data);
 echo "</pre>";

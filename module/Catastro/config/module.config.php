@@ -148,6 +148,30 @@ return [
                             ],
                         ],
                     ],
+                    'buscar-persona' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/buscar-persona[/:action]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'searchPersona',
+                            ],
+                        ],
+                    ],
+                    'autorellenaPersona' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/autorellenaPersona[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9,-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'autofillPersonaAction',
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'predio' => [
@@ -564,7 +588,7 @@ return [
                 ['actions' => ['index', 'add'], 'allow' => '*'],
             ],
             Controller\ContribuyenteController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search', 'searchPersona', 'autofillPersonaAction'], 'allow' => '*']
             ],
             Controller\PredioController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'searchCatastral', 'autofillCatastral'], 'allow' => '*']

@@ -15,7 +15,8 @@ $this->headLink()
 $this->inlineScript()
     // Js de la vista
     ->prependFile($this->basePath('js/catastro/contribuyente/index.js'))
-    ->prependFile($this->basePath('js/catastro/contribuyente/add.js'))
+    // ->prependFile($this->basePath('js/catastro/contribuyente/add.js'))
+    // TODO: Pasar scripts al index
     ->prependFile($this->basePath('js/catastro/contribuyente/view.js'))
     ->prependFile($this->basePath('js/catastro/contribuyente/edit.js'))
     ->prependFile($this->basePath('js/catastro/contribuyente/delete.js'))
@@ -36,7 +37,8 @@ $this->inlineScript()
             <div class="row">
                 <div class="col-md-1 col-xs-12 mb-4" align=center>
                     <div class="btn-group" role="group" aria-label="Botones">
-                        <a href="<?= $this->url("contribuyente/agregar") ?>" class="btn btn-primary" data-toggle="modal" onClick="add_contribuyente()">Agregar</a>
+                        <!-- <a href="<?= $this->url("contribuyente/agregar") ?>" class="btn btn-primary" data-toggle="modal" onClick="add_contribuyente()">Agregar</a> -->
+                        <a href="<?= $this->url("contribuyente/agregar") ?>" class="btn btn-primary">Agregar</a>
                         <a href="<?= $this->url("contribuyente/pdf") ?>" class="btn btn-danger">PDF</a>
                         <a href="<?= $this->url("contribuyente/excel") ?>" class="btn btn-success">Excel</a>
                     </div>

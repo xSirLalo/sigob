@@ -22,20 +22,6 @@ class Archivo
     private $idArchivo;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cve_persona", type="bigint", nullable=true)
-     */
-    private $cvePersona;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
-     */
-    private $cvePredio;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(name="file", type="blob", length=0, nullable=true)

@@ -27,8 +27,7 @@ class PredioForm extends Form
             'type' => Element\Select::class,
             'name' => 'cve_catastral',
             'options' => [
-                'label' => 'Clave Catastrala',
-                'empty_option' => 'Buscar...',
+                'empty_option' => 'Buscar Predio por Clave Catastral',
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [
