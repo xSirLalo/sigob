@@ -101,12 +101,12 @@ class AportacionController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->aportacionManager->agregarAportacion($data);
+                $this->aportacionManager->guardar($data);
                 $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                 return $this->redirect()->toRoute('aportacion');
             }
         }
-        return new ViewModel(['form' => $form, 'parametro' => $parametro, 'valorConstruccions' => $valorConstruccion]);
+        return new ViewModel(['form' => $form, 'id' => $parametro, 'valorConstruccions' => $valorConstruccion]);
     }
 
     public function addModalAction()
@@ -121,10 +121,10 @@ class AportacionController extends AbstractActionController
                 $form->setData($request->getPost());
                 if ($form->isValid()) {
                     $data = $form->getData();
-                    $data['estatus'] = TRUE;
-                    $this->aportacionManager->guardar($data);
+                    $data['estatus'] = true;
+                    $this->aportacionManager->guardarModal($data);
                 } else {
-                    $data['status'] = FALSE;
+                    $data['status'] = false;
                     $data['errors'] = $form->getMessages();
                 };
                 $response->setContent(\Laminas\Json\Json::encode($data));
@@ -181,7 +181,6 @@ class AportacionController extends AbstractActionController
         }
         $json = new JsonModel($data);
         $json->setTerminal(true);
-
 
         return $json;
     }
