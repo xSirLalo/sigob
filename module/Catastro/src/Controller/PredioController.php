@@ -65,10 +65,10 @@ class PredioController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                echo "<pre>";
-                print_r($data);
-                echo "</pre>";
-                exit();
+                // echo "<pre>";
+                // print_r($data);
+                // echo "</pre>";
+                // exit();
                 $this->predioManager->guardar($data);
                 $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                 return $this->redirect()->toRoute('predio');

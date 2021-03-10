@@ -1,7 +1,7 @@
 $(document).ready(function() {
     setTimeout(function() {
         // [ Configuration Option ]
-        $('#aportaciones').DataTable({
+        $('#aportacionesf').DataTable({
             responsive: true,
             autoWidth: false,
             scrollX: true,
@@ -9,7 +9,7 @@ $(document).ready(function() {
                 loadingIndicator: true
             },
             processing: true,
-            // serverSide: true,
+            serverSide: true,
             deferRender: true,
             paging: true,
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
@@ -150,7 +150,7 @@ $('.js-data-example-ajax2').change(function(){
         $('[name ="n_comercial"]').val(data.n_comercial);
         $('[name ="s_ocupada"]').val(data.s_ocupada);
         $('[name ="u_destino"]').val(data.u_destino);
-        $('[name ="t_anterior"]').val(data.t_anterior);
+        $('[name ="titular_anterior"]').val(data.titular_anterior);
         $('[name ="arrendador"]').val(data.arrendador);
         $('[name ="con_norte"]').val(data.con_norte);
         $('[name ="con_sur"]').val(data.con_sur);
@@ -160,6 +160,8 @@ $('.js-data-example-ajax2').change(function(){
         $('[name ="sur"]').val(data.sur);
         $('[name ="este"]').val(data.este);
         $('[name ="oeste"]').val(data.oeste);
+        $('[name ="id_predio"]').val(data.id_predio);
+        $('[name ="cvlCatastral"]').val(data.cvlCatastral);
         $("#formato").show();
 
     },
@@ -290,7 +292,7 @@ function add_contribuyente()
 }
 $("#aportacion_form_modal").submit(function(event){
     event.preventDefault();
-    var URL = '/aportacion/agregar_ajax';
+    var URL = '/aportacion/guardarModal';
     //Ajax Load data from ajax
     $.ajax({
         url: URL,

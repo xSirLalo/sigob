@@ -5,7 +5,7 @@ namespace Catastro\Service;
 use Catastro\Entity\Predio;
 use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
-
+use Catastro\Entity\Contribuyente;
 class AportacionManager
 {
     /**
@@ -22,11 +22,24 @@ class AportacionManager
         $this->entityManager = $entityManager;
     }
 
-    public function agregar($data)
+    public function guardar($data)
     {
-        $Aportacion = new Aportacion();
+        $aportacion = new Aportacion();
+        $predio = new Predio();
 
-        $aportacion->setPago($data['pago']);
+        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['contribuyente_id']);
+        $aportacion->setIdContribuyente($contribuyentebd);
+        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['id_predio']);
+        $aportacion->setIdPredio($prediobd);
+        $aportacion->setPago($data['pago_a']);
+        $fecha = new \DateTime($data['vig']);
+        $aportacion->setFecha($fecha);
+        $aportacion->setMetrosTerreno($data['terreno']);
+        $aportacion->setMetrosConstruccion($data['sup_m']);
+        $aportacion->setValorTerreno($data['v_terreno']);
+        $aportacion->setValorConstruccion($data['v_c']);
+        $aportacion->setAvaluo($data['a_total']);
+        $aportacion->setEstatus($data['status']);
 
         $currentDate = new \DateTime();
         $aportacion->setCreatedAt($currentDate);

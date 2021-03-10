@@ -109,6 +109,32 @@ class AportacionController extends AbstractActionController
         return new ViewModel(['form' => $form, 'parametro' => $parametro, 'valorConstruccions' => $valorConstruccion]);
     }
 
+    public function addModalAction()
+    {
+        $form = new AportacionModalForm();
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+        if ($request->isXmlHttpRequest()) {
+            if ($request->isPost()) {
+                $data = $this->params()->fromPost();
+                $form->setData($request->getPost());
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $data['estatus'] = TRUE;
+                    $this->aportacionManager->guardar($data);
+                } else {
+                    $data['status'] = FALSE;
+                    $data['errors'] = $form->getMessages();
+                };
+                $response->setContent(\Laminas\Json\Json::encode($data));
+                return $response;
+            }
+        } else {
+            echo 'Error get data from ajax';
+        }
+    }
+
     public function validationAction()
     {
         return new ViewModel();
@@ -191,7 +217,9 @@ class AportacionController extends AbstractActionController
             $data = [
                 'titular' => $aportacion->getIdPredio()->getTitular(),
                 'ubicacion' => $aportacion->getIdPredio()->getUbicacion(),
-                't_anterior' => $aportacion->getIdPredio()->getTitularAnterior(),
+                'titular_anterior' => $aportacion->getIdPredio()->getTitularAnterior(),
+                'id_predio'=> $aportacion->getIdPredio()->getIdPredio(),
+                'cvlCatastral'=> $aportacion->getIdPredio()->getClaveCatastral(),
             ];
 
             return $response->setContent(json_encode($data));

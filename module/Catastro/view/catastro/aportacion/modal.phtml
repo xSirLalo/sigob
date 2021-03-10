@@ -419,6 +419,19 @@
                                 <?= $this->formElementErrors($form->get('status')); ?>
                             </div>
                         </div>
+                        <!-- Input id_predio Oculto -->
+                            <?= $this->formText($form->get('id_predio')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($form->get('id_predio')); ?>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                        <!-- Input clave catastral Oculto -->
+                            <?= $this->formText($form->get('cvlCatastral')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($form->get('cvlCatastral')); ?>
+                            </div>
+                        </div>
                         <?= $this->formHidden($form->get('csrf')); ?>
                         <div class="text-danger">
                             <?= $this->formElementErrors($form->get('csrf')); ?>

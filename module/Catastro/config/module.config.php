@@ -496,6 +496,15 @@ return [
                             ],
                         ],
                     ],
+                    'guardarModal' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/guardarModal',
+                            'defaults' => [
+                                'action' => 'addModal',
+                            ],
+                        ],
+                    ],
                     'buscarCatastral' => [
                         'type' => 'segment',
                         'options' => [
@@ -567,7 +576,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'pdf', 'excel',], 'allow' => '*']
+                ['actions' => ['index', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel',], 'allow' => '*']
             ],
         ]
     ],
