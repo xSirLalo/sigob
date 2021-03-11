@@ -25,14 +25,14 @@ class PredioForm extends Form
     {
         $this->add([
             'type' => Element\Select::class,
-            'name' => 'predio',
+            'name' => 'cve_catastral',
             'options' => [
                 'label' => 'Buscar...',
                 'empty_option' => 'Buscar Predio por Clave Catastral',
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'custom-select'
             ]
         ]);

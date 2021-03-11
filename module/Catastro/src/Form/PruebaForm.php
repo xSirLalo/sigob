@@ -47,7 +47,7 @@ class PruebaForm extends Form
             'attributes' => [
                 'id' => 'btnGuardar',
                 'value' => 'Guardar',
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-primary btn-ok'
             ]
         ]);
     }

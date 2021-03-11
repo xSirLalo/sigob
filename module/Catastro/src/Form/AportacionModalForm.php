@@ -404,31 +404,31 @@ class AportacionModalForm extends Form
             ]
         ]);
 
-		$this->add([
-			'type' => Element\Text::class,
-			'name' => 'id_predio',
-			'options' => [
-				'label' => 'id_predio',
-			],
-			'attributes' => [
+        $this->add([
+            'type' => Element\Hidden::class,
+            'name' => 'id_predio',
+            'options' => [
+                'label' => 'id_predio',
+            ],
+            'attributes' => [
                 'readonly' => true,
-				// 'hidden'=> true,
-				'class' => 'form-control',
-			]
-		]);
+                'hidden'=> true,
+                'class' => 'form-control',
+            ]
+        ]);
 
-		$this->add([
-			'type' => Element\Text::class,
-			'name' => 'cvlCatastral',
-			'options' => [
-				'label' => 'cvlCatastral',
-			],
-			'attributes' => [
+        $this->add([
+            'type' => Element\Hidden::class,
+            'name' => 'cvlCatastral',
+            'options' => [
+                'label' => 'cvlCatastral',
+            ],
+            'attributes' => [
                 'readonly' => true,
-				'hidden'=> true,
-				'class' => 'form-control',
-			]
-		]);
+                'hidden'=> true,
+                'class' => 'form-control',
+            ]
+        ]);
 
         $this->add([
             'type' => Element\Text::class,

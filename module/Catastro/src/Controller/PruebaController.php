@@ -82,9 +82,9 @@ class PruebaController extends AbstractActionController
                 // exit();
 
 
-                $this->pruebaManager->guardarPrueba($data);
-                $this->flashMessenger()->addWarningMessage('Se agrego Dato de éxito!');
-                return $this->redirect()->toRoute('prueba');
+                // $this->pruebaManager->guardarPrueba($data);
+                $this->flashMessenger()->addWarningMessage($data);
+                return $this->redirect()->toRoute('prueba/agregar');
             }
         }
 

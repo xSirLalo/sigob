@@ -18,7 +18,25 @@ $this->pageBreadcrumbs()->setItems([
 'Home'=>$this->url('home'),
 'Pruebas'=>$this->url('prueba'),
 ]);
-
+// Css Requerido
+$this->headLink()
+    // Css Select2
+    ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'));
+// Js Requerido
+$this->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/prueba/agregar.js'))
+    // Js Select2
+    ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'))
+    // Js Form validation
+    ->prependFile($this->basePath('assets/js/pages/form-validation.js'))
+    ->prependFile($this->basePath('assets/js/plugins/jquery.validate.min.js'))
+    // Js Bootstrap wizard
+    ->prependFile($this->basePath('assets/js/plugins/jquery.bootstrap.wizard.min.js'))
+    // Js SweetAlert
+    ->prependFile($this->basePath('assets/js/plugins/sweetalert.min.js'))
+    ->prependFile($this->basePath('assets/js/pages/ac-alert.js'))
+    ;
 $form = $this->form;
 $form->setAttribute('action', $this->url('prueba/agregar'));
 $form->prepare();

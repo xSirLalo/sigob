@@ -33,7 +33,7 @@ class ContribuyenteForm extends Form
             ],
             'attributes' => [
                 'id' => 'persona',
-                'required' => true,
+                // 'required' => true,
                 'class' => 'custom-select'
             ]
         ]);
@@ -70,7 +70,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Nombre',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'title' => 'Nombre',
                 'placeholder' => 'Nombre',
@@ -84,7 +84,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Apellido Paterno',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Apellido Paterno',
             ]
@@ -97,7 +97,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Apellido Materno',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Apellido Materno',
             ]
@@ -110,7 +110,7 @@ class ContribuyenteForm extends Form
                 'label' => 'R.F.C.',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'R.F.C.',
             ]
@@ -123,7 +123,7 @@ class ContribuyenteForm extends Form
                 'label' => 'C.U.R.P.',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'C.U.R.P',
             ]
@@ -136,7 +136,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Razón Social',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Razón Social',
             ]
@@ -149,7 +149,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Correo Electrónico',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Correo Electrónico',
             ]
@@ -162,7 +162,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Teléfono',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Teléfono',
             ]
@@ -175,7 +175,7 @@ class ContribuyenteForm extends Form
                 'label' => 'Genero',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Genero',
             ]
@@ -208,7 +208,7 @@ class ContribuyenteForm extends Form
         $this->setInputFilter($inputFilter);
         $inputFilter->add([
             'name' => 'nombre',
-            'required' => true,
+            // 'required' => true,
             'filters' => [
                 [ 	// Remueve las etiquetas HTML y PHP
                     'name' => Filter\StripTags::class,

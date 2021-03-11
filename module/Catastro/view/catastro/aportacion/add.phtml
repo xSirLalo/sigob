@@ -23,9 +23,9 @@ $this->inlineScript()
     ->prependFile($this->basePath('assets/js/plugins/jquery.validate.min.js'))
     // Js Bootstrap wizard
     ->prependFile($this->basePath('assets/js/plugins/jquery.bootstrap.wizard.min.js'))
-    // Js sweet alert
+    // Js SweetAlert
     ->prependFile($this->basePath('assets/js/plugins/sweetalert.min.js'))
-    // ->prependFile($this->basePath('assets/js/pages/ac-alert.js'))
+    ->prependFile($this->basePath('assets/js/pages/ac-alert.js'))
     ;
 $form = $this->form;
 $form->setAttribute('action', $this->url('aportacion/nueva-aportacion'));
@@ -39,10 +39,10 @@ $form->prepare();
         <div class="card-body">
             <div class="bt-wizard" id="besicwizard">
                 <ul class="nav nav-pills nav-fill mb-3">
-                    <li class="nav-item"><a href="#b-w-tab1" class="nav-link" data-toggle="tab">Requerimientos</a></li>
+                    <!-- <li class="nav-item"><a href="#b-w-tab1" class="nav-link" data-toggle="tab">Requerimientos</a></li> -->
                     <li class="nav-item"><a href="#b-w-tab2" class="nav-link" data-toggle="tab">Datos</a></li>
                     <li class="nav-item"><a href="#b-w-tab3" class="nav-link" data-toggle="tab">Calculo de pago</a></li>
-                    <li class="nav-item"><a href="#b-w-tab4" class="nav-link" data-toggle="tab">Final</a></li>
+                    <!-- <li class="nav-item"><a href="#b-w-tab4" class="nav-link" data-toggle="tab">Final</a></li> -->
                 </ul>
                 <?= $this->form()->openTag($form);?>
                 <div class="tab-content">

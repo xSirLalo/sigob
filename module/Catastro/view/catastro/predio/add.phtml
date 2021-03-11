@@ -37,9 +37,9 @@ $form2->prepare();
             <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form); ?>
                 <div class="form-group">
-                <?= $this->formLabel($form->get('predio')); ?>
-                <?= $this->formSelect($form->get('predio')->setAttributes(['class' => "custom-select js-select2-predio col-sm-12"])); ?>
-                <?= $this->formElementErrors($form->get('predio')); ?>
+                <?= $this->formLabel($form->get('cve_catastral')); ?>
+                <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-select2-predio col-sm-12"])); ?>
+                <?= $this->formElementErrors($form->get('cve_catastral')); ?>
                 </div>
                 <hr>
                 <?= $this->formLabel($form->get('titular')); ?>

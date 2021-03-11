@@ -25,6 +25,7 @@ class PredioManager
     {
         $predio = new Predio();
 
+        // $predio->setIdPredio($data['predio_id']);
         $predio->setClaveCatastral($data['cve_catastral']);
         $predio->setUbicacion($data['ubicacion']);
         $predio->setTitular($data['titular']);
