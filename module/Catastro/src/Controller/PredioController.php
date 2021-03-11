@@ -85,17 +85,71 @@ class PredioController extends AbstractActionController
 
     public function searchCatastralAction()
     {
-        $name = $_REQUEST['q'];
-        $resultados = $this->opergobserviceadapter->obtenerPredio($name);
+        $word = $_REQUEST['q'];
+
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb ->select('p')
+                ->from('Catastro\Entity\Predio', 'p')
+                    ->where('p.claveCatastral LIKE :word')
+                    ->setParameter("word", '%'.addcslashes($word, '%_').'%');
+        $query = $qb->getQuery()->getResult();
+
+        $arreglo  = [];
+        foreach ($query as $r) {
+            $arreglo [] = [
+                    'id' => $r->getClaveCatastral(),
+                    'item_select_name'=> $r->getClaveCatastral() . ' - ' . $r->getTitular(),
+                ];
+        }
+        $data = [
+                    'items'       => $arreglo,
+                    'total_count' => count($arreglo),
+                ];
+
+        $json = new JsonModel($data);
+        $json->setTerminal(true);
+
+        return $json;
+    }
+
+    public function searchCatastra1lAction()
+    {
+        $word = $_REQUEST['q'];
+        $WebService = $this->opergobserviceadapter->obtenerPredio($word);
+
+        if ($WebService == null) {
+            $WebServiceGuarda = [
+                    'colonia'                 => $WebService->Predio->NombreColonia,
+                    'localidad'               => $WebService->Predio->NombreLocalidad,
+                    'municipio'               => $WebService->Predio->NombreMunicipio,
+                    'calle'                   => $WebService->Predio->PredioCalle,
+                    'cve_catastral'           => $WebService->Predio->PredioCveCatastral,
+                    'cve_predio'              => $WebService->Predio->PredioId,
+                    'numero_exterior'         => $WebService->Predio->PredioNumExt,
+                    'numero_interior'         => $WebService->Predio->PredioNumInt,
+                    'estatus'                 => $WebService->Predio->PredioStatus,
+                    'tipo'                    => $WebService->Predio->PredioTipo,
+                    'ultimo_ejercicio_pagado' => $WebService->Predio->PredioUltimoEjercicioPagado,
+                    'ultimo_periodo_pagado'   => $WebService->Predio->PredioUltimoPeriodoPagado,
+                    'titular'                 => $WebService->Predio->Titular,
+                    'titular_anterior'        => $WebService->Predio->TitularCompleto,
+            ];
+            $this->predioManager->guardar($WebServiceGuarda);
+        } else {
+        }
+
+
         $arreglo = [];
         $arreglo[] = [
-                'id' => $resultados->Predio->PredioCveCatastral,
-                'titular' => $resultados->Predio->PredioCveCatastral,
+                'id' => $WebService->Predio->PredioCveCatastral,
+                'item_select_name' => $WebService->Predio->PredioCveCatastral,
             ];
         $data = [
                 'items' => $arreglo,
                 'total_count' => count($arreglo),
             ];
+
         $json = new JsonModel($data);
         $json->setTerminal(true);
         return $json;

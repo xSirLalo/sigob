@@ -4,13 +4,13 @@ $(document).ready(function () {
         if (repo.loading) return repo.text;
 
         var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__title'>" + repo.titular + "</div>";
+            "<div class='select2-result-repository__title'>" + repo.item_select_name + "</div>";
 
         return markup;
     }
 
     function formatRepoSelection(repo) {
-        return repo.titular || repo.text;
+        return repo.item_select_name || repo.text;
     }
 
     $(".js-select2-predio").select2({
@@ -81,16 +81,3 @@ $(document).ready(function () {
     });
 });
 
-$('.btn-ok').on('click', function(e) {
-    event.preventDefault(e);
-    swal({
-        title: "Are you sure you want to reset your game?",
-        text: "You will not be able to recover your game!",
-        type:  "success",
-        }).then((result) => {
-        if (result.value) {
-            console.log('asd');
-        }
-        return false;
-    });
-});
