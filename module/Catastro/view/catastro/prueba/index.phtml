@@ -59,9 +59,11 @@ if (isset($data->PredioColindancia)) {
         foreach ($data->PredioColindancia as $item) {
             echo $item->Descripcion;
             echo "<br>";
+            echo "<br>";
         }
     } else {
         echo $data->PredioColindancia->Descripcion;
+        echo "<br>";
         echo "<br>";
     }
     echo "<br>";

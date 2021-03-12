@@ -431,6 +431,19 @@ class AportacionForm extends Form
         ]);
 
         $this->add([
+            'type' => Element\Text::class,
+            'name' => 'cvepredio',
+            'options' => [
+            ],
+            'attributes' => [
+                'size' => 40,
+                'maxlength' => 10,
+                'class' => 'form-control',
+               // 'hidden'=> true,
+            ]
+        ]);
+
+        $this->add([
             'type' => Element\Date::class,
             'name' => 'vig',
             'options' => [
@@ -478,7 +491,7 @@ class AportacionForm extends Form
             'name' => 'btnGuardar',
             'attributes' => [
                 'value' => 'Guardar',
-                'class' => 'btn btn-success sweet-success',
+                'class' => 'btn btn-success btn-ok',
                 'id' =>'btn-ok',
                 'disabled' => 'true',
             ]

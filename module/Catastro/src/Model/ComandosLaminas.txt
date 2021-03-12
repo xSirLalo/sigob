@@ -1,6 +1,6 @@
 composer self-update --1
 
-composer create-project -s dev laminas/laminas-mvc-skeleton NOMBREPROyECTO
+composer create-project -s dev laminas/laminas-mvc-skeleton sigob
 
 composer require laminas/laminas-validator
 composer require laminas/laminas-i18n-resources

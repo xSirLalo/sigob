@@ -3,6 +3,7 @@
 namespace Catastro\Service;
 
 use Catastro\Entity\Predio;
+use Catastro\Entity\Contribuyente;
 use Catastro\Entity\PredioColindancia;
 
 class PredioManager
@@ -21,9 +22,10 @@ class PredioManager
         $this->entityManager = $entityManager;
     }
 
-    public function guardar($data)
+    public function guardarPredio($contribuyente, $data)
     {
         $predio = new Predio();
+        $predio->setIdContribuyente($contribuyente);
 
         $predio->setColonia($data['colonia']);
         $predio->setLocalidad($data['localidad']);
@@ -47,10 +49,36 @@ class PredioManager
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
     }
+    public function guardarPersona($data)
+    {
+        $contribuyente = new Contribuyente();
+
+        $contribuyente->setApellidoPaterno($data['apellido_paterno']);
+        $contribuyente->setApellidoMaterno($data['apellido_materno']);
+        $contribuyente->setCurp($data['curp']);
+        $contribuyente->setCvePersona($data['cve_persona']);
+        $contribuyente->setGenero($data['genero']);
+        $contribuyente->setNombre($data['nombre']);
+        $contribuyente->setTelefono($data['telefono']);
+        $contribuyente->setCorreo($data['correo']);
+        $contribuyente->setRfc($data['rfc']);
+        $contribuyente->getRazonSocial($data['razon_social']);
+
+        $currentDate = new \DateTime();
+        $contribuyente->setCreatedAt($currentDate);
+        $contribuyente->setUpdatedAt($currentDate);
+
+        $this->entityManager->persist($contribuyente);
+        $this->entityManager->flush();
+        if ($contribuyente->getIdContribuyente() > 0) {
+            return $contribuyente;
+        }
+        return null;
+    }
 
     public function actualizar($predio, $data)
     {
-        $predio->setNombre($data['nombre']);
+        $predio->setTitular($data['titular']);
 
         $currentDate = new \DateTime();
         $predio->setUpdatedAt($currentDate);

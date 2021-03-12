@@ -81,6 +81,7 @@ $(document).ready(function () {
 
     $('.btn-ok').on('click', function(e) {
         event.preventDefault(e);
+        var form = $(this).parents('form');
         swal({
                 title: "Are you sure?",
                 text: "Once deleted, you will not be able to recover this imaginary file!",
@@ -90,15 +91,20 @@ $(document).ready(function () {
             })
             .then((willDelete) => {
                 if (willDelete) {
-                    console.log('asd1');
+                    console.log('Submit');
+                    if (willDelete) form.submit();
                     swal("Poof! Your imaginary file has been deleted!", {
                         icon: "success",
                     }).then((willOk) => {
-                        console.log('asd2');
+                        console.log('RedirectOk');
+                        if (willOk) window.location = "/";
                     });
                 } else {
                     swal("Your imaginary file is safe!", {
                         icon: "error",
+                    }).then((willCancel) => {
+                        console.log('RedirectCancel');
+                        if (willCancel) window.location = "/";
                     });
                 }
             });

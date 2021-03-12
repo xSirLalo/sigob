@@ -61,9 +61,9 @@ class PredioForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'ubicacion',
+            'name' => 'localidad',
             'options' => [
-                'label' => 'Ubicación',
+                'label' => 'Localidad',
             ],
             'attributes' => [
                 //'required' => true,

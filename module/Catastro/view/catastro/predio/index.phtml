@@ -22,11 +22,12 @@ $this->pageBreadcrumbs()->setItems([
                     </div>
                 </div>
             </div>
-            <table  class="display table table-striped table-hover dt-responsive nowrap" id="bibliotecas" style="width:100%">
+            <table  class='display table table-striped table-hover dt-responsive nowrap' id="bibliotecas" style="width:100%">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Contribuyente</th>
+                        <th>Titular</th>
                         <th>Clave Catastral</th>
                         <th>Ubicacion</th>
                         <th>Opciones</th>
@@ -38,9 +39,10 @@ $this->pageBreadcrumbs()->setItems([
                             <tr>
                                 <td><?= $predio->getIdPredio() ?></td>
                                 <!-- TODO: Consultar desde el Webservice antes te mostrarlo en la tabla de predios -->
-                                <td><?php //echo $predio->getIdContribuyente()->getNombre()?></td>
+                                <td><?php echo $predio->getIdContribuyente()->getNombre()?></td>
+                                <td><?php echo $predio->getTitular()?></td>
                                 <td><?= $predio->getClaveCatastral() ?></td>
-                                <td><?= $predio->getUbicacion() ?></td>
+                                <td><?= $predio->getLocalidad() ?></td>
                                 <td>
                                     <div class="btn-group">
                                         <a href="<?= $this->url('predio/ver', ['action' => 'ver', 'id' => $predio->getIdPredio()]); ?>" class="btn btn-info"> Ver</a>

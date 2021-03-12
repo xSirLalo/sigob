@@ -54,11 +54,8 @@ class PruebaController extends AbstractActionController
         // $data = $this->opergobserviceadapter->obtenerColindancia("1714");
         // $data = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
         // $data = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
-
         // echo "<pre>";
-
         // print_r($data);
-
         // echo "</pre>";
         // exit();
         return new ViewModel(['data' => $data]);
@@ -75,12 +72,10 @@ class PruebaController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-
                 // echo "<pre>";
                 // print_r($data);
                 // echo "</pre>";
                 // exit();
-
 
                 // $this->pruebaManager->guardarPrueba($data);
                 $this->flashMessenger()->addWarningMessage($data);

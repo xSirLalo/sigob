@@ -12,6 +12,7 @@ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Form\PredioForm;
 use Catastro\Entity\Predio;
+use Catastro\Entity\Contribuyente;
 use Catastro\Entity\PredioColindancia;
 use Catastro\Form\BibliotecaForm;
 
@@ -65,8 +66,16 @@ class PredioController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->predioManager->guardar($data);
-                $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+
+                $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
+                if ($predio) {
+                    $this->predioManager->actualizar($predio, $data);
+                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
+                } else {
+                    $this->predioManager->guardar($data);
+                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                }
+
                 return $this->redirect()->toRoute('predio');
             }
         }
@@ -82,8 +91,7 @@ class PredioController extends AbstractActionController
     {
         return new ViewModel();
     }
-
-    public function searchCatastralAction()
+    public function search1CatastralAction()
     {
         $word = $_REQUEST['q'];
 
@@ -113,45 +121,79 @@ class PredioController extends AbstractActionController
         return $json;
     }
 
-    public function searchCatastra1lAction()
+    public function searchCatastralAction()
     {
         $word = $_REQUEST['q'];
-        $WebService = $this->opergobserviceadapter->obtenerPredio($word);
 
-        if ($WebService == null) {
-            $WebServiceGuarda = [
-                    'colonia'                 => $WebService->Predio->NombreColonia,
-                    'localidad'               => $WebService->Predio->NombreLocalidad,
-                    'municipio'               => $WebService->Predio->NombreMunicipio,
-                    'calle'                   => $WebService->Predio->PredioCalle,
-                    'cve_catastral'           => $WebService->Predio->PredioCveCatastral,
-                    'cve_predio'              => $WebService->Predio->PredioId,
-                    'numero_exterior'         => $WebService->Predio->PredioNumExt,
-                    'numero_interior'         => $WebService->Predio->PredioNumInt,
-                    'estatus'                 => $WebService->Predio->PredioStatus,
-                    'tipo'                    => $WebService->Predio->PredioTipo,
-                    'ultimo_ejercicio_pagado' => $WebService->Predio->PredioUltimoEjercicioPagado,
-                    'ultimo_periodo_pagado'   => $WebService->Predio->PredioUltimoPeriodoPagado,
-                    'titular'                 => $WebService->Predio->Titular,
-                    'titular_anterior'        => $WebService->Predio->TitularCompleto,
-            ];
-            $this->predioManager->guardar($WebServiceGuarda);
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb ->select('p')
+                ->from('Catastro\Entity\Predio', 'p')
+                    ->where('p.claveCatastral LIKE :word')
+                    ->setParameter("word", '%'.addcslashes($word, '%_').'%');
+        $query = $qb->getQuery()->getResult();
+
+        $arreglo  = [];
+        if ($query) {
+            foreach ($query as $r) {
+                $arreglo [] = [
+                        'id' => $r->getClaveCatastral(),
+                        'item_select_name'=> $r->getClaveCatastral() . ' - ' . $r->getTitular(),
+                    ];
+            }
         } else {
+            $WebService = $this->opergobserviceadapter->obtenerPredio($word);
+            $WebServicePredio = [
+                'colonia'                 => $WebService->Predio->NombreColonia,
+                'localidad'               => $WebService->Predio->NombreLocalidad,
+                'municipio'               => $WebService->Predio->NombreMunicipio,
+                'calle'                   => $WebService->Predio->PredioCalle,
+                'cve_catastral'           => $WebService->Predio->PredioCveCatastral,
+                'cve_predio'              => $WebService->Predio->PredioId,
+                'numero_exterior'         => $WebService->Predio->PredioNumExt,
+                'numero_interior'         => $WebService->Predio->PredioNumInt,
+                'estatus'                 => $WebService->Predio->PredioStatus,
+                'tipo'                    => $WebService->Predio->PredioTipo,
+                'ultimo_ejercicio_pagado' => $WebService->Predio->PredioUltimoEjercicioPagado,
+                'ultimo_periodo_pagado'   => $WebService->Predio->PredioUltimoPeriodoPagado,
+                'titular'                 => $WebService->Predio->Titular,
+                'titular_anterior'        => $WebService->Predio->TitularCompleto,
+            ];
+
+            $WebService2 = $this->opergobserviceadapter->obtenerPersonaPorCve($WebService->Predio->CvePersona);
+            $WebServicePersona = [
+                'apellido_paterno' => $WebService2->Persona->ApellidoPaternoPersona,
+                'apellido_materno' => $WebService2->Persona->ApellidoMaternoPersona,
+                'curp'             => $WebService2->Persona->CURPPersona,
+                'cve_persona'      => $WebService2->Persona->CvePersona,
+                'genero'           => $WebService2->Persona->GeneroPersona,
+                'nombre'           => $WebService2->Persona->NombrePersona,
+                'telefono'         => $WebService2->Persona->PersonaTelefono,
+                'correo'           => $WebService2->Persona->PersonaCorreo,
+                'rfc'              => $WebService2->Persona->RFCPersona,
+                'razon_social'     => $WebService2->Persona->RazonSocialPersona,
+            ];
+
+            $contribuyente = $this->predioManager->guardarPersona($WebServicePersona);
+
+            if ($contribuyente > 0) {
+                $this->predioManager->guardarPredio($contribuyente, $WebServicePredio);
+            }
+
+            $arreglo[] = [
+                        'id' => $WebService->Predio->PredioCveCatastral,
+                        'item_select_name' => $WebService->Predio->PredioCveCatastral,
+                    ];
         }
 
-
-        $arreglo = [];
-        $arreglo[] = [
-                'id' => $WebService->Predio->PredioCveCatastral,
-                'item_select_name' => $WebService->Predio->PredioCveCatastral,
-            ];
         $data = [
-                'items' => $arreglo,
-                'total_count' => count($arreglo),
-            ];
+                    'items'       => $arreglo,
+                    'total_count' => count($arreglo),
+                ];
 
         $json = new JsonModel($data);
         $json->setTerminal(true);
+
         return $json;
     }
 
@@ -161,24 +203,45 @@ class PredioController extends AbstractActionController
         $response = $this->getResponse();
         // AJAX response
         if ($request->isXmlHttpRequest()) {
-            $id = $this->params()->fromRoute('id');
-            $WebService = $this->opergobserviceadapter->obtenerPredio($id);
-            $WebService2 = $this->opergobserviceadapter->obtenerColindancia($WebService->Predio->PredioId);
+            $word = $this->params()->fromRoute('id');
 
-            $data = [
-                'titular'          => $WebService->Predio->Titular,
-                'ubicacion'        => $WebService->Predio->NombreLocalidad,
-                'titular_anterior' => $WebService->Predio->TitularCompleto,
-                'predio_id'        => $WebService->Predio->PredioId,
-                'con_norte'        => $WebService2->PredioColindancia[0]->Descripcion,
-                'con_sur'          => $WebService2->PredioColindancia[1]->Descripcion,
-                'con_este'         => $WebService2->PredioColindancia[2]->Descripcion,
-                'con_oeste'        => $WebService2->PredioColindancia[3]->Descripcion,
-                'norte'            => $WebService2->PredioColindancia[0]->MedidaMts,
-                'sur'              => $WebService2->PredioColindancia[1]->MedidaMts,
-                'este'             => $WebService2->PredioColindancia[2]->MedidaMts,
-                'oeste'            => $WebService2->PredioColindancia[3]->MedidaMts,
-            ];
+            $qb = $this->entityManager->createQueryBuilder();
+
+            $qb ->select('p')
+                    ->from('Catastro\Entity\Predio', 'p')
+                        ->where('p.claveCatastral LIKE :word')
+                        ->setParameter("word", '%'.addcslashes($word, '%_').'%');
+            $query = $qb->getQuery()->getResult();
+
+            $data = [];
+            if ($query) {
+                foreach ($query as $r) {
+                    $data = [
+                        'titular'          => $r->getTitular(),
+                        'localidad'        => $r->getLocalidad(),
+                        'titular_anterior' => $r->getTitularAnterior(),
+                        'predio_id'        => $r->getIdPredio(),
+                    ];
+                }
+            } else {
+                $WebService = $this->opergobserviceadapter->obtenerPredio($word);
+                $WebService2 = $this->opergobserviceadapter->obtenerColindancia($WebService->Predio->PredioId);
+
+                $data = [
+                        'titular'          => $WebService->Predio->Titular,
+                        'localidad'        => $WebService->Predio->NombreLocalidad,
+                        'titular_anterior' => $WebService->Predio->TitularCompleto,
+                        'predio_id'        => $WebService->Predio->PredioId,
+                        'con_norte'        => $WebService2->PredioColindancia[0]->Descripcion,
+                        'con_sur'          => $WebService2->PredioColindancia[1]->Descripcion,
+                        'con_este'         => $WebService2->PredioColindancia[2]->Descripcion,
+                        'con_oeste'        => $WebService2->PredioColindancia[3]->Descripcion,
+                        'norte'            => $WebService2->PredioColindancia[0]->MedidaMts,
+                        'sur'              => $WebService2->PredioColindancia[1]->MedidaMts,
+                        'este'             => $WebService2->PredioColindancia[2]->MedidaMts,
+                        'oeste'            => $WebService2->PredioColindancia[3]->MedidaMts,
+                    ];
+            }
 
             return $response->setContent(json_encode($data));
         } else {

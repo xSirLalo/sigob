@@ -58,19 +58,19 @@ $(document).ready(function () {
             async: true,
         success: function(data)
         {
-                console.log(data);
-                $('[name ="input1"]').val(data.predio_id);
-                $('[name ="titular"]').val(data.titular);
-                $('[name ="ubicacion"]').val(data.ubicacion);
-                $('[name ="titular_anterior"]').val(data.titular_anterior);
-                $('[name ="con_norte"]').val(data.con_norte);
-                $('[name ="con_sur"]').val(data.con_sur);
-                $('[name ="con_este"]').val(data.con_este);
-                $('[name ="con_oeste"]').val(data.con_oeste);
-                $('[name ="norte"]').val(data.norte);
-                $('[name ="sur"]').val(data.sur);
-                $('[name ="este"]').val(data.este);
-                $('[name ="oeste"]').val(data.oeste);
+            console.log(data);
+            $('[name ="input1"]').val(data.predio_id);
+            $('[name ="titular"]').val(data.titular);
+            $('[name ="localidad"]').val(data.localidad);
+            $('[name ="titular_anterior"]').val(data.titular_anterior);
+            $('[name ="con_norte"]').val(data.con_norte);
+            $('[name ="con_sur"]').val(data.con_sur);
+            $('[name ="con_este"]').val(data.con_este);
+            $('[name ="con_oeste"]').val(data.con_oeste);
+            $('[name ="norte"]').val(data.norte);
+            $('[name ="sur"]').val(data.sur);
+            $('[name ="este"]').val(data.este);
+            $('[name ="oeste"]').val(data.oeste);
         },
         error: function (jqXHR, textStatus, errorThrown)
             {

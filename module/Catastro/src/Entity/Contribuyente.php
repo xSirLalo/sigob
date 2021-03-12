@@ -17,7 +17,7 @@ class Contribuyente
      *
      * @ORM\Column(name="id_contribuyente", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idContribuyente;
 

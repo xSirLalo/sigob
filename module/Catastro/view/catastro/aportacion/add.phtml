@@ -513,6 +513,13 @@ $form->prepare();
                                 </div>
                             </div>
                             <div class="col-sm-4">
+                            <!-- Input cvpredio Oculto -->
+                                <?= $this->formText($form->get('cvepredio')); ?>
+                                <div class="text-danger">
+                                    <?= $this->formElementErrors($form->get('cvepredio')); ?>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
                                 <div class="form-group ">
                                 <!-- Input Id oculto -->
                                     <?= $this->formText($form->get('parametro')->setValue($id)); ?>

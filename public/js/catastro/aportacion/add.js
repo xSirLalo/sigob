@@ -10,7 +10,35 @@ $(document).ready(function () {
     $(".js-example-basic-single").select2();
 
 });
-
+    $('.btn-ok').on('click', function(e) {
+        event.preventDefault(e);
+        var form = $(this).parents('form');
+        swal({
+                title: "Good job!",
+                text: "Aportación generada!",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    console.log('Subimit...');
+                    if (willDelete) form.submit();
+                    swal("Descargando...", {
+                        icon: "success",
+                    }).then((willOk) => {
+                        console.log('Redirect...');
+                        if (willOk)  window.location = "/";
+                    });
+                } else {
+                    swal("Fin!", {
+                        icon: "error",
+                    }).then((willCancel) => {
+                        if (willCancel)  window.location = "/";
+                    });
+                }
+            });
+    });
     function Calcular() {
 
         //
@@ -237,6 +265,7 @@ $('.js-data-example-ajax2').change(function(){
             $('[name ="sur"]').val(data.sur);
             $('[name ="este"]').val(data.este);
             $('[name ="oeste"]').val(data.oeste);
+            $('[name ="cvepredio"]').val(data.cvepredio);
          // Mostrar campos ocultas si encontraste algo en la base de datos
     },
     error: function (jqXHR, textStatus, errorThrown)

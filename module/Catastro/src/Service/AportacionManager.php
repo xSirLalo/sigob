@@ -58,6 +58,7 @@ class AportacionManager
         $contribuyente = new Contribuyente();
         $predio = new Predio();
         $predioColindacia = new PredioColindancia();
+        $cvepredio = $data['cvepredio'];
 
         $contribuyentesWeb = $this->opergobserviceadapter->obtenerPersonaPorRfc($data['parametro']);
         if (!$contribuyentesWeb) {
@@ -88,12 +89,13 @@ class AportacionManager
         $predio->setUbicacion($data['ubicacion']);
         $predio->setTitular($data['titular']);
         $predio->setTitularAnterior($data['titular_anterior']);
+        $predio->setCvePredio($cvepredio);
 
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
 
         $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteIdWeb);
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioIdWeb);
+        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByCvePredio($cvepredio);
 
         $aportacion->setIdContribuyente($contribuyentebd);
         $aportacion->setIdPredio($prediobd);
@@ -110,8 +112,8 @@ class AportacionManager
         $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
 
-        $prediosColindaciasWeb = $this->opergobserviceadapter->obtenerColindancia($predioIdWeb);
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioIdWeb);
+        $prediosColindaciasWeb = $this->opergobserviceadapter->obtenerColindancia($cvepredio);
+        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByCvePredio($cvepredio);
         $num = (int) \count($prediosColindaciasWeb->PredioColindancia);
 
         for ($i=0; $i < $num; $i++) {
@@ -122,6 +124,10 @@ class AportacionManager
             $this->entityManager->persist($predioColindacia);
             $this->entityManager->flush();
         }
+    }
+
+    public function pdf($data)
+    {
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         // set document information
         $pdf->SetCreator(PDF_CREATOR);
@@ -273,7 +279,14 @@ class AportacionManager
         return $this->redirect()->toRoute('aportacion');
         //============================================================+
         // END OF FILE
-        //============================================================+
+        //============================================================+# code...
+    }
+
+    public function update($aportacion, $datos)
+    {
+        $aportacion->setEstatus($datos['status']);
+
+        $this->entityManager->flush();
     }
 
     public function actualizar($aportacion, $data)
