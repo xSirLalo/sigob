@@ -54,7 +54,7 @@ class BibliotecaManager
         $file = new Biblioteca();
 
         $Categoria = $this->entityManager->getRepository(ArchivoCategoria::class)->findOneByIdArchivoCategoria($categoria);
-        $Contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['id_contribuyente']);
+        $Contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['input1']);
         if ($Contribuyente==null) {
             throw new \Exception('Id ' . $data['id_contribuyente'] . ' doesn\'t exist');
         }

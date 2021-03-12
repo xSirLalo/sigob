@@ -160,7 +160,6 @@ class ContribuyenteController extends AbstractActionController
     public function addAction()
     {
         $form = new ContribuyenteForm();
-        $form2 = new BibliotecaForm();
         $categorias = $this->bibliotecaManager->categorias();
 
         $request = $this->getRequest();
@@ -190,7 +189,7 @@ class ContribuyenteController extends AbstractActionController
                     return $this->redirect()->toRoute('contribuyente');
                 }
             }
-            $view = new ViewModel(['form' => $form, 'form2' => $form2, 'categorias' => $categorias]);
+            $view = new ViewModel(['form' => $form, 'categorias' => $categorias]);
         }
         return $view;
     }
@@ -342,25 +341,23 @@ class ContribuyenteController extends AbstractActionController
         return $view;
     }
 
-    public function searchAction()
+    public function search2PersonaAction()
     {
         $word = $_REQUEST['q'];
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb ->select('c')
             ->from('Catastro\Entity\Contribuyente', 'c')
-                ->where('c.nombre LIKE :word')
-                ->orWhere('c.apellidoPaterno LIKE :word')
-                ->orWhere('c.apellidoMaterno LIKE :word')
+                ->where('c.rfc LIKE :word')
                 ->setParameter("word", '%'.addcslashes($word, '%_').'%');
         $query = $qb->getQuery()->getResult();
 
         $arreglo  = [];
         foreach ($query as $r) {
             $arreglo [] = [
-                'id' => $r->getIdContribuyente(),
-                'full_name'=> $r->getNombre() . ' ' . $r->getApellidoPaterno() . ' ' . $r->getApellidoMaterno(),
-            ];
+                    'id' => $r->getIdContribuyente(),
+                    'palabra_respuesta'=> $r->getNombre() . ' ' . $r->getApellidoPaterno() . ' ' . $r->getApellidoMaterno(),
+                ];
         }
         $data = [
                 'items'       => $arreglo,
@@ -374,6 +371,67 @@ class ContribuyenteController extends AbstractActionController
     }
 
     public function searchPersonaAction()
+    {
+        $word = $_REQUEST['q'];
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->select('c')
+            ->from('Catastro\Entity\Contribuyente', 'c')
+                ->where('c.rfc LIKE :word')
+                ->setParameter("word", '%'.addcslashes($word, '%_').'%');
+        $query = $qb->getQuery()->getResult();
+
+        $arreglo  = [];
+        if ($query) {
+            foreach ($query as $r) {
+                $arreglo [] = [
+                    'id' => $r->getIdContribuyente(),
+                    'palabra_respuesta'=> $r->getNombre() . ' ' . $r->getApellidoPaterno() . ' ' . $r->getApellidoMaterno(),
+                ];
+            }
+        } else {
+            $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($word);
+            if (isset($WebService->Persona)) {
+                if (is_array($WebService->Persona)) {
+                    $WebServicePersona = [
+                            'apellido_paterno'                 => $WebService->Persona[0]->ApellidoPaternoPersona,
+                            'apellido_materno'                 => $WebService->Persona[0]->ApellidoPaternoPersona,
+                            'curp'                 => $WebService->Persona[0]->CURPPersona,
+                            'cve_persona'                 => $WebService->Persona[0]->CvePersona,
+                            'genero'                 => $WebService->Persona[0]->GeneroPersona,
+                            'nombre'                 => $WebService->Persona[0]->NombrePersona,
+                            'telefono'                 => $WebService->Persona[0]->PersonaTelefono,
+                            'correo'                 => $WebService->Persona[0]->PersonaCorreo,
+                            'rfc'                 => $WebService->Persona[0]->RFCPersona,
+                            'razon_social'                 => $WebService->Persona[0]->RazonSocialPersona,
+                        ];
+                    $arreglo[] = [
+                        'id' => $WebService->Persona[0]->CvePersona,
+                        'palabra_respuesta' =>  $WebService->Persona[0]->RazonSocialPersona,
+                    ];
+                    // $contribuyenteGuardado = $this->contribuyenteManager->guardarPersona($WebServicePersona);
+                    // if ($contribuyenteGuardado > 0) {
+                    //     $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteGuardado);
+                    //     $arreglo [] = [
+                    //             'id' => $contribuyente->getIdContribuyente(),
+                    //             'palabra_respuesta'=> $contribuyente->getNombre() . ' ' . $contribuyente->getApellidoPaterno() . ' ' . $contribuyente->getApellidoMaterno(),
+                    //         ];
+                    // }
+                }
+            }
+        }
+        $data = [
+                'items'       => $arreglo,
+                'total_count' => count($arreglo),
+            ];
+
+        $json = new JsonModel($data);
+        $json->setTerminal(true);
+
+        return $json;
+    }
+
+    public function searchPersona1Action()
     {
         $word = $_REQUEST['q'];
 

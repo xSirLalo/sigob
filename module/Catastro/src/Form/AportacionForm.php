@@ -29,20 +29,6 @@ class AportacionForm extends Form
         ]);
 
         $this->add([
-            'type' => Element\Text::class,
-            'name' => 'parametro',
-            'options' => [
-            ],
-            'attributes' => [
-                'required' => true,
-                'size' => 40,
-                'maxlength' => 10,
-                'class' => 'form-control',
-               // 'hidden'=> true,
-            ]
-        ]);
-
-        $this->add([
             'type' => Element\File::class,
             'name' => 'archivo',
             'options' => [
@@ -439,7 +425,21 @@ class AportacionForm extends Form
                 'size' => 40,
                 'maxlength' => 10,
                 'class' => 'form-control',
-               // 'hidden'=> true,
+               'hidden'=> true,
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'parametro',
+            'options' => [
+            ],
+            'attributes' => [
+                'required' => true,
+                'size' => 40,
+                'maxlength' => 10,
+                'class' => 'form-control',
+               'hidden'=> true,
             ]
         ]);
 

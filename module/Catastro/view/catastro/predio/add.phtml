@@ -23,9 +23,9 @@ $form = $this->form;
 $form->setAttribute('action', $this->url('predio/agregar'));
 $form->prepare();
 
-$form2 = $this->form2;
-$form2->setAttribute('action', $this->url('biblioteca/agregar'));
-$form2->prepare();
+// $form2 = $this->form2;
+// $form2->setAttribute('action', $this->url('biblioteca/agregar'));
+// $form2->prepare();
 ?>
 <!-- [ col ] start -->
 <div class="col-md-6">
@@ -113,7 +113,6 @@ $form2->prepare();
                 <?= $this->formElementErrors($form->get('csrf')); ?>
                 <?= $this->formSubmit($form->get('btnGuardar')); ?>
                 <a href="<?= $this->url("predio") ?>" class="btn btn-secondary"> Volver atrás</a>
-            <?= $this->form()->closeTag(); ?>
             <!-- [ closeTag ] start -->
         </div>
     </div>
@@ -127,24 +126,23 @@ $form2->prepare();
         </div>
         <div class="card-body">
             <!-- [ openTag ] start -->
-            <?= $this->form()->openTag($form2); ?>
                 <div class="form-group">
                     <?= $this->formText($form->get('input1')); ?>
                     <?= $this->formElementErrors($form->get('input1')); ?>
                 </div>
                 <hr>
-                <?= $this->formLabel($form2->get('archivo')); ?>
+                <?= $this->formLabel($form->get('archivo')); ?>
                 <div class="form-group" id="select">
                     <div class="input-group">
                         <div class="input-group-append delete">
                             <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
                         </div>
-                        <?= $this->formSelect($form2->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)); ?>
+                        <?= $this->formSelect($form->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)); ?>
                         <div class="file-loading">
-                            <?= $this->formFile($form2->get('archivo')); ?>
+                            <?= $this->formFile($form->get('archivo')); ?>
                         </div>
                         <div class="text-danger">
-                            <?= $this->formElementErrors($form2->get('archivo')); ?>
+                            <?= $this->formElementErrors($form->get('archivo')); ?>
                         </div>
                     </div>
                 </div>
@@ -154,9 +152,7 @@ $form2->prepare();
                 </div>
                 <div class="btn-group float-right">
 
-                <?= $this->formButton($form2->get('add_more')); ?>
-                <?= $this->formSubmit($form2->get('btnGuardar')); ?>
-                <a href="<?= $this->url("biblioteca") ?>" class="btn btn-secondary"> Volver atrás</a>
+                <?= $this->formButton($form->get('add_more')); ?>
             <?= $this->form()->closeTag(); ?>
             <!-- [ closeTag ] start -->
         </div>

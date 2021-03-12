@@ -49,6 +49,7 @@ class PredioManager
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
     }
+
     public function guardarPersona($data)
     {
         $contribuyente = new Contribuyente();

@@ -182,6 +182,50 @@ class ContribuyenteForm extends Form
         ]);
 
         $this->add([
+            'type' => Element\Select::class,
+            'name' => 'id_archivo_categoria',
+            'options' => [
+                'label' => 'Categorias',
+                'empty_option' => 'Seleccione una categoría',
+                'disable_inarray_validator' => true,
+            ],
+            'attributes' => [
+                // 'required' => true,
+                'class' => 'custom-select'
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\File::class,
+            'name' => 'archivo',
+            'options' => [
+                'label' => 'Archivos'
+            ],
+            'attributes' => [
+                // 'required'      => true,
+                'valueDisabled' => true,
+                'isArray'       => true,
+                'multiple'      => true,
+                'class'         => 'form-control',
+                'id'            => 'archivo',
+                'data-toggle'   => 'tooltip',
+                'title'         => 'Cargar archivo'
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Button::class,
+            'name' => 'add_more',
+            'options' => [
+                'label' => 'Agregar +'
+            ],
+            'attributes' => [
+                'class' => 'btn btn-success',
+                'id' => 'add_more'
+            ]
+        ]);
+
+        $this->add([
             'type' => Element\Csrf::class,
             'name' => 'csrf',
             'options' => [
@@ -207,189 +251,226 @@ class ContribuyenteForm extends Form
         $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
         $inputFilter->add([
-            'name' => 'nombre',
+            'name' => 'archivo',
             // 'required' => true,
-            'filters' => [
-                [ 	// Remueve las etiquetas HTML y PHP
-                    'name' => Filter\StripTags::class,
-                    'options'=>[
-                        'tagsallowed'=>['p']
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los espacios en blanco
-                    'name' => Filter\StringTrim::class,
-                    'options'=>[
-                        'charlist'=>"\r\n\t "
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los saltos de Linea
-                    'name' => Filter\StripNewlines::class,
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-            ],
+            # note for files we start with validators before we use filters
             'validators' => [
+                // ['name' => Validator\NotEmpty::class],
+                // ['name' => Validator\File\IsImage::class],
+                // [
+                //     'name' => Validator\File\MimeType::class,
+                //     'options' => [
+                //         'mimeType' => 'image/png. image/jpeg, image/jpg, image/gif'
+                //     ],
+                // ], # just uncomment this one. I forgot. It always gives issues.
                 [
-                    'name' => Validator\NotEmpty::class
-                ],
-                [
-                    'name' => Validator\StringLength::class,
+                    'name' => Validator\File\Size::class,
                     'options' => [
-                        'min' => 3,
-                        'max' => 30,
+                        'min' => '3kB',
+                        'max' => '15MB'
                     ],
                 ],
             ],
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
+                [
+                    'name' => Filter\File\RenameUpload::class,
+                    'options' => [
+                        'target' => './public/img',
+                        'use_upload_name' => true,
+                        'use_upload_extension' => true,
+                        'overwrite' => true,
+                        'randomize' => false
+                    ]
+                ]
+            ]
         ]);
 
-        $inputFilter->add([
-            'name' => 'apellido_paterno',
-            'required' => true,
-            'filters' => [
-                [	// Remueve las etiquetas HTML y PHP
-                    'name' => Filter\StripTags::class,
-                    'options'=>[
-                        'tagsallowed'=>['p']
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los espacios en blanco
-                    'name' => Filter\StringTrim::class,
-                    'options'=>[
-                        'charlist'=>"\r\n\t "
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los saltos de Linea
-                    'name' => Filter\StripNewlines::class,
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-            ],
-            'validators' => [
-                [
-                    'name' => Validator\NotEmpty::class
-                ],
-                [
-                    'name' => Validator\StringLength::class,
-                    'options' => [
-                        'min' => 3,
-                        'max' => 30,
-                    ],
-                ],
-            ],
-        ]);
+        // $inputFilter->add([
+        //     'name' => 'nombre',
+        //     // 'required' => true,
+        //     'filters' => [
+        //         [ 	// Remueve las etiquetas HTML y PHP
+        //             'name' => Filter\StripTags::class,
+        //             'options'=>[
+        //                 'tagsallowed'=>['p']
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los espacios en blanco
+        //             'name' => Filter\StringTrim::class,
+        //             'options'=>[
+        //                 'charlist'=>"\r\n\t "
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los saltos de Linea
+        //             'name' => Filter\StripNewlines::class,
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //     ],
+        //     'validators' => [
+        //         [
+        //             'name' => Validator\NotEmpty::class
+        //         ],
+        //         [
+        //             'name' => Validator\StringLength::class,
+        //             'options' => [
+        //                 'min' => 3,
+        //                 'max' => 30,
+        //             ],
+        //         ],
+        //     ],
+        // ]);
 
-        $inputFilter->add([
-            'name' => 'apellido_materno',
-            'required' => true,
-            'filters' => [
-                [	// Remueve las etiquetas HTML y PHP
-                    'name' => Filter\StripTags::class,
-                    'options'=>[
-                        'tagsallowed'=>['p']
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los espacios en blanco
-                    'name' => Filter\StringTrim::class,
-                    'options'=>[
-                        'charlist'=>"\r\n\t "
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los saltos de Linea
-                    'name' => Filter\StripNewlines::class,
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-            ],
-            'validators' => [
-                [
-                    'name' => Validator\NotEmpty::class
-                ],
-                [
-                    'name' => Validator\StringLength::class,
-                    'options' => [
-                        'min' => 3,
-                        'max' => 30,
-                    ],
-                ],
-            ],
-        ]);
+        // $inputFilter->add([
+        //     'name' => 'apellido_paterno',
+        //     'required' => true,
+        //     'filters' => [
+        //         [	// Remueve las etiquetas HTML y PHP
+        //             'name' => Filter\StripTags::class,
+        //             'options'=>[
+        //                 'tagsallowed'=>['p']
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los espacios en blanco
+        //             'name' => Filter\StringTrim::class,
+        //             'options'=>[
+        //                 'charlist'=>"\r\n\t "
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los saltos de Linea
+        //             'name' => Filter\StripNewlines::class,
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //     ],
+        //     'validators' => [
+        //         [
+        //             'name' => Validator\NotEmpty::class
+        //         ],
+        //         [
+        //             'name' => Validator\StringLength::class,
+        //             'options' => [
+        //                 'min' => 3,
+        //                 'max' => 30,
+        //             ],
+        //         ],
+        //     ],
+        // ]);
 
-        $inputFilter->add([
-            'name' => 'rfc',
-            'required' => true,
-            'filters' => [
-                [	// Remueve las etiquetas HTML y PHP
-                    'name' => Filter\StripTags::class,
-                    'options'=>[
-                        'tagsallowed'=>['p']
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los espacios en blanco
-                    'name' => Filter\StringTrim::class,
-                    'options'=>[
-                        'charlist'=>"\r\n\t "
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los saltos de Linea
-                    'name' => Filter\StripNewlines::class,
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-            ],
-            'validators' => [
-                [
-                    'name' => Validator\NotEmpty::class
-                ],
-                [
-                    'name' => Validator\StringLength::class,
-                    'options' => [
-                        'min' => 12,
-                        'max' => 13,
-                    ],
-                ],
-            ],
-        ]);
+        // $inputFilter->add([
+        //     'name' => 'apellido_materno',
+        //     'required' => true,
+        //     'filters' => [
+        //         [	// Remueve las etiquetas HTML y PHP
+        //             'name' => Filter\StripTags::class,
+        //             'options'=>[
+        //                 'tagsallowed'=>['p']
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los espacios en blanco
+        //             'name' => Filter\StringTrim::class,
+        //             'options'=>[
+        //                 'charlist'=>"\r\n\t "
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los saltos de Linea
+        //             'name' => Filter\StripNewlines::class,
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //     ],
+        //     'validators' => [
+        //         [
+        //             'name' => Validator\NotEmpty::class
+        //         ],
+        //         [
+        //             'name' => Validator\StringLength::class,
+        //             'options' => [
+        //                 'min' => 3,
+        //                 'max' => 30,
+        //             ],
+        //         ],
+        //     ],
+        // ]);
 
-        $inputFilter->add([
-            'name' => 'curp',
-            'required' => true,
-            'filters' => [
-                [	// Remueve las etiquetas HTML y PHP
-                    'name' => Filter\StripTags::class,
-                    'options'=>[
-                        'tagsallowed'=>['p']
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los espacios en blanco
-                    'name' => Filter\StringTrim::class,
-                    'options'=>[
-                        'charlist'=>"\r\n\t "
-                    ],
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-                [	// Remueve los saltos de Linea
-                    'name' => Filter\StripNewlines::class,
-                    'priority'=>FilterChain::DEFAULT_PRIORITY
-                ],
-            ],
-            'validators' => [
-                [
-                    'name' => Validator\NotEmpty::class
-                ],
-                [
-                    'name' => Validator\StringLength::class,
-                    'options' => [
-                        'min' => 18,
-                        'max' => 18,
-                    ],
-                ],
-            ],
-        ]);
+        // $inputFilter->add([
+        //     'name' => 'rfc',
+        //     'required' => true,
+        //     'filters' => [
+        //         [	// Remueve las etiquetas HTML y PHP
+        //             'name' => Filter\StripTags::class,
+        //             'options'=>[
+        //                 'tagsallowed'=>['p']
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los espacios en blanco
+        //             'name' => Filter\StringTrim::class,
+        //             'options'=>[
+        //                 'charlist'=>"\r\n\t "
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los saltos de Linea
+        //             'name' => Filter\StripNewlines::class,
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //     ],
+        //     'validators' => [
+        //         [
+        //             'name' => Validator\NotEmpty::class
+        //         ],
+        //         [
+        //             'name' => Validator\StringLength::class,
+        //             'options' => [
+        //                 'min' => 12,
+        //                 'max' => 13,
+        //             ],
+        //         ],
+        //     ],
+        // ]);
+
+        // $inputFilter->add([
+        //     'name' => 'curp',
+        //     'required' => true,
+        //     'filters' => [
+        //         [	// Remueve las etiquetas HTML y PHP
+        //             'name' => Filter\StripTags::class,
+        //             'options'=>[
+        //                 'tagsallowed'=>['p']
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los espacios en blanco
+        //             'name' => Filter\StringTrim::class,
+        //             'options'=>[
+        //                 'charlist'=>"\r\n\t "
+        //             ],
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //         [	// Remueve los saltos de Linea
+        //             'name' => Filter\StripNewlines::class,
+        //             'priority'=>FilterChain::DEFAULT_PRIORITY
+        //         ],
+        //     ],
+        //     'validators' => [
+        //         [
+        //             'name' => Validator\NotEmpty::class
+        //         ],
+        //         [
+        //             'name' => Validator\StringLength::class,
+        //             'options' => [
+        //                 'min' => 18,
+        //                 'max' => 18,
+        //             ],
+        //         ],
+        //     ],
+        // ]);
 
         $inputFilter->add([
             'name' => 'csrf',

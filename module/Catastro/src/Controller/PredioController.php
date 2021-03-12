@@ -8,6 +8,8 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
+use Laminas\Filter;
+use Laminas\InputFilter\OptionalInputFilter;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Form\PredioForm;
@@ -56,30 +58,89 @@ class PredioController extends AbstractActionController
     {
         // https://stackoverflow.com/questions/2194317/how-to-combine-two-zend-forms-into-one-zend-form
         $form = new PredioForm();
-        $form2 = new BibliotecaForm();
         $categorias = $this->bibliotecaManager->categorias();
-
+        $destination = './public/img';
         $request = $this->getRequest();
-
         if ($request->isPost()) {
-            $data = $this->params()->fromPost();
+            $data = \array_merge_recursive(
+                $request->getFiles()->toArray(),
+                $request->getPost()->toArray(),
+            );
+            // $data = $this->params()->fromPost();
+            $archivoUrl = (array) $this->params()->fromFiles('archivo');
+            $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+
+            $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+            $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+            $num = (int) count($archivoUrl);
+            for ($i=0; $i < $num; $i++) {
+                $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+
+                $file_folder = $destination . '/' . $newName;
+
+                if (file_exists($file_folder)) {
+                    // FIXME: Vacio aun asi muestra el mensaje
+                    $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
+                    return $this->redirect()->toRoute('predio/agregar');
+                }
+
+                $inputFilter = new OptionalInputFilter();
+                $inputFilter->add([
+                    'name' => 'archivo',
+                    'filters' => [
+                        [
+                            'name' => Filter\File\Rename::class,
+                            'options' => [
+                                'target' => $destination . '/' . $newName,
+                            ]
+                        ]
+                    ]
+                ]);
+                $form->setInputFilter($inputFilter);
+            }
+
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
+                $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
 
-                $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
-                if ($predio) {
-                    $this->predioManager->actualizar($predio, $data);
-                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
-                } else {
-                    $this->predioManager->guardar($data);
-                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
+                $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
+
+                $num = (int) count($archivoUrl);
+                for ($i=0; $i < $num; $i++) {
+                    $filename = $_FILES['archivo']['name'][$i];
+                    $filesize = $_FILES['archivo']['size'][$i];
+                    $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                    $file_type = $_FILES['archivo']['type'][$i];
+                    $date = date("d-m-Y_H-i");
+                    $temp = explode(".", $filename);
+                    $new_filename =   strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
+                    $file_folder = $destination . '/' . $new_filename;
+
+                    $data['archivoBlob'] = file_get_contents($file_folder, true);
+                    $data['extension'] = $temp[count($temp)-1];
+                    $data['size'] = $filesize;
+                    $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                    $data['categoria'] = $categoria[$i];
+
+                    $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+                    $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
+                    if ($predio) {
+                        $this->predioManager->actualizar($predio, $data);
+                        $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
+                    } else {
+                        $this->predioManager->guardar($data);
+                        $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                    }
                 }
+                // $data = $form->getData();
 
                 return $this->redirect()->toRoute('predio');
             }
         }
-        return new ViewModel(['form' => $form, 'form2' => $form2, 'categorias' => $categorias]);
+        return new ViewModel(['form' => $form, 'categorias' => $categorias]);
     }
 
     public function viewAction()
@@ -174,10 +235,38 @@ class PredioController extends AbstractActionController
                 'razon_social'     => $WebService2->Persona->RazonSocialPersona,
             ];
 
+            // if ($contribuyente > 0) {
+            //     $WebService3 = $this->opergobserviceadapter->obtenerColindancia($WebService->Predio->PredioId);
+            //     if (isset($WebService3->PredioColindancia)) {
+            //         if (is_array($WebService3->PredioColindancia)) {
+            //             foreach ($WebService3->PredioColindancia as $item) {
+            //                 $WebServiceColindancia = [
+            //                     'descripcion'          => $item->Descripcion,
+            //                     'medida_metros'        => $item->MedidaMts,
+            //                     'orientacion_geografica' => $item->OrientacionGeografica,
+            //                 ];
+            //             }
+            //             $predio = $this->predioManager->guardarPredio($WebServicePredio);
+            //             if ($predio > 0) {
+            //                 $this->predioManager->guardarColindancia($predio, $WebServiceColindancia);
+            //             }
+            //         } else {
+            //             $WebServiceColindancia = [
+            //                 'descripcion'          => $WebService3->PredioColindancia->Descripcion,
+            //                 'medida_metros'        => $WebService3->PredioColindancia->MedidaMts,
+            //                 'orientacion_geografica' => $WebService3->PredioColindancia->OrientacionGeografica,
+            //             ];
+            //         }
+            //     }
+            // }
+
             $contribuyente = $this->predioManager->guardarPersona($WebServicePersona);
 
-            if ($contribuyente > 0) {
+            if ($contribuyente) {
                 $this->predioManager->guardarPredio($contribuyente, $WebServicePredio);
+                // if ($predio > 0) {
+                //     $this->predioManager->guardarGuardaColindancia($predio, $WebServicePredio);
+                // }
             }
 
             $arreglo[] = [
@@ -220,7 +309,8 @@ class PredioController extends AbstractActionController
                         'titular'          => $r->getTitular(),
                         'localidad'        => $r->getLocalidad(),
                         'titular_anterior' => $r->getTitularAnterior(),
-                        'predio_id'        => $r->getIdPredio(),
+                        'predio_id'        => $r->getIdContribuyente()->getIdContribuyente(),
+                        // 'cve_persona'        => $r->getCvePersona(),
                     ];
                 }
             } else {
@@ -232,6 +322,8 @@ class PredioController extends AbstractActionController
                         'localidad'        => $WebService->Predio->NombreLocalidad,
                         'titular_anterior' => $WebService->Predio->TitularCompleto,
                         'predio_id'        => $WebService->Predio->PredioId,
+                    ];
+                $data = [
                         'con_norte'        => $WebService2->PredioColindancia[0]->Descripcion,
                         'con_sur'          => $WebService2->PredioColindancia[1]->Descripcion,
                         'con_este'         => $WebService2->PredioColindancia[2]->Descripcion,
@@ -240,7 +332,7 @@ class PredioController extends AbstractActionController
                         'sur'              => $WebService2->PredioColindancia[1]->MedidaMts,
                         'este'             => $WebService2->PredioColindancia[2]->MedidaMts,
                         'oeste'            => $WebService2->PredioColindancia[3]->MedidaMts,
-                    ];
+                ];
             }
 
             return $response->setContent(json_encode($data));

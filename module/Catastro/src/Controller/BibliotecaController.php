@@ -76,6 +76,10 @@ class BibliotecaController extends AbstractActionController
                 $request->getPost()->toArray(),
                 $request->getFiles()->toArray()
             );
+            // echo "<pre>";
+            // print_r($data);
+            // echo "</pre>";
+            // exit();
             $archivoUrl = (array) $this->params()->fromFiles('archivo');
             $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
 
