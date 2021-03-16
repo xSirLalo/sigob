@@ -53,7 +53,7 @@ class PruebaController extends AbstractActionController
     {
         $data = $this->entityManager->getRepository(Contribuyente::class)->findOneByRfc("0");
         //$data = $this->opergobserviceadapter->obtenerPredio("109015000050035-61");
-        //$data = $this->opergobserviceadapter->obtenerColindancia("1714");
+        $data = $this->opergobserviceadapter->obtenerColindancia("1714");
         //$data2 = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
         //$data2 = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
         //$data2 = $this->entityManager->getRepository(PredioColindancia::class)->findBy(array('IdPredio'=>'48'));

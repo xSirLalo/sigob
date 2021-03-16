@@ -161,6 +161,7 @@ $('.js-data-example-ajax2').change(function(){
         $('[name ="este"]').val(data.este);
         $('[name ="oeste"]').val(data.oeste);
         $('[name ="id_predio"]').val(data.id_predio);
+        $('[name ="idcontribuyente"]').val(data.idcontribuyente);
         $('[name ="cvlCatastral"]').val(data.cvlCatastral);
         $("#formato").show();
 

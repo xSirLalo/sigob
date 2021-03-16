@@ -425,7 +425,7 @@ class AportacionForm extends Form
                 'size' => 40,
                 'maxlength' => 10,
                 'class' => 'form-control',
-               'hidden'=> true,
+                'hidden'=> true,
             ]
         ]);
 
@@ -439,7 +439,7 @@ class AportacionForm extends Form
                 'size' => 40,
                 'maxlength' => 10,
                 'class' => 'form-control',
-               'hidden'=> true,
+                'hidden'=> true,
             ]
         ]);
 

@@ -419,6 +419,19 @@ class AportacionModalForm extends Form
 
         $this->add([
             'type' => Element\Hidden::class,
+            'name' => 'idcontribuyente',
+            'options' => [
+                'label' => 'idcontribuyente',
+            ],
+            'attributes' => [
+                'readonly' => true,
+                'hidden'=> true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Hidden::class,
             'name' => 'cvlCatastral',
             'options' => [
                 'label' => 'cvlCatastral',

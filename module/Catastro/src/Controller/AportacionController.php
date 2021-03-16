@@ -180,7 +180,7 @@ class AportacionController extends AbstractActionController
         if ($query) {
             foreach ($query as $r) {
                 $arreglo [] = [
-                        'id' => $r->getRfc(),
+                        'id' => $r->getIdContribuyente(),
                         'titular' => $r->getNombre(). ' ' .$r->getApellidoPaterno(). ' ' .$r->getApellidoMaterno() ,
                     ];
                 }
@@ -199,12 +199,15 @@ class AportacionController extends AbstractActionController
                 'razon_social'     => $WebService->Persona->RazonSocialPersona,
             ];
 
-            $this->aportacionManager->guardarPersona($WebServicePersona);
+            $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
+            if($contribuyente)
+            {
 
-            $arreglo[] = [
-                        'id' => $WebService->Persona->RFCPersona,
-                        'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
-                    ];
+                $arreglo[] = [
+                            'id' => $contribuyente->getIdContribuyente(),
+                            'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
+                        ];
+            }
 
             }
             $data = [
@@ -243,10 +246,9 @@ class AportacionController extends AbstractActionController
         // AJAX response
         if ($request->isXmlHttpRequest()) {
             $id = $this->params()->fromRoute('id');
-            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByRfc($id);
-            $idaportacion = $contribuyente->getIdContribuyente();
-            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($idaportacion);
-            $idpredio= $aportacion->getIdPredio();
+            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
+            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($id);
+            $idpredio = $aportacion->getIdPredio();
             $qb = $this->entityManager->createQueryBuilder();
             $qb->select('p')
                 ->from('Catastro\Entity\PredioColindancia', 'p')
@@ -267,10 +269,13 @@ class AportacionController extends AbstractActionController
                 'id_predio'        =>  $aportacion->getIdPredio()->getIdPredio(),
                 'cvlCatastral'     =>  $aportacion->getIdPredio()->getClaveCatastral(),
 
+                'idcontribuyente' =>  $contribuyente->getIdContribuyente(),
+
                 'norte'            =>  $medidas[0],
                 'sur'              =>  $medidas[1],
                 'este'             =>  $medidas[2],
                 'oeste'            =>  $medidas[3],
+
                 'con_norte'        =>  $descripcion[0],
                 'con_sur'          =>  $descripcion[1],
                 'con_este'         =>  $descripcion[2],

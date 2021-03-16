@@ -235,38 +235,23 @@ class PredioController extends AbstractActionController
                 'razon_social'     => $WebService2->Persona->RazonSocialPersona,
             ];
 
-            // if ($contribuyente > 0) {
-            //     $WebService3 = $this->opergobserviceadapter->obtenerColindancia($WebService->Predio->PredioId);
-            //     if (isset($WebService3->PredioColindancia)) {
-            //         if (is_array($WebService3->PredioColindancia)) {
-            //             foreach ($WebService3->PredioColindancia as $item) {
-            //                 $WebServiceColindancia = [
-            //                     'descripcion'          => $item->Descripcion,
-            //                     'medida_metros'        => $item->MedidaMts,
-            //                     'orientacion_geografica' => $item->OrientacionGeografica,
-            //                 ];
-            //             }
-            //             $predio = $this->predioManager->guardarPredio($WebServicePredio);
-            //             if ($predio > 0) {
-            //                 $this->predioManager->guardarColindancia($predio, $WebServiceColindancia);
-            //             }
-            //         } else {
-            //             $WebServiceColindancia = [
-            //                 'descripcion'          => $WebService3->PredioColindancia->Descripcion,
-            //                 'medida_metros'        => $WebService3->PredioColindancia->MedidaMts,
-            //                 'orientacion_geografica' => $WebService3->PredioColindancia->OrientacionGeografica,
-            //             ];
-            //         }
-            //     }
-            // }
-
             $contribuyente = $this->predioManager->guardarPersona($WebServicePersona);
 
             if ($contribuyente) {
-                $this->predioManager->guardarPredio($contribuyente, $WebServicePredio);
-                // if ($predio > 0) {
-                //     $this->predioManager->guardarGuardaColindancia($predio, $WebServicePredio);
-                // }
+                $predio = $this->predioManager->guardarPredio($contribuyente, $WebServicePredio);
+            }
+
+            $WebService3 = $this->opergobserviceadapter->obtenerColindancia($WebService->Predio->PredioId);
+
+            foreach ($WebService3->PredioColindancia as $item) {
+                $WebServiceColindancia = [
+                    'medida_metros'            => $item->MedidaMts,
+                    'descripcion'              => $item->Descripcion,
+                    'orientacion_geografica'   => $item->OrientacionGeografica,
+                ];
+                if ($predio) {
+                    $this->predioManager->guardarColindancia($predio, $WebServiceColindancia);
+                }
             }
 
             $arreglo[] = [
@@ -305,12 +290,33 @@ class PredioController extends AbstractActionController
             $data = [];
             if ($query) {
                 foreach ($query as $r) {
+                    $idpredio=$r->getIdPredio();
+                    $qb = $this->entityManager->createQueryBuilder();
+                    $qb->select('p')
+                                ->from('Catastro\Entity\PredioColindancia', 'p')
+                                ->where('p.idPredio = :idParam')
+                                ->setParameter('idParam', $idpredio);
+                    $predioColindancias = $qb->getQuery()->getResult();
+                    foreach ($predioColindancias as $datos) {
+                        $medidas[]=$datos->getMedidaMetros();
+                        $descripcion[]=$datos->getDescripcion();
+                    }
+
                     $data = [
                         'titular'          => $r->getTitular(),
                         'localidad'        => $r->getLocalidad(),
                         'titular_anterior' => $r->getTitularAnterior(),
                         'predio_id'        => $r->getIdContribuyente()->getIdContribuyente(),
-                        // 'cve_persona'        => $r->getCvePersona(),
+                        //'cve_persona'        => $r->getCvePersona(),
+                        'norte'            =>  $medidas[0],
+                        'sur'              =>  $medidas[1],
+                        'este'             =>  $medidas[2],
+                        'oeste'            =>  $medidas[3],
+
+                        'con_norte'        =>  $descripcion[0],
+                        'con_sur'          =>  $descripcion[1],
+                        'con_este'         =>  $descripcion[2],
+                        'con_oeste'        =>  $descripcion[3],
                     ];
                 }
             } else {

@@ -30,7 +30,7 @@ class AportacionManager
         $aportacion = new Aportacion();
         $predio = new Predio();
 
-        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['contribuyente_id']);
+        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['idcontribuyente']);
         $aportacion->setIdContribuyente($contribuyentebd);
         $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['id_predio']);
         $aportacion->setIdPredio($prediobd);
@@ -58,9 +58,9 @@ class AportacionManager
         $predio = new Predio();
 
         $cvepredio  = $data['cvepredio'];
-        $cvepersona = $data['parametro'];
+        $idcontribuyente = $data['parametro'];
 
-        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByRfc($cvepersona);
+        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($idcontribuyente);
         $predio->setIdContribuyente($contribuyentebd);
         $predio->setClaveCatastral($data['contribuyente_id']);
         $predio->setUbicacion($data['ubicacion']);
@@ -71,7 +71,7 @@ class AportacionManager
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
 
-        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByRfc($cvepersona);
+        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($idcontribuyente);
         $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByCvePredio($cvepredio);
         $aportacion->setIdContribuyente($contribuyentebd);
         $aportacion->setIdPredio($prediobd);
