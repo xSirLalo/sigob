@@ -55,36 +55,13 @@ class AportacionManager
     public function guardar($data)
     {
         $aportacion = new Aportacion();
-        $contribuyente = new Contribuyente();
         $predio = new Predio();
-        $predioColindacia = new PredioColindancia();
-        $cvepredio = $data['cvepredio'];
 
-        $contribuyentesWeb = $this->opergobserviceadapter->obtenerPersonaPorRfc($data['parametro']);
-        if (!$contribuyentesWeb) {
-            $contribuyenteIdWeb = $contribuyentesWeb->Persona[0]->CvePersona;
-            $contribuyente->setIdContribuyente($contribuyenteIdWeb);
-            $contribuyente->setRfc($contribuyentesWeb->Persona[0]->RFCPersona);
-            $contribuyente->setNombre($contribuyentesWeb->Persona[0]->NombreCompletoPersona);
-            $contribuyente->setApellidoMaterno($contribuyentesWeb->Persona[0]->ApellidoMaternoPersona);
-            $contribuyente->setApellidoPaterno($contribuyentesWeb->Persona[0]->ApellidoPaternoPersona);
-            $contribuyente->setCurp($contribuyentesWeb->Persona[0]->CURPPersona);
+        $cvepredio  = $data['cvepredio'];
+        $cvepersona = $data['parametro'];
 
-            $this->entityManager->persist($contribuyente);
-            $this->entityManager->flush();
-
-            $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteIdWeb);
-        } else {
-            $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['parametro']);
-
-            $contribuyenteIdWeb = $data['parametro'];
-        }
-
+        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByRfc($cvepersona);
         $predio->setIdContribuyente($contribuyentebd);
-        $prediosWeb = $this->opergobserviceadapter->obtenerPredio($data['contribuyente_id']);
-        $predioIdWeb = $prediosWeb->Predio->PredioId;
-
-        $predio->setIdPredio($predioIdWeb);
         $predio->setClaveCatastral($data['contribuyente_id']);
         $predio->setUbicacion($data['ubicacion']);
         $predio->setTitular($data['titular']);
@@ -94,9 +71,8 @@ class AportacionManager
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
 
-        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteIdWeb);
+        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByRfc($cvepersona);
         $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByCvePredio($cvepredio);
-
         $aportacion->setIdContribuyente($contribuyentebd);
         $aportacion->setIdPredio($prediobd);
         $aportacion->setPago($data['pago_a']);//Pago aportacion
@@ -114,16 +90,62 @@ class AportacionManager
 
         $prediosColindaciasWeb = $this->opergobserviceadapter->obtenerColindancia($cvepredio);
         $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByCvePredio($cvepredio);
-        $num = (int) \count($prediosColindaciasWeb->PredioColindancia);
-
-        for ($i=0; $i < $num; $i++) {
+        ///////////////////
+        // $arreglo = [];
+        // foreach($prediosColindaciasWeb->PredioColindancia as $item)
+        // {
+        //     $predioColindacia = new PredioColindancia();
+        //     $arreglo = [
+        //         'descripcion' => $item->Descripcion,
+        //         'medidasmts' => $item->MedidasMts,
+        //         'Orientaciongeografica' => $item->OrientacionGeografica,
+        //     ];
+        //     $predioColindacia->setIdPredio($prediobd);
+        //     $predioColindacia->setDescripcion($arreglo['descripcion']);
+        //     $predioColindacia->setMedidaMetros($arreglo['medidasmts']);
+        //     $predioColindacia->setOrientacionGeografica($arreglo['Orientaciongeografica']);
+        //     $this->entityManager->persist($predioColindacia);
+        // }
+        ///////////////////
+        foreach($prediosColindaciasWeb->PredioColindancia as $item)
+        {
+            $predioColindacia = new PredioColindancia();
             $predioColindacia->setIdPredio($prediobd);
-            $predioColindacia->setDescripcion($prediosColindaciasWeb->PredioColindancia[$i]->Descripcion);
-            $predioColindacia->setMedidaMetros($prediosColindaciasWeb->PredioColindancia[$i]->MedidaMts);
-            $predioColindacia->setOrientacionGeografica($prediosColindaciasWeb->PredioColindancia[$i]->OrientacionGeografica);
+            $predioColindacia->setDescripcion($item->Descripcion);
+            $predioColindacia->setMedidaMetros($item->MedidaMts);
+            $predioColindacia->setOrientacionGeografica($item->OrientacionGeografica);
             $this->entityManager->persist($predioColindacia);
-            $this->entityManager->flush();
         }
+
+
+            $this->entityManager->flush();
+
+    }
+    public function guardarPersona($data)
+    {
+        $contribuyente = new Contribuyente();
+
+        $contribuyente->setApellidoPaterno($data['apellido_paterno']);
+        $contribuyente->setApellidoMaterno($data['apellido_materno']);
+        $contribuyente->setCurp($data['curp']);
+        $contribuyente->setCvePersona($data['cve_persona']);
+        $contribuyente->setGenero($data['genero']);
+        $contribuyente->setNombre($data['nombre']);
+        $contribuyente->setTelefono($data['telefono']);
+        $contribuyente->setCorreo($data['correo']);
+        $contribuyente->setRfc($data['rfc']);
+        $contribuyente->getRazonSocial($data['razon_social']);
+
+        $currentDate = new \DateTime();
+        $contribuyente->setCreatedAt($currentDate);
+        $contribuyente->setUpdatedAt($currentDate);
+
+        $this->entityManager->persist($contribuyente);
+        $this->entityManager->flush();
+        if ($contribuyente->getIdContribuyente() > 0) {
+            return $contribuyente;
+        }
+        return null;
     }
 
     public function pdf($data)
@@ -214,6 +236,10 @@ class AportacionManager
         ///No remover o todo se vuelve negro
         $pdf->MultiCell(10, 5, '', 1, 'C', 1, 0, '280', '', true);
         ///No remover o todo se vuelve negro
+        //N.Region
+        $region = $data['contribuyente_id'];
+        //Lote o Parcela
+        $lote = $data['contribuyente_id'];
 
         ////////////////CABEZERA Y IMAGENES DEL FORMATO//////////////////
         $pdf->Image('public/img/tulum.png', 23, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
@@ -221,8 +247,8 @@ class AportacionManager
         $pdf->Image('public/img/logo.png', 158, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
         ///////////////INICIO DE TABLA/////////////////
         $pdf->MultiCell(40, 12, '<h6><font size="8">TARJETA DE APORTACION</font></h6>', 1, 'C', 1, 0, '17', '65', true, 0, true);
-        $pdf->MultiCell(30, 12, '<h6><font size="8">No. REGION</font></h6><h6><font size="7">-</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        $pdf->MultiCell(30, 12, '<h6><font size="8">LOTE o PARCELA</font></h6><h6><font size="7">-</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
+        $pdf->MultiCell(30, 12, '<h6><font size="8">No. REGION</font></h6><h6><font size="7">'.substr($region,9,-8).'</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
+        $pdf->MultiCell(30, 12, '<h6><font size="8">LOTE o PARCELA</font></h6><h6><font size="7">'.substr($lote,16).'</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
         $pdf->MultiCell(37, 12, '<h6><font size="8">CATEGORIA</font></h6><h6><font size="7">' . $data['categoria'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
         $pdf->MultiCell(39, 12, '<h6><font size="8">CONDICION</font></h6><h6><font size="7">' . $data['condicion'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
         $pdf->Ln(11.5);
@@ -274,7 +300,7 @@ class AportacionManager
         }
 
         // This method has several options, check the source code documentation for more information.
-        $pdf->Output('listadoPdf_' . date('dmY') . '.pdf', 'I');
+        $pdf->Output('listadoPdf_' . date('dmY') . '.pdf', 'D');
         $pdf->Output();
         return $this->redirect()->toRoute('aportacion');
         //============================================================+

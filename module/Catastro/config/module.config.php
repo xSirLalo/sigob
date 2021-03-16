@@ -513,7 +513,7 @@ return [
                         'options' => [
                             'route' => '/autorellaRfc[/:id]',
                             'constraints' => [
-                                'id' => '[0-9]+',
+                                'id' => '[0-9,a-z,A-Z,-]+',
                             ],
                             'defaults' => [
                                 'action' => 'autofillRfc',

@@ -13,6 +13,4 @@
     },
     "peacock.color": "#557c9b",
     "php-cs-fixer.executablePathWindows": "C:\\laragon\\www\\sigob\\vendor\\bin\\php-cs-fixer.bat",
-    "terminal.integrated.shell.windows": "C:\\Laragon\\bin\\cmder\\cmder.bat",
-    "terminal.integrated.shellArgs.windows": ".",
 }

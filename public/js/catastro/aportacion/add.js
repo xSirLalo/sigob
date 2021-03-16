@@ -28,7 +28,7 @@ $(document).ready(function () {
                         icon: "success",
                     }).then((willOk) => {
                         console.log('Redirect...');
-                        if (willOk)  window.location = "/";
+                        if (willOk)  window.location = "/aportacion";
                     });
                 } else {
                     swal("Fin!", {

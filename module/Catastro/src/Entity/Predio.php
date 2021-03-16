@@ -22,39 +22,18 @@ class Predio
     private $idPredio;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
-     */
-    private $cvePredio;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="titular", type="string", length=255, nullable=true)
-     */
-    private $titular;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="titular_anterior", type="string", length=255, nullable=true)
-     */
-    private $titularAnterior;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="clave_catastral", type="string", length=255, nullable=true)
-     */
-    private $claveCatastral;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(name="ubicacion", type="string", length=255, nullable=true)
      */
     private $ubicacion;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="colonia", type="string", length=255, nullable=true)
+     */
+    private $colonia;
 
     /**
      * @var string|null
@@ -73,16 +52,30 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="colonia", type="string", length=255, nullable=true)
+     * @ORM\Column(name="calle", type="string", length=255, nullable=true)
      */
-    private $colonia;
+    private $calle;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="calle", type="string", length=255, nullable=true)
+     * @ORM\Column(name="clave_catastral", type="string", length=255, nullable=true)
      */
-    private $calle;
+    private $claveCatastral;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
+     */
+    private $cvePredio;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="numero_exterior", type="string", length=255, nullable=true)
+     */
+    private $numeroExterior;
 
     /**
      * @var string|null
@@ -94,9 +87,9 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="numero_exterior", type="string", length=255, nullable=true)
+     * @ORM\Column(name="estatus", type="string", length=255, nullable=true)
      */
-    private $numeroExterior;
+    private $estatus;
 
     /**
      * @var string|null
@@ -122,9 +115,16 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="estatus", type="string", length=255, nullable=true)
+     * @ORM\Column(name="titular", type="string", length=255, nullable=true)
      */
-    private $estatus;
+    private $titular;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="titular_anterior", type="string", length=255, nullable=true)
+     */
+    private $titularAnterior;
 
     /**
      * @var \DateTime|null
@@ -176,102 +176,6 @@ class Predio
     }
 
     /**
-     * Set cvePredio.
-     *
-     * @param int|null $cvePredio
-     *
-     * @return Predio
-     */
-    public function setCvePredio($cvePredio = null)
-    {
-        $this->cvePredio = $cvePredio;
-
-        return $this;
-    }
-
-    /**
-     * Get cvePredio.
-     *
-     * @return int|null
-     */
-    public function getCvePredio()
-    {
-        return $this->cvePredio;
-    }
-
-    /**
-     * Set titular.
-     *
-     * @param string|null $titular
-     *
-     * @return Predio
-     */
-    public function setTitular($titular = null)
-    {
-        $this->titular = $titular;
-
-        return $this;
-    }
-
-    /**
-     * Get titular.
-     *
-     * @return string|null
-     */
-    public function getTitular()
-    {
-        return $this->titular;
-    }
-
-    /**
-     * Set titularAnterior.
-     *
-     * @param string|null $titularAnterior
-     *
-     * @return Predio
-     */
-    public function setTitularAnterior($titularAnterior = null)
-    {
-        $this->titularAnterior = $titularAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get titularAnterior.
-     *
-     * @return string|null
-     */
-    public function getTitularAnterior()
-    {
-        return $this->titularAnterior;
-    }
-
-    /**
-     * Set claveCatastral.
-     *
-     * @param string|null $claveCatastral
-     *
-     * @return Predio
-     */
-    public function setClaveCatastral($claveCatastral = null)
-    {
-        $this->claveCatastral = $claveCatastral;
-
-        return $this;
-    }
-
-    /**
-     * Get claveCatastral.
-     *
-     * @return string|null
-     */
-    public function getClaveCatastral()
-    {
-        return $this->claveCatastral;
-    }
-
-    /**
      * Set ubicacion.
      *
      * @param string|null $ubicacion
@@ -293,6 +197,30 @@ class Predio
     public function getUbicacion()
     {
         return $this->ubicacion;
+    }
+
+    /**
+     * Set colonia.
+     *
+     * @param string|null $colonia
+     *
+     * @return Predio
+     */
+    public function setColonia($colonia = null)
+    {
+        $this->colonia = $colonia;
+
+        return $this;
+    }
+
+    /**
+     * Get colonia.
+     *
+     * @return string|null
+     */
+    public function getColonia()
+    {
+        return $this->colonia;
     }
 
     /**
@@ -344,30 +272,6 @@ class Predio
     }
 
     /**
-     * Set colonia.
-     *
-     * @param string|null $colonia
-     *
-     * @return Predio
-     */
-    public function setColonia($colonia = null)
-    {
-        $this->colonia = $colonia;
-
-        return $this;
-    }
-
-    /**
-     * Get colonia.
-     *
-     * @return string|null
-     */
-    public function getColonia()
-    {
-        return $this->colonia;
-    }
-
-    /**
      * Set calle.
      *
      * @param string|null $calle
@@ -389,6 +293,78 @@ class Predio
     public function getCalle()
     {
         return $this->calle;
+    }
+
+    /**
+     * Set claveCatastral.
+     *
+     * @param string|null $claveCatastral
+     *
+     * @return Predio
+     */
+    public function setClaveCatastral($claveCatastral = null)
+    {
+        $this->claveCatastral = $claveCatastral;
+
+        return $this;
+    }
+
+    /**
+     * Get claveCatastral.
+     *
+     * @return string|null
+     */
+    public function getClaveCatastral()
+    {
+        return $this->claveCatastral;
+    }
+
+    /**
+     * Set cvePredio.
+     *
+     * @param int|null $cvePredio
+     *
+     * @return Predio
+     */
+    public function setCvePredio($cvePredio = null)
+    {
+        $this->cvePredio = $cvePredio;
+
+        return $this;
+    }
+
+    /**
+     * Get cvePredio.
+     *
+     * @return int|null
+     */
+    public function getCvePredio()
+    {
+        return $this->cvePredio;
+    }
+
+    /**
+     * Set numeroExterior.
+     *
+     * @param string|null $numeroExterior
+     *
+     * @return Predio
+     */
+    public function setNumeroExterior($numeroExterior = null)
+    {
+        $this->numeroExterior = $numeroExterior;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroExterior.
+     *
+     * @return string|null
+     */
+    public function getNumeroExterior()
+    {
+        return $this->numeroExterior;
     }
 
     /**
@@ -416,27 +392,27 @@ class Predio
     }
 
     /**
-     * Set numeroExterior.
+     * Set estatus.
      *
-     * @param string|null $numeroExterior
+     * @param string|null $estatus
      *
      * @return Predio
      */
-    public function setNumeroExterior($numeroExterior = null)
+    public function setEstatus($estatus = null)
     {
-        $this->numeroExterior = $numeroExterior;
+        $this->estatus = $estatus;
 
         return $this;
     }
 
     /**
-     * Get numeroExterior.
+     * Get estatus.
      *
      * @return string|null
      */
-    public function getNumeroExterior()
+    public function getEstatus()
     {
-        return $this->numeroExterior;
+        return $this->estatus;
     }
 
     /**
@@ -512,27 +488,51 @@ class Predio
     }
 
     /**
-     * Set estatus.
+     * Set titular.
      *
-     * @param string|null $estatus
+     * @param string|null $titular
      *
      * @return Predio
      */
-    public function setEstatus($estatus = null)
+    public function setTitular($titular = null)
     {
-        $this->estatus = $estatus;
+        $this->titular = $titular;
 
         return $this;
     }
 
     /**
-     * Get estatus.
+     * Get titular.
      *
      * @return string|null
      */
-    public function getEstatus()
+    public function getTitular()
     {
-        return $this->estatus;
+        return $this->titular;
+    }
+
+    /**
+     * Set titularAnterior.
+     *
+     * @param string|null $titularAnterior
+     *
+     * @return Predio
+     */
+    public function setTitularAnterior($titularAnterior = null)
+    {
+        $this->titularAnterior = $titularAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get titularAnterior.
+     *
+     * @return string|null
+     */
+    public function getTitularAnterior()
+    {
+        return $this->titularAnterior;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Catastro\Entity;
+namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -141,9 +141,9 @@ class Predio
     private $updatedAt;
 
     /**
-     * @var \Catastro\Entity\Contribuyente
+     * @var \Application\Entity\Contribuyente
      *
-     * @ORM\ManyToOne(targetEntity="Catastro\Entity\Contribuyente")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Contribuyente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_contribuyente", referencedColumnName="id_contribuyente")
      * })

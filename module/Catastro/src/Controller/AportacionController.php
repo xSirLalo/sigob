@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Catastro\Controller;
 
+//use Application\Entity\Contribuyente;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
@@ -17,6 +18,7 @@ use Catastro\Entity\Predio;
 use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
 use Catastro\Entity\TablaValorConstruccion;
+use Catastro\Entity\Contribuyente;
 
 class AportacionController extends AbstractActionController
 {
@@ -164,41 +166,52 @@ class AportacionController extends AbstractActionController
     {
         $name = $_REQUEST['q'];
 
-        ///Join ala base de datos para hacer el select
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('c')->from('Catastro\Entity\Contribuyente', 'c')
                 ->where($qb->expr()->like('c.nombre', ":word"))
                 ->orWhere($qb->expr()->like('c.apellidoPaterno', ":word"))
                 ->orWhere($qb->expr()->like('c.apellidoMaterno', ":word"))
                 ->orWhere($qb->expr()->like('c.rfc', ":word"))
+                ->orWhere($qb->expr()->like('c.cvePersona', ":word"))
             ->setParameter("word", '%' . addcslashes($name, '%_') . '%');
-        $datos = $qb->getQuery()->getResult();
+        $query = $qb->getQuery()->getResult();
 
-        //si no exciste el contribuyente en la base datos buscar por rfc en el web service
-        if ($datos == null) {
-            $resultados = $this->opergobserviceadapter->obtenerPersonaPorRfc($name);
-            $arreglo = [];
+        $arreglo  = [];
+        if ($query) {
+            foreach ($query as $r) {
+                $arreglo [] = [
+                        'id' => $r->getRfc(),
+                        'titular' => $r->getNombre(). ' ' .$r->getApellidoPaterno(). ' ' .$r->getApellidoMaterno() ,
+                    ];
+                }
+            }else {
+                $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($name);
+                $WebServicePersona = [
+                'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
+                'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
+                'curp'             => $WebService->Persona->CURPPersona,
+                'cve_persona'      => $WebService->Persona->CvePersona,
+                'genero'           => $WebService->Persona->GeneroPersona,
+                'nombre'           => $WebService->Persona->NombrePersona,
+                'telefono'         => $WebService->Persona->PersonaTelefono,
+                'correo'           => $WebService->Persona->PersonaCorreo,
+                'rfc'              => $WebService->Persona->RFCPersona,
+                'razon_social'     => $WebService->Persona->RazonSocialPersona,
+            ];
+
+            $this->aportacionManager->guardarPersona($WebServicePersona);
+
             $arreglo[] = [
-                'id' => $resultados->Persona[0]->RFCPersona,
-                'titular' => $resultados->Persona[0]->RFCPersona . ' - '. $resultados->Persona[0]->RazonSocialPersona,
-            ];
-            $data = [
-                'items' => $arreglo,
-                'total_count' => count($arreglo),
-            ];
-        } else {
-            $arreglo = [];
-            foreach ($datos as $dato) {
-                $arreglo[] = [
-                    'id' => $dato->getIdContribuyente(),
-                    'titular' => $dato->getNombre(). ' ' .$dato->getApellidoPaterno(). ' ' .$dato->getApellidoMaterno() ,
-                ];
+                        'id' => $WebService->Persona->RFCPersona,
+                        'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
+                    ];
+
             }
             $data = [
                 'items' => $arreglo,
                 'total_count' => count($arreglo),
             ];
-        }
+
         $json = new JsonModel($data);
         $json->setTerminal(true);
 
@@ -230,15 +243,40 @@ class AportacionController extends AbstractActionController
         // AJAX response
         if ($request->isXmlHttpRequest()) {
             $id = $this->params()->fromRoute('id');
-            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($id);
-            $predioColindacias = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredio($id);
+            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByRfc($id);
+            $idaportacion = $contribuyente->getIdContribuyente();
+            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($idaportacion);
+            $idpredio= $aportacion->getIdPredio();
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb->select('p')
+                ->from('Catastro\Entity\PredioColindancia', 'p')
+                ->where('p.idPredio = :idParam')
+                ->setParameter('idParam', $idpredio);
+            $predioColindancias = $qb->getQuery()->getResult();
+            foreach ($predioColindancias as $datos )
+            {
+            $medidas[]=$datos->getMedidaMetros();
+            $descripcion[]=$datos->getDescripcion();
+            }
+
             $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($id);
             $data = [
-                'titular' => $aportacion->getIdPredio()->getTitular(),
-                'ubicacion' => $aportacion->getIdPredio()->getUbicacion(),
-                'titular_anterior' => $aportacion->getIdPredio()->getTitularAnterior(),
-                'id_predio'=> $aportacion->getIdPredio()->getIdPredio(),
-                'cvlCatastral'=> $aportacion->getIdPredio()->getClaveCatastral(),
+                'titular'          =>  $aportacion->getIdPredio()->getTitular(),
+                'ubicacion'        =>  $aportacion->getIdPredio()->getUbicacion(),
+                'titular_anterior' =>  $aportacion->getIdPredio()->getTitularAnterior(),
+                'id_predio'        =>  $aportacion->getIdPredio()->getIdPredio(),
+                'cvlCatastral'     =>  $aportacion->getIdPredio()->getClaveCatastral(),
+
+                'norte'            =>  $medidas[0],
+                'sur'              =>  $medidas[1],
+                'este'             =>  $medidas[2],
+                'oeste'            =>  $medidas[3],
+                'con_norte'        =>  $descripcion[0],
+                'con_sur'          =>  $descripcion[1],
+                'con_este'         =>  $descripcion[2],
+                'con_oeste'        =>  $descripcion[3],
+
+
             ];
 
             return $response->setContent(json_encode($data));
