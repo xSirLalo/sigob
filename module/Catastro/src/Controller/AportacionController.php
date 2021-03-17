@@ -104,10 +104,11 @@ class AportacionController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->aportacionManager->guardar($data);
-                $id = $data['parametro'];
-                $this->aportacionManager->pdf($id);
-                $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                $aportacion = $this->aportacionManager->guardar($data);
+                if ($aportacion) {
+                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                    $this->aportacionManager->pdf($aportacion);
+                }
                 return $this->redirect()->toRoute('aportacion');
             }
         }
@@ -184,10 +185,10 @@ class AportacionController extends AbstractActionController
                         'id' => $r->getIdContribuyente(),
                         'titular' => $r->getNombre(). ' ' .$r->getApellidoPaterno(). ' ' .$r->getApellidoMaterno() ,
                     ];
-                }
-            }else {
-                $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($name);
-                $WebServicePersona = [
+            }
+        } else {
+            $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($name);
+            $WebServicePersona = [
                 'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
                 'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
                 'curp'             => $WebService->Persona->CURPPersona,
@@ -201,17 +202,14 @@ class AportacionController extends AbstractActionController
             ];
 
             $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
-            if($contribuyente)
-            {
-
+            if ($contribuyente) {
                 $arreglo[] = [
                             'id' => $contribuyente->getIdContribuyente(),
                             'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
                         ];
             }
-
-            }
-            $data = [
+        }
+        $data = [
                 'items' => $arreglo,
                 'total_count' => count($arreglo),
             ];
@@ -256,10 +254,9 @@ class AportacionController extends AbstractActionController
                 ->where('p.idPredio = :idParam')
                 ->setParameter('idParam', $idpredio);
             $predioColindancias = $qb->getQuery()->getResult();
-            foreach ($predioColindancias as $datos )
-            {
-            $medidas[]=$datos->getMedidaMetros();
-            $descripcion[]=$datos->getDescripcion();
+            foreach ($predioColindancias as $datos) {
+                $medidas[]=$datos->getMedidaMetros();
+                $descripcion[]=$datos->getDescripcion();
             }
 
             $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($id);

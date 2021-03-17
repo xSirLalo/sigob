@@ -14,8 +14,9 @@ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Form\PredioForm;
 use Catastro\Entity\Predio;
-use Catastro\Entity\Contribuyente;
 use Catastro\Entity\PredioColindancia;
+use Catastro\Entity\Archivo as Biblioteca;
+use Catastro\Entity\Contribuyente;
 use Catastro\Form\BibliotecaForm;
 
 class PredioController extends AbstractActionController
@@ -124,7 +125,6 @@ class PredioController extends AbstractActionController
                     $data['size'] = $filesize;
                     $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
                     $data['categoria'] = $categoria[$i];
-
                     $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
                     $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
                     if ($predio) {
@@ -145,6 +145,26 @@ class PredioController extends AbstractActionController
 
     public function viewAction()
     {
+        $predioId = (int)$this->params()->fromRoute('id', -1);
+
+        if ($predioId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        $predio     = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
+        $colindacia = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredio($predioId);
+        $archivo    = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdPredio($predioId);
+
+        if ($predio == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        return new ViewModel(['predio' => $predio, 'colindacia' => $colindacia, 'archivo' => $archivo, 'predioId' => $predioId]);
+
         return new ViewModel();
     }
 
@@ -290,7 +310,7 @@ class PredioController extends AbstractActionController
             $data = [];
             if ($query) {
                 foreach ($query as $r) {
-                    $idpredio=$r->getIdPredio();
+                    $idpredio = $r->getIdPredio();
                     $qb = $this->entityManager->createQueryBuilder();
                     $qb->select('p')
                                 ->from('Catastro\Entity\PredioColindancia', 'p')
@@ -306,7 +326,8 @@ class PredioController extends AbstractActionController
                         'titular'          => $r->getTitular(),
                         'localidad'        => $r->getLocalidad(),
                         'titular_anterior' => $r->getTitularAnterior(),
-                        'predio_id'        => $r->getIdContribuyente()->getIdContribuyente(),
+                        // 'predio_id'        => $r->getIdContribuyente()->getIdContribuyente(),
+                        'predio_id'        => $idpredio,
                         //'cve_persona'        => $r->getCvePersona(),
                         'norte'            =>  $medidas[0],
                         'sur'              =>  $medidas[1],
@@ -321,23 +342,26 @@ class PredioController extends AbstractActionController
                 }
             } else {
                 $WebService = $this->opergobserviceadapter->obtenerPredio($word);
-                $WebService2 = $this->opergobserviceadapter->obtenerColindancia($WebService->Predio->PredioId);
-
                 $data = [
                         'titular'          => $WebService->Predio->Titular,
                         'localidad'        => $WebService->Predio->NombreLocalidad,
                         'titular_anterior' => $WebService->Predio->TitularCompleto,
                         'predio_id'        => $WebService->Predio->PredioId,
                     ];
+
+                $WebService2 = $this->opergobserviceadapter->obtenerColindancia($WebService->Predio->PredioId);
                 $data = [
-                        'con_norte'        => $WebService2->PredioColindancia[0]->Descripcion,
-                        'con_sur'          => $WebService2->PredioColindancia[1]->Descripcion,
-                        'con_este'         => $WebService2->PredioColindancia[2]->Descripcion,
-                        'con_oeste'        => $WebService2->PredioColindancia[3]->Descripcion,
                         'norte'            => $WebService2->PredioColindancia[0]->MedidaMts,
+                        'con_norte'        => $WebService2->PredioColindancia[0]->Descripcion,
+
                         'sur'              => $WebService2->PredioColindancia[1]->MedidaMts,
+                        'con_sur'          => $WebService2->PredioColindancia[1]->Descripcion,
+
                         'este'             => $WebService2->PredioColindancia[2]->MedidaMts,
+                        'con_este'         => $WebService2->PredioColindancia[2]->Descripcion,
+
                         'oeste'            => $WebService2->PredioColindancia[3]->MedidaMts,
+                        'con_oeste'        => $WebService2->PredioColindancia[3]->Descripcion,
                 ];
             }
 

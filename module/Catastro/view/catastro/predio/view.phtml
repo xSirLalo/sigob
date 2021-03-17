@@ -1,0 +1,87 @@
+<?php
+$title = $this->translate('Detalle');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Predio' => $this->url('predio'),
+    'Detalle' => $this->url('predio/ver'),
+]);
+?>
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-light">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Archivo</th>
+                        <th>Fecha de subida</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($detalles): ?>
+                        <?php foreach ($detalles as $detalle): ?>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="3" class="text-center">No hay archivos...</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <a href="<?= $this->url('predio') ?>" class="btn btn-secondary">Volver al listado</a>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-light">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Archivo</th>
+                        <th>Fecha de subida</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($detalles): ?>
+                        <?php foreach ($detalles as $detalle): ?>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="3" class="text-center">No hay archivos...</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <a href="<?= $this->url('predio') ?>" class="btn btn-secondary">Volver al listado</a>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

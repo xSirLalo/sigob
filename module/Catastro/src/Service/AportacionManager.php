@@ -107,8 +107,7 @@ class AportacionManager
         //     $this->entityManager->persist($predioColindacia);
         // }
         ///////////////////
-        foreach($prediosColindaciasWeb->PredioColindancia as $item)
-        {
+        foreach ($prediosColindaciasWeb->PredioColindancia as $item) {
             $predioColindacia = new PredioColindancia();
             $predioColindacia->setIdPredio($prediobd);
             $predioColindacia->setDescripcion($item->Descripcion);
@@ -116,10 +115,12 @@ class AportacionManager
             $predioColindacia->setOrientacionGeografica($item->OrientacionGeografica);
             $this->entityManager->persist($predioColindacia);
         }
+        $this->entityManager->flush();
 
-
-            $this->entityManager->flush();
-
+        if ($aportacion->getIdAportacion() > 0) {
+            return $aportacion;
+        }
+        return null;
     }
     public function guardarPersona($data)
     {
@@ -148,7 +149,7 @@ class AportacionManager
         return null;
     }
 
-    public function pdf($id)
+    public function pdf($aportacion)
     {
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         // set document information
@@ -162,7 +163,6 @@ class AportacionManager
         $PDF_HEADER_LOGO_WIDTH = 14;
         $PDF_HEADER_TITLE = "Sistemas de Gobierno.";
         $PDF_HEADER_STRING = "Lista de Contribuyentes \nGenerado con fecha: " . date('d-m-Y');
-
 
         // set default header data
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' del '.date('d-m-Y'), PDF_HEADER_STRING);
@@ -208,8 +208,8 @@ class AportacionManager
 
         // set text shadow effect
         $pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
-        $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($id);
-
+        $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacion);
+        $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($aportacion->getIdPredio());
 
         $tabla = '<table  cellspacing="3" cellpadding="4">
                 <tr>
@@ -251,8 +251,8 @@ class AportacionManager
         $pdf->Image('public/img/logo.png', 158, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
         // ///////////////INICIO DE TABLA/////////////////
         $pdf->MultiCell(40, 12, '<h6><font size="8">TARJETA DE APORTACION</font></h6>', 1, 'C', 1, 0, '17', '65', true, 0, true);
-        $pdf->MultiCell(30, 12, '<h6><font size="8">No. REGION</font></h6><h6><font size="7">'.substr($region,9,-8).'</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        $pdf->MultiCell(30, 12, '<h6><font size="8">LOTE o PARCELA</font></h6><h6><font size="7">'.substr($lote,16).'</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
+        $pdf->MultiCell(30, 12, '<h6><font size="8">No. REGION</font></h6><h6><font size="7">'.substr($region, 9, -8).'</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
+        $pdf->MultiCell(30, 12, '<h6><font size="8">LOTE o PARCELA</font></h6><h6><font size="7">'.substr($lote, 16).'</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
         // $pdf->MultiCell(37, 12, '<h6><font size="8">CATEGORIA</font></h6><h6><font size="7">' . $data['categoria'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
         // $pdf->MultiCell(39, 12, '<h6><font size="8">CONDICION</font></h6><h6><font size="7">' . $data['condicion'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
         // $pdf->Ln(11.5);
@@ -306,7 +306,6 @@ class AportacionManager
         // This method has several options, check the source code documentation for more information.
         $pdf->Output('listadoPdf_' . date('dmY') . '.pdf', 'D');
         $pdf->Output();
-        return $this->redirect()->toRoute('aportacion');
         //============================================================+
         // END OF FILE
         //============================================================+# code...

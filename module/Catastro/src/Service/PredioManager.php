@@ -48,9 +48,11 @@ class PredioManager
 
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
-         if ($predio->getIdPredio() > 0) {
+
+        if ($predio->getIdPredio() > 0) {
             return $predio;
         }
+        return null;
     }
 
     public function guardarPersona($data)
@@ -74,22 +76,24 @@ class PredioManager
 
         $this->entityManager->persist($contribuyente);
         $this->entityManager->flush();
+
         if ($contribuyente->getIdContribuyente() > 0) {
             return $contribuyente;
         }
         return null;
     }
+
     public function guardarColindancia($predio, $data)
     {
-            $predioColindacia = new PredioColindancia();
-            $predioColindacia->setIdPredio($predio);
-            $predioColindacia->setDescripcion($data['descripcion']);
-            $predioColindacia->setMedidaMetros($data['medida_metros']);
-            $predioColindacia->setOrientacionGeografica($data['orientacion_geografica']);
-            $this->entityManager->persist($predioColindacia);
-            $this->entityManager->flush();
+        $predioColindacia = new PredioColindancia();
+        $predioColindacia->setIdPredio($predio);
 
+        $predioColindacia->setDescripcion($data['descripcion']);
+        $predioColindacia->setMedidaMetros($data['medida_metros']);
+        $predioColindacia->setOrientacionGeografica($data['orientacion_geografica']);
 
+        $this->entityManager->persist($predioColindacia);
+        $this->entityManager->flush();
     }
 
     public function actualizar($predio, $data)

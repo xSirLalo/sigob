@@ -44,6 +44,7 @@ class PredioForm extends Form
                 'class' => 'form-control',
                 'title' => 'input1',
                 'placeholder' => 'input1',
+                'hidden'=> true,
             ]
         ]);
 

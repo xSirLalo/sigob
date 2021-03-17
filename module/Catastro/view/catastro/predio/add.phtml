@@ -41,7 +41,7 @@ $form->prepare();
                 <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-select2-predio col-sm-12"])); ?>
                 <?= $this->formElementErrors($form->get('cve_catastral')); ?>
                 </div>
-                <hr>
+
                 <?= $this->formLabel($form->get('titular')); ?>
                 <?= $this->formText($form->get('titular')); ?>
                 <div class="text-danger">
@@ -108,7 +108,7 @@ $form->prepare();
                 <div class="text-danger">
                 <?= $this->formElementErrors($form->get('con_oeste')); ?>
                 </div>
-
+                <br>
                 <?= $this->formHidden($form->get('csrf')); ?>
                 <?= $this->formElementErrors($form->get('csrf')); ?>
                 <?= $this->formSubmit($form->get('btnGuardar')); ?>
@@ -122,7 +122,7 @@ $form->prepare();
 <div class="col-md-6">
     <div class="card">
         <div class="card-header">
-            <h5><?= $title ?></h5>
+            <h5><?= $this->formLabel($form->get('archivo')); ?></h5>
         </div>
         <div class="card-body">
             <!-- [ openTag ] start -->
@@ -130,8 +130,6 @@ $form->prepare();
                     <?= $this->formText($form->get('input1')); ?>
                     <?= $this->formElementErrors($form->get('input1')); ?>
                 </div>
-                <hr>
-                <?= $this->formLabel($form->get('archivo')); ?>
                 <div class="form-group" id="select">
                     <div class="input-group">
                         <div class="input-group-append delete">

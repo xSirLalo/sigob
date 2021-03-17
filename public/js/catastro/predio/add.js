@@ -1,4 +1,11 @@
 'use strict';
+$(document).on('keydown', '.js-select2-predio', function(e) {
+    if (e.originalEvent && e.which == 40) {
+        e.preventDefault();
+        $(this).siblings('select').select2('open');
+    }
+});
+
 $(document).ready(function () {
     function formatRepo(repo) {
         if (repo.loading) return repo.text;
@@ -14,6 +21,7 @@ $(document).ready(function () {
     }
 
     $(".js-select2-predio").select2({
+        selectOnClose: true,
         width: '100%',
         ajax: {
         //url: "/aportacion/buscar_ajax",

@@ -67,8 +67,8 @@ class PruebaController extends AbstractActionController
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('p')
             ->from('Catastro\Entity\PredioColindancia', 'p')
-            ->where('p.idPredio = :idParam')
-            ->setParameter('idParam', $contribuyenteId);
+            ->where('p.idPredio = :word')
+            ->setParameter('word', $contribuyenteId);
         $resultados = $qb->getQuery()->getResult();
         //$data2 = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredioColindancia("28");
 

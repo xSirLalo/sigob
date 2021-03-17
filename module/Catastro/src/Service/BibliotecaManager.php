@@ -54,13 +54,14 @@ class BibliotecaManager
         $file = new Biblioteca();
 
         $Categoria = $this->entityManager->getRepository(ArchivoCategoria::class)->findOneByIdArchivoCategoria($categoria);
-        $Contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['input1']);
-        if ($Contribuyente==null) {
-            throw new \Exception('Id ' . $data['id_contribuyente'] . ' doesn\'t exist');
+
+        $Predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['input1']);
+        if ($Predio == null) {
+            throw new \Exception('ID: ' . $data['input1'] . ' DOESN\'T EXIST');
         }
         // $Predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['id_predio']);
 
-        $file->setIdContribuyente($Contribuyente);
+        $file->setIdPredio($Predio);
         $file->setIdArchivoCategoria($Categoria);
         $file->setFile($data['archivoBlob']);
         $file->setExtension($data['extension']);
