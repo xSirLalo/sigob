@@ -104,11 +104,9 @@ class AportacionController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $aportacion = $this->aportacionManager->guardar($data);
-                if ($aportacion) {
-                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                    $this->aportacionManager->pdf($aportacion);
-                }
+                $this->aportacionManager->guardar($data);
+                $this->aportacionManager->pdf($data);
+                $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                 return $this->redirect()->toRoute('aportacion');
             }
         }
