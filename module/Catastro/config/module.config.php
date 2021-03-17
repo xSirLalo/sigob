@@ -553,6 +553,18 @@ return [
                             ],
                         ],
                     ],
+                    'pdff' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/pdff[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'puff',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
@@ -600,7 +612,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel',], 'allow' => '*']
+                ['actions' => ['index', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff'], 'allow' => '*']
             ],
         ]
     ],

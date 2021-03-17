@@ -65,7 +65,7 @@ $this->inlineScript()
                                     <?php if ($aportacion->getEstatus() == 3) { ?><span class="badge badge-light-warning">En Proceso</span><?php } ?>
                                 </td>
                                 <td>
-                                    <a href="<?= $this->url('aportacion/pdf', ['action' => 'pdfdirector', 'id' => $aportacion->getIdAportacion()]); ?>"><button type="button="class="btn btn-primary"<?php if ($aportacion->getEstatus() == 2 || $aportacion->getEstatus()== 3) { ?> disabled <?php } ?>>Imprimir</button></a>
+                                    <a href="<?= $this->url('aportacion/pdff', ['action' => 'puff', 'id' => $aportacion->getIdAportacion()]); ?>"><button type="button="class="btn btn-primary"<?php if ($aportacion->getEstatus() == 2 || $aportacion->getEstatus()== 3) { ?> disabled <?php } ?>>Imprimir</button></a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
