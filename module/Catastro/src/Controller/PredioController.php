@@ -154,8 +154,23 @@ class PredioController extends AbstractActionController
         }
 
         $predio     = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
-        $colindacia = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredio($predioId);
-        $archivo    = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdPredio($predioId);
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('p')
+            ->from('Catastro\Entity\PredioColindancia', 'p')
+            ->where('p.idPredio = :idParam')
+            ->setParameter('idParam', $predioId);
+        $predioColindancias = $qb->getQuery()->getResult();
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->select('a')
+            ->from('Catastro\Entity\Archivo', 'a')
+            ->join('Catastro\Entity\Predio', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idPredio = c.idPredio')
+            ->where('a.idPredio = :idParam')
+            ->setParameter('idParam', $predioId)
+            ->orderBy('a.createdAt', 'ASC');
+
+        $archivos = $qb->getQuery()->getResult();
 
         if ($predio == null) {
             $this->layout()->setTemplate('error/404');
@@ -163,7 +178,7 @@ class PredioController extends AbstractActionController
             return $response->setTemplate('error/404');
         }
 
-        return new ViewModel(['predio' => $predio, 'colindacia' => $colindacia, 'archivo' => $archivo, 'predioId' => $predioId]);
+        return new ViewModel(['predio' => $predio, 'colindancias' => $predioColindancias, 'archivos' => $archivos, 'predioId' => $predioId]);
 
         return new ViewModel();
     }

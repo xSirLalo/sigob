@@ -245,15 +245,19 @@ class AportacionController extends AbstractActionController
         // AJAX response
         if ($request->isXmlHttpRequest()) {
             $id = $this->params()->fromRoute('id');
+
             $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
             $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($id);
+
             $idpredio = $aportacion->getIdPredio();
+
             $qb = $this->entityManager->createQueryBuilder();
             $qb->select('p')
                 ->from('Catastro\Entity\PredioColindancia', 'p')
                 ->where('p.idPredio = :idParam')
                 ->setParameter('idParam', $idpredio);
             $predioColindancias = $qb->getQuery()->getResult();
+
             foreach ($predioColindancias as $datos) {
                 $medidas[]=$datos->getMedidaMetros();
                 $descripcion[]=$datos->getDescripcion();
