@@ -13,33 +13,45 @@ $this->pageBreadcrumbs()->setItems([
 <div class="col-md-6">
     <div class="card">
         <div class="card-header">
-            <h5><?= $title ?></h5>
+            <h5>Predio</h5>
         </div>
         <div class="card-body">
-            <table class="table table-light">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Archivo</th>
-                        <th>Fecha de subida</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
+            <table class="table table-striped table-bordered">
                 <tbody>
-                    <?php if ($detalles): ?>
-                        <?php foreach ($detalles as $detalle): ?>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="3" class="text-center">No hay archivos...</td>
-                        </tr>
-                    <?php endif; ?>
+                    <tr>
+                        <td>Clave Catastral</td>
+                        <td><?= $predio->getClaveCatastral() ?></td>
+                    </tr>
+                    <tr>
+                        <td>Ubicación</td>
+                        <td><?= $predio->getUbicacion() ?></td>
+                    </tr>
+                    <tr>
+                        <td>Colonia</td>
+                        <td><?= $predio->getColonia() ?></td>
+                    </tr>
+                    <tr>
+                        <td>Localidad</td>
+                        <td><?= $predio->getLocalidad() ?></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td>Municipio</td>
+                        <td><?= $predio->getMunicipio() ?></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td>Calle</td>
+                        <td><?= $predio->getCalle() ?></td>
+                    </tr>
+                    <tr>
+                        <td>Numero Exterior</td>
+                        <td><?= $predio->getNumeroExterior() ?></td>
+                    </tr>
+                    <tr>
+                        <td>Numero Interior</td>
+                        <td><?= $predio->getNumeroInterior() ?></td>
+                    </tr>
                 </tbody>
             </table>
             <a href="<?= $this->url('predio') ?>" class="btn btn-secondary">Volver al listado</a>
@@ -64,13 +76,16 @@ $this->pageBreadcrumbs()->setItems([
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($detalles): ?>
-                        <?php foreach ($detalles as $detalle): ?>
+                    <?php if ($archivos): ?>
+                        <?php foreach ($archivos as $archivo): ?>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td><?= $archivo->getIdArchivoCategoria()->getNombre() ?></td>
+                                <td><?= $archivo->getUrl() ?></td>
+                                <td><?= $archivo->getCreatedAt()->format('Y-m-d h:m:s') ?></td>
+                                <td>
+                                    <a href="<?= $this->url('biblioteca/eliminar-archivo', ['action' => 'eliminar-archivo', 'contribuyente' => $archivo->getIdPredio()->getIdPredio(), 'archivo' => $archivo->getIdArchivo()]); ?>" class="btn btn-danger btn-sm"> Eliminar</a>
+                                    <a href="<?= $this->url('biblioteca/imprimir-archivo', ['action' => 'imprimir-archivo', 'contribuyente' => $archivo->getIdPredio()->getIdPredio(), 'archivo' => $archivo->getIdArchivo()]); ?>" class="btn btn-success btn-sm"> Descargar</a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -80,7 +95,56 @@ $this->pageBreadcrumbs()->setItems([
                     <?php endif; ?>
                 </tbody>
             </table>
-            <a href="<?= $this->url('predio') ?>" class="btn btn-secondary">Volver al listado</a>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5>Colindancias</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-bordered">
+                <tbody>
+                    <?php if ($colindancias): ?>
+                        <?php
+                            foreach ($colindancias as $r) {
+                                $medidas[] = $r->getMedidaMetros();
+                                $descripcion[] = $r->getDescripcion();
+                            }
+                        ?>
+                        <tr>
+                            <td>Al Norte</td>
+                            <td><?= $medidas[0] ?></td>
+                            <td>Colinda con</td>
+                            <td><?= $descripcion[0] ?></td>
+                        </tr>
+                        <tr>
+                            <td>Al Sur</td>
+                            <td><?= $medidas[1] ?></td>
+                            <td>Colinda con</td>
+                            <td><?= $descripcion[1] ?></td>
+                        </tr>
+                        <tr>
+                            <td>Al Este</td>
+                            <td><?= $medidas[2] ?></td>
+                            <td>Colinda con</td>
+                            <td><?= $descripcion[2] ?></td>
+                        </tr>
+                        <tr>
+                            <td>Al Oeste</td>
+                            <td><?= $medidas[3] ?></td>
+                            <td>Colinda con</td>
+                            <td><?= $descripcion[3] ?></td>
+                        </tr>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" class="text-center">No hay colindancias...</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
