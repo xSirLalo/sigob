@@ -1,0 +1,45 @@
+<?php
+
+namespace Catastro\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ArchivoPredio
+ *
+ * @ORM\Table(name="archivo_predio", uniqueConstraints={@ORM\UniqueConstraint(name="unico", columns={"id_archivo", "id_predio"})}, indexes={@ORM\Index(name="id_predio", columns={"id_predio"}), @ORM\Index(name="IDX_7F23DFFAEBB41DF2", columns={"id_archivo"})})
+ * @ORM\Entity
+ */
+class ArchivoPredio
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_archivo_contribuyente", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idArchivoContribuyente;
+
+    /**
+     * @var \Catastro\Entity\Archivo
+     *
+     * @ORM\ManyToOne(targetEntity="Catastro\Entity\Archivo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_archivo", referencedColumnName="id_archivo")
+     * })
+     */
+    private $idArchivo;
+
+    /**
+     * @var \Catastro\Entity\Predio
+     *
+     * @ORM\ManyToOne(targetEntity="Catastro\Entity\Predio")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_predio", referencedColumnName="id_predio")
+     * })
+     */
+    private $idPredio;
+
+
+}

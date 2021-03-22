@@ -39,11 +39,11 @@ C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:convert-mapping --namesp
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:generate-entities ./module/Catastro/src/ --generate-annotations=true
 C:/laragon/www/sigob/vendor/bin/doctrine-module.bat orm:clear-cache:metadata
 
-xcopy module\Catastro\src\Catastro\Entity\* "C:\laragon\www\sigob\module\Catastro\src\Entity\" /q /y /c /e /r
+xcopy C:\laragon\www\sigob\module\Catastro\src\Catastro\Entity\* "C:\laragon\www\sigob\module\Catastro\src\Entity\" /q /y /c /e /r
 
 ¡Cuidado con este Comando!
 
-rm -Rf module\Catastro\src\Catastro\
+rm -Rf C:\laragon\www\sigob\module\Catastro\src\Catastro\
 
 cd module\Catastro\src\Catastro\Entity
 rm -f User.php UserRole.php RolePermission.php RoleHierarchy.php Role.php Permission.php Migrations.php Migrations.php
