@@ -45,6 +45,7 @@ function edit_contribuyente(id)
                 success: function (data) {
                 if(data.status) //if success close modal and reload ajax table
                 {
+                    //console.log(data.status);
                     location.reload();
                     $('#myModal').modal('hide'); // show bootstrap modal when complete loaded
                 } else {
@@ -62,7 +63,7 @@ function edit_contribuyente(id)
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
-                    console.log(data);
+                    //console.log(data);
                     alert('Error get data from ajax');
                 }
             });

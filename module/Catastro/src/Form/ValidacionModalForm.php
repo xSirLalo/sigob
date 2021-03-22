@@ -188,22 +188,6 @@ class ValidacionModalForm extends Form
         ]);
 
         $this->add([
-            'type' => Element\Date::class,
-            'name' => 'fecha_adquisicion',
-            'options' => [
-            'label' => 'Fecha de Adquicision',
-            'format' => 'Y-m-d',
-        ],
-        'attributes' => [
-            'class' => 'form-control',
-            'min' => '2021-01-01',
-            'max' => '2030-01-01',
-            'step' => '1', // days; default step interval is 1 day
-            'id' =>'vig',
-        ],
-        ]);
-
-        $this->add([
             'type' => Element\Csrf::class,
             'name' => 'csrf',
             'options' => [
@@ -217,10 +201,20 @@ class ValidacionModalForm extends Form
             'type' => Element\Submit::class,
             'name' => 'btnGuardar',
             'attributes' => [
-                'value' => 'Guardar',
+                'value' => 'Guardar1',
                 'class' => 'btn btn-success',
-                'id' =>'guardar',
+                //'id' =>'guardar',
+                'id' => 'btnGuardar',
             ]
         ]);
+        // $this->add([
+        //     'type' => Element\Submit::class,
+        //     'name' => 'btnGuardar',
+        //     'attributes' => [
+        //         'id' => 'btnGuardar',
+        //         'value' => 'Guardar1',
+        //         'class' => 'btn btn-primary'
+        //     ]
+        // ]);
     }
 }

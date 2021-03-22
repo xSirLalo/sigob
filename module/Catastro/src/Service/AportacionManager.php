@@ -334,7 +334,8 @@ class AportacionManager
     }
      public function actualizarValidation($aportacion, $data)
     {
-        $aportacion->setPago($data['pago']);
+        $aportacion->setPago($data['pago_a']);
+        $aportacion->setMetrosTerreno($data['terreno']);
         // $aportacion->setNombre($data['nombre']);
         // $aportacion->setApellidoPaterno($data['apellido_paterno']);
         // $aportacion->setApellidoMaterno($data['apellido_materno']);

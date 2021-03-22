@@ -16,7 +16,8 @@ function edit_validation(id)
     contentType: "application/json; charset=utf-8",
     success: function(data)
         {
-            console.log(data);
+            //console.log(data);
+            $('[name="id_aportacion"]').val(data.id_aportacion);
             $('[name="terreno"]').val(data.terreno);
             $('[name="v_terreno"]').val(data.v_terreno);
             $('[name="sup_m"]').val(data.sup_m);
@@ -36,8 +37,9 @@ function edit_validation(id)
     if(save_method == 'update') {
         $("#validacion_form_modal").submit(function(event){
             event.preventDefault();
-            var id = $("#id_contribuyente").val();
-            var url = 'aportacion/editar/' + id;
+            var id = $("#id_aportacion").val();
+            var url = 'editar/' + id;
+            //console.log(id);
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -45,11 +47,16 @@ function edit_validation(id)
                 async: true,
                 data: $("#validacion_form_modal").serialize(),
                 success: function (data) {
-                if(data.status) //if success close modal and reload ajax table
+
+                console.log(data);
+                if(data.proceso) //if success close modal and reload ajax table
                 {
+                    //console.log(data);
+                    //console.log(data.proceso);
                     location.reload();
                     $('#myModal').modal('hide'); // show bootstrap modal when complete loaded
                 } else {
+                    //console.log(data);
                         $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
                         $('.text-danger').empty(); // clear error string
                         $.each(data.errors, function(key, value) {
@@ -64,7 +71,7 @@ function edit_validation(id)
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
-                    console.log(data);
+                    //console.log(data);
                     alert('Error get data from ajax');
                 }
             });

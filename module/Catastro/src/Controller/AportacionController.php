@@ -172,14 +172,14 @@ class AportacionController extends AbstractActionController
         if ($request->isXmlHttpRequest()) {
             $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
             $data = [
-                //'id_contribuyente' =>  $aportacion->getIdAportacion(),
-                'terreno'    =>  $aportacion->getMetrosTerreno(),
-                'v_terreno'  =>  $aportacion->getValorTerreno(),
-                'sup_m'      =>  $aportacion->getMetrosConstruccion(),
-                'v_c'        =>  $aportacion->getValorConstruccion(),
-                'a_total'    =>  $aportacion->getAvaluo(),
-                'vig'        =>  $aportacion->getFecha()->format('Y-m-d'),
-                'pago_a'     =>  $aportacion->getPago(),
+                'id_aportacion' =>  $aportacion->getIdAportacion(),
+                'terreno'       =>  $aportacion->getMetrosTerreno(),
+                'v_terreno'     =>  $aportacion->getValorTerreno(),
+                'sup_m'         =>  $aportacion->getMetrosConstruccion(),
+                'v_c'           =>  $aportacion->getValorConstruccion(),
+                'a_total'       =>  $aportacion->getAvaluo(),
+                'vig'           =>  $aportacion->getFecha()->format('Y-m-d'),
+                'pago_a'        =>  $aportacion->getPago(),
             ];
 
             $view = new JsonModel($data);
@@ -206,29 +206,30 @@ class AportacionController extends AbstractActionController
 
     public function editAction()
     {
-        $ValidacionForm = new ValidacionModalForm();
         $request = $this->getRequest();
         $response = $this->getResponse();
         $aportacionId = (int)$this->params()->fromRoute('id', -1);
         // AJAX response
         if ($request->isXmlHttpRequest()) {
+            $formModal = new ValidacionModalForm();
             $data = $this->params()->fromPost();
             if ($request->isPost()) {
-                $ValidacionForm->setData($request->getPost());
-                if ($ValidacionForm->isValid()) {
-                    $data = $ValidacionForm->getData();
-                    $data['status'] = true;
+                $formModal->setData($request->getPost());
+                if ($formModal->isValid()) {
+                    $data = $formModal->getData();
+                    $data['proceso'] = true;
                     $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
                     $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
                     $this->aportacionManager->actualizarValidation($aportacion, $data);
                 } else {
-                    $data['status'] = false;
-                    $data['errors'] = $ValidacionForm->getMessages();
+                    $data['proceso'] = false;
+                    $data['errors'] = $formModal->getMessages();
                 };
                 $view = new JsonModel($data);
                 $view->setTerminal(true);
             }
         } else {
+            $formModal = new ValidacionModalForm();
             if ($aportacionId < 0) {
                 $this->layout()->setTemplate('error/404');
                 $this->getResponse()->setStatusCode(404);
@@ -245,25 +246,26 @@ class AportacionController extends AbstractActionController
 
             if ($this->getRequest()->isPost()) {
                 $data = $this->params()->fromPost();
-                $ValidacionForm->setData($data);
-                if ($ValidacionForm->isValid()) {
-                    $data = $ValidacionForm->getData();
-                    $this->aportacionManager->actualizarValidation($aportacion, $data);
-                    return $this->redirect()->toRoute('contribuyente');
+                $formModal->setData($data);
+                if ($formModal->isValid()) {
+                    $data = $formModal->getData();
+                    $this->contribuyenteManager->actualizar($aportacion, $data);
+                    return $this->redirect()->toRoute('aportacion');
                 }
             } else {
                 $data = [
-                    'nombre' => $aportacion->getNombre(),
-                    'apellido_paterno' => $aportacion->getApellidoPaterno(),
-                    'apellido_materno' => $aportacion->getApellidoMaterno(),
-                    'rfc' => $aportacion->getRfc(),
-                    'curp' => $aportacion->getCurp(),
-                    'genero' => $aportacion->getGenero(),
+                    // 'nombre' => $aportacion->getNombre(),
+                    // 'apellido_paterno' => $aportacion->getApellidoPaterno(),
+                    // 'apellido_materno' => $aportacion->getApellidoMaterno(),
+                    // 'rfc' => $aportacion->getRfc(),
+                    // 'curp' => $aportacion->getCurp(),
+                    // 'genero' => $aportacion->getGenero(),
+                    'pago_a'        =>  $aportacion->getPago(),
                 ];
-                $ValidacionForm->setData($data);
+                $formModal->setData($data);
                 $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
             }
-            $view = new ViewModel(['ValidacionForm' => $ValidacionForm]);
+            $view = new ViewModel(['ValidacionForm' => $formModal]);
         }
         return $view;
     }

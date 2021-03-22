@@ -260,7 +260,7 @@ class ContribuyenteController extends AbstractActionController
                 $view->setTerminal(true);
             }
         } else {
-            $form = new ContribuyenteForm();
+            $form = new ContribuyenteModalForm();
             if ($contribuyenteId < 0) {
                 $this->layout()->setTemplate('error/404');
                 $this->getResponse()->setStatusCode(404);
