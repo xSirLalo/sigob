@@ -11,7 +11,8 @@ use Laminas\Paginator\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Entity\Contribuyente;
-use Catastro\Form\ContribuyenteForm;
+// use Catastro\Form\ContribuyenteForm;
+use Catastro\Form\ContribuyenteModalForm;
 use Catastro\Form\EliminarForm;
 use Catastro\Form\BibliotecaForm;
 
@@ -40,7 +41,7 @@ class ContribuyenteController extends AbstractActionController
 
     public function indexAction()
     {
-        $form = new ContribuyenteForm();
+        $form = new ContribuyenteModalForm();
         $request = $this->getRequest();
         $response = $this->getResponse();
         $postData= $_POST;
@@ -159,12 +160,12 @@ class ContribuyenteController extends AbstractActionController
 
     public function addAction()
     {
-        $form = new ContribuyenteForm();
         $categorias = $this->bibliotecaManager->categorias();
 
         $request = $this->getRequest();
         // AJAX response
         if ($request->isXmlHttpRequest()) {
+            $form = new ContribuyenteModalForm();
             $data = $this->params()->fromPost();
             $form->setData($request->getPost());
             if ($form->isValid()) {
@@ -179,6 +180,7 @@ class ContribuyenteController extends AbstractActionController
             $view = new JsonModel($data);
             $view->setTerminal(true);
         } else {
+            $form = new ContribuyenteForm();
             if ($request->isPost()) {
                 $data = $this->params()->fromPost();
                 $form->setData($data);
@@ -235,12 +237,12 @@ class ContribuyenteController extends AbstractActionController
 
     public function editAction()
     {
-        $form = new ContribuyenteForm();
         $request = $this->getRequest();
         $response = $this->getResponse();
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
         // AJAX response
         if ($request->isXmlHttpRequest()) {
+            $form = new ContribuyenteModalForm();
             $data = $this->params()->fromPost();
             if ($request->isPost()) {
                 $form->setData($request->getPost());
@@ -258,6 +260,7 @@ class ContribuyenteController extends AbstractActionController
                 $view->setTerminal(true);
             }
         } else {
+            $form = new ContribuyenteForm();
             if ($contribuyenteId < 0) {
                 $this->layout()->setTemplate('error/404');
                 $this->getResponse()->setStatusCode(404);
