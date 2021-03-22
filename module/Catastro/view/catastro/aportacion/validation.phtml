@@ -17,6 +17,8 @@ $this->headLink()
     ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
 // Js Requerido
 $this->inlineScript()
+ // Js de la vista
+    ->prependFile($this->basePath('js/catastro/aportacion/validation.js'))
     // Css DataTables
     ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
     ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
@@ -56,9 +58,13 @@ $this->inlineScript()
                                 <td>
                                     <div class="row">
                                         <a href="" class="btn btn-primary">Ver</a>
+                                        <!-- <button type="button" class="btn btn-secondary" id="button" data-toggle="modal" data-target="#myModal">
+                                        Modificar
+                                        </button> -->
+                                        <a href="<?= $this->url('aportacion/editar', ['action' => 'editar', 'id' => $aportacion->getIdAportacion()]); ?>" class="btn btn-secondary" data-toggle="modal"  onclick="edit_validation('<?= $aportacion->getIdAportacion() ?>')">Modificar</a>
                                         <?= $this->form()->openTag($form); ?>
                                         <?= $this->formHidden($form->get('padron_id')->setValue($aportacion->getIdAportacion())); ?>
-                                        <?= $this->formHidden($form->get('status')->setValue("1")); ?>
+                                        <?= $this->formHidden($form->get('status')->setValue("1"));?>
                                         <?= $this->formHidden($form->get('csrf')); ?>
                                         <div class="text-danger">
                                             <?= $this->formElementErrors($form->get('csrf')); ?>
@@ -89,4 +95,6 @@ $this->inlineScript()
 </div>
 <!-- [ col] end -->
 <!-- sweet alert Js -->
+<!-- Button trigger modal -->
 
+<?= $this->partial('catastro/aportacion/validationModal') ?>

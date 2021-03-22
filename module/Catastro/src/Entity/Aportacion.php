@@ -71,6 +71,13 @@ class Aportacion
     private $avaluo;
 
     /**
+     * @var float|null
+     *
+     * @ORM\Column(name="tasa", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $tasa;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="estatus", type="integer", nullable=true)
@@ -289,6 +296,30 @@ class Aportacion
     public function getAvaluo()
     {
         return $this->avaluo;
+    }
+
+    /**
+     * Set tasa.
+     *
+     * @param float|null $tasa
+     *
+     * @return Aportacion
+     */
+    public function setTasa($tasa = null)
+    {
+        $this->tasa = $tasa;
+
+        return $this;
+    }
+
+    /**
+     * Get tasa.
+     *
+     * @return float|null
+     */
+    public function getTasa()
+    {
+        return $this->tasa;
     }
 
     /**

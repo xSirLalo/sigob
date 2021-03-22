@@ -1,0 +1,191 @@
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Direccion de Catastro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <!-- Inicio Calcular pago en el modal -->
+                    <h3 class="text-center bg-secondary">DATOS DE POSSESION</h3>
+                    <?= $this->form()->openTag($ValidacionForm); ?>
+                    <div class="row ml-0">
+                        <div class="col-sm-4">
+                            <div class="form-group ">
+                                <!-- Input Sup. M2 Terreno -->
+                                    <?= $this->formLabel($ValidacionForm->get('terreno')); ?>
+                                    <?= $this->formText($ValidacionForm->get('terreno')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($ValidacionForm->get('terreno')); ?>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group ">
+                                <!-- Input Valor del Terreno -->
+                                    <?= $this->formLabel($ValidacionForm->get('v_terreno')); ?>
+                                    <?= $this->formText($ValidacionForm->get('v_terreno')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($ValidacionForm->get('v_terreno')); ?>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group ">
+                                <!-- Input Sup.M2 Construcion -->
+                                    <?= $this->formLabel($ValidacionForm->get('sup_m')); ?>
+                                    <?= $this->formText($ValidacionForm->get('sup_m')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($ValidacionForm->get('sup_m')); ?>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ml-0">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="form-label">Valores de Construccion</label>
+                                <select class="js-example-basic-single form-control"  style="width: 240px;" name="validation-select" id="valor_c" onchange="valorC()">
+                                   <option value="0">Seleccione uno...</option>
+                                    <optgroup label="Restaurantes">
+                                        <option value="4375">ECO/NORMAL</option>
+                                        <option value="2500">MEDIA/NORMAL</option>
+                                        <option value="3000">MEDIA/DE PRIMERA</option>
+                                        <option value="3000">BUENA/NORMAL</option>
+                                        <option value="3750">BUENA/DE PRIMERA</option>
+                                    </optgroup>
+                                    <optgroup label="Bodegas Comerciales">
+                                        <option value="2400">ECO/NORMAL</option>
+                                        <option value="3000">MEDIA/NORMAL</option>
+                                        <option value="3600">MEDIA/DE PRIMERA</option>
+                                        <option value="3600">BUENA/NORMAL</option>
+                                        <option value="4500">BUENA/DE PRIMERA</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group ">
+                                <!--Input Valor de la construccion-->
+                                    <?= $this->formLabel($ValidacionForm->get('v_c')); ?>
+                                    <?= $this->formText($ValidacionForm->get('v_c')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($ValidacionForm->get('v_c')); ?>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group ">
+                                <!--Input Avaluo Total -->
+                                    <?= $this->formLabel($ValidacionForm->get('a_total')); ?>
+                                    <?= $this->formText($ValidacionForm->get('a_total')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($ValidacionForm->get('a_total')); ?>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ml-0">
+                        <div class="col-sm-3">
+                            <div class="form-group ">
+                            <!-- Input Vigencia -->
+                                <?= $this->formLabel($ValidacionForm->get('vig')); ?>
+                                <?= $this->formDate($ValidacionForm->get('vig')) ?>
+                                <div class="text-danger">
+                                    <?= $this->formElementErrors($ValidacionForm->get('vig')); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Tasa Impositiva</label>
+                                <select class="form-control" name="validation-select" id="tasa_i" onchange="timpositiva()">
+                                    <optgroup label="Predios Urbanos Edificados">
+                                        <option value="0.0017">0.0017</option>
+                                    </optgroup>
+                                    <optgroup label="Predios Urbanos Edificados">
+                                        <option value="0.0050">0.0050</option>
+                                    </optgroup>
+                                    <optgroup label="Tulum">
+                                        <option value="0.0050">0.0050</option>
+                                    </optgroup>
+                                    <optgroup label="Otras Zonas Urbanas">
+                                        <option value="0.00567">0.00567</option>
+                                    </optgroup>
+                                    <optgroup label="Predio Rusticos">
+                                        <option value="0.00380">0.00380</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group ">
+                                <!-- Input Ejercicio Fiscal -->
+                                    <?= $this->formLabel($ValidacionForm->get('ejercicio_f')); ?>
+                                    <?= $this->formText($ValidacionForm->get('ejercicio_f')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($ValidacionForm->get('ejercicio_f')); ?>
+                                    </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="v_in">
+                        <!-- <input type="text" id="v_in" class="form-control"> -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                            <!-- Input pago Aportacion -->
+                                <?= $this->formLabel($ValidacionForm->get('pago_a')); ?>
+                                <?= $this->formText($ValidacionForm->get('pago_a')); ?>
+                                <div class="text-danger">
+                                    <?= $this->formElementErrors($ValidacionForm->get('pago_a')); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ml-0">
+                        <div class="col-sm-3">
+                        <!-- Input Status Oculto -->
+                            <?= $this->formText($ValidacionForm->get('status')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($ValidacionForm->get('status')); ?>
+                            </div>
+                        </div>
+                        <!-- Input id_predio Oculto -->
+                            <?= $this->formText($ValidacionForm->get('id_predio')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($ValidacionForm->get('id_predio')); ?>
+                            </div>
+                            <!-- Input id_contribuyente Oculto -->
+                            <?= $this->formText($ValidacionForm->get('idcontribuyente')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($ValidacionForm->get('idcontribuyente')); ?>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                        <!-- Input clave catastral Oculto -->
+                            <?= $this->formText($ValidacionForm->get('cvlCatastral')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($ValidacionForm->get('cvlCatastral')); ?>
+                            </div>
+                        </div>
+                        <?= $this->formHidden($ValidacionForm->get('csrf')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($ValidacionForm->get('csrf')); ?>
+                        </div>
+                        <div class="col-sm-12 text-md-right mb-3">
+                            <button type="button" class="btn  btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <?= $this->formSubmit($ValidacionForm->get('btnGuardar')); ?>
+                        </div>
+                    </div>
+                    <?= $this->form()->closeTag(); ?>
+
+    </div>
+    </div>
+</div>
+</div>
+
+
+
+
