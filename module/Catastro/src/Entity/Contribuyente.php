@@ -118,19 +118,6 @@ class Contribuyente
     }
 
     /**
-     * Set idContribuyente.
-     *
-     * @param bigint|null $idContribuyente
-     *
-     * @return Contribuyente
-     */
-    public function setIdContribuyente($idContribuyente)
-    {
-        $this->idContribuyente = $idContribuyente;
-        return $this;
-    }
-
-    /**
      * Set cvePersona.
      *
      * @param int|null $cvePersona

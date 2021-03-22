@@ -19,6 +19,7 @@ use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
 use Catastro\Entity\TablaValorConstruccion;
 use Catastro\Entity\Contribuyente;
+use Catastro\Form\ValidacionModalForm;
 
 class AportacionController extends AbstractActionController
 {
@@ -146,6 +147,7 @@ class AportacionController extends AbstractActionController
         $aportaciones = $this->entityManager->getRepository(Aportacion::class)->findAll();
 
         $form = new ValidacionForm();
+        $formModal = new ValidacionModalForm();
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
@@ -159,7 +161,111 @@ class AportacionController extends AbstractActionController
             }
         }
 
-        return new ViewModel(['aportaciones' => $aportaciones, 'form' => $form]);
+        return new ViewModel(['aportaciones' => $aportaciones, 'form' => $form, 'ValidacionForm' => $formModal]);
+    }
+
+    public function viewAction()
+    {
+        $request = $this->getRequest();
+        $aportacionId = (int)$this->params()->fromRoute('id', -1);
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+            $data = [
+                //'id_contribuyente' =>  $aportacion->getIdAportacion(),
+                'terreno'    =>  $aportacion->getMetrosTerreno(),
+                'v_terreno'  =>  $aportacion->getValorTerreno(),
+                'sup_m'      =>  $aportacion->getMetrosConstruccion(),
+                'v_c'        =>  $aportacion->getValorConstruccion(),
+                'a_total'    =>  $aportacion->getAvaluo(),
+                'vig'        =>  $aportacion->getFecha()->format('Y-m-d'),
+                'pago_a'     =>  $aportacion->getPago(),
+            ];
+
+            $view = new JsonModel($data);
+            $view->setTerminal(true);
+        } else {
+            if ($aportacionId < 0) {
+                $this->layout()->setTemplate('error/404');
+                $this->getResponse()->setStatusCode(404);
+                return $response->setTemplate('error/404');
+            }
+
+            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+
+            if ($aportacion == null) {
+                $this->layout()->setTemplate('error/404');
+                $this->getResponse()->setStatusCode(404);
+                return $response->setTemplate('error/404');
+            }
+
+            $view = new ViewModel(['aportacion' => $aportacion]);
+        }
+        return $view;
+    }
+
+    public function editAction()
+    {
+        $ValidacionForm = new ValidacionModalForm();
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        $aportacionId = (int)$this->params()->fromRoute('id', -1);
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            $data = $this->params()->fromPost();
+            if ($request->isPost()) {
+                $ValidacionForm->setData($request->getPost());
+                if ($ValidacionForm->isValid()) {
+                    $data = $ValidacionForm->getData();
+                    $data['status'] = true;
+                    $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
+                    $this->aportacionManager->actualizarValidation($aportacion, $data);
+                } else {
+                    $data['status'] = false;
+                    $data['errors'] = $ValidacionForm->getMessages();
+                };
+                $view = new JsonModel($data);
+                $view->setTerminal(true);
+            }
+        } else {
+            if ($aportacionId < 0) {
+                $this->layout()->setTemplate('error/404');
+                $this->getResponse()->setStatusCode(404);
+                return $response->setTemplate('error/404');
+            }
+
+            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+
+            if ($aportacion == null) {
+                $this->layout()->setTemplate('error/404');
+                $this->getResponse()->setStatusCode(404);
+                return $response->setTemplate('error/404');
+            }
+
+            if ($this->getRequest()->isPost()) {
+                $data = $this->params()->fromPost();
+                $ValidacionForm->setData($data);
+                if ($ValidacionForm->isValid()) {
+                    $data = $ValidacionForm->getData();
+                    $this->aportacionManager->actualizarValidation($aportacion, $data);
+                    return $this->redirect()->toRoute('contribuyente');
+                }
+            } else {
+                $data = [
+                    'nombre' => $aportacion->getNombre(),
+                    'apellido_paterno' => $aportacion->getApellidoPaterno(),
+                    'apellido_materno' => $aportacion->getApellidoMaterno(),
+                    'rfc' => $aportacion->getRfc(),
+                    'curp' => $aportacion->getCurp(),
+                    'genero' => $aportacion->getGenero(),
+                ];
+                $ValidacionForm->setData($data);
+                $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
+            }
+            $view = new ViewModel(['ValidacionForm' => $ValidacionForm]);
+        }
+        return $view;
     }
 
     public function searchRfcAction()

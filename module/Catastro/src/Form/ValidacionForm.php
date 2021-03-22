@@ -20,6 +20,7 @@ class ValidacionForm extends Form
             'name' => 'padron_id',
             'attributes' => [
                 'required' => true,
+                'id' => 'padron',
             ]
         ]);
 

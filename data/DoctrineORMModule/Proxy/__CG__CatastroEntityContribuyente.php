@@ -194,17 +194,6 @@ class Contribuyente extends \Catastro\Entity\Contribuyente implements \Doctrine\
     /**
      * {@inheritDoc}
      */
-    public function setIdContribuyente($idContribuyente)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdContribuyente', [$idContribuyente]);
-
-        return parent::setIdContribuyente($idContribuyente);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setCvePersona($cvePersona = NULL)
     {
 

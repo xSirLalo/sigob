@@ -1,46 +1,79 @@
-$(document).ready(function () {
-    $('#besicwizard').bootstrapWizard({
-        withVisible: false,
-        'nextSelector': '.button-next',
-        'previousSelector': '.button-previous',
-        'firstSelector': '.button-first',
-        'lastSelector': '.button-last'
+//Modal-Funcion Modificar
+function edit_validation(id)
+{
+    save_method = 'update';
+    $('#btnGuardar').show();
+    $('#btnGuardar').removeClass('invisible');
+    $('#validacion_form_modal')[0].reset(); // reset form on modals
+    $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
+    $('.text-danger').empty(); // clear error string
+    $("#validacion_form_modal :input").prop("disabled", false);
+    //Ajax Load data from ajax
+    $.ajax({
+    url : "ver/" + id,
+    type: "POST",
+    dataType: "JSON",
+    contentType: "application/json; charset=utf-8",
+    success: function(data)
+        {
+            console.log(data);
+            $('[name="terreno"]').val(data.terreno);
+            $('[name="v_terreno"]').val(data.v_terreno);
+            $('[name="sup_m"]').val(data.sup_m);
+            $('[name="v_c"]').val(data.v_c);
+            $('[name="a_total"]').val(data.a_total);
+            $('[name="vig"]').val(data.vig);
+            $('[name="pago_a"]').val(data.pago_a);
+            $('#myModal').modal('show'); // show bootstrap modal when complete loaded
+            $('.modal-title').text('DIRECCION DE CATASTRO'); // Set Title to Bootstrap modal title
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error get data from ajax');
+        }
     });
 
-    $(".js-example-basic-single").select2();
-
-});
-    $('.btn-ok').on('click', function(e) {
-        event.preventDefault(e);
-        var form = $(this).parents('form');
-        swal({
-                title: "Good job!",
-                text: "Aportación generada!",
-                icon: "info",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    console.log('Subimit...');
-                    if (willDelete) form.submit();
-                    swal("Descargando...", {
-                        icon: "success",
-                    }).then((willOk) => {
-                        console.log('Redirect...');
-                        if (willOk)  window.location = "/aportacion";
-                    });
+    if(save_method == 'update') {
+        $("#validacion_form_modal").submit(function(event){
+            event.preventDefault();
+            var id = $("#id_contribuyente").val();
+            var url = 'aportacion/editar/' + id;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'JSON',
+                async: true,
+                data: $("#validacion_form_modal").serialize(),
+                success: function (data) {
+                if(data.status) //if success close modal and reload ajax table
+                {
+                    location.reload();
+                    $('#myModal').modal('hide'); // show bootstrap modal when complete loaded
                 } else {
-                    swal("Fin!", {
-                        icon: "error",
-                    }).then((willCancel) => {
-                        if (willCancel)  window.location = "/";
-                    });
+                        $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
+                        $('.text-danger').empty(); // clear error string
+                        $.each(data.errors, function(key, value) {
+                            $('[name="'+ key +'"]').addClass('is-invalid');
+                            for(var i in value) {
+                                $('[name="'+ key +'"]').parents('.form-group').find('.text-danger').append('<li>' + value[i] + '</li>');
+                            }
+                        });
+                    }
+                    $('#btnGuardar').val('Guardar'); //change button text
+                    $('#btnGuardar').attr('disabled',false); //set button enable
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    console.log(data);
+                    alert('Error get data from ajax');
                 }
             });
-    });
-//funcion Calular Aportacion-Inicio
-    function Calcular()
+        });
+    }
+}
+
+// Modal-Funcion Calcular Aportacion
+function Calcular()
 {
     let metros_terreno = parseFloat(document.getElementById("terreno").value);
     let valor_terreno = metros_terreno *100;
@@ -143,9 +176,8 @@ function timpositiva() {
     let pago_aportacion = valor_tasa * avaluo_total;
     document.getElementById("pago_a").value = pago_aportacion;
 }
-//funcion Calular-Fin
 
-//Funcion Solo numeros con 1 punto y maximo dos decimales
+//Modal-Funcion Solo numeros con 1 punto y maximo dos decimales
 function filterFloat(evt,input){
     // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
     var key = window.Event ? evt.which : evt.keyCode;
@@ -161,16 +193,15 @@ function filterFloat(evt,input){
         if(key == 8 || key == 13 || key == 0) {
             return true;
         }else if(key == 46){
-                if(filter(tempValue)=== false){
-                    return false;
-                }else{
-                    return true;
-                }
+            if(filter(tempValue)=== false){
+                return false;
+            }else{
+                return true;
+            }
         }else{
             return false;
         }
     }
-//Bloquear Button de Imprimir si estan vacios los input
 }
 function filter(__val__){
     var preg = /^([0-9]+\.?[0-9]{0,2})$/;
@@ -181,7 +212,7 @@ function filter(__val__){
     }
 
 }
-//validar solo numero
+//Modal-validar solo numero
 function validaNumericos(event) {
     if(event.charCode >= 48 && event.charCode <= 57){
     return true;
@@ -189,135 +220,6 @@ function validaNumericos(event) {
     return false;
 }
 
-function esvacio()
-{
-
-if (
-document.getElementById('terreno').value=="" ||
-document.getElementById('sup_m').value=="" ||
-document.getElementById('ejercicio_f').value=="" ||
-document.getElementById('p_hide').value==""
-
-)
-{
-document.getElementById('btn-ok').disabled=true;
-}
-else {
-document.getElementById('btn-ok').disabled=false;
-}
-
-}
-
-//Selec Ajax
-
-$(document).ready(function () {
-function formatRepo(repo) {
-    if (repo.loading) return repo.text;
-
-    var markup = "";
-    if (repo.titular) {
-        markup += "<div class='select2-result-repository__description'>" + repo.titular + "</div>";
-    }
-
-    return markup;
-}
-
-function formatRepoSelection(repo) {
-    return repo.titular || repo.text;
-}
-// [ Single Select ]
-$(".js-example-basic-single2").select2({
-        width: '100%',
-});
-
-$(".js-data-example-ajax2").select2({
-    width: '100%',
-    ajax: {
-       //url: "/aportacion/buscar_ajax",
-        url: "/aportacion/buscarCatastral",
-        dataType: 'JSON',
-        delay: 250,
-        data: function(params) {
-            return {
-                q: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function(data, params) {
-            params.page = params.page || 1;
-
-            return {
-                //results: data.items2,
-                results: data.items,
-                pagination: {
-                    more: (params.page * 30) < data.total_count
-                }
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function(markup) {
-        return markup;
-    }, // let our custom formatter work
-    minimumInputLength: 1,
-    templateResult: formatRepo, // omitted for brevity, see the source of this page
-    templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-});
-
-$('.js-data-example-ajax2').change(function(){
-    var id = $(this).val();
-    var url = '/aportacion/autorellenaCatastral/'+id;
-    // AJAX request
-    $.ajax({
-    url: url,
-    method: 'POST',
-    dataType: 'JSON',
-    async: true,
-    success: function(data)
-    {
-    console.log(data);
-            $('[name ="titular"]').val(data.titular);
-            $('[name ="ubicacion"]').val(data.ubicacion);
-            $('[name ="titular_anterior"]').val(data.titular_anterior);
-            $('[name ="con_norte"]').val(data.con_norte);
-            $('[name ="con_sur"]').val(data.con_sur);
-            $('[name ="con_este"]').val(data.con_este);
-            $('[name ="con_oeste"]').val(data.con_oeste);
-            $('[name ="norte"]').val(data.norte);
-            $('[name ="sur"]').val(data.sur);
-            $('[name ="este"]').val(data.este);
-            $('[name ="oeste"]').val(data.oeste);
-            $('[name ="cvepredio"]').val(data.cvepredio);
-         // Mostrar campos ocultas si encontraste algo en la base de datos
-    },
-    error: function (jqXHR, textStatus, errorThrown)
-    {
-       $('#modal_alert').modal('show'); // show bootstrap modal
-        }
-    });
-});
-//enviar id por referencia en Javascript
-$("#asd").click(function(e){
-    e.preventDefault();
-    var combo = document.getElementById("contribuyente_id");
-    var selected = combo.options[combo.selectedIndex].value;
-    window.location.href ="aportacion/agregar2/" + selected;
-})
-
-$("#formato").hide();
-
-//Funcion Ocultar modal
-$('#MyModal').on('hide.bs.modal', function(event) {
-//limpiar los input del Modal
-//$(this).find('form')[0].reset();
-$('#agregar_form')[0].reset();
-//Limpiar el selec del modal
-$('.js-data-example-ajax2').empty();
-$('.js-data-example-ajax2').select2("val", "");
-//Oculatar la parte del calculo
-$("#formato").hide();
-//$(this).find('form')[0].reset();
 
 
-})
-});
+

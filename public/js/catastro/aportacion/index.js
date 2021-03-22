@@ -197,88 +197,111 @@ $("#formato").hide();
 })
 });
 
-function Calcular() {
-    var te = 0;
-    te = parseFloat(document.getElementById("terreno").value);
-    var re = te * 100;
-    document.getElementById("v_terreno").value = re;
+//funcion Calular Aportacion-Inicio
+    function Calcular()
+{
+    let metros_terreno = parseFloat(document.getElementById("terreno").value);
+    let valor_terreno = metros_terreno *100;
+    document.getElementById("v_terreno").value = valor_terreno;
     //  Calculo valor Construccion
-    var inv = 0;
-    var supm = 0;
-    inv = parseFloat(document.getElementById("v_in").value);
-    supm = parseFloat(document.getElementById("sup_m").value);
-    var res = supm * inv;
-    document.getElementById("v_c").value = res;
+    let inv = parseFloat(document.getElementById("v_in").value);
+    let metros_construccion = parseFloat(document.getElementById("sup_m").value);
+    let valor_construnccion = metros_construccion * inv;
+    document.getElementById("v_c").value = valor_construnccion;
     //Avaluo Total
-    //var at = re + res ;
-    //document.getElementById("a_total").value = at;
-    var at = re + res;
-    document.getElementById("a_total").value = at;
-    var vat = document.getElementById("terreno").value;
-    if (vat.length == 0) {
+    let avaluo_total = valor_terreno + valor_construnccion;
+    document.getElementById("a_total").value = avaluo_total;
+    //validaciones
+    let m_terreno = document.getElementById("terreno").value;
+    let m_construnccion = document.getElementById("sup_m").value;
+    let valor_oculto = document.getElementById("v_in").value;
+    //valida si el campo metros Terreno esta vacio
+    if (m_terreno.length == 0) {
         document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
     }
-    var vac = document.getElementById("sup_m").value;
-    var vai = document.getElementById("v_in").value;
-    if (vac.length == 0) {
+    //valida si el campo metros Construccion esta vacio
+    if (m_construnccion.length == 0) {
         document.getElementById("v_c").value = 0;
         document.getElementById("a_total").value = 0;
     }
-    if (vai.length == 0) {
+   //valida si el campo oculto no tiene valor
+    if (valor_oculto.length == 0) {
         document.getElementById("v_c").value = 0;
+        document.getElementById("v_in").value = 0;
         document.getElementById("a_total").value = 0;
     }
+     //Tasa_impositiva
+    let select_tasa = document.getElementById("tasa_i");
+    let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
+    let a_total = parseFloat(document.getElementById("a_total").value);
+    let pago_aportacion = valor_tasa * a_total;
+    document.getElementById("pago_a").value = pago_aportacion;
+
 }
 
 function valorC() {
-
-    //var x= parseFloat(document.getElementById("xd").value);
-    var d = document.getElementById("valor_c");
-    var displaytext = d.options[d.selectedIndex].value;
-    //var w = parseFloat(displaytext)+x;
-    document.getElementById("v_in").value = displaytext;
-    var xd = parseFloat(document.getElementById("sup_m").value);
-    var w = displaytext * xd;
-    document.getElementById("v_c").value = w;
-    //-->
-    var te = parseFloat(document.getElementById("terreno").value);
-    var re = te * 100;
-    document.getElementById("v_terreno").value = re;
-    //  Calculo valor Construccion
-    var inv = parseFloat(document.getElementById("v_in").value);
-    var supm = parseFloat(document.getElementById("sup_m").value);
-    var res = supm * inv;
-    document.getElementById("v_c").value = res;
+    let  select_valores_construccion = document.getElementById("valor_c");
+    let valores_construccion = select_valores_construccion.options[select_valores_construccion.selectedIndex].value;
+    document.getElementById("v_in").value = valores_construccion;
+    let metros_construccion = parseFloat(document.getElementById("sup_m").value);
+    let valor_construnccion = valores_construccion * metros_construccion;
+    let valor_c = document.getElementById("sup_m").value;
+    if(valor_c.length == 0){
+        metros_construccion = 0;
+        document.getElementById("v_c").value = 0;
+    }else{
+        document.getElementById("v_c").value = valor_construnccion;
+    }
+    //Calculo Valor Terreno
+    let metros_terreno = parseFloat(document.getElementById("terreno").value);
+    let valor_terreno = metros_terreno *100;
+    document.getElementById("v_terreno").value = valor_terreno;
+    //Calculo valor Construccion
+    let inv = parseFloat(document.getElementById("v_in").value);
+    let mts_construccion = parseFloat(document.getElementById("sup_m").value);
+    let val_construnccion = mts_construccion * inv;
+    document.getElementById("v_c").value = val_construnccion;
     //Avaluo Total
-    //var at = re + res ;
-    //document.getElementById("a_total").value = at;
-    var at = re + res;
-    document.getElementById("a_total").value = at;
-    //<--
-    var vai = document.getElementById("v_in").value;
-    if (vai.length == 0) {
+    let avaluo_total = valor_terreno + valor_construnccion;
+    document.getElementById("a_total").value = avaluo_total;
+    //validaciones
+    let m_terreno = document.getElementById("terreno").value;
+    let m_construnccion = document.getElementById("sup_m").value;
+    let valor_oculto = document.getElementById("v_in").value;
+    //valida si el campo metros Terreno esta vacio
+    if (m_terreno.length == 0) {
+        document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
+    }
+    //valida si el campo metros Construccion esta vacio
+    if (m_construnccion.length == 0) {
         document.getElementById("v_c").value = 0;
         document.getElementById("a_total").value = 0;
     }
-    var vas = document.getElementById("sup_m").value;
-    if (vas.length == 0) {
+   //valida si el campo oculto no tiene valor
+    if (valor_oculto.length == 0) {
         document.getElementById("v_c").value = 0;
+        document.getElementById("v_in").value = 0;
         document.getElementById("a_total").value = 0;
     }
+    //Tasa_impositiva
+    let select_tasa = document.getElementById("tasa_i");
+    let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
+    let a_total = parseFloat(document.getElementById("a_total").value);
+    let pago_aportacion = valor_tasa * a_total;
+    document.getElementById("pago_a").value = pago_aportacion;
 }
 
 //select Tasa impositiva
 function timpositiva() {
-    //var x= parseFloat(document.getElementById("xd").value);
-    var d = document.getElementById("tasa_i");
-    var displaytext = d.options[d.selectedIndex].value;
-    //var w = parseFloat(displaytext)+x;
-    //document.getElementById("v_in").value=displaytext;
-    var xd = parseFloat(document.getElementById("a_total").value);
-    var w = displaytext * xd;
-    document.getElementById("pago_a").value = w;
-    //document.getElementById("pago_as").value = w;
+    let select_tasa = document.getElementById("tasa_i");
+    let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
+    let avaluo_total = parseFloat(document.getElementById("a_total").value);
+    let pago_aportacion = valor_tasa * avaluo_total;
+    document.getElementById("pago_a").value = pago_aportacion;
 }
+//funcion Calular-Fin
 
 function add_contribuyente()
 {
@@ -369,3 +392,5 @@ function validaNumericos(event) {
     }
     return false;
 }
+
+

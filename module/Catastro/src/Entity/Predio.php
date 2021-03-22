@@ -161,19 +161,6 @@ class Predio
     {
         return $this->idPredio;
     }
-    /**
-     * Set idPredio.
-     *
-     * @param bigint|null $idPredio
-     *
-     * @return Predio
-     */
-    public function setIdPredio($idPredio)
-    {
-        $this->idPredio = $idPredio;
-
-        return $this;
-    }
 
     /**
      * Set ubicacion.

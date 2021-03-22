@@ -332,4 +332,19 @@ class AportacionManager
 
         $this->entityManager->flush();
     }
+     public function actualizarValidation($aportacion, $data)
+    {
+        $aportacion->setPago($data['pago']);
+        // $aportacion->setNombre($data['nombre']);
+        // $aportacion->setApellidoPaterno($data['apellido_paterno']);
+        // $aportacion->setApellidoMaterno($data['apellido_materno']);
+        // $aportacion->setRfc($data['rfc']);
+        // $aportacion->setCurp($data['curp']);
+        // $aportacion->setGenero($data['genero']);
+
+        // $currentDate = new \DateTime();
+        // $aportacion->setUpdatedAt($currentDate);
+
+        $this->entityManager->flush();
+    }
 }
