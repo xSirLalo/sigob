@@ -14,19 +14,19 @@ class AportacionForm extends Form
         parent::__construct('aportacion_form');
         $this->setAttribute('method', 'post');
 
-        $this->add([
-            'type' => Element\Select::class,
-            'name' => 'contribuyente_id',
-            'options' => [
-                'label' => 'Buscar...',
-                'empty_option' => 'Seleccione uno..',
-                'disable_inarray_validator' => true,
-            ],
-            'attributes' => [
-                'class' => 'custom-select',
-                'id' =>'contribuyente_id',
-            ]
-        ]);
+        // $this->add([
+        //     'type' => Element\Select::class,
+        //     'name' => 'contribuyente_id',
+        //     'options' => [
+        //         'label' => 'Buscar...',
+        //         'empty_option' => 'Seleccione uno..',
+        //         'disable_inarray_validator' => true,
+        //     ],
+        //     'attributes' => [
+        //         'class' => 'custom-select',
+        //         'id' =>'contribuyente_id',
+        //     ]
+        // ]);
 
         $this->add([
             'type' => Element\File::class,
@@ -45,12 +45,48 @@ class AportacionForm extends Form
                 'title'         => 'Cargar archivo'
             ]
         ]);
+//////Targeta de Aportacion////////
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'parcela',
+            'options' => [
+                'label' => 'Parcela',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'titular',
+            'name' => 'manzana',
             'options' => [
-                'label' => 'Titular',
+                'label' => 'Manzana',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'lote',
+            'options' => [
+                'label' => 'Lote',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'local',
+            'options' => [
+                'label' => 'Local',
             ],
             'attributes' => [
                 //'required' => true,
@@ -69,11 +105,25 @@ class AportacionForm extends Form
                 'class' => 'form-control',
             ]
         ]);
+
         $this->add([
             'type' => Element\Text::class,
             'name' => 'condicion',
             'options' => [
                 'label' => 'Condicion',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+/////DATOS DE INMUEBLE/////
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'titular',
+            'options' => [
+                'label' => 'Titular',
             ],
             'attributes' => [
                 //'required' => true,
@@ -107,9 +157,9 @@ class AportacionForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'arrendador',
+            'name' => 'antecedentes',
             'options' => [
-                'label' => 'Arrendador',
+                'label' => 'Antecedentes',
             ],
             'attributes' => [
                 //'required' => true,
@@ -215,9 +265,9 @@ class AportacionForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'd_propiedad',
+            'name' => 'clave_catastral',
             'options' => [
-                'label' => 'Documento de Propiedad',
+                'label' => 'Clave Catastral',
             ],
             'attributes' => [
                 //'required' => true,
@@ -227,9 +277,65 @@ class AportacionForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'd_arrendamiento',
+            'name' => 'regimen_propiedad',
             'options' => [
-                'label' => 'Documentos de arrendamiento',
+                'label' => 'Regimen de Propiedad',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Date::class,
+            'name' => 'fecha_adquisicion',
+            'options' => [
+            'label' => 'Fecha de Adquicision',
+            'format' => 'Y-m-d',
+        ],
+        'attributes' => [
+            'class' => 'form-control',
+            'min' => '2021-01-01',
+            'max' => '2030-01-01',
+            'step' => '1', // days; default step interval is 1 day
+            'id' =>'vig',
+        ],
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'titular_anterior',
+            'options' => [
+                'label' => 'Titular anterior',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+/////REGISTRO FISCAL//////
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'contribuyente',
+            'options' => [
+                'label' => 'Contribuyente',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Select::class,
+            'name' => 'factura',
+            'options' => [
+                'label' => 'Fatura',
+                'value_options' => [
+            '0' => 'Si',
+            '1' => 'No',
+        ],
             ],
             'attributes' => [
                 //'required' => true,
@@ -239,7 +345,7 @@ class AportacionForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'g_comercial',
+            'name' => 'giro_comercial',
             'options' => [
                 'label' => 'Giro Comercial',
             ],
@@ -251,9 +357,33 @@ class AportacionForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'n_comercial',
+            'name' => 'nombre_comercial',
             'options' => [
                 'label' => 'Nombre Comercial',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'tenencia',
+            'options' => [
+                'label' => 'Tenencia',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'rfc',
+            'options' => [
+                'label' => 'RFC',
             ],
             'attributes' => [
                 //'required' => true,
@@ -275,7 +405,7 @@ class AportacionForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'u_destino',
+            'name' => 'uso_destino',
             'options' => [
                 'label' => 'Uso o destino',
             ],
@@ -285,23 +415,12 @@ class AportacionForm extends Form
             ]
         ]);
 
-        $this->add([
-            'type' => Element\Text::class,
-            'name' => 'titular_anterior',
-            'options' => [
-                'label' => 'Titular anterior',
-            ],
-            'attributes' => [
-                //'required' => true,
-                'class' => 'form-control',
-            ]
-        ]);
-
+//////AVALUO/////
         $this->add([
             'type' => Element\Text::class,
             'name' => 'terreno',
             'options' => [
-                'label' => 'Sup. M2 Terreno',
+                'label' => 'SUP.M2 TERRENO',
             ],
             'attributes' => [
                 'required' => true,
@@ -318,7 +437,7 @@ class AportacionForm extends Form
             'type' => Element\Text::class,
             'name' => 'sup_m',
             'options' => [
-                'label' => 'Sup.M2 Construcion',
+                'label' => 'SUP.M2 CONSTRUCCIÓN',
             ],
             'attributes' => [
                 'required' => true,
@@ -337,7 +456,7 @@ class AportacionForm extends Form
             'type' => Element\Text::class,
             'name' => 'v_terreno',
             'options' => [
-                'label' => 'Valor del Terreno',
+                'label' => 'VALOR DEL TERRENO',
             ],
             'attributes' => [
                 'readonly' => true,
@@ -350,7 +469,7 @@ class AportacionForm extends Form
             'type' => Element\Text::class,
             'name' => 'v_c',
             'options' => [
-                'label' => 'Valor de la construccion',
+                'label' => 'VALOR DE LA CONSTRUCCION',
             ],
             'attributes' => [
                 'readonly' => true,
@@ -359,11 +478,37 @@ class AportacionForm extends Form
             ]
         ]);
 
+            $this->add([
+            'type' => Element\Text::class,
+            'name' => 'valor',
+            'options' => [
+                'label' => 'VALOR M2 CONSTRUCCION',
+            ],
+            'attributes' => [
+                // 'readonly' => true,
+                'class' => 'form-control',
+                'id' =>'valor',
+            ]
+        ]);
+
+            $this->add([
+            'type' => Element\Text::class,
+            'name' => 'valor_m2_zona',
+            'options' => [
+                'label' => 'VALOR M2 DE ZONA',
+            ],
+            'attributes' => [
+                // 'readonly' => true,
+                'class' => 'form-control',
+                'id' =>'valor_zona',
+            ]
+        ]);
+
         $this->add([
             'type' => Element\Text::class,
             'name' => 'a_total',
             'options' => [
-                'label' => 'Avaluo Total',
+                'label' => 'AVALUO',
             ],
             'attributes' => [
                 'readonly' => true,
@@ -376,7 +521,7 @@ class AportacionForm extends Form
             'type' => Element\Text::class,
             'name' => 'ejercicio_f',
             'options' => [
-                'label' => 'Ejercicio Fiscal',
+                'label' => 'EJERCICIO FISCAL',
             ],
             'attributes' => [
                 'required' => true,
@@ -391,7 +536,7 @@ class AportacionForm extends Form
             'type' => Element\Text::class,
             'name' => 'pago_a',
             'options' => [
-                'label' => 'Pago aportacion',
+                'label' => 'APORTACION',
             ],
             'attributes' => [
                 'readonly' => true,
@@ -456,22 +601,6 @@ class AportacionForm extends Form
             'max' => '2030-01-01',
             'step' => '1', // days; default step interval is 1 day
             'onkeyup'=>'esvacio()',
-            'id' =>'vig',
-        ],
-        ]);
-
-        $this->add([
-            'type' => Element\Date::class,
-            'name' => 'fecha_adquisicion',
-            'options' => [
-            'label' => 'Fecha de Adquicision',
-            'format' => 'Y-m-d',
-        ],
-        'attributes' => [
-            'class' => 'form-control',
-            'min' => '2021-01-01',
-            'max' => '2030-01-01',
-            'step' => '1', // days; default step interval is 1 day
             'id' =>'vig',
         ],
         ]);

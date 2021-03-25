@@ -61,18 +61,30 @@ class AportacionManager
         $idcontribuyente = $data['parametro'];
 
         $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($idcontribuyente);
+
         $predio->setIdContribuyente($contribuyentebd);
-        $predio->setClaveCatastral($data['contribuyente_id']);
-        $predio->setUbicacion($data['ubicacion']);
+        $predio->setParcela($data['parcela']);
+        $predio->setManzana($data['manzana']);
+        $predio->setLote($data['lote']);
+        $predio->setLocal($data['local']);
+        $predio->setCategoria($data['categoria']);
+        $predio->setCondicion($data['condicion']);
         $predio->setTitular($data['titular']);
+        $predio->setUbicacion($data['ubicacion']);
+        $predio->setLocalidad($data['localidad']);
+        $predio->setAntecedentes($data['antecedentes']);
+        $predio->setClaveCatastral($data['clave_catastral']);
+        $predio->setRegimenPropiedad($data['regimen_propiedad']);
+        $fecha_adquicision = new \DateTime($data['fecha_adquisicion']);
+        $predio->setFechaAdquicision($fecha_adquicision);
         $predio->setTitularAnterior($data['titular_anterior']);
-        $predio->setCvePredio($cvepredio);
 
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
 
         $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($idcontribuyente);
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByCvePredio($cvepredio);
+        // $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByCvePredio($cvepredio);
+        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
         $aportacion->setIdContribuyente($contribuyentebd);
         $aportacion->setIdPredio($prediobd);
         $aportacion->setPago($data['pago_a']);//Pago aportacion
@@ -88,8 +100,8 @@ class AportacionManager
         $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
 
-        $prediosColindaciasWeb = $this->opergobserviceadapter->obtenerColindancia($cvepredio);
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByCvePredio($cvepredio);
+        // $prediosColindaciasWeb = $this->opergobserviceadapter->obtenerColindancia($cvepredio);
+        // $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByCvePredio($cvepredio);
         ///////////////////
         // $arreglo = [];
         // foreach($prediosColindaciasWeb->PredioColindancia as $item)
@@ -107,18 +119,18 @@ class AportacionManager
         //     $this->entityManager->persist($predioColindacia);
         // }
         ///////////////////
-        foreach($prediosColindaciasWeb->PredioColindancia as $item)
-        {
-            $predioColindacia = new PredioColindancia();
-            $predioColindacia->setIdPredio($prediobd);
-            $predioColindacia->setDescripcion($item->Descripcion);
-            $predioColindacia->setMedidaMetros($item->MedidaMts);
-            $predioColindacia->setOrientacionGeografica($item->OrientacionGeografica);
-            $this->entityManager->persist($predioColindacia);
-        }
+        // foreach($prediosColindaciasWeb->PredioColindancia as $item)
+        // {
+        //     $predioColindacia = new PredioColindancia();
+        //     $predioColindacia->setIdPredio($prediobd);
+        //     $predioColindacia->setDescripcion($item->Descripcion);
+        //     $predioColindacia->setMedidaMetros($item->MedidaMts);
+        //     $predioColindacia->setOrientacionGeografica($item->OrientacionGeografica);
+        //     $this->entityManager->persist($predioColindacia);
+        // }
 
 
-            $this->entityManager->flush();
+        //     $this->entityManager->flush();
 
     }
     public function guardarPersona($data)

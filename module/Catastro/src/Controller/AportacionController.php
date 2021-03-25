@@ -18,6 +18,7 @@ use Catastro\Entity\Predio;
 use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
 use Catastro\Entity\TablaValorConstruccion;
+use Catastro\Entity\TablaValorZona;
 use Catastro\Entity\Contribuyente;
 use Catastro\Form\ValidacionModalForm;
 
@@ -96,7 +97,9 @@ class AportacionController extends AbstractActionController
         $parametro = (string)$this->params()->fromRoute('id');
 
         $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
+        $contribuyente = $this->entityManager->getRepository(Contribuyente:class)->findAll();
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
+        $valoresZona = $this->entityManager->getRepository(TablaValorZona::class)->findAll();
 
         $request = $this->getRequest();
 
@@ -111,7 +114,7 @@ class AportacionController extends AbstractActionController
                 return $this->redirect()->toRoute('aportacion');
             }
         }
-        return new ViewModel(['form' => $form, 'id' => $parametro, 'valorConstruccions' => $valorConstruccion]);
+        return new ViewModel(['form' => $form, 'id' => $parametro, 'valorConstruccions' => $valorConstruccion, 'valoresZonas' => $valoresZona]);
     }
 
     public function addModalAction()

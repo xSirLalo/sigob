@@ -66,10 +66,10 @@ class Predio extends \Catastro\Entity\Predio implements \Doctrine\ORM\Proxy\Prox
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idPredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ubicacion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'colonia', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'localidad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'municipio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'calle', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'claveCatastral', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'cvePredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroExterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroInterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'estatus', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'tipo', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoEjercicioPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoPeriodoPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titular', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titularAnterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'updatedAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idContribuyente'];
+            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idPredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'parcela', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'manzana', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'lote', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'local', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'categoria', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'condicion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titular', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ubicacion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'colonia', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'localidad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'antecedentes', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'regimenPropiedad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'fechaAdquicision', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'claveCatastral', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titularAnterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'municipio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'calle', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'cvePredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroExterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroInterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'estatus', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'tipo', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoEjercicioPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoPeriodoPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'updatedAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idContribuyente'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idPredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ubicacion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'colonia', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'localidad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'municipio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'calle', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'claveCatastral', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'cvePredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroExterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroInterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'estatus', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'tipo', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoEjercicioPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoPeriodoPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titular', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titularAnterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'updatedAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idContribuyente'];
+        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idPredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'parcela', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'manzana', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'lote', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'local', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'categoria', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'condicion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titular', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ubicacion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'colonia', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'localidad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'antecedentes', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'regimenPropiedad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'fechaAdquicision', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'claveCatastral', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titularAnterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'municipio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'calle', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'cvePredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroExterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroInterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'estatus', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'tipo', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoEjercicioPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoPeriodoPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'updatedAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idContribuyente'];
     }
 
     /**
@@ -194,6 +194,160 @@ class Predio extends \Catastro\Entity\Predio implements \Doctrine\ORM\Proxy\Prox
     /**
      * {@inheritDoc}
      */
+    public function setParcela($parcela = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setParcela', [$parcela]);
+
+        return parent::setParcela($parcela);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParcela()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getParcela', []);
+
+        return parent::getParcela();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setManzana($manzana = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setManzana', [$manzana]);
+
+        return parent::setManzana($manzana);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getManzana()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getManzana', []);
+
+        return parent::getManzana();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLote($lote = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLote', [$lote]);
+
+        return parent::setLote($lote);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLote()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLote', []);
+
+        return parent::getLote();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLocal($local = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocal', [$local]);
+
+        return parent::setLocal($local);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLocal()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocal', []);
+
+        return parent::getLocal();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCategoria($categoria = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCategoria', [$categoria]);
+
+        return parent::setCategoria($categoria);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCategoria()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCategoria', []);
+
+        return parent::getCategoria();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCondicion($condicion = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCondicion', [$condicion]);
+
+        return parent::setCondicion($condicion);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCondicion()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCondicion', []);
+
+        return parent::getCondicion();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTitular($titular = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTitular', [$titular]);
+
+        return parent::setTitular($titular);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTitular()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTitular', []);
+
+        return parent::getTitular();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setUbicacion($ubicacion = NULL)
     {
 
@@ -260,6 +414,116 @@ class Predio extends \Catastro\Entity\Predio implements \Doctrine\ORM\Proxy\Prox
     /**
      * {@inheritDoc}
      */
+    public function setAntecedentes($antecedentes = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAntecedentes', [$antecedentes]);
+
+        return parent::setAntecedentes($antecedentes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAntecedentes()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAntecedentes', []);
+
+        return parent::getAntecedentes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRegimenPropiedad($regimenPropiedad = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegimenPropiedad', [$regimenPropiedad]);
+
+        return parent::setRegimenPropiedad($regimenPropiedad);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRegimenPropiedad()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegimenPropiedad', []);
+
+        return parent::getRegimenPropiedad();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFechaAdquicision($fechaAdquicision = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFechaAdquicision', [$fechaAdquicision]);
+
+        return parent::setFechaAdquicision($fechaAdquicision);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFechaAdquicision()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFechaAdquicision', []);
+
+        return parent::getFechaAdquicision();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setClaveCatastral($claveCatastral = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setClaveCatastral', [$claveCatastral]);
+
+        return parent::setClaveCatastral($claveCatastral);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getClaveCatastral()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getClaveCatastral', []);
+
+        return parent::getClaveCatastral();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTitularAnterior($titularAnterior = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTitularAnterior', [$titularAnterior]);
+
+        return parent::setTitularAnterior($titularAnterior);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTitularAnterior()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTitularAnterior', []);
+
+        return parent::getTitularAnterior();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setMunicipio($municipio = NULL)
     {
 
@@ -299,28 +563,6 @@ class Predio extends \Catastro\Entity\Predio implements \Doctrine\ORM\Proxy\Prox
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCalle', []);
 
         return parent::getCalle();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setClaveCatastral($claveCatastral = NULL)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setClaveCatastral', [$claveCatastral]);
-
-        return parent::setClaveCatastral($claveCatastral);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getClaveCatastral()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getClaveCatastral', []);
-
-        return parent::getClaveCatastral();
     }
 
     /**
@@ -475,50 +717,6 @@ class Predio extends \Catastro\Entity\Predio implements \Doctrine\ORM\Proxy\Prox
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUltimoPeriodoPagado', []);
 
         return parent::getUltimoPeriodoPagado();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setTitular($titular = NULL)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTitular', [$titular]);
-
-        return parent::setTitular($titular);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTitular()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTitular', []);
-
-        return parent::getTitular();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setTitularAnterior($titularAnterior = NULL)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTitularAnterior', [$titularAnterior]);
-
-        return parent::setTitularAnterior($titularAnterior);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTitularAnterior()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTitularAnterior', []);
-
-        return parent::getTitularAnterior();
     }
 
     /**

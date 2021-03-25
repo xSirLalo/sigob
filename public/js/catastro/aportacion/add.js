@@ -86,6 +86,7 @@ function valorC() {
     let  select_valores_construccion = document.getElementById("valor_c");
     let valores_construccion = select_valores_construccion.options[select_valores_construccion.selectedIndex].value;
     document.getElementById("v_in").value = valores_construccion;
+    document.getElementById("valor").value = valores_construccion;
     let metros_construccion = parseFloat(document.getElementById("sup_m").value);
     let valor_construnccion = valores_construccion * metros_construccion;
     let valor_c = document.getElementById("sup_m").value;
@@ -142,6 +143,7 @@ function timpositiva() {
     let avaluo_total = parseFloat(document.getElementById("a_total").value);
     let pago_aportacion = valor_tasa * avaluo_total;
     document.getElementById("pago_a").value = pago_aportacion;
+    document.getElementById("p_hide").value = pago_aportacion;
 }
 //funcion Calular-Fin
 
@@ -191,13 +193,11 @@ function validaNumericos(event) {
 
 function esvacio()
 {
-
 if (
 document.getElementById('terreno').value=="" ||
 document.getElementById('sup_m').value=="" ||
 document.getElementById('ejercicio_f').value=="" ||
 document.getElementById('p_hide').value==""
-
 )
 {
 document.getElementById('btn-ok').disabled=true;
