@@ -51,7 +51,7 @@ class BibliotecaManager
         return file_get_contents($filePath);
     }
 
-    public function guardarArchivos($data, $categoria)
+    public function guardarArchivosP($data, $categoria)
     {
         $file = new Biblioteca();
 
@@ -76,7 +76,7 @@ class BibliotecaManager
         return null;
     }
 
-    public function guardarRelacion($id, $archivito)
+    public function guardarRelacionAP($id, $archivito)
     {
         $filePredio = new ArchivoPredio();
 
@@ -84,11 +84,27 @@ class BibliotecaManager
         if ($Predio == null) {
             throw new \Exception('ID: ' . $id . ' DOESN\'T EXIST');
         }
-        // $Predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['id_predio']);
+
         $filePredio->setIdArchivo($archivito);
         $filePredio->setIdPredio($Predio);
 
         $this->entityManager->persist($filePredio);
+        $this->entityManager->flush();
+    }
+
+    public function guardarRelacionAC($id, $archivito)
+    {
+        $fileContribuyente = new ArchivoContribuyente();
+
+        $Contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
+        if ($Contribuyente == null) {
+            throw new \Exception('ID: ' . $id . ' DOESN\'T EXIST');
+        }
+
+        $fileContribuyente->setIdArchivo($archivito);
+        $fileContribuyente->setIdContribuyente($Contribuyente);
+
+        $this->entityManager->persist($fileContribuyente);
         $this->entityManager->flush();
     }
 

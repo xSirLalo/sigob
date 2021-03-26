@@ -20,16 +20,20 @@ class ContribuyenteManager
         $this->entityManager = $entityManager;
     }
 
-    public function agregar($data)
+    public function guardarContribuyente($data)
     {
         $contribuyente = new Contribuyente();
 
-        $contribuyente->setNombre($data['nombre']);
         $contribuyente->setApellidoPaterno($data['apellido_paterno']);
         $contribuyente->setApellidoMaterno($data['apellido_materno']);
-        $contribuyente->setRfc($data['rfc']);
         $contribuyente->setCurp($data['curp']);
+        $contribuyente->setCvePersona($data['cve_persona']);
         $contribuyente->setGenero($data['genero']);
+        $contribuyente->setNombre($data['nombre']);
+        $contribuyente->setTelefono($data['telefono']);
+        $contribuyente->setCorreo($data['correo']);
+        $contribuyente->setRfc($data['rfc']);
+        $contribuyente->getRazonSocial($data['razon_social']);
 
         $currentDate = new \DateTime();
         $contribuyente->setCreatedAt($currentDate);
@@ -67,14 +71,18 @@ class ContribuyenteManager
         return false;
     }
 
-    public function actualizar($contribuyente, $data)
+    public function actualizarContribuyente($contribuyente, $data)
     {
-        $contribuyente->setNombre($data['nombre']);
         $contribuyente->setApellidoPaterno($data['apellido_paterno']);
         $contribuyente->setApellidoMaterno($data['apellido_materno']);
-        $contribuyente->setRfc($data['rfc']);
         $contribuyente->setCurp($data['curp']);
+        $contribuyente->setCvePersona($data['cve_persona']);
         $contribuyente->setGenero($data['genero']);
+        $contribuyente->setNombre($data['nombre']);
+        $contribuyente->setTelefono($data['telefono']);
+        $contribuyente->setCorreo($data['correo']);
+        $contribuyente->setRfc($data['rfc']);
+        $contribuyente->getRazonSocial($data['razon_social']);
 
         $currentDate = new \DateTime();
         $contribuyente->setUpdatedAt($currentDate);

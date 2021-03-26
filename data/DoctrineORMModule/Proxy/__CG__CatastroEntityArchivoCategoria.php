@@ -66,10 +66,10 @@ class ArchivoCategoria extends \Catastro\Entity\ArchivoCategoria implements \Doc
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'idArchivoCategoria', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'updatedAt'];
+            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'idArchivoCategoria', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'grupo', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'updatedAt'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'idArchivoCategoria', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'updatedAt'];
+        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'idArchivoCategoria', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'grupo', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\ArchivoCategoria' . "\0" . 'updatedAt'];
     }
 
     /**
@@ -211,6 +211,28 @@ class ArchivoCategoria extends \Catastro\Entity\ArchivoCategoria implements \Doc
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNombre', []);
 
         return parent::getNombre();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setGrupo($grupo = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGrupo', [$grupo]);
+
+        return parent::setGrupo($grupo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGrupo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGrupo', []);
+
+        return parent::getGrupo();
     }
 
     /**

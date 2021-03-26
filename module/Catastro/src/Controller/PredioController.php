@@ -130,15 +130,15 @@ class PredioController extends AbstractActionController
                     $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
 
                     if ($archivito) {
-                        $this->bibliotecaManager->guardarRelacion($id, $archivito);
+                        $this->bibliotecaManager->guardarRelacionAP($id, $archivito);
                     }
 
                     $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
                     if ($predio) {
-                        $this->predioManager->actualizar($predio, $data);
+                        $this->predioManager->actualizarPredio($predio, $data);
                         $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
                     } else {
-                        $this->predioManager->guardar($data);
+                        $this->predioManager->guardarPredio($data);
                         $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                     }
                 }

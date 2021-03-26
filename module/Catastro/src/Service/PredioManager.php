@@ -55,6 +55,42 @@ class PredioManager
         return null;
     }
 
+    public function actualizarPredio($predio, $data)
+    {
+        $predio->setColonia($data['colonia']);
+        $predio->setLocalidad($data['localidad']);
+        $predio->setMunicipio($data['municipio']);
+        $predio->setCalle($data['calle']);
+        $predio->setClaveCatastral($data['cve_catastral']);
+        $predio->setCvePredio($data['cve_predio']);
+        $predio->setNumeroExterior($data['numero_exterior']);
+        $predio->setNumeroInterior($data['numero_interior']);
+        $predio->setEstatus($data['estatus']);
+        $predio->setTipo($data['tipo']);
+        $predio->setUltimoEjercicioPagado($data['ultimo_ejercicio_pagado']);
+        $predio->setUltimoPeriodoPagado($data['ultimo_periodo_pagado']);
+        $predio->setTitular($data['titular']);
+        $predio->setTitularAnterior($data['titular_anterior']);
+
+        $currentDate = new \DateTime();
+        $predio->setUpdatedAt($currentDate);
+
+        $this->entityManager->flush();
+    }
+
+    public function guardarColindancia($predio, $data)
+    {
+        $predioColindacia = new PredioColindancia();
+        $predioColindacia->setIdPredio($predio);
+
+        $predioColindacia->setDescripcion($data['descripcion']);
+        $predioColindacia->setMedidaMetros($data['medida_metros']);
+        $predioColindacia->setOrientacionGeografica($data['orientacion_geografica']);
+
+        $this->entityManager->persist($predioColindacia);
+        $this->entityManager->flush();
+    }
+
     public function guardarPersona($data)
     {
         $contribuyente = new Contribuyente();
@@ -81,29 +117,6 @@ class PredioManager
             return $contribuyente;
         }
         return false;
-    }
-
-    public function guardarColindancia($predio, $data)
-    {
-        $predioColindacia = new PredioColindancia();
-        $predioColindacia->setIdPredio($predio);
-
-        $predioColindacia->setDescripcion($data['descripcion']);
-        $predioColindacia->setMedidaMetros($data['medida_metros']);
-        $predioColindacia->setOrientacionGeografica($data['orientacion_geografica']);
-
-        $this->entityManager->persist($predioColindacia);
-        $this->entityManager->flush();
-    }
-
-    public function actualizar($predio, $data)
-    {
-        $predio->setTitular($data['titular']);
-
-        $currentDate = new \DateTime();
-        $predio->setUpdatedAt($currentDate);
-
-        $this->entityManager->flush();
     }
 
     public function eliminar($predio)

@@ -227,15 +227,40 @@ class ContribuyenteController extends AbstractActionController
                     $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
                     $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
 
-                    $archivito = $this->bibliotecaManager->guardarArchivosContribuyente($data, $categoria[$i]);
+                    $filename = $_FILES['archivo']['name'][$i];
+                    $filesize = $_FILES['archivo']['size'][$i];
+                    $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                    $file_type = $_FILES['archivo']['type'][$i];
+                    $date = date("d-m-Y_H-i");
+                    $temp = explode(".", $filename);
+                    $new_filename =   strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
+                    $file_folder = $destination . '/' . $new_filename;
+
+                    $data['archivoBlob'] = file_get_contents($file_folder, true);
+                    $data['extension'] = $temp[count($temp)-1];
+                    $data['size'] = $filesize;
+                    $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                    $data['categoria'] = $categoria[$i];
+                    $id = $data['input1'];
+
+                    $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
 
                     if ($archivito) { // TODO: Hacer funcionar
                         $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
                     }
 
-                    $this->contribuyenteManager->agregar($data);
-                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                    return $this->redirect()->toRoute('contribuyente');
+                    $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByCvePersona($data['cve_catastral']);
+                    if ($contribuyente) {
+                        $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
+                        $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
+                    } else {
+                        $this->contribuyenteManager->guardarContribuyente($data);
+                        $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                    }
+
+                    // $this->contribuyenteManager->agregar($data);
+                    // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                    // return $this->redirect()->toRoute('contribuyente');
                 }
             }
             $view = new ViewModel(['form' => $form, 'categorias' => $categorias]);
