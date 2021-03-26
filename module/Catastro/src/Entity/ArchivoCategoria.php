@@ -29,6 +29,13 @@ class ArchivoCategoria
     private $nombre;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="grupo", type="string", length=255, nullable=true)
+     */
+    private $grupo;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
@@ -76,6 +83,30 @@ class ArchivoCategoria
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set grupo.
+     *
+     * @param string|null $grupo
+     *
+     * @return ArchivoCategoria
+     */
+    public function setGrupo($grupo = null)
+    {
+        $this->grupo = $grupo;
+
+        return $this;
+    }
+
+    /**
+     * Get grupo.
+     *
+     * @return string|null
+     */
+    public function getGrupo()
+    {
+        return $this->grupo;
     }
 
     /**
