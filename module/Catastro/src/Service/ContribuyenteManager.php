@@ -60,6 +60,7 @@ class ContribuyenteManager
 
         $this->entityManager->persist($contribuyente);
         $this->entityManager->flush();
+
         if ($contribuyente->getIdContribuyente() > 0) {
             return $contribuyente;
         }

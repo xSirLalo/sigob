@@ -40,7 +40,7 @@ class BibliotecaCategoriaManager
         $categoria->setNombre($data['nombre']);
 
         $currentDate = new \DateTime();
-        $contribuyente->setUpdatedAt($currentDate);
+        $categoria->setUpdatedAt($currentDate);
 
         $this->entityManager->flush();
     }

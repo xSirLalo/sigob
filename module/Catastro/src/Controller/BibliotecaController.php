@@ -179,34 +179,41 @@ class BibliotecaController extends AbstractActionController
 
     public function deleteFileAction()
     {
-        $contribuyenteId = (int)$this->params()->fromRoute('contribuyente', -1);
+        $id = (int)$this->params()->fromRoute('predio', -1);
         $archivoId = (int)$this->params()->fromRoute('archivo', -1);
 
-        if ($contribuyenteId < 0 || $archivoId < 0) {
+        if ($id < 0 || $archivoId < 0) {
             $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
+            // return $response->setTemplate('error/404');
         }
 
         $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
 
-        if ($contribuyenteId == null || $archivoId == null) {
+        if ($id == null || $archivoId == null) {
             $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
+            // return $response->setTemplate('error/404');
         }
 
         $qb = $this->entityManager->createQueryBuilder();
+        $qb ->delete('Catastro\Entity\ArchivoPredio', 'ap')
+            ->where($qb->expr()->eq('ap.idPredio', ':idParam1'))
+            ->andWhere($qb->expr()->eq('ap.idArchivo', ':idParam2'))
+            ->setParameter('idParam1', $id)
+            ->setParameter('idParam2', $archivoId);
+        $qb->getQuery()->execute();
+
+        $qb = $this->entityManager->createQueryBuilder();
         $qb ->delete('Catastro\Entity\Archivo', 'a')
-            ->where($qb->expr()->eq('a.idContribuyente', ':idParam1'))
-            ->andWhere($qb->expr()->eq('a.idArchivo', ':idParam2'))
-            ->setParameter('idParam1', $contribuyenteId)
+            ->Where($qb->expr()->eq('a.idArchivo', ':idParam2'))
             ->setParameter('idParam2', $archivoId);
         $qb->getQuery()->execute();
 
         \unlink('public/img/'. $file->getUrl());
         $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
-        return $this->redirect()->toRoute('biblioteca/ver', ['id' => $contribuyenteId]);
+        // return $this->redirect()->toRoute('biblioteca/ver', ['id' => $id]);
+        return $this->redirect()->toRoute('predio/ver', ['id' => $id]);
     }
 
     public function downloadFileAction()

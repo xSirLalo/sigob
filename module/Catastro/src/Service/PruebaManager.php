@@ -33,6 +33,7 @@ class PruebaManager
     {
         $this->entityManager = $entityManager;
     }
+
     public function guardarPrueba($data)
     {
         $contribuyente = new Contribuyente();
@@ -46,5 +47,22 @@ class PruebaManager
 
         $this->entityManager->persist($contribuyente);
         $this->entityManager->flush();
+    }
+
+    public function coleccion($where)
+    {
+        $sql = "";
+
+        if (count($where) > 0) {
+            for ($i=0; $i < count($where); $i++) {
+                $sql .= $where[$i];
+            }
+        }
+
+        $sql .= "";
+
+        $coleccion = $this->em->getConnection()->query($sql)->fetchAll();
+
+        return $coleccion;
     }
 }

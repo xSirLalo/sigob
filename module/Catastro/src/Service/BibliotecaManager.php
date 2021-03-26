@@ -3,6 +3,8 @@
 namespace Catastro\Service;
 
 use Catastro\Entity\Archivo  as Biblioteca;
+use Catastro\Entity\ArchivoPredio;
+use Catastro\Entity\ArchivoContribuyente;
 use Catastro\Entity\Contribuyente;
 use Catastro\Entity\Predio;
 use Catastro\Entity\ArchivoCategoria;
@@ -55,13 +57,6 @@ class BibliotecaManager
 
         $Categoria = $this->entityManager->getRepository(ArchivoCategoria::class)->findOneByIdArchivoCategoria($categoria);
 
-        $Predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['input1']);
-        if ($Predio == null) {
-            throw new \Exception('ID: ' . $data['input1'] . ' DOESN\'T EXIST');
-        }
-        // $Predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['id_predio']);
-
-        $file->setIdPredio($Predio);
         $file->setIdArchivoCategoria($Categoria);
         $file->setFile($data['archivoBlob']);
         $file->setExtension($data['extension']);
@@ -73,7 +68,27 @@ class BibliotecaManager
         $file->setUpdatedAt($currentDate);
 
         $this->entityManager->persist($file);
+        $this->entityManager->flush();
 
+        if ($file->getIdArchivo() > 0) {
+            return $file;
+        }
+        return null;
+    }
+
+    public function guardarRelacion($id, $archivito)
+    {
+        $filePredio = new ArchivoPredio();
+
+        $Predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($id);
+        if ($Predio == null) {
+            throw new \Exception('ID: ' . $id . ' DOESN\'T EXIST');
+        }
+        // $Predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['id_predio']);
+        $filePredio->setIdArchivo($archivito);
+        $filePredio->setIdPredio($Predio);
+
+        $this->entityManager->persist($filePredio);
         $this->entityManager->flush();
     }
 

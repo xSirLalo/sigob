@@ -1,20 +1,28 @@
 
 'use strict';
+$(document).on('keydown', '.js-select2-persona', function(e) {
+    if (e.originalEvent && e.which == 40) {
+        e.preventDefault();
+        $(this).siblings('select').select2('open');
+    }
+});
+
 $(document).ready(function () {
     function formatRepo(repo) {
         if (repo.loading) return repo.text;
 
         var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__title'>" + repo.palabra_respuesta + "</div>";
+            "<div class='select2-result-repository__title'>" + repo.item_select_name + "</div>";
 
         return markup;
     }
 
     function formatRepoSelection(repo) {
-        return repo.palabra_respuesta || repo.text;
+        return repo.item_select_name || repo.text;
     }
 
     $(".js-select2-persona").select2({
+        selectOnClose: true,
         width: '100%',
         ajax: {
             url: "/contribuyente/buscar-persona",
@@ -63,7 +71,8 @@ $(document).ready(function () {
         success: function(data)
         {
                 console.log(data);
-                $('[name ="cve_persona"]').val(data.cve_persona);
+                // $('[name ="input1"]').val(data.contribuyente_id);
+                $('[name ="input1"]').val(data.contribuyente_id);
                 $('[name ="nombre"]').val(data.nombre);
                 $('[name ="apellido_paterno"]').val(data.apellido_paterno);
                 $('[name ="apellido_materno"]').val(data.apellido_matero);
@@ -73,8 +82,6 @@ $(document).ready(function () {
                 $('[name ="correo"]').val(data.correo);
                 $('[name ="telefono"]').val(data.telefono);
                 $('[name ="genero"]').val(data.genero);
-                $('[name ="input1"]').val(data.cve_persona);
-
         },
         error: function (jqXHR, textStatus, errorThrown)
             {

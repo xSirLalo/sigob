@@ -297,9 +297,9 @@ return [
                     'eliminar-archivo' => [
                         'type' => 'segment',
                         'options' => [
-                            'route' => '/eliminar-archivo[/:contribuyente[/:archivo]]',
+                            'route' => '/eliminar-archivo[/:predio[/:archivo]]',
                             'constraints' => [
-                                'contribuyente' => '[0-9]+',
+                                'predio' => '[0-9]+',
                                 'archivo' => '[0-9]+',
                             ],
                             'defaults' => [
@@ -310,9 +310,9 @@ return [
                     'imprimir-archivo' => [
                         'type' => 'segment',
                         'options' => [
-                            'route' => '/imprimir-archivo[/:contribuyente[/:archivo]]',
+                            'route' => '/imprimir-archivo[/:predio[/:archivo]]',
                             'constraints' => [
-                                'contribuyente' => '[0-9]+',
+                                'predio' => '[0-9]+',
                                 'archivo' => '[0-9]+',
                             ],
                             'defaults' => [

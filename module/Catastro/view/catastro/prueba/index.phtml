@@ -28,122 +28,60 @@ $this->pageBreadcrumbs()->setItems([
 <br>
 <?php
 
-// if (isset($data->Persona)) {
-//     if (is_array($data->Persona)) {
-//         echo $data->Persona[0]->CvePersona;
-//         // foreach ($data->Persona as $item) {
-//         //     echo $item->CvePersona;
-//         //     echo "<br>";
-//         // }
-//     }
-//     echo "<br>";
-//     echo "seteado";
-// }
+if (isset($data->Persona)) {
+    if (is_array($data->Persona)) {
+        echo $data->Persona[0]->CvePersona;
+        // foreach ($data->Persona as $item) {
+        //     echo $item->CvePersona;
+        //     echo "<br>";
+        // }
+    }
+    echo "<br>";
+    echo "seteado";
+}
 
-// if (isset($data->Predio)) {
-//     if (is_array($data->Predio)) {
-//         foreach ($data->Predio as $item) {
-//             echo $item->PredioId;
-//             echo "<br>";
-//         }
-//     } else {
-//         echo $data->Predio->PredioId;
-//         echo "<br>";
-//     }
-//     echo "<br>";
-//     echo "seteado";
-// }
+if (isset($data->Predio)) {
+    if (is_array($data->Predio)) {
+        foreach ($data->Predio as $item) {
+            echo $item->PredioId;
+            echo "<br>";
+        }
+    } else {
+        echo $data->Predio->PredioId;
+        echo "<br>";
+    }
+    echo "<br>";
+    echo "seteado";
+}
 
-// if (isset($data->PredioColindancia)) {
-//     if (is_array($data->PredioColindancia)) {
-//         foreach ($data->PredioColindancia as $item) {
-//             echo $item->Descripcion;
-//             echo "<br>";
-//             echo $item->MedidaMts;
-//             echo "<br>";
-//             echo $item->OrientacionGeografica;
-//             echo "<br>";
-//         }
-//     } else {
-//         echo "<h1>asd</h1>";
-//         echo $data->PredioColindancia->Descripcion;
-//         echo "<br>";
-//     }
-//     echo "<br>";
-//     echo "seteado";
-// }
+if (isset($data->PredioColindancia)) {
+    if (is_array($data->PredioColindancia)) {
+        foreach ($data->PredioColindancia as $item) {
+            echo $item->Descripcion;
+            echo "<br>";
+            echo $item->MedidaMts;
+            echo "<br>";
+            echo $item->OrientacionGeografica;
+            echo "<br>";
+        }
+    } else {
+        echo "<h1>asd</h1>";
+        echo $data->PredioColindancia->Descripcion;
+        echo "<br>";
+    }
+    echo "<br>";
+    echo "seteado";
+}
 
-// echo "<br>";
-// echo "<hr>";
+echo "<br>";
+echo "<hr>";
 
-// echo "<pre>";
-// print_r($data);
-// echo "</pre>";
-
-// echo "<br>";
-// echo "<hr>";
-
- echo "<pre>";
- print_r($data->PredioColindancia[0]->MedidaMts);
-// print_r($data2->getMedidaMetros());
-
-// print_r($data2->getIdPredioColindacia());
-//print_r($data2);
-// $data2;
-// foreach ($data2 as $mt) {
-//    echo $mt->getMedidaMetros() ;
-//    echo "hola";
-//     # code...
-// }
-// $b=$data->getMedidaMetros()
-// for($i=0; $i < $b; $i++){
-//    echo "hola".$i;
-// }
-// var_dump($data2->getIdPredioColindancia());
-//  $arreglo = [];
-//         foreach($prediosColindaciasWeb->PredioColindancia as $item)
-//         {
-//             $predioColindacia = new PredioColindancia();
-//             $arreglo = [
-//                 'descripcion' => $item->Descripcion,
-//                 'medidasmts' => $item->MedidasMts,
-//                 'Orientaciongeografica' => $item->OrientacionGeografica,
-//             ];
-//             $predioColindacia->setIdPredio($prediobd);
-//             $predioColindacia->setDescripcion($arreglo['descripcion']);
-//             $predioColindacia->setMedidaMetros($arreglo['medidasmts']);
-//             $predioColindacia->setOrientacionGeografica($arreglo['Orientaciongeografica']);
-//             $this->entityManager->persist($predioColindacia);
-//         }
-
-// $array[]=array();
-///////////////////////////////
-// foreach ($data2 as $datos )
-// {
-// $array[]=$datos->getMedidaMetros();
-// }
-// echo $array[0]."<br>";
-// echo $array[1]."<br>";
-// echo $array[2]."<br>";
-// echo $array[3]."<br>";
-// print_r("ID =".$data->getIdContribuyente());
-////////////////////////////////////
-// print_r($array[1]);
-// print_r($array[2]);
-// print_r($array[3]);
-//print_r($array[1]);
-//echo $array[0];
-
-// foreach ($data2 as $datos => $value) {
-//     $datos->getMedidaMetros();
-
-//     # code...
-// }
-
-// echo $data2;
-
-
+echo "<pre>";
+print_r($data);
 echo "</pre>";
+
+echo "<br>";
+echo "<hr>";
 
 ?>
 </div>

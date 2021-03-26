@@ -80,7 +80,7 @@ class PredioManager
         if ($contribuyente->getIdContribuyente() > 0) {
             return $contribuyente;
         }
-        return null;
+        return false;
     }
 
     public function guardarColindancia($predio, $data)

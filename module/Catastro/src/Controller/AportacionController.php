@@ -97,7 +97,7 @@ class AportacionController extends AbstractActionController
         $parametro = (string)$this->params()->fromRoute('id');
 
         $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
-        $contribuyente = $this->entityManager->getRepository(Contribuyente:class)->findAll();
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findAll();
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
         $valoresZona = $this->entityManager->getRepository(TablaValorZona::class)->findAll();
 
@@ -502,7 +502,7 @@ class AportacionController extends AbstractActionController
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
         // set auto page breaks
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
         // set image scale factor
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -542,7 +542,9 @@ class AportacionController extends AbstractActionController
         // ---------------------------------------------------------
 
         // Close and output PDF document
-        if (ob_get_contents()) ob_end_clean();
+        if (ob_get_contents()) {
+            ob_end_clean();
+        }
 
         // This method has several options, check the source code documentation for more information.
         $pdf->Output('listado_' . date('dmY') . '.pdf', 'D');

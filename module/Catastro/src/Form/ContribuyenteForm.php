@@ -45,6 +45,7 @@ class ContribuyenteForm extends Form
                 'class' => 'form-control',
                 'title' => 'input1',
                 'placeholder' => 'input1',
+                'hidden'=> true,
             ]
         ]);
 
@@ -400,7 +401,7 @@ class ContribuyenteForm extends Form
 
         $inputFilter->add([
             'name' => 'rfc',
-            'required' => true,
+            'required' => false,
             'filters' => [
                 [	// Remueve las etiquetas HTML y PHP
                     'name' => Filter\StripTags::class,
