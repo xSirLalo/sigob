@@ -8,6 +8,8 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
+use Laminas\Filter;
+use Laminas\InputFilter\OptionalInputFilter;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Entity\Contribuyente;
@@ -160,73 +162,76 @@ class ContribuyenteController extends AbstractActionController
 
     public function addAction()
     {
+        $form = new ContribuyenteForm();
         $categorias = $this->bibliotecaManager->categorias();
+        $destination = './public/img';
         $request = $this->getRequest();
         // AJAX response
-        if ($request->isXmlHttpRequest()) {
-            $form = new ContribuyenteModalForm();
-            $data = $this->params()->fromPost();
-            $form->setData($request->getPost());
+        // if ($request->isXmlHttpRequest()) {
+        // $form = new ContribuyenteModalForm();
+        // $data = $this->params()->fromPost();
+        // $form->setData($request->getPost());
+        // if ($form->isValid()) {
+        //     $data = $form->getData();
+        //     $data['status'] = true;
+        //     $this->contribuyenteManager->agregar($data);
+        // } else {
+        //     $data['status'] = false;
+        //     $data['errors'] = $form->getMessages();
+        // };
+        // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+        // $view = new JsonModel($data);
+        // $view->setTerminal(true);
+        // } else {
+        if ($request->isPost()) {
+            $data = \array_merge_recursive(
+                $request->getFiles()->toArray(),
+                $request->getPost()->toArray(),
+            );
+            // $data = $this->params()->fromPost();
+            $archivoUrl = (array) $this->params()->fromFiles('archivo');
+            $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+
+            $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+            $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+            $num = (int) count($archivoUrl);
+            for ($i=0; $i < $num; $i++) {
+                $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+
+                $file_folder = $destination . '/' . $newName;
+
+                if (file_exists($file_folder)) {
+                    // FIXME: Vacio aun asi muestra el mensaje
+                    $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
+                    return $this->redirect()->toRoute('contribuyente/agregar');
+                }
+
+                $inputFilter = new OptionalInputFilter();
+                $inputFilter->add([
+                    'name' => 'archivo',
+                    'filters' => [
+                        [
+                            'name' => Filter\File\Rename::class,
+                            'options' => [
+                                'target' => $destination . '/' . $newName,
+                            ]
+                        ]
+                    ]
+                ]);
+                $form->setInputFilter($inputFilter);
+            }
+
+            $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $data['status'] = true;
-                $this->contribuyenteManager->agregar($data);
-            } else {
-                $data['status'] = false;
-                $data['errors'] = $form->getMessages();
-            };
-            $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-            $view = new JsonModel($data);
-            $view->setTerminal(true);
-        } else {
-            $form = new ContribuyenteForm();
-            if ($request->isPost()) {
-                $data = \array_merge_recursive(
-                    $request->getFiles()->toArray(),
-                    $request->getPost()->toArray(),
-                );
-                // $data = $this->params()->fromPost();
                 $archivoUrl = (array) $this->params()->fromFiles('archivo');
                 $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
 
-                $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
-                $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+                $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
+                $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
+
                 $num = (int) count($archivoUrl);
                 for ($i=0; $i < $num; $i++) {
-                    $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-
-                    $file_folder = $destination . '/' . $newName;
-
-                    if (file_exists($file_folder)) {
-                        // FIXME: Vacio aun asi muestra el mensaje
-                        $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
-                        return $this->redirect()->toRoute('predio/agregar');
-                    }
-
-                    $inputFilter = new OptionalInputFilter();
-                    $inputFilter->add([
-                        'name' => 'archivo',
-                        'filters' => [
-                            [
-                                'name' => Filter\File\Rename::class,
-                                'options' => [
-                                    'target' => $destination . '/' . $newName,
-                                ]
-                            ]
-                        ]
-                    ]);
-                    $form->setInputFilter($inputFilter);
-                }
-
-                $form->setData($data);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $archivoUrl = (array) $this->params()->fromFiles('archivo');
-                    $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
-
-                    $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
-                    $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
-
                     $filename = $_FILES['archivo']['name'][$i];
                     $filesize = $_FILES['archivo']['size'][$i];
                     $tmp_name = $_FILES['archivo']['tmp_name'][$i];
@@ -249,7 +254,7 @@ class ContribuyenteController extends AbstractActionController
                         $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
                     }
 
-                    $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByCvePersona($data['cve_catastral']);
+                    $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
                     if ($contribuyente) {
                         $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
                         $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
@@ -257,14 +262,14 @@ class ContribuyenteController extends AbstractActionController
                         $this->contribuyenteManager->guardarContribuyente($data);
                         $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                     }
-
-                    // $this->contribuyenteManager->agregar($data);
-                    // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                    // return $this->redirect()->toRoute('contribuyente');
                 }
+                // $this->contribuyenteManager->agregar($data);
+                // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                // return $this->redirect()->toRoute('contribuyente');
             }
-            $view = new ViewModel(['form' => $form, 'categorias' => $categorias]);
         }
+        $view = new ViewModel(['form' => $form, 'categorias' => $categorias]);
+        // }
         return $view;
     }
 

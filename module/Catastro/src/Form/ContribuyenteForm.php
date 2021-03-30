@@ -45,7 +45,7 @@ class ContribuyenteForm extends Form
                 'class' => 'form-control',
                 'title' => 'input1',
                 'placeholder' => 'input1',
-                'hidden'=> true,
+                // 'hidden'=> true,
             ]
         ]);
 
@@ -251,6 +251,7 @@ class ContribuyenteForm extends Form
     {
         $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
+
         $inputFilter->add([
             'name' => 'archivo',
             // 'required' => true,
