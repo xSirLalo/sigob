@@ -361,7 +361,7 @@ $form->prepare();
                             <div class="col-sm-4">
                                 <div class="form-group ">
                                 <!-- Input Giro Comercial-->
-                                    <?= $this->formLabel($form->get('contribuyente')); ?>
+                                    <?= $this->formLabel($form->get('contribuyente')->setValue($contribuyente->getNombre())); ?>
                                     <?= $this->formText($form->get('contribuyente')); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('contribuyente')); ?>
@@ -370,7 +370,7 @@ $form->prepare();
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group ">
-                                <!-- Input Giro Comercial-->
+                                <!-- Select Factura-->
                             <?= $this->formLabel($form->get('factura')); ?>
                             <?= $this->formSelect($form->get('factura'));?>
                             <div class="text-danger">
@@ -414,7 +414,7 @@ $form->prepare();
                                 <div class="form-group ">
                                 <!-- Input Superficie Ocupada-->
                                     <?= $this->formLabel($form->get('rfc')); ?>
-                                    <?= $this->formText($form->get('rfc')); ?>
+                                    <?= $this->formText($form->get('rfc')->setValue($contribuyente->getRfc())); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('rfc')); ?>
                                     </div>
@@ -439,7 +439,17 @@ $form->prepare();
                             <div class="col-sm-3">
                                 <div class="form-group ">
                                 <!-- Input Sup. M2 Terreno -->
-                                    <?= $this->formLabel($form->get('terreno')); ?>
+                                <?= $this->formLabel($form->get('vig')); ?>
+                                    <?= $this->formDate($form->get('vig')) ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('vig')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input Sup. M2 Terreno -->
+                                <?= $this->formLabel($form->get('terreno')); ?>
                                     <?= $this->formText($form->get('terreno')); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('terreno')); ?>
@@ -449,23 +459,7 @@ $form->prepare();
                             <div class="col-sm-3">
                                 <div class="form-group ">
                                 <!-- Input Sup. M2 Terreno -->
-                                <label class="form-label">VALORES DE ZONA</label>
-                                    <select class=" js-example-basic-single2" name="valores_zona" id="valores_zona">
-                                            <option value="0">Buscar...</option>
-                                            <?php if ($valoresZonas): ?>
-                                            <?php foreach ($valoresZonas as $valoresZona):?>
-                                            <optgroup label=<?= $valoresZona->getGrupo()?>>
-                                            <option value="<?= $valoresZona->getValorZona()?>"><?= $valoresZona->getLimites() ?>-Sector-<?= $valoresZona->getSector() ?></option>
-                                        </optgroup>
-                                        <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group ">
-                                <!-- Input Sup. M2 Terreno -->
-                                    <?= $this->formLabel($form->get('valor_m2_zona')); ?>
+                                <?= $this->formLabel($form->get('valor_m2_zona')); ?>
                                     <?= $this->formText($form->get('valor_m2_zona')); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('valor_m2_zona')); ?>
@@ -532,16 +526,6 @@ $form->prepare();
                             </div>
                             </div>
                             <div class="row ml-0">
-                            <div class="col-sm-2">
-                                <div class="form-group ">
-                                <!-- Input Vigencia -->
-                                    <?= $this->formLabel($form->get('vig')); ?>
-                                    <?= $this->formDate($form->get('vig')) ?>
-                                    <div class="text-danger">
-                                        <?= $this->formElementErrors($form->get('vig')); ?>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-sm-3">
                                 <div class="form-group ">
                                 <!--Input Avaluo Total -->
@@ -556,7 +540,8 @@ $form->prepare();
                                 <div class="form-group">
                                 <!-- Select Tasa Impositiva -->
                                     <label class="form-label">TASA</label>
-                                    <select class="form-control" name="tasa_i" id="tasa_i" onchange="timpositiva()">
+                                    <!-- <select class="form-control" name="tasa_i" id="tasa_i" onchange="timpositiva()"> -->
+                                    <select class="form-control" name="select_tasa" id="tasa_i" onchange="timpositiva()">
                                         <option value="0">Selecione uno..</option>
                                         <optgroup label="Predios Urbanos Edificados">
                                             <option value="0.0017">0.0017</option>
@@ -623,6 +608,15 @@ $form->prepare();
                                     <?= $this->formText($form->get('parametro')->setValue($id)); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('parametro')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Id oculto -->
+                                    <?= $this->formText($form->get('tasa_hidden')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('tasa_hidden')); ?>
                                     </div>
                                 </div>
                             </div>

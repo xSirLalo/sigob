@@ -224,6 +224,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'onkeypress' => 'return filterFloat(event,this);',
             ]
         ]);
 
@@ -236,6 +237,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'onkeypress' => 'return filterFloat(event,this);',
             ]
         ]);
 
@@ -248,6 +250,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'onkeypress' => 'return filterFloat(event,this);',
             ]
         ]);
 
@@ -260,6 +263,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'onkeypress' => 'return filterFloat(event,this);',
             ]
         ]);
 
@@ -331,7 +335,7 @@ class AportacionForm extends Form
             'type' => Element\Select::class,
             'name' => 'factura',
             'options' => [
-                'label' => 'Fatura',
+                    'label' => 'Factura',
                 'value_options' => [
             '0' => 'Si',
             '1' => 'No',
@@ -428,7 +432,7 @@ class AportacionForm extends Form
                 'data-toggle' => 'tooltip',
                 "oninput"=> "Calcular()",
                 "onkeypress"=> "return filterFloat(event,this);",
-                'onkeyup'=>'esvacio()',
+                // 'onkeyup'=>'esvacio()',
                 'id' =>'terreno',
             ]
         ]);
@@ -447,7 +451,7 @@ class AportacionForm extends Form
                 'data-toggle' => 'tooltip',
                 'oninput'=> 'Calcular()',
                 'onkeypress'=> 'return filterFloat(event,this);',
-                'onkeyup'=>'esvacio()',
+                // 'onkeyup'=>'esvacio()',
                 'id' =>'sup_m',
             ]
         ]);
@@ -485,7 +489,7 @@ class AportacionForm extends Form
                 'label' => 'VALOR M2 CONSTRUCCION',
             ],
             'attributes' => [
-                // 'readonly' => true,
+                'readonly' => true,
                 'class' => 'form-control',
                 'id' =>'valor',
             ]
@@ -500,6 +504,7 @@ class AportacionForm extends Form
             'attributes' => [
                 // 'readonly' => true,
                 'class' => 'form-control',
+                'oninput'=> 'Calcular()',
                 'id' =>'valor_zona',
             ]
         ]);
@@ -519,15 +524,25 @@ class AportacionForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
+            'name' => 'tasa_hidden',
+            'attributes' => [
+                // 'readonly' => true,
+                'class' => 'form-control',
+                'id' =>'tasa_hidden',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
             'name' => 'ejercicio_f',
             'options' => [
                 'label' => 'EJERCICIO FISCAL',
             ],
             'attributes' => [
-                'required' => true,
+                // 'required' => true,
                 'class' => 'form-control',
                 'onkeypress'=>'return validaNumericos(event)',
-                'onkeyup'=>'esvacio()',
+                // 'onkeyup'=>'esvacio()',
                 'id' =>'ejercicio_f',
             ]
         ]);
@@ -542,7 +557,7 @@ class AportacionForm extends Form
                 'readonly' => true,
                 'class' => 'form-control',
                 'data-toggle' => 'tooltip',
-                'onkeyup'=>'esvacio()',
+                // 'onkeyup'=>'esvacio()',
                 'id' =>'pago_a',
             ]
         ]);
@@ -600,7 +615,7 @@ class AportacionForm extends Form
             'min' => '2021-01-01',
             'max' => '2030-01-01',
             'step' => '1', // days; default step interval is 1 day
-            'onkeyup'=>'esvacio()',
+            // 'onkeyup'=>'esvacio()',
             'id' =>'vig',
         ],
         ]);
@@ -622,7 +637,7 @@ class AportacionForm extends Form
                 'value' => 'Guardar',
                 'class' => 'btn btn-success btn-ok',
                 'id' =>'btn-ok',
-                'disabled' => 'true',
+                // 'disabled' => 'true',
             ]
         ]);
     }

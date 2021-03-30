@@ -22,11 +22,11 @@ class Aportacion
     private $idAportacion;
 
     /**
-     * @var float|null
+     * @var int|null
      *
-     * @ORM\Column(name="pago", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="estatus", type="integer", nullable=true)
      */
-    private $pago;
+    private $estatus;
 
     /**
      * @var \DateTime|null
@@ -45,9 +45,9 @@ class Aportacion
     /**
      * @var float|null
      *
-     * @ORM\Column(name="metros_construccion", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="valor_zona", type="float", precision=10, scale=0, nullable=true)
      */
-    private $metrosConstruccion;
+    private $valorZona;
 
     /**
      * @var float|null
@@ -55,6 +55,20 @@ class Aportacion
      * @ORM\Column(name="valor_terreno", type="float", precision=10, scale=0, nullable=true)
      */
     private $valorTerreno;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="metros_construccion", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $metrosConstruccion;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="valor_mts_construccion", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $valorMtsConstruccion;
 
     /**
      * @var float|null
@@ -80,9 +94,16 @@ class Aportacion
     /**
      * @var int|null
      *
-     * @ORM\Column(name="estatus", type="integer", nullable=true)
+     * @ORM\Column(name="ejercicio_fiscal", type="integer", nullable=true)
      */
-    private $estatus;
+    private $ejercicioFiscal;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="pago", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $pago;
 
     /**
      * @var \DateTime|null

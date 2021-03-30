@@ -43,7 +43,8 @@ $(document).ready(function () {
     function Calcular()
 {
     let metros_terreno = parseFloat(document.getElementById("terreno").value);
-    let valor_terreno = metros_terreno *100;
+    let valor_m2_zona = parseFloat(document.getElementById("valor_zona").value);
+    let valor_terreno = metros_terreno * valor_m2_zona;
     document.getElementById("v_terreno").value = valor_terreno;
     //  Calculo valor Construccion
     let inv = parseFloat(document.getElementById("v_in").value);
@@ -55,10 +56,16 @@ $(document).ready(function () {
     document.getElementById("a_total").value = avaluo_total;
     //validaciones
     let m_terreno = document.getElementById("terreno").value;
+    let m_valorZona = document.getElementById("valor_zona").value;
     let m_construnccion = document.getElementById("sup_m").value;
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
+        document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
+    }
+    // //valida si el campo valor m2 zona esta vacio
+    if (m_valorZona.length == 0) {
         document.getElementById("v_terreno").value = 0;
         document.getElementById("a_total").value = 0;
     }
@@ -98,7 +105,8 @@ function valorC() {
     }
     //Calculo Valor Terreno
     let metros_terreno = parseFloat(document.getElementById("terreno").value);
-    let valor_terreno = metros_terreno *100;
+    let valor_m2_zona = parseFloat(document.getElementById("valor_zona").value);
+    let valor_terreno = metros_terreno * valor_m2_zona;
     document.getElementById("v_terreno").value = valor_terreno;
     //Calculo valor Construccion
     let inv = parseFloat(document.getElementById("v_in").value);
@@ -110,10 +118,16 @@ function valorC() {
     document.getElementById("a_total").value = avaluo_total;
     //validaciones
     let m_terreno = document.getElementById("terreno").value;
+    let m_valorZona = document.getElementById("valor_zona").value;
     let m_construnccion = document.getElementById("sup_m").value;
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
+        document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
+    }
+    //valida si el campo valor m2 zona esta vacio
+    if (m_valorZona.length == 0) {
         document.getElementById("v_terreno").value = 0;
         document.getElementById("a_total").value = 0;
     }
@@ -140,10 +154,17 @@ function valorC() {
 function timpositiva() {
     let select_tasa = document.getElementById("tasa_i");
     let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
+    document.getElementById("tasa_hidden").value = valor_tasa;
     let avaluo_total = parseFloat(document.getElementById("a_total").value);
+    let valor_avaluo = document.getElementById("a_total").value;
+    if(valor_avaluo.length == 0){
+        document.getElementById("pago_a").value = 0;
+    }else{
     let pago_aportacion = valor_tasa * avaluo_total;
     document.getElementById("pago_a").value = pago_aportacion;
     document.getElementById("p_hide").value = pago_aportacion;
+    }
+
 }
 //funcion Calular-Fin
 
@@ -172,10 +193,10 @@ function filterFloat(evt,input){
             return false;
         }
     }
-//Bloquear Button de Imprimir si estan vacios los input
+
 }
 function filter(__val__){
-    var preg = /^([0-9]+\.?[0-9]{0,2})$/;
+    var preg = /^([0-9]+\.?[0-9]{0,3})$/;
     if(preg.test(__val__) === true){
         return true;
     }else{
@@ -183,6 +204,8 @@ function filter(__val__){
     }
 
 }
+///Fin-Funcion Solo numeros con 1 punto y maximo dos decimales
+
 //validar solo numero
 function validaNumericos(event) {
     if(event.charCode >= 48 && event.charCode <= 57){
@@ -191,22 +214,22 @@ function validaNumericos(event) {
     return false;
 }
 
-function esvacio()
-{
-if (
-document.getElementById('terreno').value=="" ||
-document.getElementById('sup_m').value=="" ||
-document.getElementById('ejercicio_f').value=="" ||
-document.getElementById('p_hide').value==""
-)
-{
-document.getElementById('btn-ok').disabled=true;
-}
-else {
-document.getElementById('btn-ok').disabled=false;
-}
+// function esvacio()
+// {
+// if (
+// document.getElementById('terreno').value=="" ||
+// document.getElementById('sup_m').value=="" ||
+// document.getElementById('ejercicio_f').value=="" ||
+// document.getElementById('p_hide').value==""
+// )
+// {
+// document.getElementById('btn-ok').disabled=true;
+// }
+// else {
+// document.getElementById('btn-ok').disabled=false;
+// }
 
-}
+// }
 
 //Selec Ajax
 

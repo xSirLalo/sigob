@@ -93,28 +93,34 @@ class AportacionController extends AbstractActionController
     public function addAction()
     {
         $form = new AportacionForm();
-
-        $parametro = (string)$this->params()->fromRoute('id');
+        $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
+        $response = $this->getResponse();
 
         $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
-        $contribuyente = $this->entityManager->getRepository(Contribuyente:class)->findAll();
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
         $valoresZona = $this->entityManager->getRepository(TablaValorZona::class)->findAll();
 
-        $request = $this->getRequest();
+        // if ($contribuyente == null) {
+        //         $this->layout()->setTemplate('error/404');
+        //         $this->getResponse()->setStatusCode(404);
+        //         return $response->setTemplate('error/404');
+        //     }
 
-        if ($request->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
+                $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['parametro']);
+                $this->aportacionManager->actualizarContribuyente($contribuyente, $data);
                 $this->aportacionManager->guardar($data);
                 $this->aportacionManager->pdf($data);
                 $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                 return $this->redirect()->toRoute('aportacion');
             }
         }
-        return new ViewModel(['form' => $form, 'id' => $parametro, 'valorConstruccions' => $valorConstruccion, 'valoresZonas' => $valoresZona]);
+        return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'valoresZonas' => $valoresZona, 'contribuyente'=> $contribuyente]);
     }
 
     public function addModalAction()
