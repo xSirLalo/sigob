@@ -53,7 +53,8 @@ class PruebaController extends AbstractActionController
     {
         // $data = $this->opergobserviceadapter->obtenerPredio("109015000050035-61");
         // $data = $this->opergobserviceadapter->obtenerColindancia("1714");
-        $data = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
+        //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
+        $data = $this->opergobserviceadapter->obtenerNombrePersona("ROSADO LORIA FORTUNATO");
         // $data = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
 
         return new ViewModel(['data' => $data]);

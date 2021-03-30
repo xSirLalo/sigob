@@ -114,8 +114,11 @@ class AportacionController extends AbstractActionController
                 $data = $form->getData();
                 $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['parametro']);
                 $this->aportacionManager->actualizarContribuyente($contribuyente, $data);
-                $this->aportacionManager->guardar($data);
-                $this->aportacionManager->pdf($data);
+                $aportacion =$this->aportacionManager->guardar($data);
+                if ($aportacion) {
+                $this->aportacionManager->pdf($data,$aportacion);
+                }
+
                 $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                 return $this->redirect()->toRoute('aportacion');
             }

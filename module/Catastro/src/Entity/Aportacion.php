@@ -22,11 +22,11 @@ class Aportacion
     private $idAportacion;
 
     /**
-     * @var float|null
+     * @var int|null
      *
-     * @ORM\Column(name="pago", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="estatus", type="integer", nullable=true)
      */
-    private $pago;
+    private $estatus;
 
     /**
      * @var \DateTime|null
@@ -45,9 +45,9 @@ class Aportacion
     /**
      * @var float|null
      *
-     * @ORM\Column(name="metros_construccion", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="valor_zona", type="float", precision=10, scale=0, nullable=true)
      */
-    private $metrosConstruccion;
+    private $valorZona;
 
     /**
      * @var float|null
@@ -59,9 +59,37 @@ class Aportacion
     /**
      * @var float|null
      *
+     * @ORM\Column(name="metros_construccion", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $metrosConstruccion;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="valor_mts_construccion", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $valorMtsConstruccion;
+
+    /**
+     * @var float|null
+     *
      * @ORM\Column(name="valor_construccion", type="float", precision=10, scale=0, nullable=true)
      */
     private $valorConstruccion;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="ejercicio_fiscal", type="integer", nullable=true)
+     */
+    private $ejercicioFiscal;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="tasa", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $tasa;
 
     /**
      * @var float|null
@@ -73,16 +101,9 @@ class Aportacion
     /**
      * @var float|null
      *
-     * @ORM\Column(name="tasa", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="pago", type="float", precision=10, scale=0, nullable=true)
      */
-    private $tasa;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="estatus", type="integer", nullable=true)
-     */
-    private $estatus;
+    private $pago;
 
     /**
      * @var \DateTime|null
@@ -131,27 +152,27 @@ class Aportacion
     }
 
     /**
-     * Set pago.
+     * Set estatus.
      *
-     * @param float|null $pago
+     * @param int|null $estatus
      *
      * @return Aportacion
      */
-    public function setPago($pago = null)
+    public function setEstatus($estatus = null)
     {
-        $this->pago = $pago;
+        $this->estatus = $estatus;
 
         return $this;
     }
 
     /**
-     * Get pago.
+     * Get estatus.
      *
-     * @return float|null
+     * @return int|null
      */
-    public function getPago()
+    public function getEstatus()
     {
-        return $this->pago;
+        return $this->estatus;
     }
 
     /**
@@ -203,27 +224,27 @@ class Aportacion
     }
 
     /**
-     * Set metrosConstruccion.
+     * Set valorZona.
      *
-     * @param float|null $metrosConstruccion
+     * @param float|null $valorZona
      *
      * @return Aportacion
      */
-    public function setMetrosConstruccion($metrosConstruccion = null)
+    public function setValorZona($valorZona = null)
     {
-        $this->metrosConstruccion = $metrosConstruccion;
+        $this->valorZona = $valorZona;
 
         return $this;
     }
 
     /**
-     * Get metrosConstruccion.
+     * Get valorZona.
      *
      * @return float|null
      */
-    public function getMetrosConstruccion()
+    public function getValorZona()
     {
-        return $this->metrosConstruccion;
+        return $this->valorZona;
     }
 
     /**
@@ -251,6 +272,54 @@ class Aportacion
     }
 
     /**
+     * Set metrosConstruccion.
+     *
+     * @param float|null $metrosConstruccion
+     *
+     * @return Aportacion
+     */
+    public function setMetrosConstruccion($metrosConstruccion = null)
+    {
+        $this->metrosConstruccion = $metrosConstruccion;
+
+        return $this;
+    }
+
+    /**
+     * Get metrosConstruccion.
+     *
+     * @return float|null
+     */
+    public function getMetrosConstruccion()
+    {
+        return $this->metrosConstruccion;
+    }
+
+    /**
+     * Set valorMtsConstruccion.
+     *
+     * @param float|null $valorMtsConstruccion
+     *
+     * @return Aportacion
+     */
+    public function setValorMtsConstruccion($valorMtsConstruccion = null)
+    {
+        $this->valorMtsConstruccion = $valorMtsConstruccion;
+
+        return $this;
+    }
+
+    /**
+     * Get valorMtsConstruccion.
+     *
+     * @return float|null
+     */
+    public function getValorMtsConstruccion()
+    {
+        return $this->valorMtsConstruccion;
+    }
+
+    /**
      * Set valorConstruccion.
      *
      * @param float|null $valorConstruccion
@@ -275,27 +344,27 @@ class Aportacion
     }
 
     /**
-     * Set avaluo.
+     * Set ejercicioFiscal.
      *
-     * @param float|null $avaluo
+     * @param int|null $ejercicioFiscal
      *
      * @return Aportacion
      */
-    public function setAvaluo($avaluo = null)
+    public function setEjercicioFiscal($ejercicioFiscal = null)
     {
-        $this->avaluo = $avaluo;
+        $this->ejercicioFiscal = $ejercicioFiscal;
 
         return $this;
     }
 
     /**
-     * Get avaluo.
+     * Get ejercicioFiscal.
      *
-     * @return float|null
+     * @return int|null
      */
-    public function getAvaluo()
+    public function getEjercicioFiscal()
     {
-        return $this->avaluo;
+        return $this->ejercicioFiscal;
     }
 
     /**
@@ -323,27 +392,51 @@ class Aportacion
     }
 
     /**
-     * Set estatus.
+     * Set avaluo.
      *
-     * @param int|null $estatus
+     * @param float|null $avaluo
      *
      * @return Aportacion
      */
-    public function setEstatus($estatus = null)
+    public function setAvaluo($avaluo = null)
     {
-        $this->estatus = $estatus;
+        $this->avaluo = $avaluo;
 
         return $this;
     }
 
     /**
-     * Get estatus.
+     * Get avaluo.
      *
-     * @return int|null
+     * @return float|null
      */
-    public function getEstatus()
+    public function getAvaluo()
     {
-        return $this->estatus;
+        return $this->avaluo;
+    }
+
+    /**
+     * Set pago.
+     *
+     * @param float|null $pago
+     *
+     * @return Aportacion
+     */
+    public function setPago($pago = null)
+    {
+        $this->pago = $pago;
+
+        return $this;
+    }
+
+    /**
+     * Get pago.
+     *
+     * @return float|null
+     */
+    public function getPago()
+    {
+        return $this->pago;
     }
 
     /**

@@ -85,4 +85,22 @@ class OperGobServiceAdapter{
         return $respuesta->GetColindanciaByPredioIdResult;
     }
 
+    public function obtenerNombrePersona($nombre) {
+        $respuesta = array();
+
+        $parametros = [
+            "nombre" => $nombre
+        ];
+
+        $client = new Client();
+        $client->setWsdl(self::URI_SERVICE_OPER);
+        $client->setOptions([
+            "soap_version" => \SOAP_1_1,
+            "encoding" => 'UTF-8',
+        ]);
+
+        $respuesta = $client->GetPersonaLikeName($parametros);
+        return $respuesta->GetPersonaLikeNameResult;
+    }
+
 }

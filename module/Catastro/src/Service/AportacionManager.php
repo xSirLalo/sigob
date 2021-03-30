@@ -112,6 +112,9 @@ class AportacionManager
 
         $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
+        if ($aportacion->getIdAportacion() > 0) {
+            return $aportacion;
+        }
 
         $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
         $predioColindacia = new PredioColindancia();
@@ -193,7 +196,7 @@ class AportacionManager
         $this->entityManager->flush();
     }
 
-    public function pdf($data)
+    public function pdf($data,$aportacion)
     {
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         // set document information
@@ -207,6 +210,9 @@ class AportacionManager
         $PDF_HEADER_LOGO_WIDTH = 14;
         $PDF_HEADER_TITLE = "Sistemas de Gobierno.";
         $PDF_HEADER_STRING = "Lista de Contribuyentes \nGenerado con fecha: " . date('d-m-Y');
+
+        //Para eliminar la marca de agua de TCPDF
+        $pdf->setPrintHeader(false);
 
         // set default header data
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' del '.date('d-m-Y'), PDF_HEADER_STRING);
@@ -249,99 +255,25 @@ class AportacionManager
         // This method has several options, check the source code documentation for more information.
         $pdf->AddPage();
 
-        // $pdf->Write(20, 'H.AYUNTAMIENTO DE TULUM', '', 0, 'C', true, 0, false, false, 0);
+        //$pdf->Write(20, 'H.AYUNTAMIENTO DE TULUM', '', 0, 'C', true, 0, false, false, 0);
 
         $pdf->SetFont('helvetica', '', 10);
 
-        // $tabla = '<table  cellspacing="3" cellpadding="4">
-        //         <tr>
-        //         <td  bgcolor="#cccccc" align="center" colspan="12">DATOS DE POSSESION</td>
-        //         </tr>
-        //         </table>';
-        // $tabla2 = '<table  cellspacing="3" cellpadding="4">
-        //         <tr>
-        //         <td  bgcolor="#cccccc" align="center" colspan="12">DATOS DEL INMUEBLE</td>
-        //         </tr>
-        //         </table>';
-        // $tabla3 = '<table  cellspacing="3" cellpadding="4">
-        //         <tr>
-        //         <td  bgcolor="#cccccc" align="center" colspan="12">DATOS  DE POSSESION</td>
-        //         </tr>
-        //         </table>';
-        // $tabla4 = '<table  cellspacing="3" cellpadding="4">
-        //         <tr>
-        //         <td  bgcolor="#cccccc" align="center" colspan="12"></td>
-        //         </tr>
-        //         </table>';
+        $contribuyenteId = $data['parametro'];
 
-        // ///Formato para las fechas
-        // $fecha_adquicision = date("d-m-Y", strtotime($data['fecha_adquisicion']));
-        // $fecha = date("d-m-Y", strtotime($data['vig']));
-        // ///formato de numeros
-        // $text = '<h6><font size="5"><br>EL CALCULO DE LA APORTACION QUE AMPARA ESTE DOCUMNTO, SE HACE A PETICION DEL SOLICITANTE Y EN NINGUN CASO SE CONSIDERA COMO PAGO DE IMPUESTO PREDIAL. ESTE DOCUMENTO NO CONSTITUYE UNA CEDULA , Y  POR TANTO, NO SE  RECONOCE COMO DERECHOS DE PROPIEDAD SOBRE EL INMUEBLE. LA VIGENCIA DE ESTA TARJETA DE IDENTIFICACION ES ANUAL.</font><h6>';
-        // ///No remover o todo se vuelve negro
-        // $pdf->MultiCell(10, 5, '', 1, 'C', 1, 0, '280', '', true);
-        // ///No remover o todo se vuelve negro
-        // //N.Region
-        // $region = $data['contribuyente_id'];
-        // //Lote o Parcela
-        // $lote = $data['contribuyente_id'];
-
-        // ////////////////CABEZERA Y IMAGENES DEL FORMATO//////////////////
-        // $pdf->Image('public/img/tulum.png', 23, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
-        // $pdf->MultiCell(58, 30, '<h5><font size="11">H.AYUNTAMIENTO DE TULUM<br>TESORERIA MUNICIPAL<br>DIRECCION DE CATASTRO</font></h5>', 0, 'C', 1, 0, '75', '', true, 0, true);
-        // $pdf->Image('public/img/logo.png', 158, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
-        // ///////////////INICIO DE TABLA/////////////////
-        // $pdf->MultiCell(40, 12, '<h6><font size="8">TARJETA DE APORTACION</font></h6>', 1, 'C', 1, 0, '17', '65', true, 0, true);
-        // $pdf->MultiCell(30, 12, '<h6><font size="8">No. REGION</font></h6><h6><font size="7">'.substr($region,9,-8).'</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(30, 12, '<h6><font size="8">LOTE o PARCELA</font></h6><h6><font size="7">'.substr($lote,16).'</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(37, 12, '<h6><font size="8">CATEGORIA</font></h6><h6><font size="7">' . $data['categoria'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(39, 12, '<h6><font size="8">CONDICION</font></h6><h6><font size="7">' . $data['condicion'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->Ln(11.5);
-        // $pdf->writeHTMLCell(0, 0, '', '', $tabla, 0, 1, 0, true, '', true);
-        // // ////////////DATOS DEL POSECIONARIO//////////////
-        // $pdf->MultiCell(58.66, 12, '<h6><font size="8">TITULAR</font></h6><h6><font size="7">' . $data['titular'] . '</font></h6>', 1, 'C', 1, 0, '17', '86', true, 0, true);
-        // $pdf->MultiCell(58.66, 12, '<h6><font size="8">UBICACIÓN</font></h6><h6><font size="7">' . $data['ubicacion'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(58.66, 12, '<h6><font size="8">LOCALIDAD</font></h6><h6><font size="7">' . $data['localidad'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(58.66, 12, '<h6><font size="8">DOCUMENTO QUE ACREDITE LA PROPIEDAD</font></h6><h6><font size="7">' . $data['d_propiedad'] . '</font></h6>', 1, 'C', 1, 0, '17', '98', true, 0, true);
-        // //$pdf->MultiCell(117.32, 41.4, 'MEDIDAS Y COLINDANCIAS\n\nAl Norte: 50 Con: Calle 51\nAl Sur: 50 Con:Calle 52\nAl Este: 50 Con:Calle 53\nAl Oeste: 50 Con:Calle 54', 1, 'C', 1, 0, '', '', true);
-        // $pdf->MultiCell(117.32, 35, '<h6><font size="9">MEDIDAS Y COLINDACIAS</font></h6><br><h6><font size="9">Al Norte:' . $data['norte'] . ' Con:' . $data['con_norte'] . '</font></h6><br><h6><font size="9">Al Sur:' . $data['sur'] . ' Con:' . $data['con_sur'] . '</font></h6><br><h6><font size="9">Al Este:' . $data['este'] . ' Con:' . $data['con_este'] . '</font></h6><br><h6><font size="9">Al Oeste:' . $data['oeste'] . ' Con:' . $data['con_oeste'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(58.66, 20, '<h6><font size="9">ARRENDADOR</font></h6><h6><font size="7">' . $data['arrendador'] . '</font></h6>', 1, 'C', 1, 0, '17', '113', true, 0, true);
-        // $pdf->MultiCell(58.66, 12, '<h6><font size="7">DOCUMENTO DE ARRENDAMIETO O POSESION</font></h6><h6><font size="7">' . $data['d_arrendamiento'] . '</font></h6>', 1, 'C', 1, 0, '17', '133', true, 0, true);
-        // $pdf->MultiCell(58.66, 14.8, '<h6><font size="9">FECHA DE ADQUISICION</font></h6><h6><font size="7">' . $fecha_adquicision . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(58.66, 14.8, '<h6><font size="9">TITULAR ANTERIOR</font></h6><h6><font size="7">' . $data['titular_anterior'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // // ////////////DATOS DEL INMUEBLE//////////////
-        // $pdf->Ln(14.4);
-        // $pdf->writeHTMLCell(0, 0, '', '', $tabla2, 0, 1, 0, true, '', true);
-        // $pdf->MultiCell(87.99, 12, '<h6><font size="8">GIRO COMERCIAL</font></h6><h6><font size="7">' . $data['g_comercial'] . '</font></h6>', 1, 'C', 1, 0, '17', '157', true, 0, true);
-        // $pdf->MultiCell(87.99, 12, '<h6><font size="8">NOMBRE COMERCIAL</font></h6><h6><font size="7">' . $data['n_comercial'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(87.99, 12, '<h6><font size="8">SUPERFICIE OCUPADA</font></h6><h6><font size="7">' . $data['s_ocupada'] . '</font></h6>', 1, 'C', 1, 0, '17', '169', true, 0, true);
-        // $pdf->MultiCell(87.98, 12, '<h6><font size="8">USO O DESTINO</font></h6><h6><font size="7">' . $data['u_destino'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // // ////////////DATOS DE POSSESION//////////////
-        // $pdf->Ln(11.6);
-        // $pdf->writeHTMLCell(0, 0, '', '', $tabla3, 0, 1, 0, true, '', true);
-        // $pdf->MultiCell(40, 14.8, '<h6><font size="7">SUP.M2 TERRENO</font></h6><h6><font size="7">' . $data['terreno'] . '</font></h6>', 1, 'C', 1, 0, '17', '190', true, 0, true);
-        // $pdf->MultiCell(30, 12, '<h6><font size="7">VALOR DEL TERRENO</font></h6><h6><font size="7">$' . $data['v_terreno'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(30, 12, '<h6><font size="7">SUP. M2 CONSTRUCCION</font></h6><h6><font size="7">' . $data['sup_m'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(37, 12, '<h6><font size="7">VALOR DE LA CONSTRUCCION</font></h6><h6><font size="7">$' . $data['v_c'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(39, 14.8, '<h6><font size="7">AVALUO TOTAL</font></h6><h6><font size="7">$' . $data['a_total'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(44, 12, '<h6><font size="8">FECHA</font></h6><h6><font size="7">' . $fecha . '</font></h6>', 1, 'C', 1, 0, '17', '204.9', true, 0, true);
-        // $pdf->MultiCell(44, 12, '<h6><font size="8">TASA IMPOSITIVA</font></h6><h6><font size="7">0.50</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(44, 12, '<h6><font size="8">EJERCICIO FISCAL</font></h6><h6><font size="7">' . $data['ejercicio_f'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(44, 12, '<h6><font size="8">PAGO DE APORTACION</font></h6><h6><font size="7">$' . $data['pago_a'] . '</font></h6>', 1, 'C', 1, 0, '', '', true, 0, true);
-        // // ////////////Final de la tabla//////////////
-        // $pdf->Ln(11.6);
-        // $pdf->writeHTMLCell(0, 0, '', '', $tabla4, 0, 1, 0, true, '', true);
-        // $pdf->MultiCell(176, 15, '' . $text, 1, 'C', 1, 0, '17', '226.2', true, 0, true);
-        // $pdf->Ln(25);
-        // $pdf->MultiCell(58.66, 12, '<h6><font size="8">_____________________<br>ELABORO</font></h6>', 0, 'C', 1, 0, '17', '', true, 0, true);
-        // $pdf->MultiCell(58.66, 12, '<h6><font size="8">_____________________<br>JEFE DE DEPTO</font></h6>', 0, 'C', 1, 0, '', '', true, 0, true);
-        // $pdf->MultiCell(58.66, 12, '<h6><font size="8">_____________________<br>DIRECTOR</font></h6>', 0, 'C', 1, 0, '', '', true, 0, true);
-        ////////////////////////////////////////////////
+        // Valida que el parametro exista si no devuelve 404 no encontrado
+        if ($contribuyenteId  < 0) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+        // Encuentra el id del dato consultado
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+        // $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($contribuyenteId);
+        $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($contribuyenteId);
 
         $pdf->Image('public/img/tulum.png', 23, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
-
-        $pdf->Image('public/img/logo.jpg', 158, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
+        $pdf->MultiCell(100, 30, '<h5><font size="11">H.AYUNTAMIENTO DE TULUM<br>TESORERIA MUNICIPAL<br>DIRECCION DE CATASTRO</font></h5>', 0, 'C', 0, 0, '55', '', true, 0, true);
+        $pdf->Image('public/img/logo.png', 158, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
         $pdf->Ln(25);
 
         $tbl = '<table  cellspacing="0" cellpadding="1" border="1" style="border-color:gray; width:100%;">';
@@ -354,12 +286,12 @@ class AportacionManager
                     <th>CONDICION</th>
                 </tr>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th><font size="7">'.$predio->getParcela().'</font></th>
+                    <th><font size="7">'.$predio->getManzana().'</font></th>
+                    <th><font size="7">'.$predio->getLote().'</font></th>
+                    <th><font size="7">'.$predio->getLocal().'</font></th>
+                    <th><font size="7">'.$predio->getCategoria().'</font></th>
+                    <th><font size="7">'.$predio->getCondicion().'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" >DATOS DEL INMUEBE</th>
@@ -370,9 +302,9 @@ class AportacionManager
                 <th colspan ="2">LOCALIDAD</th>
                 </tr>
                 <tr>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
+                    <th colspan ="2"><font size="7">'.$predio->getTitular().'</font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getUbicacion().'</font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getLocalidad().'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th colspan ="2">ANTECEDENTES</th>
@@ -381,19 +313,19 @@ class AportacionManager
                 <tr>
                     <th rowspan="4" colspan ="2"></th>
                     <th>AL NORTE:</th>
-                    <th></th>
+                    <th><font size="7"></font></th>
                     <th>CON:</th>
                     <th><font size="7"></font></th>
                 </tr>
                 <tr>
                     <th>AL SUR:</th>
-                    <th></th>
+                    <th><font size="7"></font></th>
                     <th>CON:</th>
                     <th><font size="7"></font></th>
                 </tr>
                 <tr>
                     <th>AL ESTE:</th>
-                    <th></th>
+                    <th><font size="7"></font></th>
                     <th>CON:</th>
                     <th><font size="7"></font></th>
                 </tr>
@@ -409,9 +341,9 @@ class AportacionManager
                 <th colspan ="2">TITULAR ANTERIOR</th>
                 </tr>
                 <tr>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
+                    <th colspan ="2">'.$predio->getRegimenPropiedad().'<font size="7"></font></th>
+                    <th colspan ="2">'.$predio->getFechaAdquicision()->format('d-m-Y').'<font size="7"></font></th>
+                    <th colspan ="2">'.$predio->getTitularAnterior().'<font size="7"></font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" >REGISTRO FISCAL</th>
@@ -423,10 +355,10 @@ class AportacionManager
                 <th colspan ="2">NOMBRE COMERCIAL</th>
                 </tr>
                 <tr>
-                    <th colspan ="2"></th>
-                    <th colspan ="1"></th>
-                    <th colspan ="1"></th>
-                    <th colspan ="2"></th>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getNombre().'</font></th>
+                    <th colspan ="1"><font size="7"></font></th>
+                    <th colspan ="1"><font size="7"></font></th>
+                    <th colspan ="2"><font size="7"></font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th colspan ="2">TENENCIA</th>
@@ -434,9 +366,9 @@ class AportacionManager
                 <th colspan ="2">USO O DESTINO</th>
                 </tr>
                 <tr>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
+                    <th colspan ="2"><font size="7"></font></th>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getRfc().'</font></th>
+                    <th colspan ="2"><font size="7"></font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" >AVALUO</th>
@@ -447,9 +379,9 @@ class AportacionManager
                 <th colspan ="2">VALOR DEL TERRENO</th>
                 </tr>
                 <tr>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
+                    <th colspan ="2"><font size="7">'.$aportacion->getMetrosTerreno().'</font></th>
+                    <th colspan ="2"><font size="7">$'.$aportacion->getValorZona().'</font></th>
+                    <th colspan ="2"><font size="7">$'.$aportacion->getValorTerreno().'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th colspan ="2">SUP.M2 CONSTRUCCIÓN</th>
@@ -457,9 +389,9 @@ class AportacionManager
                 <th colspan ="2">VALOR DE LA CONSTRUCCION</th>
                 </tr>
                 <tr>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
-                    <th colspan ="2"></th>
+                    <th colspan ="2"><font size="7">'.$aportacion->getMetrosConstruccion().'</font></th>
+                    <th colspan ="2"><font size="7">$'.$aportacion->getValorMtsConstruccion().'</font></th>
+                    <th colspan ="2"><font size="7">$'.$aportacion->getValorConstruccion().'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th>FECHA</th>
@@ -469,17 +401,21 @@ class AportacionManager
                 <th>APORTACION</th>
                 </tr>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th colspan ="2"></th>
-                    <th></th>
+                    <th><font size="7">'.$aportacion->getFecha()->format('d-m-Y').'</font></th>
+                    <th><font size="7">$'.$aportacion->getAvaluo().'</font></th>
+                    <th><font size="7">'.$aportacion->getTasa().'</font></th>
+                    <th colspan ="2"><font size="7">'.$aportacion->getEjercicioFiscal().'</font></th>
+                    <th><font size="7">$'.$aportacion->getPago().'</font></th>
                 </tr>
 '
                 ;
         $tbl = $tbl . '</table>';
 
         $pdf->writeHTML($tbl, true, 0, true, 0, 'C');
+        $pdf->Ln(15);
+        $pdf->MultiCell(58.66, 12, '<h6><font size="8">_________________________<br>ELABORO</font></h6>', 0, 'C', 0, 0, '17', '', true, 0, true);
+        $pdf->MultiCell(58.66, 12, '<h6><font size="8">_________________________<br>JEFE DE DEPTO</font></h6>', 0, 'C', 0, 0, '', '', true, 0, true);
+        $pdf->MultiCell(58.66, 12, '<h6><font size="8">_________________________<br>DIRECTOR</font></h6>', 0, 'C', 0, 0, '', '', true, 0, true);
 
         // move pointer to last page
         $pdf->lastPage();
