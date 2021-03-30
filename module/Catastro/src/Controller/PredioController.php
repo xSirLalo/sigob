@@ -125,13 +125,20 @@ class PredioController extends AbstractActionController
                     $data['size'] = $filesize;
                     $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
                     $data['categoria'] = $categoria[$i];
-                    $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+                    $id = $data['input1'];
+
+                    $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+
+                    if ($archivito) {
+                        $this->bibliotecaManager->guardarRelacionAP($id, $archivito);
+                    }
+
                     $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
                     if ($predio) {
-                        $this->predioManager->actualizar($predio, $data);
+                        $this->predioManager->actualizarPredio($predio, $data);
                         $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
                     } else {
-                        $this->predioManager->guardar($data);
+                        $this->predioManager->guardarPredio($data);
                         $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                     }
                 }
@@ -163,12 +170,14 @@ class PredioController extends AbstractActionController
         $predioColindancias = $qb->getQuery()->getResult();
 
         $qb = $this->entityManager->createQueryBuilder();
-        $qb ->select('a')
-            ->from('Catastro\Entity\Archivo', 'a')
-            ->join('Catastro\Entity\Predio', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idPredio = c.idPredio')
-            ->where('a.idPredio = :idParam')
+        $qb ->select('ap')
+            ->from('Catastro\Entity\ArchivoPredio', 'ap')
+            ->join('Catastro\Entity\Predio', 'p', \Doctrine\ORM\Query\Expr\Join::WITH, 'ap.idPredio = p.idPredio')
+            ->join('Catastro\Entity\Archivo', 'a', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idArchivo = ap.idArchivo')
+            ->join('Catastro\Entity\ArchivoCategoria', 'ac', \Doctrine\ORM\Query\Expr\Join::WITH, 'ac.idArchivoCategoria = a.idArchivoCategoria')
+            ->where('ap.idPredio = :idParam')
             ->setParameter('idParam', $predioId)
-            ->orderBy('a.createdAt', 'ASC');
+            ->orderBy('ap.idArchivo', 'ASC');
 
         $archivos = $qb->getQuery()->getResult();
 
@@ -224,18 +233,18 @@ class PredioController extends AbstractActionController
         $qb = $this->entityManager->createQueryBuilder();
 
         $qb ->select('p')
-                ->from('Catastro\Entity\Predio', 'p')
-                    ->where('p.claveCatastral LIKE :word')
-                    ->setParameter("word", '%'.addcslashes($word, '%_').'%');
+            ->from('Catastro\Entity\Predio', 'p')
+            ->where('p.claveCatastral LIKE :word')
+            ->setParameter("word", '%'.addcslashes($word, '%_').'%');
         $query = $qb->getQuery()->getResult();
 
         $arreglo  = [];
         if ($query) {
             foreach ($query as $r) {
                 $arreglo [] = [
-                        'id' => $r->getClaveCatastral(),
-                        'item_select_name'=> $r->getClaveCatastral() . ' - ' . $r->getTitular(),
-                    ];
+                    'id' => $r->getClaveCatastral(),
+                    'item_select_name'=> $r->getClaveCatastral() . ' - ' . $r->getTitular(),
+                ];
             }
         } else {
             $WebService = $this->opergobserviceadapter->obtenerPredio($word);
@@ -290,15 +299,15 @@ class PredioController extends AbstractActionController
             }
 
             $arreglo[] = [
-                        'id' => $WebService->Predio->PredioCveCatastral,
-                        'item_select_name' => $WebService->Predio->PredioCveCatastral,
-                    ];
+                'id' => $WebService->Predio->PredioCveCatastral,
+                'item_select_name' => $WebService->Predio->PredioCveCatastral,
+            ];
         }
 
         $data = [
-                    'items'       => $arreglo,
-                    'total_count' => count($arreglo),
-                ];
+            'items'       => $arreglo,
+            'total_count' => count($arreglo),
+        ];
 
         $json = new JsonModel($data);
         $json->setTerminal(true);
@@ -317,9 +326,9 @@ class PredioController extends AbstractActionController
             $qb = $this->entityManager->createQueryBuilder();
 
             $qb ->select('p')
-                    ->from('Catastro\Entity\Predio', 'p')
-                        ->where('p.claveCatastral LIKE :word')
-                        ->setParameter("word", '%'.addcslashes($word, '%_').'%');
+                ->from('Catastro\Entity\Predio', 'p')
+                ->where('p.claveCatastral LIKE :word')
+                ->setParameter("word", '%'.addcslashes($word, '%_').'%');
             $query = $qb->getQuery()->getResult();
 
             $data = [];
@@ -327,11 +336,13 @@ class PredioController extends AbstractActionController
                 foreach ($query as $r) {
                     $idpredio = $r->getIdPredio();
                     $qb = $this->entityManager->createQueryBuilder();
-                    $qb->select('p')
-                                ->from('Catastro\Entity\PredioColindancia', 'p')
-                                ->where('p.idPredio = :idParam')
-                                ->setParameter('idParam', $idpredio);
+                    $qb ->select('p')
+                        ->from('Catastro\Entity\PredioColindancia', 'p')
+                        ->where('p.idPredio = :idParam')
+                        ->setParameter('idParam', $idpredio);
+
                     $predioColindancias = $qb->getQuery()->getResult();
+
                     foreach ($predioColindancias as $datos) {
                         $medidas[]=$datos->getMedidaMetros();
                         $descripcion[]=$datos->getDescripcion();
@@ -358,25 +369,25 @@ class PredioController extends AbstractActionController
             } else {
                 $WebService = $this->opergobserviceadapter->obtenerPredio($word);
                 $data = [
-                        'titular'          => $WebService->Predio->Titular,
-                        'localidad'        => $WebService->Predio->NombreLocalidad,
-                        'titular_anterior' => $WebService->Predio->TitularCompleto,
-                        'predio_id'        => $WebService->Predio->PredioId,
-                    ];
+                    'titular'          => $WebService->Predio->Titular,
+                    'localidad'        => $WebService->Predio->NombreLocalidad,
+                    'titular_anterior' => $WebService->Predio->TitularCompleto,
+                    'predio_id'        => $WebService->Predio->PredioId,
+                ];
 
                 $WebService2 = $this->opergobserviceadapter->obtenerColindancia($WebService->Predio->PredioId);
                 $data = [
-                        'norte'            => $WebService2->PredioColindancia[0]->MedidaMts,
-                        'con_norte'        => $WebService2->PredioColindancia[0]->Descripcion,
+                    'norte'            => $WebService2->PredioColindancia[0]->MedidaMts,
+                    'con_norte'        => $WebService2->PredioColindancia[0]->Descripcion,
 
-                        'sur'              => $WebService2->PredioColindancia[1]->MedidaMts,
-                        'con_sur'          => $WebService2->PredioColindancia[1]->Descripcion,
+                    'sur'              => $WebService2->PredioColindancia[1]->MedidaMts,
+                    'con_sur'          => $WebService2->PredioColindancia[1]->Descripcion,
 
-                        'este'             => $WebService2->PredioColindancia[2]->MedidaMts,
-                        'con_este'         => $WebService2->PredioColindancia[2]->Descripcion,
+                    'este'             => $WebService2->PredioColindancia[2]->MedidaMts,
+                    'con_este'         => $WebService2->PredioColindancia[2]->Descripcion,
 
-                        'oeste'            => $WebService2->PredioColindancia[3]->MedidaMts,
-                        'con_oeste'        => $WebService2->PredioColindancia[3]->Descripcion,
+                    'oeste'            => $WebService2->PredioColindancia[3]->MedidaMts,
+                    'con_oeste'        => $WebService2->PredioColindancia[3]->Descripcion,
                 ];
             }
 

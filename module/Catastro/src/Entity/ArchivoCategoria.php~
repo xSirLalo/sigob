@@ -29,6 +29,13 @@ class ArchivoCategoria
     private $nombre;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="grupo", type="string", length=255, nullable=true)
+     */
+    private $grupo;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)

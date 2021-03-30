@@ -24,55 +24,6 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="parcela", type="string", length=255, nullable=true)
-     */
-    private $parcela;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="manzana", type="string", length=255, nullable=true)
-     */
-    private $manzana;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="lote", type="string", length=255, nullable=true)
-     */
-    private $lote;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="local", type="string", length=255, nullable=true)
-     */
-    private $local;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="categoria", type="string", length=255, nullable=true)
-     */
-    private $categoria;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="condicion", type="string", length=255, nullable=true)
-     */
-    private $condicion;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="titular", type="string", length=255, nullable=true)
-     */
-    private $titular;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="ubicacion", type="string", length=255, nullable=true)
      */
     private $ubicacion;
@@ -94,41 +45,6 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="antecedentes", type="string", length=255, nullable=true)
-     */
-    private $antecedentes;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="regimen_propiedad", type="string", length=255, nullable=true)
-     */
-    private $regimenPropiedad;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="fecha_adquicision", type="date", nullable=true)
-     */
-    private $fechaAdquicision;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="clave_catastral", type="string", length=255, nullable=true)
-     */
-    private $claveCatastral;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="titular_anterior", type="string", length=255, nullable=true)
-     */
-    private $titularAnterior;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="municipio", type="string", length=255, nullable=true)
      */
     private $municipio;
@@ -139,6 +55,13 @@ class Predio
      * @ORM\Column(name="calle", type="string", length=255, nullable=true)
      */
     private $calle;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="clave_catastral", type="string", length=255, nullable=true)
+     */
+    private $claveCatastral;
 
     /**
      * @var int|null
@@ -190,6 +113,20 @@ class Predio
     private $ultimoPeriodoPagado;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="titular", type="string", length=255, nullable=true)
+     */
+    private $titular;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="titular_anterior", type="string", length=255, nullable=true)
+     */
+    private $titularAnterior;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
@@ -223,174 +160,6 @@ class Predio
     public function getIdPredio()
     {
         return $this->idPredio;
-    }
-
-    /**
-     * Set parcela.
-     *
-     * @param string|null $parcela
-     *
-     * @return Predio
-     */
-    public function setParcela($parcela = null)
-    {
-        $this->parcela = $parcela;
-
-        return $this;
-    }
-
-    /**
-     * Get parcela.
-     *
-     * @return string|null
-     */
-    public function getParcela()
-    {
-        return $this->parcela;
-    }
-
-    /**
-     * Set manzana.
-     *
-     * @param string|null $manzana
-     *
-     * @return Predio
-     */
-    public function setManzana($manzana = null)
-    {
-        $this->manzana = $manzana;
-
-        return $this;
-    }
-
-    /**
-     * Get manzana.
-     *
-     * @return string|null
-     */
-    public function getManzana()
-    {
-        return $this->manzana;
-    }
-
-    /**
-     * Set lote.
-     *
-     * @param string|null $lote
-     *
-     * @return Predio
-     */
-    public function setLote($lote = null)
-    {
-        $this->lote = $lote;
-
-        return $this;
-    }
-
-    /**
-     * Get lote.
-     *
-     * @return string|null
-     */
-    public function getLote()
-    {
-        return $this->lote;
-    }
-
-    /**
-     * Set local.
-     *
-     * @param string|null $local
-     *
-     * @return Predio
-     */
-    public function setLocal($local = null)
-    {
-        $this->local = $local;
-
-        return $this;
-    }
-
-    /**
-     * Get local.
-     *
-     * @return string|null
-     */
-    public function getLocal()
-    {
-        return $this->local;
-    }
-
-    /**
-     * Set categoria.
-     *
-     * @param string|null $categoria
-     *
-     * @return Predio
-     */
-    public function setCategoria($categoria = null)
-    {
-        $this->categoria = $categoria;
-
-        return $this;
-    }
-
-    /**
-     * Get categoria.
-     *
-     * @return string|null
-     */
-    public function getCategoria()
-    {
-        return $this->categoria;
-    }
-
-    /**
-     * Set condicion.
-     *
-     * @param string|null $condicion
-     *
-     * @return Predio
-     */
-    public function setCondicion($condicion = null)
-    {
-        $this->condicion = $condicion;
-
-        return $this;
-    }
-
-    /**
-     * Get condicion.
-     *
-     * @return string|null
-     */
-    public function getCondicion()
-    {
-        return $this->condicion;
-    }
-
-    /**
-     * Set titular.
-     *
-     * @param string|null $titular
-     *
-     * @return Predio
-     */
-    public function setTitular($titular = null)
-    {
-        $this->titular = $titular;
-
-        return $this;
-    }
-
-    /**
-     * Get titular.
-     *
-     * @return string|null
-     */
-    public function getTitular()
-    {
-        return $this->titular;
     }
 
     /**
@@ -466,126 +235,6 @@ class Predio
     }
 
     /**
-     * Set antecedentes.
-     *
-     * @param string|null $antecedentes
-     *
-     * @return Predio
-     */
-    public function setAntecedentes($antecedentes = null)
-    {
-        $this->antecedentes = $antecedentes;
-
-        return $this;
-    }
-
-    /**
-     * Get antecedentes.
-     *
-     * @return string|null
-     */
-    public function getAntecedentes()
-    {
-        return $this->antecedentes;
-    }
-
-    /**
-     * Set regimenPropiedad.
-     *
-     * @param string|null $regimenPropiedad
-     *
-     * @return Predio
-     */
-    public function setRegimenPropiedad($regimenPropiedad = null)
-    {
-        $this->regimenPropiedad = $regimenPropiedad;
-
-        return $this;
-    }
-
-    /**
-     * Get regimenPropiedad.
-     *
-     * @return string|null
-     */
-    public function getRegimenPropiedad()
-    {
-        return $this->regimenPropiedad;
-    }
-
-    /**
-     * Set fechaAdquicision.
-     *
-     * @param \DateTime|null $fechaAdquicision
-     *
-     * @return Predio
-     */
-    public function setFechaAdquicision($fechaAdquicision = null)
-    {
-        $this->fechaAdquicision = $fechaAdquicision;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaAdquicision.
-     *
-     * @return \DateTime|null
-     */
-    public function getFechaAdquicision()
-    {
-        return $this->fechaAdquicision;
-    }
-
-    /**
-     * Set claveCatastral.
-     *
-     * @param string|null $claveCatastral
-     *
-     * @return Predio
-     */
-    public function setClaveCatastral($claveCatastral = null)
-    {
-        $this->claveCatastral = $claveCatastral;
-
-        return $this;
-    }
-
-    /**
-     * Get claveCatastral.
-     *
-     * @return string|null
-     */
-    public function getClaveCatastral()
-    {
-        return $this->claveCatastral;
-    }
-
-    /**
-     * Set titularAnterior.
-     *
-     * @param string|null $titularAnterior
-     *
-     * @return Predio
-     */
-    public function setTitularAnterior($titularAnterior = null)
-    {
-        $this->titularAnterior = $titularAnterior;
-
-        return $this;
-    }
-
-    /**
-     * Get titularAnterior.
-     *
-     * @return string|null
-     */
-    public function getTitularAnterior()
-    {
-        return $this->titularAnterior;
-    }
-
-    /**
      * Set municipio.
      *
      * @param string|null $municipio
@@ -631,6 +280,30 @@ class Predio
     public function getCalle()
     {
         return $this->calle;
+    }
+
+    /**
+     * Set claveCatastral.
+     *
+     * @param string|null $claveCatastral
+     *
+     * @return Predio
+     */
+    public function setClaveCatastral($claveCatastral = null)
+    {
+        $this->claveCatastral = $claveCatastral;
+
+        return $this;
+    }
+
+    /**
+     * Get claveCatastral.
+     *
+     * @return string|null
+     */
+    public function getClaveCatastral()
+    {
+        return $this->claveCatastral;
     }
 
     /**
@@ -799,6 +472,54 @@ class Predio
     public function getUltimoPeriodoPagado()
     {
         return $this->ultimoPeriodoPagado;
+    }
+
+    /**
+     * Set titular.
+     *
+     * @param string|null $titular
+     *
+     * @return Predio
+     */
+    public function setTitular($titular = null)
+    {
+        $this->titular = $titular;
+
+        return $this;
+    }
+
+    /**
+     * Get titular.
+     *
+     * @return string|null
+     */
+    public function getTitular()
+    {
+        return $this->titular;
+    }
+
+    /**
+     * Set titularAnterior.
+     *
+     * @param string|null $titularAnterior
+     *
+     * @return Predio
+     */
+    public function setTitularAnterior($titularAnterior = null)
+    {
+        $this->titularAnterior = $titularAnterior;
+
+        return $this;
+    }
+
+    /**
+     * Get titularAnterior.
+     *
+     * @return string|null
+     */
+    public function getTitularAnterior()
+    {
+        return $this->titularAnterior;
     }
 
     /**

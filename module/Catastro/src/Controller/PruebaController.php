@@ -51,35 +51,12 @@ class PruebaController extends AbstractActionController
 
     public function indexAction()
     {
-        $data = $this->entityManager->getRepository(Contribuyente::class)->findOneByRfc("0");
-        //$data = $this->opergobserviceadapter->obtenerPredio("109015000050035-61");
-        $data = $this->opergobserviceadapter->obtenerColindancia("1714");
-        //$data2 = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
-        //$data2 = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
-        //$data2 = $this->entityManager->getRepository(PredioColindancia::class)->findBy(array('IdPredio'=>'48'));
-        //$data2 = $this->entityManager->getRepository(PredioColindancia::class)->findByMedidasMetros("");
-        //$data2 = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredio("48");
-        //$data2 = $this->entityManager->getRepository(PredioColindancia::class)->findAll();
-        //$data2 = $this->entityManager->getRepository(PredioColindancia::class)->findby("28");
-        //$articulos = $em->getRepository('MDWDemoBundle:Articles')->findBy(	array('author' => 'John Doe','category' => 'Symfony');
-        //$data2 = $this->entityManager->getRepository(PredioColindancia::class)->findBy(	array('id_predio' => '48'));
-        $contribuyenteId = 49;
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('p')
-            ->from('Catastro\Entity\PredioColindancia', 'p')
-            ->where('p.idPredio = :word')
-            ->setParameter('word', $contribuyenteId);
-        $resultados = $qb->getQuery()->getResult();
-        //$data2 = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredioColindancia("28");
+        // $data = $this->opergobserviceadapter->obtenerPredio("109015000050035-61");
+        // $data = $this->opergobserviceadapter->obtenerColindancia("1714");
+        $data = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
+        // $data = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
 
-
-        // $data2 = $this->entityManager->getRepository(PredioColindancia::class)->findBy("26");
-
-        // echo "<pre>";
-        // print_r($data);
-        // echo "</pre>";
-        // exit();
-        return new ViewModel(['data' => $data,'data2' => $resultados]);
+        return new ViewModel(['data' => $data]);
     }
 
     public function addAction()

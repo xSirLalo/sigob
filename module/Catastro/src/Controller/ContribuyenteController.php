@@ -11,7 +11,7 @@ use Laminas\Paginator\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Entity\Contribuyente;
-// use Catastro\Form\ContribuyenteForm;
+use Catastro\Form\ContribuyenteForm;
 use Catastro\Form\ContribuyenteModalForm;
 use Catastro\Form\EliminarForm;
 use Catastro\Form\BibliotecaForm;
@@ -161,7 +161,6 @@ class ContribuyenteController extends AbstractActionController
     public function addAction()
     {
         $categorias = $this->bibliotecaManager->categorias();
-
         $request = $this->getRequest();
         // AJAX response
         if ($request->isXmlHttpRequest()) {
@@ -182,13 +181,86 @@ class ContribuyenteController extends AbstractActionController
         } else {
             $form = new ContribuyenteForm();
             if ($request->isPost()) {
-                $data = $this->params()->fromPost();
+                $data = \array_merge_recursive(
+                    $request->getFiles()->toArray(),
+                    $request->getPost()->toArray(),
+                );
+                // $data = $this->params()->fromPost();
+                $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+
+                $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+                $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+                $num = (int) count($archivoUrl);
+                for ($i=0; $i < $num; $i++) {
+                    $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+
+                    $file_folder = $destination . '/' . $newName;
+
+                    if (file_exists($file_folder)) {
+                        // FIXME: Vacio aun asi muestra el mensaje
+                        $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
+                        return $this->redirect()->toRoute('predio/agregar');
+                    }
+
+                    $inputFilter = new OptionalInputFilter();
+                    $inputFilter->add([
+                        'name' => 'archivo',
+                        'filters' => [
+                            [
+                                'name' => Filter\File\Rename::class,
+                                'options' => [
+                                    'target' => $destination . '/' . $newName,
+                                ]
+                            ]
+                        ]
+                    ]);
+                    $form->setInputFilter($inputFilter);
+                }
+
                 $form->setData($data);
                 if ($form->isValid()) {
                     $data = $form->getData();
-                    $this->contribuyenteManager->agregar($data);
-                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                    return $this->redirect()->toRoute('contribuyente');
+                    $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                    $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+
+                    $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
+                    $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
+
+                    $filename = $_FILES['archivo']['name'][$i];
+                    $filesize = $_FILES['archivo']['size'][$i];
+                    $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                    $file_type = $_FILES['archivo']['type'][$i];
+                    $date = date("d-m-Y_H-i");
+                    $temp = explode(".", $filename);
+                    $new_filename =   strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
+                    $file_folder = $destination . '/' . $new_filename;
+
+                    $data['archivoBlob'] = file_get_contents($file_folder, true);
+                    $data['extension'] = $temp[count($temp)-1];
+                    $data['size'] = $filesize;
+                    $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                    $data['categoria'] = $categoria[$i];
+                    $id = $data['input1'];
+
+                    $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+
+                    if ($archivito) { // TODO: Hacer funcionar
+                        $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
+                    }
+
+                    $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByCvePersona($data['cve_catastral']);
+                    if ($contribuyente) {
+                        $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
+                        $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
+                    } else {
+                        $this->contribuyenteManager->guardarContribuyente($data);
+                        $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                    }
+
+                    // $this->contribuyenteManager->agregar($data);
+                    // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                    // return $this->redirect()->toRoute('contribuyente');
                 }
             }
             $view = new ViewModel(['form' => $form, 'categorias' => $categorias]);
@@ -344,44 +416,16 @@ class ContribuyenteController extends AbstractActionController
         return $view;
     }
 
-    public function search2PersonaAction()
-    {
-        $word = $_REQUEST['q'];
-
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb ->select('c')
-            ->from('Catastro\Entity\Contribuyente', 'c')
-                ->where('c.rfc LIKE :word')
-                ->setParameter("word", '%'.addcslashes($word, '%_').'%');
-        $query = $qb->getQuery()->getResult();
-
-        $arreglo  = [];
-        foreach ($query as $r) {
-            $arreglo [] = [
-                    'id' => $r->getIdContribuyente(),
-                    'palabra_respuesta'=> $r->getNombre() . ' ' . $r->getApellidoPaterno() . ' ' . $r->getApellidoMaterno(),
-                ];
-        }
-        $data = [
-                'items'       => $arreglo,
-                'total_count' => count($arreglo),
-            ];
-
-        $json = new JsonModel($data);
-        $json->setTerminal(true);
-
-        return $json;
-    }
-
     public function searchPersonaAction()
     {
         $word = $_REQUEST['q'];
 
         $qb = $this->entityManager->createQueryBuilder();
+
         $qb ->select('c')
             ->from('Catastro\Entity\Contribuyente', 'c')
-                ->where('c.rfc LIKE :word')
-                ->setParameter("word", '%'.addcslashes($word, '%_').'%');
+            ->where('c.rfc LIKE :word')
+            ->setParameter("word", '%'.addcslashes($word, '%_').'%');
         $query = $qb->getQuery()->getResult();
 
         $arreglo  = [];
@@ -389,7 +433,7 @@ class ContribuyenteController extends AbstractActionController
             foreach ($query as $r) {
                 $arreglo [] = [
                     'id' => $r->getIdContribuyente(),
-                    'palabra_respuesta'=> $r->getNombre() . ' ' . $r->getApellidoPaterno() . ' ' . $r->getApellidoMaterno(),
+                    'item_select_name'=> $r->getNombre() . ' ' . $r->getApellidoPaterno() . ' ' . $r->getApellidoMaterno(). ' ' . $r->getRfc(),
                 ];
             }
         } else {
@@ -397,66 +441,36 @@ class ContribuyenteController extends AbstractActionController
             if (isset($WebService->Persona)) {
                 if (is_array($WebService->Persona)) {
                     $WebServicePersona = [
-                            'apellido_paterno'                 => $WebService->Persona[0]->ApellidoPaternoPersona,
-                            'apellido_materno'                 => $WebService->Persona[0]->ApellidoPaternoPersona,
-                            'curp'                 => $WebService->Persona[0]->CURPPersona,
-                            'cve_persona'                 => $WebService->Persona[0]->CvePersona,
-                            'genero'                 => $WebService->Persona[0]->GeneroPersona,
-                            'nombre'                 => $WebService->Persona[0]->NombrePersona,
-                            'telefono'                 => $WebService->Persona[0]->PersonaTelefono,
-                            'correo'                 => $WebService->Persona[0]->PersonaCorreo,
-                            'rfc'                 => $WebService->Persona[0]->RFCPersona,
-                            'razon_social'                 => $WebService->Persona[0]->RazonSocialPersona,
-                        ];
-                    $arreglo[] = [
-                        'id' => $WebService->Persona[0]->CvePersona,
-                        'palabra_respuesta' =>  $WebService->Persona[0]->RazonSocialPersona,
+                            'cve_persona'      => $WebService->Persona[0]->CvePersona,
+                            'nombre'           => $WebService->Persona[0]->NombrePersona,
+                            'apellido_paterno' => $WebService->Persona[0]->ApellidoPaternoPersona,
+                            'apellido_materno' => $WebService->Persona[0]->ApellidoPaternoPersona,
+                            'rfc'              => $WebService->Persona[0]->RFCPersona,
+                            'curp'             => $WebService->Persona[0]->CURPPersona,
+                            'razon_social'     => $WebService->Persona[0]->RazonSocialPersona,
+                            'correo'           => $WebService->Persona[0]->PersonaCorreo,
+                            'telefono'         => $WebService->Persona[0]->PersonaTelefono,
+                            'genero'           => $WebService->Persona[0]->GeneroPersona,
                     ];
-                    // $contribuyenteGuardado = $this->contribuyenteManager->guardarPersona($WebServicePersona);
-                    // if ($contribuyenteGuardado > 0) {
-                    //     $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteGuardado);
-                    //     $arreglo [] = [
-                    //             'id' => $contribuyente->getIdContribuyente(),
-                    //             'palabra_respuesta'=> $contribuyente->getNombre() . ' ' . $contribuyente->getApellidoPaterno() . ' ' . $contribuyente->getApellidoMaterno(),
-                    //         ];
-                    // }
+
+                    $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
+
+                    $arreglo[] = [
+                        'id' => $contribuyente->getIdContribuyente(),
+                        'item_select_name' =>  $WebService->Persona[0]->RazonSocialPersona,
+                    ];
                 }
             }
         }
+
         $data = [
-                'items'       => $arreglo,
-                'total_count' => count($arreglo),
-            ];
+            'items'       => $arreglo,
+            'total_count' => count($arreglo),
+        ];
 
         $json = new JsonModel($data);
         $json->setTerminal(true);
 
-        return $json;
-    }
-
-    public function searchPersona1Action()
-    {
-        $word = $_REQUEST['q'];
-
-        $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($word);
-        if (isset($WebService->Persona)) {
-            if (is_array($WebService->Persona)) {
-                $arreglo = [];
-                // foreach ($WebService->Persona as $item) {
-                $arreglo[] = [
-                        'id' => $WebService->Persona[0]->CvePersona,
-                        'palabra_respuesta' =>  $WebService->Persona[0]->RazonSocialPersona,
-                    ];
-                // }
-                $data = [
-                        'items' => $arreglo,
-                        'total_count' => count($arreglo),
-                    ];
-            }
-        }
-
-        $json = new JsonModel($data);
-        $json->setTerminal(true);
         return $json;
     }
 
@@ -464,24 +478,50 @@ class ContribuyenteController extends AbstractActionController
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
-        $id = $this->params()->fromRoute('id');
-
         // AJAX response
         if ($request->isXmlHttpRequest()) {
-            $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($id);
+            $id = $this->params()->fromRoute('id');
 
-            $data = [
-                'cve_persona'      => $WebService->Persona->CvePersona,
-                'nombre'           => $WebService->Persona->NombrePersona,
-                'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
-                'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
-                'rfc'              => $WebService->Persona->RFCPersona,
-                'curp'             => $WebService->Persona->CURPPersona,
-                'razon_social'     => $WebService->Persona->RazonSocialPersona,
-                'correo'           => $WebService->Persona->PersonaCorreo,
-                'telefono'         => $WebService->Persona->PersonaTelefono,
-                'genero'           => $WebService->Persona->GeneroPersona,
-            ];
+            $qb = $this->entityManager->createQueryBuilder();
+
+            $qb ->select('c')
+                ->from('Catastro\Entity\Contribuyente', 'c')
+                ->where('c.idContribuyente = :idParam')
+                ->setParameter("idParam", $id);
+            $query = $qb->getQuery()->getResult();
+
+            $data = [];
+            if ($query) {
+                foreach ($query as $r) {
+                    $data = [
+                        'contribuyente_id' => $r->getIdContribuyente(),
+                        'nombre'           => $r->getNombre(),
+                        'apellido_paterno' => $r->getApellidoPaterno(),
+                        'apellido_materno' => $r->getApellidoMaterno(),
+                        'rfc'              => $r->getRfc(),
+                        'curp'             => $r->getCurp(),
+                        'razon_social'     => $r->getRazonSocial(),
+                        'correo'           => $r->getCorreo(),
+                        'telefono'         => $r->getTelefono(),
+                        'genero'           => $r->getGenero(),
+                    ];
+                }
+            } else {
+                // FIXME: No pasa por aquí!
+                $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($id);
+
+                $data = [
+                    'nombre'           => $WebService->Persona->NombrePersona,
+                    'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
+                    'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
+                    'rfc'              => $WebService->Persona->RFCPersona,
+                    'curp'             => $WebService->Persona->CURPPersona,
+                    'razon_social'     => $WebService->Persona->RazonSocialPersona,
+                    'correo'           => $WebService->Persona->PersonaCorreo,
+                    'telefono'         => $WebService->Persona->PersonaTelefono,
+                    'genero'           => $WebService->Persona->GeneroPersona,
+                ];
+            }
 
             return $response->setContent(json_encode($data));
         } else {
