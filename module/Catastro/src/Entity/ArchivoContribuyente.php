@@ -15,11 +15,11 @@ class ArchivoContribuyente
     /**
      * @var int
      *
-     * @ORM\Column(name="id_archivo_contribuyente", type="bigint", nullable=false)
+     * @ORM\Column(name="id_archivo_predio", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idArchivoContribuyente;
+    private $idArchivoPredio;
 
     /**
      * @var \Catastro\Entity\Archivo
@@ -44,13 +44,13 @@ class ArchivoContribuyente
 
 
     /**
-     * Get idArchivoContribuyente.
+     * Get idArchivoPredio.
      *
      * @return int
      */
-    public function getIdArchivoContribuyente()
+    public function getIdArchivoPredio()
     {
-        return $this->idArchivoContribuyente;
+        return $this->idArchivoPredio;
     }
 
     /**
