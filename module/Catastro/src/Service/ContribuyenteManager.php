@@ -27,7 +27,7 @@ class ContribuyenteManager
         $contribuyente->setApellidoPaterno($data['apellido_paterno']);
         $contribuyente->setApellidoMaterno($data['apellido_materno']);
         $contribuyente->setCurp($data['curp']);
-        $contribuyente->setCvePersona($data['cve_persona']);
+        // $contribuyente->setCvePersona($data['cve_persona']);
         $contribuyente->setGenero($data['genero']);
         $contribuyente->setNombre($data['nombre']);
         $contribuyente->setTelefono($data['telefono']);
@@ -76,7 +76,7 @@ class ContribuyenteManager
         $contribuyente->setApellidoPaterno($data['apellido_paterno']);
         $contribuyente->setApellidoMaterno($data['apellido_materno']);
         $contribuyente->setCurp($data['curp']);
-        $contribuyente->setCvePersona($data['cve_persona']);
+        // $contribuyente->setCvePersona($data['cve_persona']);
         $contribuyente->setGenero($data['genero']);
         $contribuyente->setNombre($data['nombre']);
         $contribuyente->setTelefono($data['telefono']);

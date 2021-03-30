@@ -57,20 +57,20 @@ class PredioManager
 
     public function actualizarPredio($predio, $data)
     {
-        $predio->setColonia($data['colonia']);
-        $predio->setLocalidad($data['localidad']);
-        $predio->setMunicipio($data['municipio']);
-        $predio->setCalle($data['calle']);
-        $predio->setClaveCatastral($data['cve_catastral']);
-        $predio->setCvePredio($data['cve_predio']);
-        $predio->setNumeroExterior($data['numero_exterior']);
-        $predio->setNumeroInterior($data['numero_interior']);
-        $predio->setEstatus($data['estatus']);
-        $predio->setTipo($data['tipo']);
-        $predio->setUltimoEjercicioPagado($data['ultimo_ejercicio_pagado']);
-        $predio->setUltimoPeriodoPagado($data['ultimo_periodo_pagado']);
+        // $predio->setColonia($data['colonia']);
+        // $predio->setLocalidad($data['localidad']);
+        // $predio->setMunicipio($data['municipio']);
+        // $predio->setCalle($data['calle']);
+        // $predio->setClaveCatastral($data['cve_catastral']);
+        // $predio->setCvePredio($data['cve_predio']);
+        // $predio->setNumeroExterior($data['numero_exterior']);
+        // $predio->setNumeroInterior($data['numero_interior']);
+        // $predio->setEstatus($data['estatus']);
+        // $predio->setTipo($data['tipo']);
+        // $predio->setUltimoEjercicioPagado($data['ultimo_ejercicio_pagado']);
+        // $predio->setUltimoPeriodoPagado($data['ultimo_periodo_pagado']);
         $predio->setTitular($data['titular']);
-        $predio->setTitularAnterior($data['titular_anterior']);
+        // $predio->setTitularAnterior($data['titular_anterior']);
 
         $currentDate = new \DateTime();
         $predio->setUpdatedAt($currentDate);

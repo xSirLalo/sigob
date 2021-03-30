@@ -51,7 +51,7 @@ class BibliotecaManager
         return file_get_contents($filePath);
     }
 
-    public function guardarArchivosP($data, $categoria)
+    public function guardarArchivos($data, $categoria)
     {
         $file = new Biblioteca();
 
