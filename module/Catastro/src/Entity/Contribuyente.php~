@@ -22,13 +22,6 @@ class Contribuyente
     private $idContribuyente;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cve_persona", type="bigint", nullable=true)
-     */
-    private $cvePersona;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
@@ -52,9 +45,51 @@ class Contribuyente
     /**
      * @var string|null
      *
+     * @ORM\Column(name="factura", type="string", length=255, nullable=true)
+     */
+    private $factura;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="giro_comercial", type="string", length=255, nullable=true)
+     */
+    private $giroComercial;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="nombre_comercial", type="string", length=255, nullable=true)
+     */
+    private $nombreComercial;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="tenencia", type="string", length=255, nullable=true)
+     */
+    private $tenencia;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="rfc", type="string", length=255, nullable=true)
      */
     private $rfc;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="uso_destino", type="string", length=255, nullable=true)
+     */
+    private $usoDestino;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="cve_persona", type="bigint", nullable=true)
+     */
+    private $cvePersona;
 
     /**
      * @var string|null

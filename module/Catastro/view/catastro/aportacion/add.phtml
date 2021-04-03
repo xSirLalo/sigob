@@ -492,16 +492,16 @@ $form->prepare();
                                 <div class="form-group">
                                 <!-- Select Valores de Construccion -->
                                     <label class="form-label">VALORES DE CONSTRUCCIÓN</label>
-                                    <select class=" js-example-basic-single2" name="validation-select" id="valor_c" onchange="valorC()">
-                                            <option value="0">Buscar...</option>
-                                            <?php if ($valorConstruccions): ?>
+                                    <select class="js-example-basic-single form-control"  style="width: 240px;" name="select_valor_construccion" id="valor_c" onchange="valorC()">
+                                <option value="0">Seleccione uno...</option>
+                                <?php if ($valorConstruccions): ?>
                                             <?php foreach ($valorConstruccions as $valorConstruccion):?>
                                             <optgroup label=<?= $valorConstruccion->getGrupo()?> >
                                             <option value="<?= $valorConstruccion->getCosto()?>"><?= $valorConstruccion->getCaracteristicas() ?></option>
                                         </optgroup>
                                         <?php endforeach; ?>
                                         <?php endif; ?>
-                                    </select>
+                                </select>
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -586,7 +586,9 @@ $form->prepare();
                         </div>
                         <!-- Input Oculto para validar validacion vacia-->
                         <input type="hidden" id=p_hide>
-                        <!-- <input type="text" id=p_hide> -->
+                        <!-- Avaluo input oculto -->
+                        <input type="hidden" class="form-control" id=avaluo_hidden>
+
                         <div class="row ml-0">
                             <div class="col-sm-4">
                             <!-- Input Estatus Oculto -->

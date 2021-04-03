@@ -337,8 +337,8 @@ class AportacionForm extends Form
             'options' => [
                     'label' => 'Factura',
                 'value_options' => [
-            '0' => 'Si',
-            '1' => 'No',
+            'Si' => 'Si',
+            'No' => 'No',
         ],
             ],
             'attributes' => [
@@ -445,10 +445,7 @@ class AportacionForm extends Form
             ],
             'attributes' => [
                 'required' => true,
-                'size' => 40,
-                'maxlength' => 10,
                 'class' => 'form-control',
-                'data-toggle' => 'tooltip',
                 'oninput'=> 'Calcular()',
                 'onkeypress'=> 'return filterFloat(event,this);',
                 // 'onkeyup'=>'esvacio()',
@@ -464,6 +461,7 @@ class AportacionForm extends Form
             ],
             'attributes' => [
                 'readonly' => true,
+                "onkeypress"=> "return filterFloat(event,this);",
                 'class' => 'form-control',
                 'id' =>'v_terreno',
             ]
@@ -477,6 +475,7 @@ class AportacionForm extends Form
             ],
             'attributes' => [
                 'readonly' => true,
+                "onkeypress"=> "return filterFloat(event,this);",
                 'class' => 'form-control',
                 'id' =>'v_c',
             ]
@@ -490,6 +489,7 @@ class AportacionForm extends Form
             ],
             'attributes' => [
                 'readonly' => true,
+                "onkeypress"=> "return filterFloat(event,this);",
                 'class' => 'form-control',
                 'id' =>'valor',
             ]
@@ -504,6 +504,7 @@ class AportacionForm extends Form
             'attributes' => [
                 // 'readonly' => true,
                 'class' => 'form-control',
+                "onkeypress"=> "return filterFloat(event,this);",
                 'oninput'=> 'Calcular()',
                 'id' =>'valor_zona',
             ]
@@ -517,6 +518,7 @@ class AportacionForm extends Form
             ],
             'attributes' => [
                 'readonly' => true,
+                'onkeypress' => 'return filterFloat(event,this);',
                 'class' => 'form-control',
                 'id' =>'a_total',
             ]
@@ -528,6 +530,7 @@ class AportacionForm extends Form
             'attributes' => [
                 // 'readonly' => true,
                 'class' => 'form-control',
+                'hidden' => true,
                 'id' =>'tasa_hidden',
             ]
         ]);
@@ -557,6 +560,7 @@ class AportacionForm extends Form
                 'readonly' => true,
                 'class' => 'form-control',
                 'data-toggle' => 'tooltip',
+                "onkeypress"=> "return filterFloat(event,this);",
                 // 'onkeyup'=>'esvacio()',
                 'id' =>'pago_a',
             ]

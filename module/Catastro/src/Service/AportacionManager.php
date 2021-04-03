@@ -64,7 +64,7 @@ class AportacionManager
         // $cvepredio  = $data['cvepredio'];
         $idcontribuyente = $data['parametro'];
 
-
+        ///Guarda el Predio///
         $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($idcontribuyente);
 
         $predio->setIdContribuyente($contribuyentebd);
@@ -87,35 +87,7 @@ class AportacionManager
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
 
-        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($idcontribuyente);
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
-
-        $aportacion->setIdContribuyente($contribuyentebd);
-        $aportacion->setIdPredio($prediobd);
-        $aportacion ->setEstatus($data['status']);//Estatus
-        $fecha = new \DateTime($data['vig']);//fecha
-        $aportacion->setFecha($fecha);
-        $aportacion->setMetrosTerreno($data['terreno']);//Metros2 Terrreno
-        $aportacion->setValorZona($data['valor_m2_zona']);//Valor Zona
-        $valor_terreno = $data['terreno'] * $data['valor_m2_zona'];
-        $aportacion->setValorTerreno($valor_terreno);//Valor terreno
-        $aportacion->setMetrosConstruccion($data['sup_m']);//Metros2 Metros2 Construccion
-        $aportacion->setValorMtsConstruccion($data['valor']);//VALOR M2 CONSTRUCCION
-        $valor_construnccion = $data['sup_m']*$data['valor'];
-        $aportacion->setValorConstruccion($valor_construnccion);//Valor Construccion
-        $avaluo = $valor_terreno + $valor_construnccion;
-        $aportacion->setAvaluo($avaluo);//Avaluo Total
-        $aportacion->setTasa($data['tasa_hidden']);
-        $aportacion->setEjercicioFiscal($data['ejercicio_f']);
-        $pago_aportacion = $data['tasa_hidden']*$avaluo;
-        $aportacion->setPago($pago_aportacion);//Pago aportacion
-
-        $this->entityManager->persist($aportacion);
-        $this->entityManager->flush();
-        if ($aportacion->getIdAportacion() > 0) {
-            return $aportacion;
-        }
-
+        ///Guarda el Predio Colindacias///
         $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
         $predioColindacia = new PredioColindancia();
         $predioColindacia->setIdPredio($prediobd);
@@ -152,6 +124,36 @@ class AportacionManager
         $this->entityManager->persist($predioColindacia);
         $this->entityManager->flush();
 
+        ///Guarda la Aportacion///
+        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($idcontribuyente);
+        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
+
+        $aportacion->setIdContribuyente($contribuyentebd);
+        $aportacion->setIdPredio($prediobd);
+        $aportacion ->setEstatus($data['status']);//Estatus
+        $fecha = new \DateTime($data['vig']);//fecha
+        $aportacion->setFecha($fecha);
+        $aportacion->setMetrosTerreno($data['terreno']);//Metros2 Terrreno
+        $aportacion->setValorZona($data['valor_m2_zona']);//Valor Zona
+        $valor_terreno = $data['terreno'] * $data['valor_m2_zona'];
+        $aportacion->setValorTerreno($valor_terreno);//Valor terreno
+        $aportacion->setMetrosConstruccion($data['sup_m']);//Metros2 Metros2 Construccion
+        $aportacion->setValorMtsConstruccion($data['valor']);//VALOR M2 CONSTRUCCION
+        $valor_construnccion = $data['sup_m']*$data['valor'];
+        $aportacion->setValorConstruccion($valor_construnccion);//Valor Construccion
+        $avaluo = $valor_terreno + $valor_construnccion;
+        $aportacion->setAvaluo($avaluo);//Avaluo Total
+        $aportacion->setTasa($data['tasa_hidden']);
+        $aportacion->setEjercicioFiscal($data['ejercicio_f']);
+        $pago_aportacion = $data['tasa_hidden']*$avaluo;
+        $aportacion->setPago($pago_aportacion);//Pago aportacion
+
+        $this->entityManager->persist($aportacion);
+        $this->entityManager->flush();
+        if ($aportacion->getIdAportacion() > 0) {
+            return $aportacion;
+        }
+
     }
     public function guardarPersona($data)
     {
@@ -183,12 +185,13 @@ class AportacionManager
     public function actualizarContribuyente($contribuyente, $data)
     {
 
-        // $contribuyente->setNombre($data['nombre']);
-        // $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-        // $contribuyente->setApellidoMaterno($data['apellido_materno']);
+        $contribuyente->setNombre($data['contribuyente']);
+        $contribuyente->setFactura($data['factura']);
+        $contribuyente->setGiroComercial($data['giro_comercial']);
+        $contribuyente->setNombreComercial($data['nombre_comercial']);
+        $contribuyente->setTenencia($data['tenencia']);
         $contribuyente->setRfc($data['rfc']);
-        //$contribuyente->setCurp($data['curp']);
-        //$contribuyente->setGenero($data['genero']);
+        $contribuyente->setUsoDestino($data['uso_destino']);
 
         // $currentDate = new \DateTime();
         // $contribuyente->setUpdatedAt($currentDate);
@@ -268,8 +271,20 @@ class AportacionManager
         }
         // Encuentra el id del dato consultado
         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-        // $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($contribuyenteId);
         $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($contribuyenteId);
+        $idpredio = $aportacion->getIdPredio();
+
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb->select('p')
+                ->from('Catastro\Entity\PredioColindancia', 'p')
+                ->where('p.idPredio = :idParam')
+                ->setParameter('idParam', $idpredio);
+            $predioColindancias = $qb->getQuery()->getResult();
+
+            foreach ($predioColindancias as $datos) {
+                $medidas[]=$datos->getMedidaMetros();
+                $descripcion[]=$datos->getDescripcion();
+            }
 
         $pdf->Image('public/img/tulum.png', 23, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
         $pdf->MultiCell(100, 30, '<h5><font size="11">H.AYUNTAMIENTO DE TULUM<br>TESORERIA MUNICIPAL<br>DIRECCION DE CATASTRO</font></h5>', 0, 'C', 0, 0, '55', '', true, 0, true);
@@ -311,29 +326,29 @@ class AportacionManager
                 <th colspan ="4">MEDIDAS Y COLINDANCIAS</th>
                 </tr>
                 <tr>
-                    <th rowspan="4" colspan ="2"></th>
+                    <th rowspan="4" colspan ="2">'.$predio->getAntecedentes().'</th>
                     <th>AL NORTE:</th>
-                    <th><font size="7"></font></th>
+                    <th><font size="7">'.$medidas[0].'</font></th>
                     <th>CON:</th>
-                    <th><font size="7"></font></th>
+                    <th><font size="7">'.$descripcion[0].'</font></th>
                 </tr>
                 <tr>
                     <th>AL SUR:</th>
-                    <th><font size="7"></font></th>
+                    <th><font size="7">'.$medidas[1].'</font></th>
                     <th>CON:</th>
-                    <th><font size="7"></font></th>
+                    <th><font size="7">'.$descripcion[1].'</font></th>
                 </tr>
                 <tr>
                     <th>AL ESTE:</th>
-                    <th><font size="7"></font></th>
+                    <th><font size="7">'.$medidas[2].'</font></th>
                     <th>CON:</th>
-                    <th><font size="7"></font></th>
+                    <th><font size="7">'.$descripcion[2].'</font></th>
                 </tr>
                 <tr>
                     <th>AL OESTE</th>
-                    <th></th>
+                    <th>'.$medidas[3].'</th>
                     <th>CON:</th>
-                    <th><font size="7"></font></th>
+                    <th><font size="7">'.$descripcion[3].'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th colspan ="2">REGIMEN DE PROPIEDAD</th>
@@ -356,9 +371,9 @@ class AportacionManager
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$contribuyente->getNombre().'</font></th>
-                    <th colspan ="1"><font size="7"></font></th>
-                    <th colspan ="1"><font size="7"></font></th>
-                    <th colspan ="2"><font size="7"></font></th>
+                    <th colspan ="1"><font size="7">'.$contribuyente->getFactura().'</font></th>
+                    <th colspan ="1"><font size="7">'.$contribuyente->getGiroComercial().'</font></th>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getNombreComercial().'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th colspan ="2">TENENCIA</th>
@@ -366,9 +381,9 @@ class AportacionManager
                 <th colspan ="2">USO O DESTINO</th>
                 </tr>
                 <tr>
-                    <th colspan ="2"><font size="7"></font></th>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getTenencia().'</font></th>
                     <th colspan ="2"><font size="7">'.$contribuyente->getRfc().'</font></th>
-                    <th colspan ="2"><font size="7"></font></th>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getUsoDestino().'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" >AVALUO</th>
@@ -380,8 +395,8 @@ class AportacionManager
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$aportacion->getMetrosTerreno().'</font></th>
-                    <th colspan ="2"><font size="7">$'.$aportacion->getValorZona().'</font></th>
-                    <th colspan ="2"><font size="7">$'.$aportacion->getValorTerreno().'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorZona(),4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorTerreno(),4).'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th colspan ="2">SUP.M2 CONSTRUCCIÓN</th>
@@ -390,8 +405,8 @@ class AportacionManager
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$aportacion->getMetrosConstruccion().'</font></th>
-                    <th colspan ="2"><font size="7">$'.$aportacion->getValorMtsConstruccion().'</font></th>
-                    <th colspan ="2"><font size="7">$'.$aportacion->getValorConstruccion().'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorMtsConstruccion(),4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorConstruccion(),4).'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th>FECHA</th>
@@ -402,10 +417,10 @@ class AportacionManager
                 </tr>
                 <tr>
                     <th><font size="7">'.$aportacion->getFecha()->format('d-m-Y').'</font></th>
-                    <th><font size="7">$'.$aportacion->getAvaluo().'</font></th>
-                    <th><font size="7">'.$aportacion->getTasa().'</font></th>
+                    <th><font size="7">$'.number_format($aportacion->getAvaluo()).'</font></th>
+                    <th><font size="7">'.number_format($aportacion->getTasa(),6).'</font></th>
                     <th colspan ="2"><font size="7">'.$aportacion->getEjercicioFiscal().'</font></th>
-                    <th><font size="7">$'.$aportacion->getPago().'</font></th>
+                    <th><font size="7">$'.number_format($aportacion->getPago(),4).'</font></th>
                 </tr>
 '
                 ;

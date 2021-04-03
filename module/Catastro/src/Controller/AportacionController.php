@@ -157,6 +157,7 @@ class AportacionController extends AbstractActionController
         // $this->layout()->setTemplate('catastro/aportacion/index-validation');
 
         $aportaciones = $this->entityManager->getRepository(Aportacion::class)->findAll();
+        $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
 
         $form = new ValidacionForm();
         $formModal = new ValidacionModalForm();
@@ -173,7 +174,7 @@ class AportacionController extends AbstractActionController
             }
         }
 
-        return new ViewModel(['aportaciones' => $aportaciones, 'form' => $form, 'ValidacionForm' => $formModal]);
+        return new ViewModel(['aportaciones' => $aportaciones, 'form' => $form, 'ValidacionForm' => $formModal, 'valorConstruccions' => $valorConstruccion]);
     }
 
     public function viewAction()
@@ -305,7 +306,35 @@ class AportacionController extends AbstractActionController
                     ];
             }
         } else {
+            $WebService = $this->opergobserviceadapter->obtenerNombrePersona($name);
+            if(!(array)$WebService)
+            {
             $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($name);
+            }
+            if (isset($WebService->Persona)) {
+                if (is_array($WebService->Persona)) {
+                    $WebServicePersona = [
+                            'cve_persona'      => $WebService->Persona[0]->CvePersona,
+                            'nombre'           => $WebService->Persona[0]->NombrePersona,
+                            'apellido_paterno' => $WebService->Persona[0]->ApellidoPaternoPersona,
+                            'apellido_materno' => $WebService->Persona[0]->ApellidoPaternoPersona,
+                            'rfc'              => $WebService->Persona[0]->RFCPersona,
+                            'curp'             => $WebService->Persona[0]->CURPPersona,
+                            'razon_social'     => $WebService->Persona[0]->RazonSocialPersona,
+                            'correo'           => $WebService->Persona[0]->PersonaCorreo,
+                            'telefono'         => $WebService->Persona[0]->PersonaTelefono,
+                            'genero'           => $WebService->Persona[0]->GeneroPersona,
+                    ];
+
+                        $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
+                    if ($contribuyente) {
+                        $arreglo[] = [
+                                    'id' => $contribuyente->getIdContribuyente(),
+                                    'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
+                                ];
+                    }
+                }else{
+            if (isset($WebService->Persona)) {
             $WebServicePersona = [
                 'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
                 'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
@@ -319,18 +348,23 @@ class AportacionController extends AbstractActionController
                 'razon_social'     => $WebService->Persona->RazonSocialPersona,
             ];
 
-            $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
-            if ($contribuyente) {
-                $arreglo[] = [
-                            'id' => $contribuyente->getIdContribuyente(),
-                            'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
-                        ];
+                $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
+                if ($contribuyente) {
+                    $arreglo[] = [
+                                'id' => $contribuyente->getIdContribuyente(),
+                                'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
+                            ];
+                }
+            }
             }
         }
+        }
+
         $data = [
                 'items' => $arreglo,
                 'total_count' => count($arreglo),
             ];
+
 
         $json = new JsonModel($data);
         $json->setTerminal(true);

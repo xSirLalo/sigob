@@ -28,16 +28,34 @@ $this->pageBreadcrumbs()->setItems([
 <br>
 <?php
 
-if (isset($data->Persona)) {
-    if (is_array($data->Persona)) {
-        echo $data->Persona[0]->CvePersona;
-        // foreach ($data->Persona as $item) {
-        //     echo $item->CvePersona;
-        //     echo "<br>";
-        // }
-    }
-    echo "<br>";
-    echo "seteado";
+// if (isset($data->Persona)) {
+//     if (is_array($data->Persona)) {
+//         echo $data->Persona[0]->CvePersona;
+//     //     foreach ($data->Persona as $item) {
+//     //         echo $item->CvePersona;
+//     //         echo "<br>";
+//     //     }
+//     }
+//     echo "<br>";
+//     echo "seteado";
+// }
+
+
+//if(!(array)$data)
+if(isset($data))
+{
+    echo "NO EXCISTE<br>";
+}
+else{
+echo "<br>";
+echo "<hr>";
+
+echo "<pre>";
+print_r($data);
+echo "</pre>";
+
+echo "<br>";
+echo "<hr>";
 }
 
 if (isset($data->Predio)) {
@@ -73,15 +91,25 @@ if (isset($data->PredioColindancia)) {
     echo "seteado";
 }
 
-echo "<br>";
-echo "<hr>";
+// echo "<br>";
+// echo "<hr>";
 
-echo "<pre>";
-print_r($data);
-echo "</pre>";
+// echo "<pre>";
+// print_r($data);
+// echo "</pre>";
 
-echo "<br>";
-echo "<hr>";
+// echo "<br>";
+// echo "<hr>";
+//setlocale(LC_MONETARY, 'es_MX');
+
+$numero = (double) 19999999999.4542;
+
+echo number_format($numero,4);
+// echo money_format('%n', $numero); //Muestra: $ 1,332.52
+// echo '<br>';
+// echo money_format('%n', $string); //Muestra: $ 1,332.52
+// echo '<br>';
+// echo money_format('%i', $numero); //Lo que tú tienes muestra: MXN 1,332.52
 
 ?>
 </div>

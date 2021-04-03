@@ -17,7 +17,8 @@ class OperGobServiceAdapter{
         $respuesta = array();
 
         $parametros = [
-            "Criterio" => $rfc
+            //"Criterio" => $rfc
+            "Rfc" => $rfc
         ];
 
         $client = new Client();

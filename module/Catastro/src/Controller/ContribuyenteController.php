@@ -443,6 +443,16 @@ class ContribuyenteController extends AbstractActionController
             }
         } else {
             $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($word);
+            //if((!(array)$WebService))
+            if(empty($WebService->Persona))
+            {
+            $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($word);
+            }
+            // if((array)($WebService))
+            // if(empty($WebService->Persona))
+            // {
+            // $WebService = $this->opergobserviceadapter->obtenerNombrePersona($word);
+            // }
             if (isset($WebService->Persona)) {
                 if (is_array($WebService->Persona)) {
                     $WebServicePersona = [
@@ -462,8 +472,31 @@ class ContribuyenteController extends AbstractActionController
 
                     $arreglo[] = [
                         'id' => $contribuyente->getIdContribuyente(),
-                        'item_select_name' =>  $WebService->Persona[0]->RazonSocialPersona,
+                        'item_select_name' =>  $WebService->Persona[0]->RazonSocialPersona."-".$WebService->Persona[0]->NombrePersona,
                     ];
+                }else{
+                if (isset($WebService->Persona)) {
+                    $WebServicePersona = [
+                            'cve_persona'      => $WebService->Persona->CvePersona,
+                            'nombre'           => $WebService->Persona->NombrePersona,
+                            'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
+                            'apellido_materno' => $WebService->Persona->ApellidoPaternoPersona,
+                            'rfc'              => $WebService->Persona->RFCPersona,
+                            'curp'             => $WebService->Persona->CURPPersona,
+                            'razon_social'     => $WebService->Persona->RazonSocialPersona,
+                            'correo'           => $WebService->Persona->PersonaCorreo,
+                            'telefono'         => $WebService->Persona->PersonaTelefono,
+                            'genero'           => $WebService->Persona->GeneroPersona,
+                    ];
+
+                    $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
+
+                    $arreglo[] = [
+                        'id' => $contribuyente->getIdContribuyente(),
+                        'item_select_name' => $WebService->Persona->RazonSocialPersona."-".$WebService->Persona->NombrePersona,
+                    ];
+                }
+
                 }
             }
         }

@@ -22,13 +22,6 @@ class Contribuyente
     private $idContribuyente;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cve_persona", type="bigint", nullable=true)
-     */
-    private $cvePersona;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
@@ -52,9 +45,51 @@ class Contribuyente
     /**
      * @var string|null
      *
+     * @ORM\Column(name="factura", type="string", length=255, nullable=true)
+     */
+    private $factura;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="giro_comercial", type="string", length=255, nullable=true)
+     */
+    private $giroComercial;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="nombre_comercial", type="string", length=255, nullable=true)
+     */
+    private $nombreComercial;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="tenencia", type="string", length=255, nullable=true)
+     */
+    private $tenencia;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="rfc", type="string", length=255, nullable=true)
      */
     private $rfc;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="uso_destino", type="string", length=255, nullable=true)
+     */
+    private $usoDestino;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="cve_persona", type="bigint", nullable=true)
+     */
+    private $cvePersona;
 
     /**
      * @var string|null
@@ -115,30 +150,6 @@ class Contribuyente
     public function getIdContribuyente()
     {
         return $this->idContribuyente;
-    }
-
-    /**
-     * Set cvePersona.
-     *
-     * @param int|null $cvePersona
-     *
-     * @return Contribuyente
-     */
-    public function setCvePersona($cvePersona = null)
-    {
-        $this->cvePersona = $cvePersona;
-
-        return $this;
-    }
-
-    /**
-     * Get cvePersona.
-     *
-     * @return int|null
-     */
-    public function getCvePersona()
-    {
-        return $this->cvePersona;
     }
 
     /**
@@ -214,6 +225,102 @@ class Contribuyente
     }
 
     /**
+     * Set factura.
+     *
+     * @param string|null $factura
+     *
+     * @return Contribuyente
+     */
+    public function setFactura($factura = null)
+    {
+        $this->factura = $factura;
+
+        return $this;
+    }
+
+    /**
+     * Get factura.
+     *
+     * @return string|null
+     */
+    public function getFactura()
+    {
+        return $this->factura;
+    }
+
+    /**
+     * Set giroComercial.
+     *
+     * @param string|null $giroComercial
+     *
+     * @return Contribuyente
+     */
+    public function setGiroComercial($giroComercial = null)
+    {
+        $this->giroComercial = $giroComercial;
+
+        return $this;
+    }
+
+    /**
+     * Get giroComercial.
+     *
+     * @return string|null
+     */
+    public function getGiroComercial()
+    {
+        return $this->giroComercial;
+    }
+
+    /**
+     * Set nombreComercial.
+     *
+     * @param string|null $nombreComercial
+     *
+     * @return Contribuyente
+     */
+    public function setNombreComercial($nombreComercial = null)
+    {
+        $this->nombreComercial = $nombreComercial;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreComercial.
+     *
+     * @return string|null
+     */
+    public function getNombreComercial()
+    {
+        return $this->nombreComercial;
+    }
+
+    /**
+     * Set tenencia.
+     *
+     * @param string|null $tenencia
+     *
+     * @return Contribuyente
+     */
+    public function setTenencia($tenencia = null)
+    {
+        $this->tenencia = $tenencia;
+
+        return $this;
+    }
+
+    /**
+     * Get tenencia.
+     *
+     * @return string|null
+     */
+    public function getTenencia()
+    {
+        return $this->tenencia;
+    }
+
+    /**
      * Set rfc.
      *
      * @param string|null $rfc
@@ -235,6 +342,54 @@ class Contribuyente
     public function getRfc()
     {
         return $this->rfc;
+    }
+
+    /**
+     * Set usoDestino.
+     *
+     * @param string|null $usoDestino
+     *
+     * @return Contribuyente
+     */
+    public function setUsoDestino($usoDestino = null)
+    {
+        $this->usoDestino = $usoDestino;
+
+        return $this;
+    }
+
+    /**
+     * Get usoDestino.
+     *
+     * @return string|null
+     */
+    public function getUsoDestino()
+    {
+        return $this->usoDestino;
+    }
+
+    /**
+     * Set cvePersona.
+     *
+     * @param int|null $cvePersona
+     *
+     * @return Contribuyente
+     */
+    public function setCvePersona($cvePersona = null)
+    {
+        $this->cvePersona = $cvePersona;
+
+        return $this;
+    }
+
+    /**
+     * Get cvePersona.
+     *
+     * @return int|null
+     */
+    public function getCvePersona()
+    {
+        return $this->cvePersona;
     }
 
     /**
