@@ -171,13 +171,6 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="estatus", type="string", length=255, nullable=true)
-     */
-    private $estatus;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="tipo", type="string", length=255, nullable=true)
      */
     private $tipo;
@@ -734,30 +727,6 @@ class Predio
     public function getNumeroInterior()
     {
         return $this->numeroInterior;
-    }
-
-    /**
-     * Set estatus.
-     *
-     * @param string|null $estatus
-     *
-     * @return Predio
-     */
-    public function setEstatus($estatus = null)
-    {
-        $this->estatus = $estatus;
-
-        return $this;
-    }
-
-    /**
-     * Get estatus.
-     *
-     * @return string|null
-     */
-    public function getEstatus()
-    {
-        return $this->estatus;
     }
 
     /**

@@ -171,13 +171,6 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="estatus", type="string", length=255, nullable=true)
-     */
-    private $estatus;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="tipo", type="string", length=255, nullable=true)
      */
     private $tipo;

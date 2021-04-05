@@ -95,13 +95,15 @@ $form->prepare();
 
 <div class="col-md-6">
     <div class="card">
+        <div class="card-header">
+            <h5><?= $this->formLabel($form->get('archivo')); ?></h5>
+        </div>
         <div class="card-body">
             <!-- [ openTag ] start -->
                 <div class="form-group">
                     <?= $this->formText($form->get('input1')); ?>
                     <?= $this->formElementErrors($form->get('input1')); ?>
                 </div>
-                <?= $this->formLabel($form->get('archivo')); ?>
                 <div class="form-group" id="select">
                     <div class="input-group">
                         <div class="input-group-append delete">

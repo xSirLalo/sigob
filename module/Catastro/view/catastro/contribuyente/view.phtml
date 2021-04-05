@@ -47,3 +47,43 @@ $this->pageBreadcrumbs()->setItems([
     </div>
 </div>
 <!-- [ col] end -->
+<!-- [ col ] start -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-light">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Archivo</th>
+                        <th>Fecha de subida</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($archivos): ?>
+                        <?php foreach ($archivos as $archivo): ?>
+                            <tr>
+                                <td><?= $archivo->getIdArchivo()->getIdArchivoCategoria()->getNombre() ?></td>
+                                <td><?= $archivo->getIdArchivo()->getUrl() ?></td>
+                                <td><?= $archivo->getIdArchivo()->getCreatedAt()->format('Y-m-d h:m:s') ?></td>
+                                <td>
+                                    <a href="<?= $this->url('biblioteca/eliminar-archivo', ['action' => 'eliminar-archivo', 'predio' => $archivo->getIdContribuyente()->getIdContribuyente(), 'archivo' => $archivo->getIdArchivo()->getIdArchivo()]); ?>" class="btn btn-danger btn-sm"> Eliminar</a>
+                                    <a href="<?= $this->url('biblioteca/imprimir-archivo', ['action' => 'imprimir-archivo', 'predio' => $archivo->getIdContribuyente()->getIdContribuyente(), 'archivo' => $archivo->getIdArchivo()->getIdArchivo()]); ?>" class="btn btn-success btn-sm"> Descargar</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="3" class="text-center">No hay archivos...</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->

@@ -15,8 +15,10 @@
     "php-cs-fixer.executablePathWindows": "C:\\laragon\\www\\sigob\\vendor\\bin\\php-cs-fixer.bat",
     "cSpell.words": [
         "action",
+        "archivito",
         "categoria",
         "categorias",
+        "curp",
         "datatable",
         "opergobserviceadapter"
     ],

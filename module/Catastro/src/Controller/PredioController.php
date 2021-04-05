@@ -188,8 +188,6 @@ class PredioController extends AbstractActionController
         }
 
         return new ViewModel(['predio' => $predio, 'colindancias' => $predioColindancias, 'archivos' => $archivos, 'predioId' => $predioId]);
-
-        return new ViewModel();
     }
 
     public function editAction()

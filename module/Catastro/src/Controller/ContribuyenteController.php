@@ -263,9 +263,9 @@ class ContribuyenteController extends AbstractActionController
                         $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                     }
                 }
+                return $this->redirect()->toRoute('contribuyente');
                 // $this->contribuyenteManager->agregar($data);
                 // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                // return $this->redirect()->toRoute('contribuyente');
             }
         }
         $view = new ViewModel(['form' => $form, 'categorias' => $categorias]);
@@ -273,43 +273,76 @@ class ContribuyenteController extends AbstractActionController
         return $view;
     }
 
-    public function viewAction()
+    public function view1Action()
     {
         $request = $this->getRequest();
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
         // AJAX response
-        if ($request->isXmlHttpRequest()) {
-            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-            $data = [
-                'id_contribuyente' => $contribuyente->getIdContribuyente(),
-                'nombre'           => $contribuyente->getNombre(),
-                'apellido_paterno' => $contribuyente->getApellidoPaterno(),
-                'apellido_materno' => $contribuyente->getApellidoMaterno(),
-                'rfc'              => $contribuyente->getRfc(),
-                'curp'             => $contribuyente->getCurp(),
-                'genero'           => $contribuyente->getGenero(),
-            ];
+        // if ($request->isXmlHttpRequest()) {
+        //     $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+        //     $data = [
+        //         'id_contribuyente' => $contribuyente->getIdContribuyente(),
+        //         'nombre'           => $contribuyente->getNombre(),
+        //         'apellido_paterno' => $contribuyente->getApellidoPaterno(),
+        //         'apellido_materno' => $contribuyente->getApellidoMaterno(),
+        //         'rfc'              => $contribuyente->getRfc(),
+        //         'curp'             => $contribuyente->getCurp(),
+        //         'genero'           => $contribuyente->getGenero(),
+        //     ];
 
-            $view = new JsonModel($data);
-            $view->setTerminal(true);
-        } else {
-            if ($contribuyenteId < 0) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
-
-            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-
-            if ($contribuyente == null) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
-
-            $view = new ViewModel(['contribuyente' => $contribuyente]);
+        //     $view = new JsonModel($data);
+        //     $view->setTerminal(true);
+        // } else {
+        if ($contribuyenteId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
         }
+
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+
+        if ($contribuyente == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        $view = new ViewModel(['contribuyente' => $contribuyente]);
+        // }
         return $view;
+    }
+
+    public function viewAction()
+    {
+        $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
+
+        if ($contribuyenteId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->select('aco')
+            ->from('Catastro\Entity\ArchivoContribuyente', 'aco')
+            ->join('Catastro\Entity\Contribuyente', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'aco.idContribuyente = c.idContribuyente')
+            ->join('Catastro\Entity\Archivo', 'a', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idArchivo = aco.idArchivo')
+            ->join('Catastro\Entity\ArchivoCategoria', 'ac', \Doctrine\ORM\Query\Expr\Join::WITH, 'ac.idArchivoCategoria = a.idArchivoCategoria')
+            ->where('aco.idContribuyente = :idParam')
+            ->setParameter('idParam', $contribuyenteId)
+            ->orderBy('aco.idArchivo', 'ASC');
+
+        $archivos = $qb->getQuery()->getResult();
+
+        if ($contribuyente == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        return new ViewModel(['contribuyente' => $contribuyente, 'archivos' => $archivos, 'contribuyenteId' => $contribuyenteId]);
     }
 
     public function editAction()

@@ -22,6 +22,13 @@ class ArchivoPredio
     private $idArchivoContribuyente;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="estatus", type="integer", nullable=true)
+     */
+    private $estatus;
+
+    /**
      * @var \Catastro\Entity\Archivo
      *
      * @ORM\ManyToOne(targetEntity="Catastro\Entity\Archivo")
@@ -51,6 +58,30 @@ class ArchivoPredio
     public function getIdArchivoContribuyente()
     {
         return $this->idArchivoContribuyente;
+    }
+
+    /**
+     * Set estatus.
+     *
+     * @param int|null $estatus
+     *
+     * @return ArchivoPredio
+     */
+    public function setEstatus($estatus = null)
+    {
+        $this->estatus = $estatus;
+
+        return $this;
+    }
+
+    /**
+     * Get estatus.
+     *
+     * @return int|null
+     */
+    public function getEstatus()
+    {
+        return $this->estatus;
     }
 
     /**
