@@ -19,7 +19,8 @@ $(document).ready(function () {
                 icon: "info",
                 buttons: true,
                 dangerMode: true,
-                closeOnClickOutside: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
             })
             .then((willDelete) => {
                 if (willDelete) {
