@@ -399,11 +399,11 @@ class ContribuyenteController extends AbstractActionController
 
             $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
 
-            if ($contribuyente == null) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
+            // if ($contribuyente == null) {
+            //     $this->layout()->setTemplate('error/404');
+            //     $this->getResponse()->setStatusCode(404);
+            //     return $response->setTemplate('error/404');
+            // }
 
             if ($this->getRequest()->isPost()) {
                 $data = $this->params()->fromPost();

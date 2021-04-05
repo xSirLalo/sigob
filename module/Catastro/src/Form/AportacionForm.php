@@ -408,6 +408,16 @@ class AportacionForm extends Form
         ]);
 
         $this->add([
+            'type' => Element\Textarea::class,
+            'name' => 'observaciones',
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+                'rows' => '3'
+            ]
+        ]);
+
+        $this->add([
             'type' => Element\Text::class,
             'name' => 'uso_destino',
             'options' => [
@@ -611,7 +621,7 @@ class AportacionForm extends Form
             'type' => Element\Date::class,
             'name' => 'vig',
             'options' => [
-            'label' => 'Vigencia',
+            'label' => 'Fecha',
             'format' => 'Y-m-d',
         ],
         'attributes' => [

@@ -119,9 +119,10 @@ class AportacionController extends AbstractActionController
                 $this->aportacionManager->pdf($data,$aportacion);
                 }
 
-                $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                return $this->redirect()->toRoute('aportacion');
+                // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                // return $this->redirect()->toRoute('/aportacion');
             }
+            return $this->redirect()->toRoute('aportacion');
         }
         return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
     }
@@ -154,7 +155,7 @@ class AportacionController extends AbstractActionController
 
     public function validationAction()
     {
-        // $this->layout()->setTemplate('catastro/aportacion/index-validation');
+        //$this->layout()->setTemplate('catastro/aportacion/index-validation');
 
         $aportaciones = $this->entityManager->getRepository(Aportacion::class)->findAll();
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
@@ -167,10 +168,15 @@ class AportacionController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($data['padron_id']);
-
+                if($data['status'] == 1){
                 $this->aportacionManager->update($aportacion, $data);
-
+                $this->flashMessenger()->addSuccessMessage('La aportacion ha sido confirmado');
                 return $this->redirect()->toRoute('aportacion/validacion');
+                }else{
+                $this->aportacionManager->update($aportacion, $data);
+                $this->flashMessenger()->addErrorMessage('La aportacion ha sido cancelada');
+                return $this->redirect()->toRoute('aportacion/validacion');
+                }
             }
         }
 
@@ -185,14 +191,21 @@ class AportacionController extends AbstractActionController
         if ($request->isXmlHttpRequest()) {
             $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
             $data = [
-                'id_aportacion' =>  $aportacion->getIdAportacion(),
-                'terreno'       =>  $aportacion->getMetrosTerreno(),
-                'v_terreno'     =>  $aportacion->getValorTerreno(),
-                'sup_m'         =>  $aportacion->getMetrosConstruccion(),
-                'v_c'           =>  $aportacion->getValorConstruccion(),
-                'a_total'       =>  $aportacion->getAvaluo(),
-                'vig'           =>  $aportacion->getFecha()->format('Y-m-d'),
-                'pago_a'        =>  $aportacion->getPago(),
+                'id_aportacion'     =>  $aportacion->getIdAportacion(),
+                'vig'               =>  $aportacion->getFecha()->format('Y-m-d'),
+                'terreno'           =>  $aportacion->getMetrosTerreno(),
+                'valor_m2_zona'     =>  $aportacion->getValorZona(),
+                'v_terreno'         =>  $aportacion->getValorTerreno(),
+                'sup_m'             =>  $aportacion->getMetrosConstruccion(),
+                'valor'             =>  $aportacion->getValorMtsConstruccion(),
+                'valorConstruccion' =>  $aportacion->getValorMtsConstruccion(),
+                'v_c'               =>  $aportacion->getValorConstruccion(),
+                'a_total'           =>  $aportacion->getAvaluo(),
+                'avaluo_hidden'     =>  $aportacion->getAvaluo(),
+                'select_tasa'       =>  $aportacion->getTasa(),
+                'tasa_hidden'       =>  $aportacion->getTasa(),
+                'ejercicio_f'       =>  $aportacion->getEjercicioFiscal(),
+                'pago_a'            =>  $aportacion->getPago(),
             ];
 
             $view = new JsonModel($data);

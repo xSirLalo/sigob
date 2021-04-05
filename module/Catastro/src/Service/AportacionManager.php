@@ -83,6 +83,7 @@ class AportacionManager
         $fecha_adquicision = new \DateTime($data['fecha_adquisicion']);
         $predio->setFechaAdquicision($fecha_adquicision);
         $predio->setTitularAnterior($data['titular_anterior']);
+        $predio->setObservaciones($data['observaciones']);
 
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
@@ -346,7 +347,7 @@ class AportacionManager
                 </tr>
                 <tr>
                     <th>AL OESTE</th>
-                    <th>'.$medidas[3].'</th>
+                    <th><font size="7">'.$medidas[3].'</font></th>
                     <th>CON:</th>
                     <th><font size="7">'.$descripcion[3].'</font></th>
                 </tr>
@@ -422,6 +423,20 @@ class AportacionManager
                     <th colspan ="2"><font size="7">'.$aportacion->getEjercicioFiscal().'</font></th>
                     <th><font size="7">$'.number_format($aportacion->getPago(),4).'</font></th>
                 </tr>
+                <tr style="background-color:#9b9b9b;color:black;">
+                <th colspan ="6" >OBSERVACIONES</th>
+                </tr>
+                <tr>
+                <th colspan ="6" ><font size="7">'.$predio->getObservaciones().'</font></th>
+                </tr>
+                <tr style="background-color:#9b9b9b;color:black;">
+                <th colspan ="6" ></th>
+                </tr>
+                <tr>
+                <th colspan ="6" ><font size="7">EL CALCULO DE LA CONTRIBUCIÓN QUE AMPARA ESTE DOCUMNTO, SE HACE A PETICION DEL SOLICITANTE Y EN NINGUN CASO SE CONSIDERA COMO PAGO DE IMPUESTO PREDIAL.
+                ESTE DOCUMENTO NO CONSTITUYE UNA CEDULA CATASTRAL Y, POR TANTO, NO RECONOCE DERECHOS DE PROPIEDAD SOBRE EL INMUEBLE EN CUESTION A FAVOR DE PERSONA ALGUNA
+                LA VIGENCIA DE ESTA TARJETA DE IDENTIFICACION ES ANUAL, PERO SERA INVALIDA POR FACTORES QUE MODIFIQUE SUS ELEMENTOS</font></th>
+                </tr>
 '
                 ;
         $tbl = $tbl . '</table>';
@@ -475,16 +490,26 @@ class AportacionManager
 
         $this->entityManager->flush();
     }
-     public function actualizarValidation($aportacion, $data)
+    public function actualizarValidation($aportacion, $data)
     {
-        $aportacion->setPago($data['pago_a']);
+        //$aportacion->setPago($data['pago_a']);
+        $fecha = new \DateTime($data['vig']);//fecha
+        $aportacion->setFecha($fecha);
         $aportacion->setMetrosTerreno($data['terreno']);
-        // $aportacion->setNombre($data['nombre']);
-        // $aportacion->setApellidoPaterno($data['apellido_paterno']);
-        // $aportacion->setApellidoMaterno($data['apellido_materno']);
-        // $aportacion->setRfc($data['rfc']);
-        // $aportacion->setCurp($data['curp']);
-        // $aportacion->setGenero($data['genero']);
+        $aportacion->setValorZona($data['valor_m2_zona']);//Valor Zona
+        $valor_terreno = $data['terreno'] * $data['valor_m2_zona'];
+        $aportacion->setValorTerreno($valor_terreno);//Valor terreno
+        $aportacion->setMetrosConstruccion($data['sup_m']);//Metros2 Metros2 Construccion
+        $aportacion->setValorMtsConstruccion($data['valor']);//VALOR M2 CONSTRUCCION
+        $valor_construnccion = $data['sup_m']*$data['valor'];
+        $aportacion->setValorConstruccion($valor_construnccion);//Valor Construccion
+        $avaluo = $valor_terreno + $valor_construnccion;
+        $aportacion->setAvaluo($avaluo);//Avaluo Total
+        $aportacion->setTasa($data['tasa_hidden']);
+        $aportacion->setEjercicioFiscal($data['ejercicio_f']);
+        $pago_aportacion = $data['tasa_hidden']*$avaluo;
+        $aportacion->setPago($pago_aportacion);//Pago aportacion
+
 
         // $currentDate = new \DateTime();
         // $aportacion->setUpdatedAt($currentDate);

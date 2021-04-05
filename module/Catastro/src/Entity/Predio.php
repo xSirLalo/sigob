@@ -129,6 +129,13 @@ class Predio
     /**
      * @var string|null
      *
+     * @ORM\Column(name="observaciones", type="text", length=65535, nullable=true)
+     */
+    private $observaciones;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="municipio", type="string", length=255, nullable=true)
      */
     private $municipio;
@@ -583,6 +590,30 @@ class Predio
     public function getTitularAnterior()
     {
         return $this->titularAnterior;
+    }
+
+    /**
+     * Set observaciones.
+     *
+     * @param string|null $observaciones
+     *
+     * @return Predio
+     */
+    public function setObservaciones($observaciones = null)
+    {
+        $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones.
+     *
+     * @return string|null
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
     }
 
     /**

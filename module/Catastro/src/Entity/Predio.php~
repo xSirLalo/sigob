@@ -129,6 +129,13 @@ class Predio
     /**
      * @var string|null
      *
+     * @ORM\Column(name="observaciones", type="text", length=65535, nullable=true)
+     */
+    private $observaciones;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="municipio", type="string", length=255, nullable=true)
      */
     private $municipio;

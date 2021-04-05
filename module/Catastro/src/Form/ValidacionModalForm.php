@@ -30,6 +30,35 @@ class ValidacionModalForm extends Form
             ]
         ]);
 
+            $this->add([
+            'type' => Element\Text::class,
+            'name' => 'valor_m2_zona',
+            'options' => [
+                'label' => 'VALOR M2 DE ZONA',
+            ],
+            'attributes' => [
+                // 'readonly' => true,
+                'class' => 'form-control',
+                "onkeypress"=> "return filterFloat(event,this);",
+                'oninput'=> 'Calcular()',
+                'id' =>'valor_zona',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'valor',
+            'options' => [
+                'label' => 'VALOR M2 CONSTRUCCION',
+            ],
+            'attributes' => [
+                'readonly' => true,
+                "onkeypress"=> "return filterFloat(event,this);",
+                'class' => 'form-control',
+                'id' =>'valor',
+            ]
+        ]);
+
         $this->add([
             'type' => Element\Text::class,
             'name' => 'sup_m',
@@ -159,6 +188,19 @@ class ValidacionModalForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
+            'name' => 'cvepredio',
+            'options' => [
+            ],
+            'attributes' => [
+                'size' => 40,
+                'maxlength' => 10,
+                'class' => 'form-control',
+                'hidden'=> true,
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
             'name' => 'status',
             'options' => [
                 'label' => 'status',
@@ -168,6 +210,31 @@ class ValidacionModalForm extends Form
                 'class' => 'form-control',
                 'value' => 3,
                 'hidden'=> true,
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'parametro',
+            'options' => [
+            ],
+            'attributes' => [
+                'required' => true,
+                'size' => 40,
+                'maxlength' => 10,
+                'class' => 'form-control',
+                'hidden'=> true,
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'tasa_hidden',
+            'attributes' => [
+                // 'readonly' => true,
+                'class' => 'form-control',
+                'hidden' => true,
+                'id' =>'tasa_hidden',
             ]
         ]);
 
@@ -201,7 +268,7 @@ class ValidacionModalForm extends Form
             'type' => Element\Submit::class,
             'name' => 'btnGuardar',
             'attributes' => [
-                'value' => 'Guardar1',
+                'value' => 'Guardar',
                 'class' => 'btn btn-success',
                 //'id' =>'guardar',
                 'id' => 'btnGuardar',

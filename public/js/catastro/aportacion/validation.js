@@ -18,13 +18,22 @@ function edit_validation(id)
         {
             //console.log(data);
             $('[name="id_aportacion"]').val(data.id_aportacion);
-            $('[name="terreno"]').val(data.terreno);
-            $('[name="v_terreno"]').val(data.v_terreno);
-            $('[name="sup_m"]').val(data.sup_m);
-            $('[name="v_c"]').val(data.v_c);
-            $('[name="a_total"]').val(data.a_total);
             $('[name="vig"]').val(data.vig);
-            $('[name="pago_a"]').val(data.pago_a);
+            $('[name="terreno"]').val(data.terreno);
+            $('[name="valor_m2_zona"]').val(data.valor_m2_zona);
+            $('[name="v_terreno"]').val(formatter.format(data.v_terreno));
+            $('[name="sup_m"]').val(data.sup_m);
+            $('[name="select_valor_construccion"]').val(data.valorConstruccion);
+            $('[name="valor"]').val(data.valor);
+            $('[name="v_in"]').val(data.valor);
+            $('[name="v_c"]').val(formatter.format(data.v_c));
+            $('[name="a_total"]').val(formatter.format(data.a_total));
+            $('[name="avaluo_hidden"]').val(data.avaluo_hidden);
+            $('[name="select_tasa"]').val(data.select_tasa);
+            $('[name="tasa_hidden"]').val(data.tasa_hidden);
+            $('[name="ejercicio_f"]').val(data.ejercicio_f);
+            $('[name="pago_a"]').val(formatter.format(data.pago_a));
+            //$('[name="pago_a"]').val(formatter.format(data.pago_a));
             $('#myModal').modal('show'); // show bootstrap modal when complete loaded
             $('.modal-title').text('DIRECCION DE CATASTRO'); // Set Title to Bootstrap modal title
         },
@@ -56,7 +65,7 @@ function edit_validation(id)
                     location.reload();
                     $('#myModal').modal('hide'); // show bootstrap modal when complete loaded
                 } else {
-                    //console.log(data);
+                    console.log(data);
                         $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
                         $('.text-danger').empty(); // clear error string
                         $.each(data.errors, function(key, value) {
@@ -78,47 +87,63 @@ function edit_validation(id)
         });
     }
 }
-
-// Modal-Funcion Calcular Aportacion
-function Calcular()
+//formato moneda
+var formatter = new Intl.NumberFormat('en-US', {
+style: 'currency',
+currency: 'USD',
+});
+//funcion Calular Aportacion-Inicio
+    function Calcular()
 {
     let metros_terreno = parseFloat(document.getElementById("terreno").value);
-    let valor_terreno = metros_terreno *100;
-    document.getElementById("v_terreno").value = valor_terreno;
+    let valor_m2_zona = parseFloat(document.getElementById("valor_zona").value);
+    let valor_terreno = metros_terreno * valor_m2_zona;
+    document.getElementById("v_terreno").value = formatter.format(valor_terreno);
     //  Calculo valor Construccion
     let inv = parseFloat(document.getElementById("v_in").value);
     let metros_construccion = parseFloat(document.getElementById("sup_m").value);
     let valor_construnccion = metros_construccion * inv;
-    document.getElementById("v_c").value = valor_construnccion;
+    document.getElementById("v_c").value = formatter.format(valor_construnccion);
     //Avaluo Total
     let avaluo_total = valor_terreno + valor_construnccion;
-    document.getElementById("a_total").value = avaluo_total;
+    document.getElementById("a_total").value = formatter.format(avaluo_total);
+    document.getElementById("avaluo_hidden").value = avaluo_total;
     //validaciones
     let m_terreno = document.getElementById("terreno").value;
+    let m_valorZona = document.getElementById("valor_zona").value;
     let m_construnccion = document.getElementById("sup_m").value;
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
         document.getElementById("v_terreno").value = 0;
         document.getElementById("a_total").value = 0;
+        document.getElementById("avaluo_hidden").value = 0;
+    }
+    // //valida si el campo valor m2 zona esta vacio
+    if (m_valorZona.length == 0) {
+        document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
+        document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
         document.getElementById("v_c").value = 0;
         document.getElementById("a_total").value = 0;
+        document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
         document.getElementById("v_c").value = 0;
         document.getElementById("v_in").value = 0;
         document.getElementById("a_total").value = 0;
+        document.getElementById("avaluo_hidden").value = 0;
     }
      //Tasa_impositiva
     let select_tasa = document.getElementById("tasa_i");
     let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
-    let a_total = parseFloat(document.getElementById("a_total").value);
+    let a_total = parseFloat(document.getElementById("avaluo_hidden").value);
     let pago_aportacion = valor_tasa * a_total;
-    document.getElementById("pago_a").value = pago_aportacion;
+    document.getElementById("pago_a").value = formatter.format(pago_aportacion);
 
 }
 
@@ -126,6 +151,7 @@ function valorC() {
     let  select_valores_construccion = document.getElementById("valor_c");
     let valores_construccion = select_valores_construccion.options[select_valores_construccion.selectedIndex].value;
     document.getElementById("v_in").value = valores_construccion;
+    document.getElementById("valor").value = valores_construccion;
     let metros_construccion = parseFloat(document.getElementById("sup_m").value);
     let valor_construnccion = valores_construccion * metros_construccion;
     let valor_c = document.getElementById("sup_m").value;
@@ -133,56 +159,77 @@ function valorC() {
         metros_construccion = 0;
         document.getElementById("v_c").value = 0;
     }else{
-        document.getElementById("v_c").value = valor_construnccion;
+        document.getElementById("v_c").value = formatter.format(valor_construnccion);
     }
     //Calculo Valor Terreno
     let metros_terreno = parseFloat(document.getElementById("terreno").value);
-    let valor_terreno = metros_terreno *100;
-    document.getElementById("v_terreno").value = valor_terreno;
+    let valor_m2_zona = parseFloat(document.getElementById("valor_zona").value);
+    let valor_terreno = metros_terreno * valor_m2_zona;
+    document.getElementById("v_terreno").value = formatter.format(valor_terreno);
     //Calculo valor Construccion
     let inv = parseFloat(document.getElementById("v_in").value);
     let mts_construccion = parseFloat(document.getElementById("sup_m").value);
     let val_construnccion = mts_construccion * inv;
-    document.getElementById("v_c").value = val_construnccion;
+    document.getElementById("v_c").value = formatter.format(val_construnccion);
     //Avaluo Total
     let avaluo_total = valor_terreno + valor_construnccion;
-    document.getElementById("a_total").value = avaluo_total;
+    document.getElementById("a_total").value = formatter.format(avaluo_total);
+    document.getElementById("avaluo_hidden").value = avaluo_total;
     //validaciones
     let m_terreno = document.getElementById("terreno").value;
+    let m_valorZona = document.getElementById("valor_zona").value;
     let m_construnccion = document.getElementById("sup_m").value;
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
         document.getElementById("v_terreno").value = 0;
         document.getElementById("a_total").value = 0;
+        document.getElementById("avaluo_hidden").value = 0;
+    }
+    //valida si el campo valor m2 zona esta vacio
+    if (m_valorZona.length == 0) {
+        document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
+        document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
         document.getElementById("v_c").value = 0;
         document.getElementById("a_total").value = 0;
+        document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
         document.getElementById("v_c").value = 0;
         document.getElementById("v_in").value = 0;
         document.getElementById("a_total").value = 0;
+        document.getElementById("avaluo_hidden").value = 0;
     }
     //Tasa_impositiva
     let select_tasa = document.getElementById("tasa_i");
     let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
-    let a_total = parseFloat(document.getElementById("a_total").value);
+    let a_total = parseFloat(document.getElementById("avaluo_hidden").value);
     let pago_aportacion = valor_tasa * a_total;
-    document.getElementById("pago_a").value = pago_aportacion;
+    document.getElementById("pago_a").value = formatter.format(pago_aportacion);
 }
 
 //select Tasa impositiva
 function timpositiva() {
     let select_tasa = document.getElementById("tasa_i");
     let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
-    let avaluo_total = parseFloat(document.getElementById("a_total").value);
+    document.getElementById("tasa_hidden").value = valor_tasa;
+    let avaluo_total = parseFloat(document.getElementById("avaluo_hidden").value);
+    let valor_avaluo = document.getElementById("a_total").value;
+    if(valor_avaluo.length == 0){
+        document.getElementById("pago_a").value = 0;
+    }else{
     let pago_aportacion = valor_tasa * avaluo_total;
-    document.getElementById("pago_a").value = pago_aportacion;
+    document.getElementById("pago_a").value = formatter.format(pago_aportacion);
+    document.getElementById("p_hide").value = formatter.format(pago_aportacion);
+    }
+
 }
+//funcion Calular-Fin
 
 //Modal-Funcion Solo numeros con 1 punto y maximo dos decimales
 function filterFloat(evt,input){
