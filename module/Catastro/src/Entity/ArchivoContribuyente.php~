@@ -24,9 +24,9 @@ class ArchivoContribuyente
     /**
      * @var int|null
      *
-     * @ORM\Column(name="estatus", type="integer", nullable=true)
+     * @ORM\Column(name="estatus", type="integer", nullable=true, options={"default"="1"})
      */
-    private $estatus;
+    private $estatus = 1;
 
     /**
      * @var \Catastro\Entity\Archivo

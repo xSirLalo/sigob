@@ -24,9 +24,9 @@ class Aportacion
     /**
      * @var int|null
      *
-     * @ORM\Column(name="estatus", type="integer", nullable=true)
+     * @ORM\Column(name="estatus", type="integer", nullable=true, options={"default"="3"})
      */
-    private $estatus;
+    private $estatus = 3;
 
     /**
      * @var \DateTime|null
