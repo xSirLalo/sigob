@@ -95,6 +95,14 @@ function formatRepoSelection(repo) {
 }
 
 $(".js-data-example-ajax2").select2({
+    language: {
+    noResults: function() {
+    return "No hay resultado";
+    },
+    searching: function() {
+    return "Buscando..";
+    }
+    },
     width: '100%',
     dropdownParent: $("#MyModal"),
     ajax: {
@@ -131,6 +139,7 @@ $(".js-data-example-ajax2").select2({
 $('.js-data-example-ajax2').change(function(){
     var id = $(this).val();
     var url = '/aportacion/autorellaRfc/' + id;
+
     // AJAX request
     $.ajax({
     url: url,

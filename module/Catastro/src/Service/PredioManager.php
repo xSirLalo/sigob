@@ -35,7 +35,6 @@ class PredioManager
         $predio->setCvePredio($data['cve_predio']);
         $predio->setNumeroExterior($data['numero_exterior']);
         $predio->setNumeroInterior($data['numero_interior']);
-        $predio->setEstatus($data['estatus']);
         $predio->setTipo($data['tipo']);
         $predio->setUltimoEjercicioPagado($data['ultimo_ejercicio_pagado']);
         $predio->setUltimoPeriodoPagado($data['ultimo_periodo_pagado']);

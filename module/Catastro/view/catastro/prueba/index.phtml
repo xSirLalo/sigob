@@ -42,55 +42,11 @@ $this->pageBreadcrumbs()->setItems([
 
 
 //if(!(array)$data)
-if(isset($data))
-{
-    echo "NO EXCISTE<br>";
-}
-else{
-echo "<br>";
-echo "<hr>";
-
-echo "<pre>";
-print_r($data);
-echo "</pre>";
-
-echo "<br>";
-echo "<hr>";
-}
-
-if (isset($data->Predio)) {
-    if (is_array($data->Predio)) {
-        foreach ($data->Predio as $item) {
-            echo $item->PredioId;
-            echo "<br>";
-        }
-    } else {
-        echo $data->Predio->PredioId;
-        echo "<br>";
-    }
-    echo "<br>";
-    echo "seteado";
-}
-
-if (isset($data->PredioColindancia)) {
-    if (is_array($data->PredioColindancia)) {
-        foreach ($data->PredioColindancia as $item) {
-            echo $item->Descripcion;
-            echo "<br>";
-            echo $item->MedidaMts;
-            echo "<br>";
-            echo $item->OrientacionGeografica;
-            echo "<br>";
-        }
-    } else {
-        echo "<h1>asd</h1>";
-        echo $data->PredioColindancia->Descripcion;
-        echo "<br>";
-    }
-    echo "<br>";
-    echo "seteado";
-}
-
+// if(isset($data))
+// {
+//     echo "NO EXCISTE<br>";
+// }
+// else{
 // echo "<br>";
 // echo "<hr>";
 
@@ -100,6 +56,50 @@ if (isset($data->PredioColindancia)) {
 
 // echo "<br>";
 // echo "<hr>";
+// }
+
+// if (isset($data->Predio)) {
+//     if (is_array($data->Predio)) {
+//         foreach ($data->Predio as $item) {
+//             echo $item->PredioId;
+//             echo "<br>";
+//         }
+//     } else {
+//         echo $data->Predio->PredioId;
+//         echo "<br>";
+//     }
+//     echo "<br>";
+//     echo "seteado";
+// }
+
+// if (isset($data->PredioColindancia)) {
+//     if (is_array($data->PredioColindancia)) {
+//         foreach ($data->PredioColindancia as $item) {
+//             echo $item->Descripcion;
+//             echo "<br>";
+//             echo $item->MedidaMts;
+//             echo "<br>";
+//             echo $item->OrientacionGeografica;
+//             echo "<br>";
+//         }
+//     } else {
+//         echo "<h1>asd</h1>";
+//         echo $data->PredioColindancia->Descripcion;
+//         echo "<br>";
+//     }
+//     echo "<br>";
+//     echo "seteado";
+// }
+
+echo "<br>";
+echo "<hr>";
+
+echo "<pre>";
+print_r($data);
+echo "</pre>";
+
+echo "<br>";
+echo "<hr>";
 //setlocale(LC_MONETARY, 'es_MX');
 
 $numero = (double) 19999999999.4542;

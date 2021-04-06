@@ -51,11 +51,11 @@ class PruebaController extends AbstractActionController
 
     public function indexAction()
     {
-        // $data = $this->opergobserviceadapter->obtenerPredio("109015000050035-61");
+        $data = $this->opergobserviceadapter->obtenerPredio("109015000050035-61");
         // $data = $this->opergobserviceadapter->obtenerColindancia("1714");
         //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("CABR840209R86");
         //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("POPA450408K72");
-        $data = $this->opergobserviceadapter->obtenerNombrePersona("11959");
+        //$data = $this->opergobserviceadapter->obtenerNombrePersona("11959");
         //$data = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
         return new ViewModel(['data' => $data]);
     }
