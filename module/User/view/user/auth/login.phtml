@@ -24,7 +24,7 @@ $form->get('password')->setAttributes([
     <div class="auth-side-form">
         <div class=" auth-content">
             <img src=<?= $this->basePath('assets/images/auth/auth-logo-dark.png') ?> alt="" class="img-fluid mb-4 d-block d-xl-none d-lg-none">
-            <h3 class="mb-4 f-w-400">Sign In</h3>
+            <h3 class="mb-4 f-w-400">Bienvenido</h3>
             <?php if ($isLoginError): ?>
             <div class="alert alert-warning" role="alert">
                 Incorrect login and/or password.
@@ -54,7 +54,7 @@ $form->get('password')->setAttributes([
             </div>
             <?= $this->formElement($form->get('redirect_url')); ?>
             <?= $this->formElement($form->get('csrf')) ?>
-            <button class="btn btn-block btn-primary mb-0" >Sign in</button>
+            <button class="btn btn-block btn-primary mb-0" >Entrar</button>
             </form>
         </div>
     </div>
