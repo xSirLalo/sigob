@@ -28,7 +28,7 @@ class ContribuyenteForm extends Form
             'name' => 'persona',
             'options' => [
                 'label' => 'Buscar...',
-                'empty_option' => 'Buscar Persona por Clave o R.F.C',
+                'empty_option' => 'Buscar Persona por Nombre o R.F.C',
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [

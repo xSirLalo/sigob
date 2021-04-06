@@ -479,8 +479,10 @@ class ContribuyenteController extends AbstractActionController
             //if((!(array)$WebService))
             if(empty($WebService->Persona))
             {
-            $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($word);
+            //$WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($word);
+            $WebService = $this->opergobserviceadapter->obtenerNombrePersona($word);
             }
+            //else
             // if((array)($WebService))
             // if(empty($WebService->Persona))
             // {

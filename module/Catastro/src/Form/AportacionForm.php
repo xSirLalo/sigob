@@ -430,6 +430,22 @@ class AportacionForm extends Form
         ]);
 
 //////AVALUO/////
+$this->add([
+            'type' => Element\Date::class,
+            'name' => 'vig',
+            'options' => [
+            'label' => 'Fecha',
+            'format' => 'Y-m-d',
+        ],
+        'attributes' => [
+            'class' => 'form-control',
+            'min' => '2021-01-01',
+            'max' => '2030-01-01',
+            'step' => '1', // days; default step interval is 1 day
+            // 'onkeyup'=>'esvacio()',
+            'id' =>'vig',
+        ],
+        ]);
         $this->add([
             'type' => Element\Text::class,
             'name' => 'terreno',
@@ -444,6 +460,35 @@ class AportacionForm extends Form
                 "onkeypress"=> "return filterFloat(event,this);",
                 // 'onkeyup'=>'esvacio()',
                 'id' =>'terreno',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'valor_m2_zona',
+            'options' => [
+                'label' => 'VALOR M2 DE ZONA',
+            ],
+            'attributes' => [
+                // 'readonly' => true,
+                'class' => 'form-control',
+                "onkeypress"=> "return filterFloat(event,this);",
+                'oninput'=> 'Calcular()',
+                'id' =>'valor_zona',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'v_terreno',
+            'options' => [
+                'label' => 'VALOR DEL TERRENO',
+            ],
+            'attributes' => [
+                'readonly' => true,
+                "onkeypress"=> "return filterFloat(event,this);",
+                'class' => 'form-control',
+                'id' =>'v_terreno',
             ]
         ]);
 
@@ -465,15 +510,15 @@ class AportacionForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'v_terreno',
+            'name' => 'valor',
             'options' => [
-                'label' => 'VALOR DEL TERRENO',
+                'label' => 'VALOR M2 CONSTRUCCION',
             ],
             'attributes' => [
                 'readonly' => true,
                 "onkeypress"=> "return filterFloat(event,this);",
                 'class' => 'form-control',
-                'id' =>'v_terreno',
+                'id' =>'valor',
             ]
         ]);
 
@@ -488,35 +533,6 @@ class AportacionForm extends Form
                 "onkeypress"=> "return filterFloat(event,this);",
                 'class' => 'form-control',
                 'id' =>'v_c',
-            ]
-        ]);
-
-            $this->add([
-            'type' => Element\Text::class,
-            'name' => 'valor',
-            'options' => [
-                'label' => 'VALOR M2 CONSTRUCCION',
-            ],
-            'attributes' => [
-                'readonly' => true,
-                "onkeypress"=> "return filterFloat(event,this);",
-                'class' => 'form-control',
-                'id' =>'valor',
-            ]
-        ]);
-
-            $this->add([
-            'type' => Element\Text::class,
-            'name' => 'valor_m2_zona',
-            'options' => [
-                'label' => 'VALOR M2 DE ZONA',
-            ],
-            'attributes' => [
-                // 'readonly' => true,
-                'class' => 'form-control',
-                "onkeypress"=> "return filterFloat(event,this);",
-                'oninput'=> 'Calcular()',
-                'id' =>'valor_zona',
             ]
         ]);
 
@@ -615,23 +631,6 @@ class AportacionForm extends Form
                 'class' => 'form-control',
                 'hidden'=> true,
             ]
-        ]);
-
-        $this->add([
-            'type' => Element\Date::class,
-            'name' => 'vig',
-            'options' => [
-            'label' => 'Fecha',
-            'format' => 'Y-m-d',
-        ],
-        'attributes' => [
-            'class' => 'form-control',
-            'min' => '2021-01-01',
-            'max' => '2030-01-01',
-            'step' => '1', // days; default step interval is 1 day
-            // 'onkeyup'=>'esvacio()',
-            'id' =>'vig',
-        ],
         ]);
 
         $this->add([

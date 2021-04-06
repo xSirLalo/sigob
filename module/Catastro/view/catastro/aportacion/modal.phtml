@@ -23,49 +23,70 @@
                     </div>
                 </div>
                 <div id="formato">
-                    <div class="row ml-0">
-                        <div class="col-sm-3">
-                            <div class="form-group ">
-                            <!-- Input N.Region -->
-                                <?= $this->formLabel($form->get('n_region')); ?>
-                                <?= $this->formText($form->get('n_region')); ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('n_region')); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group ">
-                            <!-- Input Lote o Parcela -->
-                                <?= $this->formLabel($form->get('lote')); ?>
-                                <?= $this->formText($form->get('lote')); ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('lote')); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group ">
-                            <!-- Input Categoria -->
-                                <?= $this->formLabel($form->get('categoria')); ?>
-                                <?= $this->formText($form->get('categoria')); ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('categoria')); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                        <!-- Input Condicion -->
-                            <div class="form-group ">
-                                <?= $this->formLabel($form->get('condicion')); ?>
-                                <?= $this->formText($form->get('condicion')); ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('condicion')); ?>
-                                </div>
-                            </div>
+                <div class="row ml-0  ">
+                        <div class="col-sm-4">
+                        <div class="form-group">
+                        <!-- Select Contirbuyente Id -->
+                                <?= $this->formLabel($form->get('parcela')); ?>
+                                    <?= $this->formText($form->get('parcela')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('parcela')); ?>
+                                    </div>
                         </div>
                     </div>
-                    <h3 class="text-center bg-secondary">DATOS DEL POSECIONARIO</h3>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Categoria-->
+                                    <?= $this->formLabel($form->get('manzana')); ?>
+                                    <?= $this->formText($form->get('manzana')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('manzana')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Condicion-->
+                                    <?= $this->formLabel($form->get('lote')); ?>
+                                    <?= $this->formText($form->get('lote')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('lote')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ml-0  ">
+                        <div class="col-sm-4">
+                        <div class="form-group">
+                                <?= $this->formLabel($form->get('local')); ?>
+                                    <?= $this->formText($form->get('local')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('local')); ?>
+                                    </div>
+                        </div>
+                    </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Categoria-->
+                                    <?= $this->formLabel($form->get('categoria')); ?>
+                                    <?= $this->formText($form->get('categoria')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('categoria')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Condicion-->
+                                    <?= $this->formLabel($form->get('condicion')); ?>
+                                    <?= $this->formText($form->get('condicion')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('condicion')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <h3 class="text-center bg-secondary">DATOS DEL INMUEBLE</h3>
                     <div class="row ml-0">
                             <div class="col-sm-4">
                                 <div class="form-group ">
@@ -102,10 +123,10 @@
                         <div class="col-sm-4 ">
                             <div class="form-group ">
                             <!-- Input Documento de propiedad -->
-                                <?= $this->formLabel($form->get('d_propiedad')); ?>
-                                <?= $this->formText($form->get('d_propiedad')); ?>
+                                <?= $this->formLabel($form->get('clave_catastra')); ?>
+                                <?= $this->formText($form->get('clave_catastra')); ?>
                                 <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('d_propiedad')); ?>
+                                    <?= $this->formElementErrors($form->get('clave_catastra')); ?>
                                 </div>
                             </div>
                         </div>
@@ -154,10 +175,10 @@
                         <div class="col-sm-4">
                             <div class="form-group ">
                             <!-- Input Arrendador -->
-                                <?= $this->formLabel($form->get('arrendador')); ?>
-                                <?= $this->formText($form->get('arrendador')); ?>
+                                <?= $this->formLabel($form->get('antecedentes')); ?>
+                                <?= $this->formText($form->get('antecedentes')); ?>
                                 <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('arrendador')); ?>
+                                    <?= $this->formElementErrors($form->get('antecedentes')); ?>
                                 </div>
                             </div>
                         </div>
@@ -206,10 +227,10 @@
                             <div class="col-sm-4">
                             <div class="form-group ">
                             <!-- Input Docuemnto de arrendamiento -->
-                                <?= $this->formLabel($form->get('d_arrendamiento')); ?>
-                                <?= $this->formText($form->get('d_arrendamiento')); ?>
+                                <?= $this->formLabel($form->get('regimen_propiedad')); ?>
+                                <?= $this->formText($form->get('regimen_propiedad')); ?>
                                 <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('d_arrendamiento')); ?>
+                                    <?= $this->formElementErrors($form->get('regimen_propiedad')); ?>
                                 </div>
                             </div>
                             </div>
@@ -234,193 +255,252 @@
                                 </div>
                             </div>
                         </div>
-                    <h3 class="text-center bg-secondary">DATOS DEL INMUEBLE</h3>
+                    <h3 class="text-center bg-secondary">REGISTRO FISCAL</h3>
                     <div class="row ml-0">
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                            <!-- Input Giro Comercial -->
-                                <?= $this->formLabel($form->get('g_comercial')); ?>
-                                <?= $this->formText($form->get('g_comercial')); ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('g_comercial')); ?>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Giro Comercial-->
+                                    <?= $this->formLabel($form->get('contribuyente')); ?>
+                                    <?= $this->formText($form->get('contribuyente')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('contribuyente')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group ">
+                                <!-- Select Factura-->
+                            <?= $this->formLabel($form->get('factura')); ?>
+                            <?= $this->formSelect($form->get('factura'));?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($form->get('factura')); ?>
+                            </div>
+                            </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input Giro Comercial-->
+                                    <?= $this->formLabel($form->get('giro_comercial')); ?>
+                                    <?= $this->formText($form->get('giro_comercial')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('giro_comercial')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input -Nombre comercial-->
+                                    <?= $this->formLabel($form->get('nombre_comercial')); ?>
+                                    <?= $this->formText($form->get('nombre_comercial')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('nombre_comercial')); ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                            <!-- Input Nombre Comercial -->
-                                <?= $this->formLabel($form->get('n_comercial')); ?>
-                                <?= $this->formText($form->get('n_comercial')); ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('n_comercial')); ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row ml-0">
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                            <!-- Input Superficie Ocupada -->
-                                <?= $this->formLabel($form->get('s_ocupada')); ?>
-                                <?= $this->formText($form->get('s_ocupada')); ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('s_ocupada')); ?>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Superficie Ocupada-->
+                                    <?= $this->formLabel($form->get('tenencia')); ?>
+                                    <?= $this->formText($form->get('tenencia')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('tenencia')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Superficie Ocupada-->
+                                    <?= $this->formLabel($form->get('rfc')); ?>
+                                    <?= $this->formText($form->get('rfc')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('rfc')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Uso destino -->
+                                    <?= $this->formLabel($form->get('uso_destino')); ?>
+                                    <?= $this->formText($form->get('uso_destino')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('uso_destino')); ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                            <!-- Input Uso o Destino -->
-                                <?= $this->formLabel($form->get('u_destino')); ?>
-                                <?= $this->formText($form->get('u_destino')); ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('u_destino')); ?>
+                        <h3 class="text-center bg-secondary">OBSERVACIONES</h3>
+                        <!-- Aqui va el Textarea -->
+                        <div class="row ml-0">
+                        <div class="col-sm-12">
+                                <div class="form-group ">
+                                <!-- Input Superficie Ocupada-->
+                                <!-- <textarea id="my-textarea" class="form-control" name="" rows="3"></textarea> -->
+                                    <?= $this->formTextarea($form->get('observaciones')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('observaciones')); ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <!-- Aqui finaliza Textarea -->
                     <!-- Inicio Calcular pago en el modal -->
-                    <h3 class="text-center bg-secondary">DATOS DE POSSESION</h3>
+                    <h3 class="text-center bg-secondary">AVALUO</h3>
                     <div class="row ml-0">
-                        <div class="col-sm-4">
-                            <div class="form-group ">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
                                 <!-- Input Sup. M2 Terreno -->
-                                    <?= $this->formLabel($form->get('terreno')); ?>
+                                <?= $this->formLabel($form->get('vig')); ?>
+                                    <?= $this->formDate($form->get('vig')) ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('vig')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input Sup. M2 Terreno -->
+                                <?= $this->formLabel($form->get('terreno')); ?>
                                     <?= $this->formText($form->get('terreno')); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('terreno')); ?>
                                     </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input Sup. M2 Terreno -->
+                                <?= $this->formLabel($form->get('valor_m2_zona')); ?>
+                                    <?= $this->formText($form->get('valor_m2_zona')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('valor_m2_zona')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
                                 <!-- Input Valor del Terreno -->
                                     <?= $this->formLabel($form->get('v_terreno')); ?>
                                     <?= $this->formText($form->get('v_terreno')); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('v_terreno')); ?>
                                     </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
+                            </div>
+                            <div class="row ml-0">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
                                 <!-- Input Sup.M2 Construcion -->
                                     <?= $this->formLabel($form->get('sup_m')); ?>
                                     <?= $this->formText($form->get('sup_m')); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('sup_m')); ?>
                                     </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row ml-0">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="form-label">Valores de Construccion</label>
-                                <select class="js-example-basic-single form-control"  style="width: 240px;" name="validation-select" id="valor_c" onchange="valorC()">
-                                    <optgroup label="Restaurantes">
-                                        <option value="2000">ECO/NORMAL</option>
-                                        <option value="2500">MEDIA/NORMAL</option>
-                                        <option value="3000">MEDIA/DE PRIMERA</option>
-                                        <option value="3000">BUENA/NORMAL</option>
-                                        <option value="3750">BUENA/DE PRIMERA</option>
-                                    </optgroup>
-                                    <optgroup label="Bodegas Comerciales">
-                                        <option value="2400">ECO/NORMAL</option>
-                                        <option value="3000">MEDIA/NORMAL</option>
-                                        <option value="3600">MEDIA/DE PRIMERA</option>
-                                        <option value="3600">BUENA/NORMAL</option>
-                                        <option value="4500">BUENA/DE PRIMERA</option>
-                                    </optgroup>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                <!-- Select Valores de Construccion -->
+                                    <label class="form-label">Valores Construcción</label>
+                                    <select class="js-example-basic-single form-control"  name="select_valor_construccion" id="valor_c" onchange="valorC()">
+                                <option value="0">Seleccione uno...</option>
+                                <?php if ($valorConstruccions): ?>
+                                            <?php foreach ($valorConstruccions as $valorConstruccion):?>
+                                            <optgroup label=<?= $valorConstruccion->getGrupo()?> >
+                                            <option value="<?= $valorConstruccion->getCosto()?>"><?= $valorConstruccion->getCaracteristicas() ?></option>
+                                        </optgroup>
+                                        <?php endforeach; ?>
+                                        <?php endif; ?>
                                 </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!--Input Valor de la construccion-->
+                                    <?= $this->formLabel($form->get('valor')); ?>
+                                    <?= $this->formText($form->get('valor')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('valor')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
                                 <!--Input Valor de la construccion-->
                                     <?= $this->formLabel($form->get('v_c')); ?>
                                     <?= $this->formText($form->get('v_c')); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('v_c')); ?>
                                     </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
+                            </div>
+                            <div class="row ml-0">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
                                 <!--Input Avaluo Total -->
                                     <?= $this->formLabel($form->get('a_total')); ?>
                                     <?= $this->formText($form->get('a_total')); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('a_total')); ?>
                                     </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row ml-0">
-                        <div class="col-sm-3">
-                            <div class="form-group ">
-                            <!-- Input Vigencia -->
-                                <?= $this->formLabel($form->get('vig')); ?>
-                                <?= $this->formDate($form->get('vig')) ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('vig')); ?>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">Tasa Impositiva</label>
-                                <select class="form-control" name="validation-select" id="tasa_i" onchange="timpositiva()">
-                                    <optgroup label="Predios Urbanos Edificados">
-                                        <option value="0.0017">0.0017</option>
-                                    </optgroup>
-                                    <optgroup label="Predios Urbanos Edificados">
-                                        <option value="0.0050">0.0050</option>
-                                    </optgroup>
-                                    <optgroup label="Tulum">
-                                        <option value="0.0050">0.0050</option>
-                                    </optgroup>
-                                    <optgroup label="Otras Zonas Urbanas">
-                                        <option value="0.00567">0.00567</option>
-                                    </optgroup>
-                                    <optgroup label="Predio Rusticos">
-                                        <option value="0.00380">0.00380</option>
-                                    </optgroup>
-                                </select>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <!-- Select Tasa Impositiva -->
+                                    <label class="form-label">Tasa</label>
+                                    <!-- <select class="form-control" name="tasa_i" id="tasa_i" onchange="timpositiva()"> -->
+                                    <select class="form-control" name="select_tasa" id="tasa_i" onchange="timpositiva()">
+                                        <option value="0">Selecione uno..</option>
+                                        <optgroup label="Predios Urbanos Edificados">
+                                            <option value="0.0017">0.0017</option>
+                                        </optgroup>
+                                        <optgroup label="Predios Urbanos Edificados">
+                                            <option value="0.0050">0.0050</option>
+                                        </optgroup>
+                                        <optgroup label="Tulum">
+                                            <option value="0.0050">0.0050</option>
+                                        </optgroup>
+                                        <optgroup label="Otras Zonas Urbanas">
+                                            <option value="0.00567">0.00567</option>
+                                        </optgroup>
+                                        <optgroup label="Predio Rusticos">
+                                            <option value="0.00380">0.00380</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group ">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
                                 <!-- Input Ejercicio Fiscal -->
                                     <?= $this->formLabel($form->get('ejercicio_f')); ?>
                                     <?= $this->formText($form->get('ejercicio_f')); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('ejercicio_f')); ?>
                                     </div>
+                                </div>
                             </div>
-                        </div>
-                        <input type="hidden" id="v_in">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                            <!-- Input pago Aportacion -->
-                                <?= $this->formLabel($form->get('pago_a')); ?>
-                                <?= $this->formText($form->get('pago_a')); ?>
-                                <div class="text-danger">
-                                    <?= $this->formElementErrors($form->get('pago_a')); ?>
+                            <!-- Input Oculto para hacer el calculo -->
+                            <input type="hidden" id="v_in">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!--Input Pago aportacion-->
+                                    <?= $this->formLabel($form->get('pago_a'));?>
+                                    <?= $this->formText($form->get('pago_a'));?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('pago_a')); ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row ml-0">
-                        <div class="col-sm-3">
-                        <!-- Input Status Oculto -->
-                            <?= $this->formText($form->get('status')); ?>
-                            <div class="text-danger">
-                                <?= $this->formElementErrors($form->get('status')); ?>
-                            </div>
-                        </div>
-                        <!-- Input id_predio Oculto -->
-                            <?= $this->formText($form->get('id_predio')); ?>
+                        <!-- Input Oculto para validar validacion vacia-->
+                        <input type="hidden" id=p_hide>
+                        <!-- Avaluo input oculto -->
+                        <input type="hidden" class="form-control" id="avaluo_hidden">
+                        <?= $this->formText($form->get('id_predio')); ?>
                             <div class="text-danger">
                                 <?= $this->formElementErrors($form->get('id_predio')); ?>
                             </div>
@@ -429,23 +509,39 @@
                             <div class="text-danger">
                                 <?= $this->formElementErrors($form->get('idcontribuyente')); ?>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                        <!-- Input clave catastral Oculto -->
-                            <?= $this->formText($form->get('cvlCatastral')); ?>
-                            <div class="text-danger">
-                                <?= $this->formElementErrors($form->get('cvlCatastral')); ?>
+                        <div class="row ml-0">
+                            <div class="col-sm-4">
+                            <!-- Input Estatus Oculto -->
+                                <?= $this->formText($form->get('status')); ?>
+                                <div class="text-danger">
+                                    <?= $this->formElementErrors($form->get('status')); ?>
+                                </div>
                             </div>
-                        </div>
-                        <?= $this->formHidden($form->get('csrf')); ?>
-                        <div class="text-danger">
-                            <?= $this->formElementErrors($form->get('csrf')); ?>
-                        </div>
-                        <div class="col-sm-12 text-md-right mb-3">
+                            <div class="col-sm-4">
+                            <!-- Input cvpredio Oculto -->
+                                <?= $this->formText($form->get('cvepredio')); ?>
+                                <div class="text-danger">
+                                    <?= $this->formElementErrors($form->get('cvepredio')); ?>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Id oculto -->
+                                    <?= $this->formText($form->get('tasa_hidden')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('tasa_hidden')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?= $this->formHidden($form->get('csrf')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($form->get('csrf')); ?>
+                            </div>
+                            <div class="col-sm-12 text-md-right mb-3">
                             <button type="button" class="btn  btn-secondary" data-dismiss="modal">Cerrar</button>
                             <?= $this->formSubmit($form->get('btnGuardar')); ?>
+                            </div>
                         </div>
-                    </div>
                     <?= $this->form()->closeTag(); ?>
                 </div>
             </div>

@@ -19,8 +19,8 @@ $(document).ready(function () {
                 icon: "info",
                 buttons: true,
                 dangerMode: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false,
             })
             .then((willDelete) => {
                 if (willDelete) {
@@ -33,7 +33,7 @@ $(document).ready(function () {
                         if (willOk)  window.location = "/aportacion";
                     });
                 } else {
-                    swal("Fin!", {
+                    swal("Aportacion cancelada!", {
                         icon: "error",
                     }).then((willCancel) => {
                         // if (willCancel)  window.location = "/aportacion";

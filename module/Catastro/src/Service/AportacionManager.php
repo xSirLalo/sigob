@@ -34,15 +34,32 @@ class AportacionManager
         $aportacion->setIdContribuyente($contribuyentebd);
         $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['id_predio']);
         $aportacion->setIdPredio($prediobd);
-        $aportacion->setPago($data['pago_a']);
-        $fecha = new \DateTime($data['vig']);
+        // $aportacion->setPago($data['pago_a']);
+        // $fecha = new \DateTime($data['vig']);
+        // $aportacion->setFecha($fecha);
+        // $aportacion->setMetrosTerreno($data['terreno']);
+        // $aportacion->setMetrosConstruccion($data['sup_m']);
+        // $aportacion->setValorTerreno($data['v_terreno']);
+        // $aportacion->setValorConstruccion($data['v_c']);
+        // $aportacion->setAvaluo($data['a_total']);
+        // $aportacion->setEstatus($data['status']);
+        $aportacion ->setEstatus($data['status']);//Estatus
+        $fecha = new \DateTime($data['vig']);//fecha
         $aportacion->setFecha($fecha);
-        $aportacion->setMetrosTerreno($data['terreno']);
-        $aportacion->setMetrosConstruccion($data['sup_m']);
-        $aportacion->setValorTerreno($data['v_terreno']);
-        $aportacion->setValorConstruccion($data['v_c']);
-        $aportacion->setAvaluo($data['a_total']);
-        $aportacion->setEstatus($data['status']);
+        $aportacion->setMetrosTerreno($data['terreno']);//Metros2 Terrreno
+        $aportacion->setValorZona($data['valor_m2_zona']);//Valor Zona
+        $valor_terreno = $data['terreno'] * $data['valor_m2_zona'];
+        $aportacion->setValorTerreno($valor_terreno);//Valor terreno
+        $aportacion->setMetrosConstruccion($data['sup_m']);//Metros2 Metros2 Construccion
+        $aportacion->setValorMtsConstruccion($data['valor']);//VALOR M2 CONSTRUCCION
+        $valor_construnccion = $data['sup_m']*$data['valor'];
+        $aportacion->setValorConstruccion($valor_construnccion);//Valor Construccion
+        $avaluo = $valor_terreno + $valor_construnccion;
+        $aportacion->setAvaluo($avaluo);//Avaluo Total
+        $aportacion->setTasa($data['tasa_hidden']);
+        $aportacion->setEjercicioFiscal($data['ejercicio_f']);
+        $pago_aportacion = $data['tasa_hidden']*$avaluo;
+        $aportacion->setPago($pago_aportacion);//Pago aportacion
 
         $currentDate = new \DateTime();
         $aportacion->setCreatedAt($currentDate);
@@ -461,7 +478,6 @@ class AportacionManager
         // This method has several options, check the source code documentation for more information.
         $pdf->Output('listadoPdf_' . date('dmY') . '.pdf', 'D');
         $pdf->Output();
-        return $this->redirect()->toRoute('aportacion');
         //============================================================+
         // END OF FILE
         //============================================================+# code...

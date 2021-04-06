@@ -48,13 +48,14 @@ class AportacionController extends AbstractActionController
         $form = new AportacionModalForm();
         $page = $this->params()->fromQuery('page', 1);
         $query = $this->entityManager->getRepository(Aportacion::class)->createQueryBuilder('a')->getQuery();
+        $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
 
         $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
         $paginator = new Paginator($adapter);
         $paginator->setDefaultItemCountPerPage(10);
         $paginator->setCurrentPageNumber($page);
 
-        return new ViewModel(['aportaciones' => $paginator, 'form' => $form]);
+        return new ViewModel(['aportaciones' => $paginator, 'form' => $form , 'valorConstruccions' => $valorConstruccion ]);
     }
 
     public function datatableAction()
@@ -99,13 +100,11 @@ class AportacionController extends AbstractActionController
         $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
-        //$valoresZona = $this->entityManager->getRepository(TablaValorZona::class)->findAll();
 
-        // if ($contribuyente == null) {
-        //         $this->layout()->setTemplate('error/404');
-        //         $this->getResponse()->setStatusCode(404);
-        //         return $response->setTemplate('error/404');
-        //     }
+        if ($contribuyente == null) {
+                $this->layout()->setTemplate('error/404');
+                $this->getResponse()->setStatusCode(404);
+            }
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -119,10 +118,8 @@ class AportacionController extends AbstractActionController
                 $this->aportacionManager->pdf($data,$aportacion);
                 }
 
-                // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                // return $this->redirect()->toRoute('/aportacion');
             }
-            return $this->redirect()->toRoute('aportacion');
+
         }
         return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
     }
@@ -315,7 +312,7 @@ class AportacionController extends AbstractActionController
             foreach ($query as $r) {
                 $arreglo [] = [
                         'id' => $r->getIdContribuyente(),
-                        'titular' => $r->getNombre(). ' ' .$r->getApellidoPaterno(). ' ' .$r->getApellidoMaterno() ,
+                        'titular' => $r->getCvePersona().'-'.$r->getNombre(). ' ' .$r->getApellidoPaterno(). ' ' .$r->getApellidoMaterno() ,
                     ];
             }
         } else {
@@ -343,7 +340,7 @@ class AportacionController extends AbstractActionController
                     if ($contribuyente) {
                         $arreglo[] = [
                                     'id' => $contribuyente->getIdContribuyente(),
-                                    'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
+                                    'titular' => $WebService->Persona[0]->CvePersona.' '.$WebService->Persona[0]->NombrePersona,
                                 ];
                     }
                 }else{
@@ -606,5 +603,284 @@ class AportacionController extends AbstractActionController
         $pdf->Output('listado_' . date('dmY') . '.pdf', 'D');
 
         //return new ViewModel();
+    }
+
+    public function pdfdirrectorAction()
+    {
+
+        $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        // set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('SIGOB');
+        $pdf->SetTitle('Listado');
+        $pdf->SetSubject('Listado');
+        $pdf->SetKeywords('TCPDF, PDF');
+
+        $PDF_HEADER_LOGO = "./public/logo.jpg";
+        $PDF_HEADER_LOGO_WIDTH = 14;
+        $PDF_HEADER_TITLE = "Sistemas de Gobierno.";
+        $PDF_HEADER_STRING = "Lista de Contribuyentes \nGenerado con fecha: " . date('d-m-Y');
+
+        //Para eliminar la marca de agua de TCPDF
+        $pdf->setPrintHeader(false);
+
+        // set default header data
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' del '.date('d-m-Y'), PDF_HEADER_STRING);
+
+        // set header and footer fonts
+        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        // set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        // set margins
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        // set auto page breaks
+        $pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+
+        // set image scale factor
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+        // set some language-dependent strings (optional)
+        if (@file_exists(dirname(__FILE__) . '/lang/spa.php')) {
+            require_once(dirname(__FILE__) . '/lang/spa.php');
+            $pdf->setLanguageArray($l);
+        }
+
+        // ---------------------------------------------------------
+
+        // set default font subsetting mode
+
+        // Set font
+        // dejavusans is a UTF-8 Unicode font, if you only need to
+        // print standard ASCII chars, you can use core fonts like
+        // helvetica or times to reduce file size.
+        $pdf->SetFont('helvetica', 'B', 20);
+
+        // Add a page
+        // This method has several options, check the source code documentation for more information.
+        $pdf->AddPage();
+
+        //$pdf->Write(20, 'H.AYUNTAMIENTO DE TULUM', '', 0, 'C', true, 0, false, false, 0);
+
+        $pdf->SetFont('helvetica', '', 10);
+        // Encuentra el id del dato consultado
+        $aportacionId = (int)$this->params()->fromRoute('id', -1);
+
+        // Valida que el parametro exista si no devuelve 404 no encontrado
+        if ($aportacionId < 0) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+        // Encuentra el id del dato consultado
+        //$padron = $this->entityManager->getRepository(Padron::class)->findOneById($padronId);
+        $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+
+        // Si no devuelve informacion devuelve 404 no encontrado
+        if ($aportacion == null) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($aportacion->getIdContribuyente());
+        $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($aportacion->getIdPredio());
+        $idpredio = $aportacion->getIdPredio();
+
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb->select('p')
+                ->from('Catastro\Entity\PredioColindancia', 'p')
+                ->where('p.idPredio = :idParam')
+                ->setParameter('idParam', $idpredio);
+            $predioColindancias = $qb->getQuery()->getResult();
+
+            foreach ($predioColindancias as $datos) {
+                $medidas[]=$datos->getMedidaMetros();
+                $descripcion[]=$datos->getDescripcion();
+            }
+
+        $pdf->Image('public/img/tulum.png', 23, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
+        $pdf->MultiCell(100, 30, '<h5><font size="11">H.AYUNTAMIENTO DE TULUM<br>TESORERIA MUNICIPAL<br>DIRECCION DE CATASTRO</font></h5>', 0, 'C', 0, 0, '55', '', true, 0, true);
+        $pdf->Image('public/img/logo.png', 158, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
+        $pdf->Ln(25);
+
+        $tbl = '<table  cellspacing="0" cellpadding="1" border="1" style="border-color:gray; width:100%;">';
+        $tbl .= '<tr style="background-color:#47A7AC;color:black;">
+                    <th>PARCELA</th>
+                    <th>MANZANA</th>
+                    <th>LOTE</th>
+                    <th>LOCAL</th>
+                    <th>CATEGORIA</th>
+                    <th>CONDICION</th>
+                </tr>
+                <tr>
+                    <th><font size="7">'.$predio->getParcela().'</font></th>
+                    <th><font size="7">'.$predio->getManzana().'</font></th>
+                    <th><font size="7">'.$predio->getLote().'</font></th>
+                    <th><font size="7">'.$predio->getLocal().'</font></th>
+                    <th><font size="7">'.$predio->getCategoria().'</font></th>
+                    <th><font size="7">'.$predio->getCondicion().'</font></th>
+                </tr>
+                <tr style="background-color:#9b9b9b;color:black;">
+                <th colspan ="6" >DATOS DEL INMUEBE</th>
+                </tr>
+                <tr style="background-color:#47A7AC;color:black;">
+                <th colspan ="2">TITULAR</th>
+                <th colspan ="2">UBICACIÓN</th>
+                <th colspan ="2">LOCALIDAD</th>
+                </tr>
+                <tr>
+                    <th colspan ="2"><font size="7">'.$predio->getTitular().'</font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getUbicacion().'</font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getLocalidad().'</font></th>
+                </tr>
+                <tr style="background-color:#47A7AC;color:black;">
+                <th colspan ="2">ANTECEDENTES</th>
+                <th colspan ="4">MEDIDAS Y COLINDANCIAS</th>
+                </tr>
+                <tr>
+                    <th rowspan="4" colspan ="2">'.$predio->getAntecedentes().'</th>
+                    <th>AL NORTE:</th>
+                    <th><font size="7">'.$medidas[0].'</font></th>
+                    <th>CON:</th>
+                    <th><font size="7">'.$descripcion[0].'</font></th>
+                </tr>
+                <tr>
+                    <th>AL SUR:</th>
+                    <th><font size="7">'.$medidas[1].'</font></th>
+                    <th>CON:</th>
+                    <th><font size="7">'.$descripcion[1].'</font></th>
+                </tr>
+                <tr>
+                    <th>AL ESTE:</th>
+                    <th><font size="7">'.$medidas[2].'</font></th>
+                    <th>CON:</th>
+                    <th><font size="7">'.$descripcion[2].'</font></th>
+                </tr>
+                <tr>
+                    <th>AL OESTE</th>
+                    <th><font size="7">'.$medidas[3].'</font></th>
+                    <th>CON:</th>
+                    <th><font size="7">'.$descripcion[3].'</font></th>
+                </tr>
+                <tr style="background-color:#47A7AC;color:black;">
+                <th colspan ="2">REGIMEN DE PROPIEDAD</th>
+                <th colspan ="2">FECHA DE ADQUISICIÓN</th>
+                <th colspan ="2">TITULAR ANTERIOR</th>
+                </tr>
+                <tr>
+                    <th colspan ="2">'.$predio->getRegimenPropiedad().'<font size="7"></font></th>
+                    <th colspan ="2">'.$predio->getFechaAdquicision()->format('d-m-Y').'<font size="7"></font></th>
+                    <th colspan ="2">'.$predio->getTitularAnterior().'<font size="7"></font></th>
+                </tr>
+                <tr style="background-color:#9b9b9b;color:black;">
+                <th colspan ="6" >REGISTRO FISCAL</th>
+                </tr>
+                <tr style="background-color:#47A7AC;color:black;">
+                <th colspan ="2">CONTRIBUYENTE</th>
+                <th colspan ="1">FACTURA</th>
+                <th colspan ="1">GIRO COMERCIAL</th>
+                <th colspan ="2">NOMBRE COMERCIAL</th>
+                </tr>
+                <tr>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getNombre().'</font></th>
+                    <th colspan ="1"><font size="7">'.$contribuyente->getFactura().'</font></th>
+                    <th colspan ="1"><font size="7">'.$contribuyente->getGiroComercial().'</font></th>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getNombreComercial().'</font></th>
+                </tr>
+                <tr style="background-color:#47A7AC;color:black;">
+                <th colspan ="2">TENENCIA</th>
+                <th colspan ="2">RFC</th>
+                <th colspan ="2">USO O DESTINO</th>
+                </tr>
+                <tr>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getTenencia().'</font></th>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getRfc().'</font></th>
+                    <th colspan ="2"><font size="7">'.$contribuyente->getUsoDestino().'</font></th>
+                </tr>
+                <tr style="background-color:#9b9b9b;color:black;">
+                <th colspan ="6" >AVALUO</th>
+                </tr>
+                <tr style="background-color:#47A7AC;color:black;">
+                <th colspan ="2">SUP.M2 TERRENO</th>
+                <th colspan ="2">VALOR M2 DE ZONA</th>
+                <th colspan ="2">VALOR DEL TERRENO</th>
+                </tr>
+                <tr>
+                    <th colspan ="2"><font size="7">'.$aportacion->getMetrosTerreno().'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorZona(),4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorTerreno(),4).'</font></th>
+                </tr>
+                <tr style="background-color:#47A7AC;color:black;">
+                <th colspan ="2">SUP.M2 CONSTRUCCIÓN</th>
+                <th colspan ="2">VALOR M2 CONSTRUCCION</th>
+                <th colspan ="2">VALOR DE LA CONSTRUCCION</th>
+                </tr>
+                <tr>
+                    <th colspan ="2"><font size="7">'.$aportacion->getMetrosConstruccion().'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorMtsConstruccion(),4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorConstruccion(),4).'</font></th>
+                </tr>
+                <tr style="background-color:#47A7AC;color:black;">
+                <th>FECHA</th>
+                <th>AVALUO</th>
+                <th>TASA </th>
+                <th colspan ="2">EJERCICIO FISCAL</th>
+                <th>APORTACION</th>
+                </tr>
+                <tr>
+                    <th><font size="7">'.$aportacion->getFecha()->format('d-m-Y').'</font></th>
+                    <th><font size="7">$'.number_format($aportacion->getAvaluo()).'</font></th>
+                    <th><font size="7">'.number_format($aportacion->getTasa(),4).'</font></th>
+                    <th colspan ="2"><font size="7">'.$aportacion->getEjercicioFiscal().'</font></th>
+                    <th><font size="7">$'.number_format($aportacion->getPago(),4).'</font></th>
+                </tr>
+                <tr style="background-color:#9b9b9b;color:black;">
+                <th colspan ="6" >OBSERVACIONES</th>
+                </tr>
+                <tr>
+                <th colspan ="6" ><font size="7">'.$predio->getObservaciones().'</font></th>
+                </tr>
+                <tr style="background-color:#9b9b9b;color:black;">
+                <th colspan ="6" ></th>
+                </tr>
+                <tr>
+                <th colspan ="6" ><font size="7">EL CALCULO DE LA CONTRIBUCIÓN QUE AMPARA ESTE DOCUMNTO, SE HACE A PETICION DEL SOLICITANTE Y EN NINGUN CASO SE CONSIDERA COMO PAGO DE IMPUESTO PREDIAL.
+                ESTE DOCUMENTO NO CONSTITUYE UNA CEDULA CATASTRAL Y, POR TANTO, NO RECONOCE DERECHOS DE PROPIEDAD SOBRE EL INMUEBLE EN CUESTION A FAVOR DE PERSONA ALGUNA
+                LA VIGENCIA DE ESTA TARJETA DE IDENTIFICACION ES ANUAL, PERO SERA INVALIDA POR FACTORES QUE MODIFIQUE SUS ELEMENTOS</font></th>
+                </tr>
+'
+                ;
+        $tbl = $tbl . '</table>';
+
+        $pdf->writeHTML($tbl, true, 0, true, 0, 'C');
+        $pdf->Ln(15);
+        $pdf->MultiCell(58.66, 12, '<h6><font size="8">_________________________<br>ELABORO</font></h6>', 0, 'C', 0, 0, '17', '', true, 0, true);
+        $pdf->MultiCell(58.66, 12, '<h6><font size="8">_________________________<br>JEFE DE DEPTO</font></h6>', 0, 'C', 0, 0, '', '', true, 0, true);
+        $pdf->MultiCell(58.66, 12, '<h6><font size="8">_________________________<br>DIRECTOR</font></h6>', 0, 'C', 0, 0, '', '', true, 0, true);
+
+        // move pointer to last page
+        $pdf->lastPage();
+
+
+        // ---------------------------------------------------------
+
+        // Close and output PDF document
+        if (ob_get_contents()) {
+            ob_end_clean();
+        }
+
+        // This method has several options, check the source code documentation for more information.
+        $pdf->Output('listadoPdf_' . date('dmY') . '.pdf', 'D');
+        $pdf->Output();
+        //============================================================+
+        // END OF FILE
+        //============================================================+# code...
+
+
+
+
     }
 }

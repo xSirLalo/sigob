@@ -565,6 +565,18 @@ return [
                             ],
                         ],
                     ],
+                    'pdfdirrector' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/pdfdirrector[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'pdfdirrector',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
@@ -612,7 +624,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff'], 'allow' => '*']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector'], 'allow' => '*']
             ],
         ]
     ],

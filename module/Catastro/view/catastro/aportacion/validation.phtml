@@ -57,7 +57,8 @@ $this->inlineScript()
                                 <td><?= $aportacion->getFecha()->format('d-m-Y');  ?></td>
                                 <td>
                                     <div class="row">
-                                        <a href="" class="btn btn-primary">Ver</a>
+                                        <!-- <a href="" class="btn btn-primary">Ver</a> -->
+                                        <a href="<?= $this->url('aportacion/pdfdirrector', ['action' => 'pdfdirrector', 'id' => $aportacion->getIdAportacion()]); ?>"><button type="button="class="btn btn-primary">ver</button></a>
                                         <!-- <button type="button" class="btn btn-secondary" id="button" data-toggle="modal" data-target="#myModal">
                                         Modificar
                                         </button> -->
