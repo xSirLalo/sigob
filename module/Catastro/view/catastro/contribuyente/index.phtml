@@ -21,7 +21,7 @@ $this->inlineScript()
     ->prependFile($this->basePath('js/catastro/contribuyente/edit.js'))
     ->prependFile($this->basePath('js/catastro/contribuyente/delete.js'))
     // Js DataTables
-    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
+    // ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
     ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
     ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
     ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
@@ -44,7 +44,7 @@ $this->inlineScript()
                     </div>
                 </div>
             </div>
-            <table class="display table table-striped table-hover dt-responsive nowrap" id="contribuyente" style="width:100%">
+            <table class="display table table-striped table-hover dt-responsive nowrap" id="contribuyentes" style="width:100%">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -81,9 +81,6 @@ $this->inlineScript()
                     <?php endif; ?>
                 </tbody>
             </table>
-            <div class="float-right" id="lv-links">
-                <?= $this->paginationControl($contribuyentes, 'Sliding', 'catastro/partial/paginator', ['route' => 'contribuyente']); ?>
-            </div>
         </div>
     </div>
 </div>

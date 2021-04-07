@@ -1,7 +1,7 @@
 $(document).ready(function() {
     setTimeout(function() {
         // [ Configuration Option ]
-        $('#aportacionesf').DataTable({
+        $('#aportaciones').DataTable({
             responsive: true,
             autoWidth: false,
             scrollX: true,
@@ -9,16 +9,15 @@ $(document).ready(function() {
                 loadingIndicator: true
             },
             processing: true,
-            serverSide: true,
+            // serverSide: true,
             deferRender: true,
             paging: true,
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             pageLength: 10,
             order: [],
             ajax: {
-                type: "POST",
                 url: "/aportacion/datatable",
-                dataType: "JSON",
+                type: "POST",
                 error: function(){
                     $(".aportaciones-error").html("");
                     $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
@@ -39,13 +38,14 @@ $(document).ready(function() {
                 {data: 'idAportacion', orderable: true, searchable: false,},
                 {data: 'Contribuyente'},
                 {data: 'Titular'},
-                {data: 'Fecha'},
+                {data: 'Vigencia'},
+                {data: 'Pago'},
                 {data: 'Estatus', orderable: false, searchable: false,},
-                {data: 'opciones', orderable: false, searchable: false },
+                {data: 'Opciones', orderable: false, searchable: false },
             ],
             columnDefs: [
                 {
-                    targets: 5,
+                    targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
                     $actionBtn = `
@@ -63,9 +63,9 @@ $(document).ready(function() {
         });
 
         // [ New Constructor ]
-        var newcs = $('#new-cons').DataTable();
+        // var newcs = $('#new-cons').DataTable();
 
-        new $.fn.dataTable.Responsive(newcs);
+        // new $.fn.dataTable.Responsive(newcs);
 
         // [ Immediately Show Hidden Details ]
         $('#show-hide-res').DataTable({

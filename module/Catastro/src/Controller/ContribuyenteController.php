@@ -44,6 +44,13 @@ class ContribuyenteController extends AbstractActionController
     public function indexAction()
     {
         $form = new ContribuyenteModalForm();
+        $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
+        return new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
+    }
+
+    public function index2Action()
+    {
+        $form = new ContribuyenteModalForm();
         $request = $this->getRequest();
         $response = $this->getResponse();
         $postData= $_POST;
@@ -107,19 +114,100 @@ class ContribuyenteController extends AbstractActionController
             $view = new JsonModel($result);
             $view->setTerminal(true);
         } else {
-            $page = $this->params()->fromQuery('page', 1);
-            $query = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c')->getQuery();
+            // $page = $this->params()->fromQuery('page', 1);
+            // $query = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c')->getQuery();
 
-            $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-            $paginator = new Paginator($adapter);
-            $paginator->setDefaultItemCountPerPage(10);
-            $paginator->setCurrentPageNumber($page);
-            $view = new ViewModel(['contribuyentes' => $paginator, 'form' => $form]);
+            // $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+            // $paginator = new Paginator($adapter);
+            // $paginator->setDefaultItemCountPerPage(10);
+            // $paginator->setCurrentPageNumber($page);
+
+            $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
+            $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
 
             // $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
             // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
         }
         return $view;
+    }
+
+    public function datatable2Action()
+    {
+        $form = new ContribuyenteModalForm();
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        $postData= $_POST;
+
+        // FIXME: Arreglar falla con el datatables solo muestra una pagina
+
+        $columns = [
+            0 => 'idContribuyente',
+            1 => 'nombre',
+            2 => 'apellidoPaterno',
+            3 => 'apellidoMaterno'
+        ];
+
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            // $fields = ['c.idContribuyente', 'c.nombre', 'c.apellidoPaterno', 'c.apellidoMaterno', 'c.genero'];
+            $fields = ['c'];
+            // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb ->select($fields)->from('Catastro\Entity\Contribuyente', 'c');
+
+            $searchKeyWord = htmlspecialchars($postData['search']['value']);
+            if (isset($searchKeyWord)) {
+                $searchKeyWord = htmlspecialchars($postData['search']['value']);
+                $qb ->where('c.nombre LIKE :word')
+                    ->orWhere('c.apellidoPaterno LIKE :word')
+                    ->orWhere('c.apellidoMaterno LIKE :word')
+                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
+            }
+
+            if (isset($postData['order'])) {
+                $qb ->orderBy('c.'. $columns[$postData['order'][0]['column']], $postData['order'][0]['dir']);
+            } else {
+                $qb ->orderBy('c.idContribuyente', 'DESC');
+            }
+
+            if ($postData['length'] != -1) {
+                $qb ->setFirstResult($postData['start'])->setMaxResults($postData['length']);
+            }
+
+            $query = $qb->getQuery()->getResult();
+
+            $data = [];
+            foreach ($query as $r) {
+                $data[] = [
+                    'idContribuyente' => $r->getIdContribuyente(),
+                    'nombre'          => $r->getNombre(),
+                    'apellidoPaterno' => $r->getApellidoPaterno(),
+                    'apellidoMaterno' => $r->getApellidoMaterno(),
+                    'genero'          => $r->getGenero(),
+                    'opciones'        => "Cargando..."
+                ];
+            }
+            $result = [
+                    "draw"            => intval($postData['draw']),
+                    "recordsTotal"    => count($data),
+                    "recordsFiltered" => count($data),
+                    'data'            => $data,
+                ];
+
+            return $response->setContent(json_encode($result));
+
+        // $response->setStatusCode(200);
+            // $response->setContent(\Laminas\Json\Json::encode($result));
+            // return $response;
+
+            // $json = new JsonModel($result);
+            // $json->setTerminal(true);
+            // return $json;
+        } else {
+            $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
+            $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
+            // echo 'Error get data from ajax';
+        }
     }
 
     public function datatableAction()
@@ -477,12 +565,9 @@ class ContribuyenteController extends AbstractActionController
         } else {
             $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($word);
             //if((!(array)$WebService))
-            if(empty($WebService->Persona))
-            {
-            //$WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($word);
-            $WebService = $this->opergobserviceadapter->obtenerNombrePersona($word);
+            if (empty($WebService->Persona)) {
+                $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($word);
             }
-            //else
             // if((array)($WebService))
             // if(empty($WebService->Persona))
             // {
@@ -509,9 +594,9 @@ class ContribuyenteController extends AbstractActionController
                         'id' => $contribuyente->getIdContribuyente(),
                         'item_select_name' =>  $WebService->Persona[0]->RazonSocialPersona."-".$WebService->Persona[0]->NombrePersona,
                     ];
-                }else{
-                if (isset($WebService->Persona)) {
-                    $WebServicePersona = [
+                } else {
+                    if (isset($WebService->Persona)) {
+                        $WebServicePersona = [
                             'cve_persona'      => $WebService->Persona->CvePersona,
                             'nombre'           => $WebService->Persona->NombrePersona,
                             'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
@@ -524,14 +609,13 @@ class ContribuyenteController extends AbstractActionController
                             'genero'           => $WebService->Persona->GeneroPersona,
                     ];
 
-                    $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
+                        $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
 
-                    $arreglo[] = [
+                        $arreglo[] = [
                         'id' => $contribuyente->getIdContribuyente(),
                         'item_select_name' => $WebService->Persona->RazonSocialPersona."-".$WebService->Persona->NombrePersona,
                     ];
-                }
-
+                    }
                 }
             }
         }

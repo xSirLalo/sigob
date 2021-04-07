@@ -46,16 +46,9 @@ class AportacionController extends AbstractActionController
     public function indexAction()
     {
         $form = new AportacionModalForm();
-        $page = $this->params()->fromQuery('page', 1);
-        $query = $this->entityManager->getRepository(Aportacion::class)->createQueryBuilder('a')->getQuery();
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
-
-        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-        $paginator = new Paginator($adapter);
-        $paginator->setDefaultItemCountPerPage(10);
-        $paginator->setCurrentPageNumber($page);
-
-        return new ViewModel(['aportaciones' => $paginator, 'form' => $form , 'valorConstruccions' => $valorConstruccion ]);
+        $aportaciones = $this->entityManager->getRepository(Aportacion::class)->findAll();
+        return new ViewModel(['aportaciones' => $aportaciones, 'valorConstruccions' => $valorConstruccion, 'form' => $form]);
     }
 
     public function datatableAction()
@@ -74,9 +67,10 @@ class AportacionController extends AbstractActionController
                     'idAportacion'  => $r->getIdAportacion(),
                     'Contribuyente' => $r->getIdContribuyente()->getNombre(),
                     'Titular'       => $r->getIdPredio()->getTitular(),
-                    'Fecha'         => $r->getFecha()->format('d-m-Y'),
+                    'Vigencia'      => $r->getFecha()->format('d-m-Y'),
+                    'Pago'          => "$ ".$r->getPago(),
                     'Estatus'       => $r->getEstatus(),
-                    'opciones'      => "Cargando..."
+                    'Opciones'      => "Cargando..."
                 ];
         }
         $result = [
@@ -102,9 +96,9 @@ class AportacionController extends AbstractActionController
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
 
         if ($contribuyente == null) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-            }
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+        }
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -115,11 +109,9 @@ class AportacionController extends AbstractActionController
                 $this->aportacionManager->actualizarContribuyente($contribuyente, $data);
                 $aportacion =$this->aportacionManager->guardar($data);
                 if ($aportacion) {
-                $this->aportacionManager->pdf($data,$aportacion);
+                    $this->aportacionManager->pdf($data, $aportacion);
                 }
-
             }
-
         }
         return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
     }
@@ -165,14 +157,14 @@ class AportacionController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($data['padron_id']);
-                if($data['status'] == 1){
-                $this->aportacionManager->update($aportacion, $data);
-                $this->flashMessenger()->addSuccessMessage('La aportacion ha sido confirmado');
-                return $this->redirect()->toRoute('aportacion/validacion');
-                }else{
-                $this->aportacionManager->update($aportacion, $data);
-                $this->flashMessenger()->addErrorMessage('La aportacion ha sido cancelada');
-                return $this->redirect()->toRoute('aportacion/validacion');
+                if ($data['status'] == 1) {
+                    $this->aportacionManager->update($aportacion, $data);
+                    $this->flashMessenger()->addSuccessMessage('La aportacion ha sido confirmado');
+                    return $this->redirect()->toRoute('aportacion/validacion');
+                } else {
+                    $this->aportacionManager->update($aportacion, $data);
+                    $this->flashMessenger()->addErrorMessage('La aportacion ha sido cancelada');
+                    return $this->redirect()->toRoute('aportacion/validacion');
                 }
             }
         }
@@ -317,9 +309,8 @@ class AportacionController extends AbstractActionController
             }
         } else {
             $WebService = $this->opergobserviceadapter->obtenerNombrePersona($name);
-            if(!(array)$WebService)
-            {
-            $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($name);
+            if (!(array)$WebService) {
+                $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($name);
             }
             if (isset($WebService->Persona)) {
                 if (is_array($WebService->Persona)) {
@@ -336,16 +327,16 @@ class AportacionController extends AbstractActionController
                             'genero'           => $WebService->Persona[0]->GeneroPersona,
                     ];
 
-                        $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
+                    $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
                     if ($contribuyente) {
                         $arreglo[] = [
                                     'id' => $contribuyente->getIdContribuyente(),
                                     'titular' => $WebService->Persona[0]->CvePersona.' '.$WebService->Persona[0]->NombrePersona,
                                 ];
                     }
-                }else{
-            if (isset($WebService->Persona)) {
-            $WebServicePersona = [
+                } else {
+                    if (isset($WebService->Persona)) {
+                        $WebServicePersona = [
                 'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
                 'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
                 'curp'             => $WebService->Persona->CURPPersona,
@@ -358,16 +349,16 @@ class AportacionController extends AbstractActionController
                 'razon_social'     => $WebService->Persona->RazonSocialPersona,
             ];
 
-                $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
-                if ($contribuyente) {
-                    $arreglo[] = [
+                        $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
+                        if ($contribuyente) {
+                            $arreglo[] = [
                                 'id' => $contribuyente->getIdContribuyente(),
                                 'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
                             ];
+                        }
+                    }
                 }
             }
-            }
-        }
         }
 
         $data = [
@@ -607,7 +598,6 @@ class AportacionController extends AbstractActionController
 
     public function pdfdirrectorAction()
     {
-
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         // set document information
         $pdf->SetCreator(PDF_CREATOR);
@@ -689,17 +679,17 @@ class AportacionController extends AbstractActionController
         $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($aportacion->getIdPredio());
         $idpredio = $aportacion->getIdPredio();
 
-            $qb = $this->entityManager->createQueryBuilder();
-            $qb->select('p')
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('p')
                 ->from('Catastro\Entity\PredioColindancia', 'p')
                 ->where('p.idPredio = :idParam')
                 ->setParameter('idParam', $idpredio);
-            $predioColindancias = $qb->getQuery()->getResult();
+        $predioColindancias = $qb->getQuery()->getResult();
 
-            foreach ($predioColindancias as $datos) {
-                $medidas[]=$datos->getMedidaMetros();
-                $descripcion[]=$datos->getDescripcion();
-            }
+        foreach ($predioColindancias as $datos) {
+            $medidas[]=$datos->getMedidaMetros();
+            $descripcion[]=$datos->getDescripcion();
+        }
 
         $pdf->Image('public/img/tulum.png', 23, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
         $pdf->MultiCell(100, 30, '<h5><font size="11">H.AYUNTAMIENTO DE TULUM<br>TESORERIA MUNICIPAL<br>DIRECCION DE CATASTRO</font></h5>', 0, 'C', 0, 0, '55', '', true, 0, true);
@@ -810,8 +800,8 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$aportacion->getMetrosTerreno().'</font></th>
-                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorZona(),4).'</font></th>
-                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorTerreno(),4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorZona(), 4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorTerreno(), 4).'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th colspan ="2">SUP.M2 CONSTRUCCIÓN</th>
@@ -820,8 +810,8 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$aportacion->getMetrosConstruccion().'</font></th>
-                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorMtsConstruccion(),4).'</font></th>
-                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorConstruccion(),4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorMtsConstruccion(), 4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorConstruccion(), 4).'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th>FECHA</th>
@@ -833,9 +823,9 @@ class AportacionController extends AbstractActionController
                 <tr>
                     <th><font size="7">'.$aportacion->getFecha()->format('d-m-Y').'</font></th>
                     <th><font size="7">$'.number_format($aportacion->getAvaluo()).'</font></th>
-                    <th><font size="7">'.number_format($aportacion->getTasa(),4).'</font></th>
+                    <th><font size="7">'.number_format($aportacion->getTasa(), 4).'</font></th>
                     <th colspan ="2"><font size="7">'.$aportacion->getEjercicioFiscal().'</font></th>
-                    <th><font size="7">$'.number_format($aportacion->getPago(),4).'</font></th>
+                    <th><font size="7">$'.number_format($aportacion->getPago(), 4).'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" >OBSERVACIONES</th>
@@ -878,9 +868,5 @@ class AportacionController extends AbstractActionController
         //============================================================+
         // END OF FILE
         //============================================================+# code...
-
-
-
-
     }
 }
