@@ -80,8 +80,8 @@ $(document).ready(function() {
                     render: function(data, type, row, meta){
                     $actionBtn = `
                         <div class="btn-group">
-                            <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info" data-toggle="modal" onclick="view_contribuyente(` + row['idContribuyente'] + `)">Ver</a>
-                            <a href="/contribuyente/editar/` + row['idContribuyente'] + `" class="btn btn-warning" data-toggle="modal" onclick="edit_contribuyente(` + row['idContribuyente'] + `)">Editar</a>
+                            <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info">Detalle</a>
+                            <a href="/contribuyente/editar/` + row['idContribuyente'] + `" class="btn btn-warning">Editar</a>
                             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `">Eliminar</button>
                         </div>
                         `;

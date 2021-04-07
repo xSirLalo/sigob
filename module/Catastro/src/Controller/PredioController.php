@@ -44,15 +44,45 @@ class PredioController extends AbstractActionController
 
     public function indexAction()
     {
-        $page = $this->params()->fromQuery('page', 1);
-        $query = $this->entityManager->getRepository(Predio::class)->createQueryBuilder('p')->getQuery();
+        $predios = $this->entityManager->getRepository(Predio::class)->findAll();
+        return new ViewModel(['predios' => $predios]);
+    }
 
-        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-        $paginator = new Paginator($adapter);
-        $paginator->setDefaultItemCountPerPage(10);
-        $paginator->setCurrentPageNumber($page);
+    public function datatableAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        $qb = $this->entityManager->createQueryBuilder()->select('p')->from('Catastro\Entity\Predio', 'p');
+        $query = $qb->getQuery()->getResult();
 
-        return new ViewModel(['predios' => $paginator]);
+        $data = [];
+
+        foreach ($query as $r) {
+            $data[] = [
+                    'idPredio'          => $r->getIdPredio(),
+                    'claveCatastral'          => $r->getClaveCatastral(),
+                    'contribuyente' => $r->getIdContribuyente()->getNombre(),
+                    'titular' => $r->getTitular(),
+                    'ubicacion'          => $r->getLocalidad(),
+                    'opciones'        => "Cargando..."
+                ];
+        }
+        $result = [
+                    "draw"            => 1,
+                    "recordsTotal"    => count($data),
+                    "recordsFiltered" => count($data),
+                    'aaData'            => $data,
+                ];
+
+        // return $response->setContent(json_encode($result));
+
+        // $response->setStatusCode(200);
+        // $response->setContent(\Laminas\Json\Json::encode($result));
+        // return $response;
+
+        $json = new JsonModel($result);
+        $json->setTerminal(true);
+        return $json;
     }
 
     public function addAction()

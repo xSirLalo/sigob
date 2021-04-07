@@ -1,3 +1,84 @@
+$(document).ready(function(){
+    setTimeout(function() {
+        // [ Configuration Option ]
+        $('#aportaciones').DataTable({
+            responsive: true,
+            autoWidth: false,
+            scrollX: true,
+            scroller: {
+                loadingIndicator: true
+            },
+            processing: true,
+            // serverSide: true,
+            deferRender: true,
+            paging: true,
+            lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+            pageLength: 10,
+            order: [],
+            ajax: {
+                url: "/aportacion/datatable",
+                type: "POST",
+                error: function(){
+                    $(".aportaciones-error").html("");
+                    $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
+                    $(".dataTables_empty").css("display","none");
+                    $("#aportaciones_processing").css("display","none");
+                },
+                "complete": function(response) {
+                    console.log(response);
+                }
+            },
+            initComplete: function () {
+                $('#lv-links').hide();
+                if ($(this).find('tbody tr').length<=1) {
+                    $(this).parent().show();
+                }
+            },
+            columns: [
+                {data: 'idAportacion', orderable: true, searchable: false,},
+                {data: 'Contribuyente'},
+                {data: 'Titular'},
+                {data: 'Vigencia'},
+                {data: 'Pago'},
+                {data: 'Estatus', orderable: false, searchable: false,},
+                {data: 'Opciones', orderable: false, searchable: false },
+            ],
+            columnDefs: [
+                {
+                    targets: 6,
+                    orderable: false,
+                    render: function(data, type, row, meta){
+                    $actionBtn = `
+                        <div class="btn-group">
+                            <a href="/aportacion/pdf/` + row['idAportacion'] + `"> <button class="btn btn-primary"> Imprimir</button> </a>
+                        </div>
+                        `;
+                        return $actionBtn;
+                    }
+                }
+            ],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"
+            },
+        });
+
+        // [ New Constructor ]
+        // var newcs = $('#new-cons').DataTable();
+
+        // new $.fn.dataTable.Responsive(newcs);
+
+        // [ Immediately Show Hidden Details ]
+        $('#show-hide-res').DataTable({
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.childRowImmediate,
+                    type: ''
+                }
+            }
+        });
+
+    }, 350);
+});
 //Modal-Funcion Modificar
 function edit_validation(id)
 {

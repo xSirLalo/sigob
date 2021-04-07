@@ -50,7 +50,7 @@ $(document).ready(function() {
                     render: function(data, type, row, meta){
                     $actionBtn = `
                         <div class="btn-group">
-                            <a href="/aportacion/pdf/` + row['idAportacion'] + `"> <button type="button="class="btn btn-primary"` + (row['Estatus'] == 2 || row['Estatus'] == 3 ) ? ' disable' : ''  + `">Imprimir</button> </a>
+                            <a href="/aportacion/pdf/` + row['idAportacion'] + `"> <button class="btn btn-primary"> Imprimir</button> </a>
                         </div>
                         `;
                         return $actionBtn;
