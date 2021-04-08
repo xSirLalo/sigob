@@ -478,6 +478,7 @@ class ContribuyenteController extends AbstractActionController
                 $form->setData($data);
                 if ($form->isValid()) {
                     $data = $form->getData();
+                    $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
                     $this->contribuyenteManager->actualizar($contribuyente, $data);
                     return $this->redirect()->toRoute('contribuyente');
                 }
@@ -491,7 +492,6 @@ class ContribuyenteController extends AbstractActionController
                     'genero' => $contribuyente->getGenero(),
                 ];
                 $form->setData($data);
-                $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
             }
             $view = new ViewModel(['form' => $form]);
         }

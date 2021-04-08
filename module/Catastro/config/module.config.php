@@ -236,6 +236,15 @@ return [
                             ],
                         ],
                     ],
+                    'datatable' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/datatable',
+                            'defaults' => [
+                                'action' => 'datatable',
+                            ],
+                        ],
+                    ],
                     'buscarCatastral' => [
                         'type' => 'segment',
                         'options' => [
@@ -615,7 +624,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search', 'searchPersona', 'autofillPersona'], 'allow' => '*']
             ],
             Controller\PredioController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'searchCatastral', 'autofillCatastral'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'datatable', 'searchCatastral', 'autofillCatastral'], 'allow' => '*']
             ],
             Controller\BibliotecaController::class => [
                 ['actions' => ['index', 'add', 'view', 'deleteFile', 'downloadFile'], 'allow' => '*']

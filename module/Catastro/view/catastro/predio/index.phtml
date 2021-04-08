@@ -7,6 +7,19 @@ $this->pageBreadcrumbs()->setItems([
     'Home' => $this->url('home'),
     'Predios' => $this->url('predio'),
 ]);
+// Css Requerido
+$this->headLink()
+    // Css DataTables
+    ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
+$this->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/predio/index.js'))
+    // Js DataTables
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
+    ;
 ?>
 <!-- [ col ] start -->
 <div class="col-md-12">
@@ -22,9 +35,10 @@ $this->pageBreadcrumbs()->setItems([
                     </div>
                 </div>
             </div>
-            <table  class='display table table-striped table-hover dt-responsive nowrap' id="bibliotecas" style="width:100%">
+            <table  class='display table table-striped table-hover dt-responsive nowrap' id="predios" style="width:100%">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Clave Catastral</th>
                         <th>Contribuyente</th>
                         <th>Titular</th>
@@ -36,6 +50,7 @@ $this->pageBreadcrumbs()->setItems([
                     <?php if (!empty($predios)): ?>
                         <?php foreach ($predios as $predio): ?>
                             <tr>
+                                <td><?= $predio->getIdPredio() ?></td>
                                 <td><?= $predio->getClaveCatastral() ?></td>
                                 <!-- TODO: Consultar desde el Webservice antes te mostrarlo en la tabla de predios -->
                                 <td><?php echo $predio->getIdContribuyente()->getNombre()?></td>
@@ -55,9 +70,6 @@ $this->pageBreadcrumbs()->setItems([
                     <?php endif; ?>
                 </tbody>
             </table>
-            <div class="float-right" id="lv-links">
-                <?= $this->paginationControl($predios, 'Sliding', 'catastro/partial/paginator', ['route' => 'predio']);?>
-            </div>
         </div>
     </div>
 </div>
