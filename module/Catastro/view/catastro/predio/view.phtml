@@ -83,7 +83,7 @@ $this->pageBreadcrumbs()->setItems([
                                 <td><?= $archivo->getIdArchivo()->getUrl() ?></td>
                                 <td><?= $archivo->getIdArchivo()->getCreatedAt()->format('Y-m-d h:m:s') ?></td>
                                 <td>
-                                    <a href="<?= $this->url('biblioteca/ver-archivo', ['action' => 'ver-archivo', 'archivo' => $archivo->getIdArchivo()->getIdArchivo()]); ?>" class="btn btn-info btn-sm"> Previsualizar</a>
+                                    <a target="_blank" href="<?= $this->url('biblioteca/ver-archivo', ['archivo'=>'file'], ['query'=>['name'=>$archivo->getIdArchivo()->getUrl()]]); ?>"  class="btn btn-info btn-sm" role="button"> Previsualizar</a>
                                     <a href="<?= $this->url('biblioteca/descargar-archivo', ['action' => 'descargar-archivo', 'archivo' => $archivo->getIdArchivo()->getIdArchivo()]); ?>" class="btn btn-success btn-sm"> Descargar</a>
                                     <a href="<?= $this->url('biblioteca/eliminar-archivo', ['action' => 'eliminar-archivo', 'predio' => $archivo->getIdPredio()->getIdPredio(), 'archivo' => $archivo->getIdArchivo()->getIdArchivo()]); ?>" class="btn btn-danger btn-sm"> Eliminar</a>
                                 </td>

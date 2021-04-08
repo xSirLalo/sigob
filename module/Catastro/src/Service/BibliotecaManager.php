@@ -16,7 +16,7 @@ class BibliotecaManager
      * @var Doctrine\ORM\EntityManager;
      */
     private $entityManager;
-
+    private $saveToDir = './public/img/';
     /**
      * Constructor.
      */
@@ -25,6 +25,43 @@ class BibliotecaManager
         $this->entityManager = $entityManager;
     }
 
+    public function getFilePathByName($fileName)
+    {
+        // Take some precautions to make file name secure
+        $fileName = str_replace("/", "", $fileName);  // Remove slashes
+        $fileName = str_replace("\\", "", $fileName); // Remove back-slashes
+
+        // Return concatenated directory name and file name.
+        return $this->saveToDir . $fileName;
+    }
+
+    public function getFileInfo($filePath)
+    {
+        // Try to open file
+        if (!is_readable($filePath)) {
+            return false;
+        }
+
+        // Get file size in bytes.
+        $fileSize = filesize($filePath);
+
+        // Get MIME type of the file.
+        $finfo = finfo_open(FILEINFO_MIME);
+        $mimeType = finfo_file($finfo, $filePath);
+        if ($mimeType===false) {
+            $mimeType = 'application/octet-stream';
+        }
+
+        return [
+            'size' => $fileSize,
+            'type' => $mimeType
+        ];
+    }
+
+    public function getFileContent($filePath)
+    {
+        return file_get_contents($filePath);
+    }
     public function agregar($data)
     {
         $biblioteca = new Biblioteca();

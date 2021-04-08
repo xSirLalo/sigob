@@ -94,8 +94,8 @@ class PredioController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = \array_merge_recursive(
-                $request->getFiles()->toArray(),
                 $request->getPost()->toArray(),
+                $request->getFiles()->toArray(),
             );
             // $data = $this->params()->fromPost();
             $archivoUrl = (array) $this->params()->fromFiles('archivo');

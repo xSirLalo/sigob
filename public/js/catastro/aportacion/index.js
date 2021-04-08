@@ -48,9 +48,11 @@ $(document).ready(function() {
                     targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
-                    $actionBtn = `
-                            <a type="button" class="btn btn-primary" href="/aportacion/pdf/` + row['idAportacion'] + `" disabled> Imprimir</a>
-                        `;
+                        if( row['Estatus'] == 2 || row['Estatus'] == 1 ){
+                            $actionBtn = '';
+                        }else {
+                            $actionBtn = `<a type="button" class="btn btn-primary" href="/aportacion/pdf/` + row['idAportacion'] + `" disabled> Imprimir</a> `;
+                        }
                         return $actionBtn;
                     }
                 }

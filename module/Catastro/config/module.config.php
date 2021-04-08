@@ -308,11 +308,10 @@ return [
                         'options' => [
                             'route' => '/ver-archivo[/:archivo]',
                             'constraints' => [
-                                'predio' => '[0-9]+',
-                                'archivo' => '[0-9]+',
+                                'archivo' => '[a-zA-Z][a-zA-Z0-9_-]*'
                             ],
                             'defaults' => [
-                                'action' => 'viewFile',
+                                'action' => 'index',
                             ],
                         ],
                     ],
@@ -321,7 +320,6 @@ return [
                         'options' => [
                             'route' => '/descargar-archivo[/:archivo]',
                             'constraints' => [
-                                'predio' => '[0-9]+',
                                 'archivo' => '[0-9]+',
                             ],
                             'defaults' => [
@@ -332,6 +330,7 @@ return [
                     'eliminar-archivo' => [
                         'type' => 'segment',
                         'options' => [
+
                             'route' => '/eliminar-archivo[/:predio[/:archivo]]',
                             'constraints' => [
                                 'predio' => '[0-9]+',
@@ -640,7 +639,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'datatable', 'searchCatastral', 'autofillCatastral'], 'allow' => '*']
             ],
             Controller\BibliotecaController::class => [
-                ['actions' => ['index', 'add', 'view', 'deleteFile', 'downloadFile'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'deleteFile', 'downloadFile', 'viewFile'], 'allow' => '*']
             ],
             Controller\BibliotecaCategoriaController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
