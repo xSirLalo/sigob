@@ -177,7 +177,82 @@ class BibliotecaController extends AbstractActionController
         return new ViewModel(['resultados' => $resultados, 'contribuyenteId' => $contribuyenteId]);
     }
 
+    public function viewFileAction()
+    {
+    }
+
     public function deleteFileAction()
+    {
+        $id = (int)$this->params()->fromRoute('predio', -1);
+        $archivoId = (int)$this->params()->fromRoute('archivo', -1);
+
+        if ($id < 0 || $archivoId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+        }
+
+        $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
+
+        if ($id == null || $archivoId == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+        }
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->delete('Catastro\Entity\ArchivoPredio', 'ap')
+            ->where($qb->expr()->eq('ap.idPredio', ':idParam1'))
+            ->andWhere($qb->expr()->eq('ap.idArchivo', ':idParam2'))
+            ->setParameter('idParam1', $id)
+            ->setParameter('idParam2', $archivoId);
+        $qb->getQuery()->execute();
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->delete('Catastro\Entity\Archivo', 'a')
+            ->Where($qb->expr()->eq('a.idArchivo', ':idParam2'))
+            ->setParameter('idParam2', $archivoId);
+        $qb->getQuery()->execute();
+
+        \unlink('public/img/'. $file->getUrl());
+        $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
+        // return $this->redirect()->toRoute('biblioteca/ver', ['id' => $id]);
+        return $this->redirect()->toRoute('predio/ver', ['id' => $id]);
+    }
+
+    public function downloadFileAction()
+    {
+        $archivoId = (int)$this->params()->fromRoute('archivo', -1);
+
+        $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
+
+        if ($archivoId == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+        }
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->select('Catastro\Entity\Archivo', 'a')
+            ->andWhere($qb->expr()->eq('a.idArchivo', ':idParam2'))
+            ->setParameter('idParam2', $archivoId);
+        $qb->getQuery();
+
+        $file = 'public/img/'. $file->getUrl();
+
+        $response = new Stream();
+        $response->setStream(fopen($file, 'r'));
+        $response->setStatusCode(200);
+        $response->setStreamName(basename($file));
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="' . basename($file) .'"',
+            'Content-Type' => 'application/octet-stream',
+            'Content-Length' => filesize($file)
+        ));
+        $response->setHeaders($headers);
+        return $response;
+    }
+
+    public function deleteFile2Action()
     {
         $id = (int)$this->params()->fromRoute('predio', -1);
         $archivoId = (int)$this->params()->fromRoute('archivo', -1);
@@ -216,7 +291,7 @@ class BibliotecaController extends AbstractActionController
         return $this->redirect()->toRoute('predio/ver', ['id' => $id]);
     }
 
-    public function downloadFileAction()
+    public function downloadFile2Action()
     {
         $contribuyenteId = (int)$this->params()->fromRoute('contribuyente', -1);
         $archivoId = (int)$this->params()->fromRoute('archivo', -1);

@@ -49,9 +49,7 @@ $(document).ready(function() {
                     orderable: false,
                     render: function(data, type, row, meta){
                     $actionBtn = `
-                        <div class="btn-group">
-                            <a href="/aportacion/pdf/` + row['idAportacion'] + `"> <button class="btn btn-primary"> Imprimir</button> </a>
-                        </div>
+                            <a type="button" class="btn btn-primary" href="/aportacion/pdf/` + row['idAportacion'] + `" disabled> Imprimir</a>
                         `;
                         return $actionBtn;
                     }

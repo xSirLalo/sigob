@@ -303,6 +303,32 @@ return [
                             ],
                         ],
                     ],
+                    'ver-archivo' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/ver-archivo[/:archivo]',
+                            'constraints' => [
+                                'predio' => '[0-9]+',
+                                'archivo' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'viewFile',
+                            ],
+                        ],
+                    ],
+                    'descargar-archivo' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/descargar-archivo[/:archivo]',
+                            'constraints' => [
+                                'predio' => '[0-9]+',
+                                'archivo' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'downloadFile',
+                            ],
+                        ],
+                    ],
                     'eliminar-archivo' => [
                         'type' => 'segment',
                         'options' => [
@@ -313,19 +339,6 @@ return [
                             ],
                             'defaults' => [
                                 'action' => 'deleteFile',
-                            ],
-                        ],
-                    ],
-                    'imprimir-archivo' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/imprimir-archivo[/:predio[/:archivo]]',
-                            'constraints' => [
-                                'predio' => '[0-9]+',
-                                'archivo' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'downloadFile',
                             ],
                         ],
                     ],
