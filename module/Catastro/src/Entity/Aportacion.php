@@ -36,6 +36,13 @@ class Aportacion
     private $fecha;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="fecha_adquicision", type="date", nullable=true)
+     */
+    private $fechaAdquicision;
+
+    /**
      * @var float|null
      *
      * @ORM\Column(name="metros_terreno", type="float", precision=10, scale=0, nullable=true)
@@ -111,6 +118,13 @@ class Aportacion
      * @ORM\Column(name="observaciones", type="text", length=65535, nullable=true)
      */
     private $observaciones;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="factura", type="string", length=255, nullable=true)
+     */
+    private $factura;
 
     /**
      * @var \DateTime|null
@@ -204,6 +218,30 @@ class Aportacion
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * Set fechaAdquicision.
+     *
+     * @param \DateTime|null $fechaAdquicision
+     *
+     * @return Aportacion
+     */
+    public function setFechaAdquicision($fechaAdquicision = null)
+    {
+        $this->fechaAdquicision = $fechaAdquicision;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaAdquicision.
+     *
+     * @return \DateTime|null
+     */
+    public function getFechaAdquicision()
+    {
+        return $this->fechaAdquicision;
     }
 
     /**
@@ -468,6 +506,30 @@ class Aportacion
     public function getObservaciones()
     {
         return $this->observaciones;
+    }
+
+    /**
+     * Set factura.
+     *
+     * @param string|null $factura
+     *
+     * @return Aportacion
+     */
+    public function setFactura($factura = null)
+    {
+        $this->factura = $factura;
+
+        return $this;
+    }
+
+    /**
+     * Get factura.
+     *
+     * @return string|null
+     */
+    public function getFactura()
+    {
+        return $this->factura;
     }
 
     /**

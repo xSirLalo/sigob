@@ -104,4 +104,76 @@ class OperGobServiceAdapter{
         return $respuesta->GetPersonaLikeNameResult;
     }
 
+    public function AddSolicitud($cvpersona) {
+
+        $hoy = new \DateTime("now");
+        $fecha_hoy = new \DateTime("now");
+        $fecha_vence = $fecha_hoy->add(\DateInterval::createFromDateString('20 day'));
+        $respuesta = array();
+
+        $parametros = [
+            "CveFteMT"                  => 'MTULUM',
+            "GrupoTramiteId"            => "3", //***
+            "TramiteId"                 => "4", //***
+            "SolicitudId"               => "0",
+            "SolicitudEstado"           => "PP",
+            "SolicitudDescripcion"      => "",
+            "SolicitudFecha"            => $hoy->format("Y-m-d")."T".$hoy->format("h:i:s"),
+            "SolicitudCantidad"         => "0.00",
+            "SolicitudRedondear"        => "",
+            "CvePersona"                => $cvpersona, //***
+            "SolicitudVencimientoFecha" => $fecha_vence->format("Y-m-d")."T".$fecha_vence->format("h:i:s"),
+            "SolicitudUsuario"          => "SOPORTE2",
+            "SolicitudObservaciones"    => "",
+            "SolicitudPadronId"         => "0",
+            "SolicitudTipoIngreso"      => "",
+        ];
+
+        $client = new Client();
+        $client->setWsdl(self::URI_SERVICE_OPER);
+        $client->setOptions([
+            "soap_version"  => SOAP_1_1,
+            'encoding'      => 'UTF-8',
+        ]);
+
+        $respuesta = $client->AddSolicitud(array("solicitud"=>$parametros));
+        return $respuesta->AddSolicitudResult;
+    }
+
+    public function SolicitudFuentaIngreso($idSolicitud, $importe) {
+
+        $respuesta = array();
+        $parametros = [
+                    'CveFteMT'                        => 'MTULUM',
+                    'GrupoTramiteId'                  => "3", //**
+                    'TramiteId'                       => "4", //**
+                    'SolicitudId'                     => $idSolicitud, //**
+                    'SolicitudDetalleId'              => "1",
+                    'SolicitudDetalleProtege'         => "S",
+                    'SolicitudDetallePermiteEliminar' => "",
+                    'SolicitudDetalleCantidad'        => 1.00,
+                    'SolicitudDetallePrincipal'       => 0,
+                    'SolicitudDetalleFteIngId'        => "4306020103", //**
+                    'SolicitudDetalleImporteFijo'     => $importe, //**
+                    'SolicitudDetalleEjericicio'      => "0",
+                    'SolicitudDetallePeriodo'         => "0",
+                    'SolicitudDetalleImporteUnitario' => 0,
+                    //'SolicitudDetalleFteIngPermiteModificar'=> 0,
+                    'SolicitudDetalleDescuento'       => "",
+                    //'SolicitudDetalleFteIngDescuento' => "",
+                    'SolicitudDetallePrincipalClave'  => 0,
+                    //'SolicitudDetalleFecha'           => "",
+                    //'SolicitudDetalleCveTerapeuta'    => "",
+                ];
+
+        $client = new Client();
+        $client->setWsdl(self::URI_SERVICE_OPER);
+        $client->setOptions([
+            "soap_version"  => SOAP_1_1,
+            'encoding'      => 'UTF-8',
+        ]);
+        $respuesta = $client->AddSolicitudFuenteIngreso(array("fuente_ingreso"=>$parametros));
+        return $respuesta->AddSolicitudFuenteIngresoResult;
+    }
+
 }

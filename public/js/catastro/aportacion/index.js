@@ -45,17 +45,32 @@ $(document).ready(function() {
             ],
             columnDefs: [
                 {
+                    targets: 5,
+                    orderable: false,
+                    render: function(data, type, row, meta){
+                        if( row['Estatus'] == 1 ){
+                            $actionBtn = `<span class="badge badge-light-success">Verificado</span>`;
+                        }else if(row['Estatus'] == 2){
+                            $actionBtn = `<span class="badge badge-light-danger">Cancelado</span>`;
+                        }
+                        else {
+                            $actionBtn = `<span class="badge badge-light-warning">En Proceso</span>`;
+                        }
+                        return $actionBtn;
+                    },
+                },
+                {
                     targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
-                        if( row['Estatus'] == 2 || row['Estatus'] == 1 ){
-                            $actionBtn = '';
+                        if( row['Estatus'] == 2 || row['Estatus'] == 3 ){
+                            $actionBtn = `<a href="/aportacion/pdff/` + row['idAportacion'] + `"> <button type="button="class="btn btn-primary" disabled>Imprimir</button></a> `;
                         }else {
-                            $actionBtn = `<a type="button" class="btn btn-primary" href="/aportacion/pdf/` + row['idAportacion'] + `" disabled> Imprimir</a> `;
+                            $actionBtn = `<a href="/aportacion/pdff/` + row['idAportacion'] + `"> <button type="button="class="btn btn-primary" >Imprimir</button></a> `;
                         }
                         return $actionBtn;
-                    }
-                }
+                    },
+                },
             ],
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"

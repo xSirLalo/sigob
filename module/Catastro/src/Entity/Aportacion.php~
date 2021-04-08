@@ -36,6 +36,13 @@ class Aportacion
     private $fecha;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="fecha_adquicision", type="date", nullable=true)
+     */
+    private $fechaAdquicision;
+
+    /**
      * @var float|null
      *
      * @ORM\Column(name="metros_terreno", type="float", precision=10, scale=0, nullable=true)
@@ -111,6 +118,13 @@ class Aportacion
      * @ORM\Column(name="observaciones", type="text", length=65535, nullable=true)
      */
     private $observaciones;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="factura", type="string", length=255, nullable=true)
+     */
+    private $factura;
 
     /**
      * @var \DateTime|null
