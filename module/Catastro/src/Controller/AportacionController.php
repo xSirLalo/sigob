@@ -418,13 +418,27 @@ class AportacionController extends AbstractActionController
 
             $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($id);
             $data = [
-                'titular'          =>  $aportacion->getIdPredio()->getTitular(),
-                'ubicacion'        =>  $aportacion->getIdPredio()->getUbicacion(),
-                'titular_anterior' =>  $aportacion->getIdPredio()->getTitularAnterior(),
-                'id_predio'        =>  $aportacion->getIdPredio()->getIdPredio(),
-                'cvlCatastral'     =>  $aportacion->getIdPredio()->getClaveCatastral(),
+                'parcela'           =>  $aportacion->getIdPredio()->getParcela(),
+                'lote'              =>  $aportacion->getIdPredio()->getLote(),
+                'local'             =>  $aportacion->getIdPredio()->getLocal(),
+                'categoria'         =>  $aportacion->getIdPredio()->getCategoria(),
+                'condicion'         =>  $aportacion->getIdPredio()->getCondicion(),
+                'titular'           =>  $aportacion->getIdPredio()->getTitular(),
+                'ubicacion'         =>  $aportacion->getIdPredio()->getUbicacion(),
+                'localidad'         =>  $aportacion->getIdPredio()->getLocalidad(),
+                'antecedentes'      =>  $aportacion->getIdPredio()->getAntecedentes(),
+                'regimenPropiedad'  =>  $aportacion->getIdPredio()->getRegimenPropiedad(),
+                'titular_anterior'  =>  $aportacion->getIdPredio()->getTitularAnterior(),
+                'id_predio'         =>  $aportacion->getIdPredio()->getIdPredio(),
+                'cvlCatastral'      =>  $aportacion->getIdPredio()->getClaveCatastral(),
 
                 'idcontribuyente' =>  $contribuyente->getIdContribuyente(),
+                'contribuyente'   =>  $contribuyente->getNombre(),
+                'giroComercial'   =>  $contribuyente->getGiroComercial(),
+                'nombreComercial' =>  $contribuyente->getNombreComercial(),
+                'rfc'             =>  $contribuyente->getRfc(),
+                'tenencia'        =>  $contribuyente->getTenencia(),
+                'usoDestino'      =>  $contribuyente->getUsoDestino(),
 
                 'norte'            =>  $medidas[0],
                 'sur'              =>  $medidas[1],
@@ -731,7 +745,7 @@ class AportacionController extends AbstractActionController
                 <th colspan ="4">MEDIDAS Y COLINDANCIAS</th>
                 </tr>
                 <tr>
-                    <th rowspan="4" colspan ="2">'.$predio->getAntecedentes().'</th>
+                    <th rowspan="4" colspan ="2"><font size="7"><br><br><br>'.$predio->getAntecedentes().'</font></th>
                     <th>AL NORTE:</th>
                     <th><font size="7">'.$medidas[0].'</font></th>
                     <th>CON:</th>
@@ -761,9 +775,9 @@ class AportacionController extends AbstractActionController
                 <th colspan ="2">TITULAR ANTERIOR</th>
                 </tr>
                 <tr>
-                    <th colspan ="2">'.$predio->getRegimenPropiedad().'<font size="7"></font></th>
-                    <th colspan ="2">'.$predio->getFechaAdquicision()->format('d-m-Y').'<font size="7"></font></th>
-                    <th colspan ="2">'.$predio->getTitularAnterior().'<font size="7"></font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getRegimenPropiedad().'</font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getFechaAdquicision()->format('d-m-Y').'</font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getTitularAnterior().'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" >REGISTRO FISCAL</th>
@@ -831,7 +845,7 @@ class AportacionController extends AbstractActionController
                 <th colspan ="6" >OBSERVACIONES</th>
                 </tr>
                 <tr>
-                <th colspan ="6" ><font size="7">'.$predio->getObservaciones().'</font></th>
+                <th colspan ="6" ><font size="7">'.$aportacion->getObservaciones().'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" ></th>

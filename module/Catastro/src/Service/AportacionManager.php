@@ -100,7 +100,6 @@ class AportacionManager
         $fecha_adquicision = new \DateTime($data['fecha_adquisicion']);
         $predio->setFechaAdquicision($fecha_adquicision);
         $predio->setTitularAnterior($data['titular_anterior']);
-        $predio->setObservaciones($data['observaciones']);
 
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
@@ -151,6 +150,7 @@ class AportacionManager
         $aportacion ->setEstatus($data['status']);//Estatus
         $fecha = new \DateTime($data['vig']);//fecha
         $aportacion->setFecha($fecha);
+        $aportacion->setObservaciones($data['observaciones']);
         $aportacion->setMetrosTerreno($data['terreno']);//Metros2 Terrreno
         $aportacion->setValorZona($data['valor_m2_zona']);//Valor Zona
         $valor_terreno = $data['terreno'] * $data['valor_m2_zona'];
@@ -344,7 +344,7 @@ class AportacionManager
                 <th colspan ="4">MEDIDAS Y COLINDANCIAS</th>
                 </tr>
                 <tr>
-                    <th rowspan="4" colspan ="2">'.$predio->getAntecedentes().'</th>
+                    <th rowspan="4" colspan ="2"><br><br><br><font size="7">'.$predio->getAntecedentes().'</font></th>
                     <th>AL NORTE:</th>
                     <th><font size="7">'.$medidas[0].'</font></th>
                     <th>CON:</th>
@@ -374,9 +374,9 @@ class AportacionManager
                 <th colspan ="2">TITULAR ANTERIOR</th>
                 </tr>
                 <tr>
-                    <th colspan ="2">'.$predio->getRegimenPropiedad().'<font size="7"></font></th>
-                    <th colspan ="2">'.$predio->getFechaAdquicision()->format('d-m-Y').'<font size="7"></font></th>
-                    <th colspan ="2">'.$predio->getTitularAnterior().'<font size="7"></font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getRegimenPropiedad().'</font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getFechaAdquicision()->format('d-m-Y').'</font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getTitularAnterior().'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" >REGISTRO FISCAL</th>
@@ -444,7 +444,7 @@ class AportacionManager
                 <th colspan ="6" >OBSERVACIONES</th>
                 </tr>
                 <tr>
-                <th colspan ="6" ><font size="7">'.$predio->getObservaciones().'</font></th>
+                <th colspan ="6" ><font size="7">'.$aportacion->getObservaciones().'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" ></th>

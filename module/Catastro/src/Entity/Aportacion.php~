@@ -106,6 +106,13 @@ class Aportacion
     private $pago;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="observaciones", type="text", length=65535, nullable=true)
+     */
+    private $observaciones;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
