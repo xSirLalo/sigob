@@ -71,13 +71,13 @@
                                 <div class="form-group">
                                 <!-- Select Valores de Construccion -->
                                     <label class="form-label">VALORES DE CONSTRUCCIÓN</label>
-                                    <select class="js-example-basic-single form-control"   name="select_valor_construccion" id="valor_c" onchange="valorC()">
+                                <select class="js-example-basic-single form-control"   name="select_valor_construccion" id="valor_c" onchange="valorC()">
                                 <option value="0">Seleccione uno...</option>
                                 <?php if ($valorConstruccions): ?>
                                             <?php foreach ($valorConstruccions as $valorConstruccion):?>
                                             <optgroup label=<?= $valorConstruccion->getGrupo()?> >
                                             <option value="<?= $valorConstruccion->getCosto()?>"><?= $valorConstruccion->getCaracteristicas() ?></option>
-                                        </optgroup>
+                                            </optgroup>
                                         <?php endforeach; ?>
                                         <?php endif; ?>
                                 </select>

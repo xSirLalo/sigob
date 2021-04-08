@@ -149,10 +149,24 @@ $('.js-data-example-ajax2').change(function(){
     success: function(data)
     {
     console.log(data);
+        $('[name ="parcela"]').val(data.parcela);
+        $('[name ="manzana"]').val(data.manzana);
+        $('[name ="lote"]').val(data.lote);
+        $('[name ="local"]').val(data.local);
+        $('[name ="categoria"]').val(data.categoria);
+        $('[name ="condicion"]').val(data.condicion);
         $('[name ="titular"]').val(data.titular);
+        $('[name ="ubicacion"]').val(data.ubicacion);
+        $('[name ="antecedentes"]').val(data.antecedentes);
+        $('[name ="regimen_propiedad"]').val(data.regimenPropiedad);
+        $('[name ="contribuyente"]').val(data.contribuyente);
+        $('[name ="giro_comercial"]').val(data.giroComercial);
+        $('[name ="nombre_comercial"]').val(data.nombreComercial);
+        $('[name ="tenencia"]').val(data.tenencia);
+        $('[name ="rfc"]').val(data.rfc);
+        $('[name ="uso_destino"]').val(data.usoDestino);
         $('[name ="n_region"]').val(data.n_region);
         $('[name ="lote"]').val(data.lote);
-        $('[name ="ubicacion"]').val(data.ubicacion);
         $('[name ="localidad"]').val(data.localidad);
         $('[name ="d_propiedad"]').val(data.d_propiedad);
         $('[name ="d_arrendamiento"]').val(data.d_arrendamiento);

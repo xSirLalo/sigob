@@ -27,6 +27,8 @@ $(document).ready(function () {
                     console.log('Subimit...');
                     if (willDelete) form.submit();
                     swal("Descargando...", {
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
                         icon: "success",
                     }).then((willOk) => {
                         console.log('Redirect...');
@@ -34,6 +36,8 @@ $(document).ready(function () {
                     });
                 } else {
                     swal("Aportacion cancelada!", {
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
                         icon: "error",
                     }).then((willCancel) => {
                         // if (willCancel)  window.location = "/aportacion";
@@ -214,7 +218,7 @@ function filterFloat(evt,input){
 
 }
 function filter(__val__){
-    var preg = /^([0-9]+\.?[0-9]{0,3})$/;
+    var preg = /^([0-9]+\.?[0-9]{0,5})$/;
     if(preg.test(__val__) === true){
         return true;
     }else{

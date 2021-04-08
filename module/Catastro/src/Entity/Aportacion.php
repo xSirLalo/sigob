@@ -106,6 +106,13 @@ class Aportacion
     private $pago;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="observaciones", type="text", length=65535, nullable=true)
+     */
+    private $observaciones;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
@@ -437,6 +444,30 @@ class Aportacion
     public function getPago()
     {
         return $this->pago;
+    }
+
+    /**
+     * Set observaciones.
+     *
+     * @param string|null $observaciones
+     *
+     * @return Aportacion
+     */
+    public function setObservaciones($observaciones = null)
+    {
+        $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones.
+     *
+     * @return string|null
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
     }
 
     /**
