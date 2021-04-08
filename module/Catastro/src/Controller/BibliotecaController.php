@@ -224,7 +224,6 @@ class BibliotecaController extends AbstractActionController
         if ($contribuyenteId < 0 || $archivoId < 0) {
             $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
         }
 
         $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
@@ -232,7 +231,6 @@ class BibliotecaController extends AbstractActionController
         if ($contribuyenteId == null || $archivoId == null) {
             $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
         }
 
         $qb = $this->entityManager->createQueryBuilder();

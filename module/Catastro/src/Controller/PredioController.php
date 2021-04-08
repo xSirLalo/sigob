@@ -59,20 +59,20 @@ class PredioController extends AbstractActionController
 
         foreach ($query as $r) {
             $data[] = [
-                    'idPredio'          => $r->getIdPredio(),
-                    'claveCatastral'          => $r->getClaveCatastral(),
-                    'contribuyente' => $r->getIdContribuyente()->getNombre(),
-                    'titular' => $r->getTitular(),
-                    'ubicacion'          => $r->getLocalidad(),
-                    'opciones'        => "Cargando..."
-                ];
+                'idPredio'       => $r->getIdPredio(),
+                'claveCatastral' => $r->getClaveCatastral(),
+                'contribuyente'  => $r->getIdContribuyente()->getNombre(),
+                'titular'        => $r->getTitular(),
+                'ubicacion'      => $r->getLocalidad(),
+                'opciones'       => "Cargando..."
+            ];
         }
         $result = [
-                    "draw"            => 1,
-                    "recordsTotal"    => count($data),
-                    "recordsFiltered" => count($data),
-                    'aaData'            => $data,
-                ];
+            "draw"            => 1,
+            "recordsTotal"    => count($data),
+            "recordsFiltered" => count($data),
+            'aaData'            => $data,
+        ];
 
         // return $response->setContent(json_encode($result));
 
