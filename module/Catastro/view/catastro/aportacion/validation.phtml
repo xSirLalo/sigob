@@ -57,6 +57,7 @@ $this->inlineScript()
                                 <td><?= $aportacion->getFecha()->format('d-m-Y');  ?></td>
                                 <td>
                                     <div class="row">
+                                    <?php if ($aportacion->getEstatus() == 3) {?>
                                         <!-- <a href="" class="btn btn-primary">Ver</a> -->
                                         <a href="<?= $this->url('aportacion/pdfdirrector', ['action' => 'pdfdirrector', 'id' => $aportacion->getIdAportacion()]); ?>"><button type="button="class="btn btn-primary">ver</button></a>
                                         <!-- <button type="button" class="btn btn-secondary" id="button" data-toggle="modal" data-target="#myModal">
@@ -79,7 +80,17 @@ $this->inlineScript()
                                         <div class="text-danger">
                                             <?= $this->formElementErrors($form->get('csrf')); ?>
                                         </div>
-                                        <?= $this->formButton($form->get('confirmar')->setAttributes(['class' => 'btn btn-danger'])->setOptions(['label' => '<i class="feather mr-2 icon-check-circle"></i> Cancelar', 'label_options' => ['disable_html_escape' => true,]])); ?>
+                                        <?= $this->formButton($form->get('confirmar')->setAttributes(['class' => 'btn btn-danger '])->setOptions(['label' => '<i class="feather mr-2 icon-x-circle"></i> Cancelar', 'label_options' => ['disable_html_escape' => true,]])); ?>
+                                        <?php
+                                        }else{
+                                        ?>
+                                        <a href="<?= $this->url('aportacion/pdfdirrector', ['action' => 'pdfdirrector', 'id' => $aportacion->getIdAportacion()]); ?>"><button type="button="class="btn btn-primary">ver</button></a>
+                                        <a href="<?= $this->url('aportacion/editar', ['action' => 'editar', 'id' => $aportacion->getIdAportacion()]); ?>" data-toggle="modal"  onclick="edit_validation('<?= $aportacion->getIdAportacion() ?>')"><button type="button"class="btn btn-secondary"disabled >Modificar</button></a>
+                                        <?= $this->formButton($form->get('confirmar')->setAttributes(['class' => 'btn btn-success', 'disabled' => 'true'])->setOptions(['label' => '<i class="feather mr-2 icon-check-circle"></i> Confirmar', 'label_options' => ['disable_html_escape' => true,]])); ?>
+                                        <?= $this->formButton($form->get('confirmar')->setAttributes(['class' => 'btn btn-danger ', 'disabled' => 'true'])->setOptions(['label' => '<i class="feather mr-2 icon-x-circle"></i> Cancelar', 'label_options' => ['disable_html_escape' => true,]])); ?>
+                                        <?php
+                                        }
+                                        ?>
                                         <?= $this->form()->closeTag(); ?>
                                     </div>
                             </tr>

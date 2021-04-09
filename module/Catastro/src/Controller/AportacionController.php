@@ -64,11 +64,12 @@ class AportacionController extends AbstractActionController
 
         foreach ($query as $r) {
             $data[] = [
+                    'idSolicitud'   => $r->getIdSolicitud(),
                     'idAportacion'  => $r->getIdAportacion(),
                     'Contribuyente' => $r->getIdContribuyente()->getNombre(),
                     'Titular'       => $r->getIdPredio()->getTitular(),
                     'Vigencia'      => $r->getFecha()->format('d-m-Y'),
-                    'Pago'          => "$ ".$r->getPago(),
+                    'Pago'          => "$ ".number_format($r->getPago()),
                     'Estatus'       => $r->getEstatus(),
                     'Opciones'      => "Cargando..."
                 ];
@@ -746,27 +747,27 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th rowspan="4" colspan ="2"><font size="7"><br><br><br>'.$predio->getAntecedentes().'</font></th>
-                    <th>AL NORTE:</th>
+                    <th><font size="7">AL NORTE:</font></th>
                     <th><font size="7">'.$medidas[0].'</font></th>
-                    <th>CON:</th>
+                    <th><font size="7">CON:</font></th>
                     <th><font size="7">'.$descripcion[0].'</font></th>
                 </tr>
                 <tr>
-                    <th>AL SUR:</th>
+                    <th><font size="7">AL SUR:</font></th>
                     <th><font size="7">'.$medidas[1].'</font></th>
-                    <th>CON:</th>
+                    <th><font size="7">CON:</font></th>
                     <th><font size="7">'.$descripcion[1].'</font></th>
                 </tr>
                 <tr>
-                    <th>AL ESTE:</th>
+                    <th><font size="7">AL ESTE:</font></th>
                     <th><font size="7">'.$medidas[2].'</font></th>
-                    <th>CON:</th>
+                    <th><font size="7">CON:</font></th>
                     <th><font size="7">'.$descripcion[2].'</font></th>
                 </tr>
                 <tr>
-                    <th>AL OESTE</th>
+                    <th><font size="7">AL OESTE</font></th>
                     <th><font size="7">'.$medidas[3].'</font></th>
-                    <th>CON:</th>
+                    <th><font size="7">CON:</font></th>
                     <th><font size="7">'.$descripcion[3].'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
@@ -776,7 +777,7 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$predio->getRegimenPropiedad().'</font></th>
-                    <th colspan ="2"><font size="7">'.$predio->getFechaAdquicision()->format('d-m-Y').'</font></th>
+                    <th colspan ="2"><font size="7">'.$aportacion->getFechaAdquicision()->format('d-m-Y').'</font></th>
                     <th colspan ="2"><font size="7">'.$predio->getTitularAnterior().'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
@@ -790,7 +791,7 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$contribuyente->getNombre().'</font></th>
-                    <th colspan ="1"><font size="7">'.$contribuyente->getFactura().'</font></th>
+                    <th colspan ="1"><font size="7">'.$aportacion->getFactura().'</font></th>
                     <th colspan ="1"><font size="7">'.$contribuyente->getGiroComercial().'</font></th>
                     <th colspan ="2"><font size="7">'.$contribuyente->getNombreComercial().'</font></th>
                 </tr>

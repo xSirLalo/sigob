@@ -24,6 +24,13 @@ class Aportacion
     /**
      * @var int|null
      *
+     * @ORM\Column(name="id_solicitud", type="bigint", nullable=true)
+     */
+    private $idSolicitud;
+
+    /**
+     * @var int|null
+     *
      * @ORM\Column(name="estatus", type="integer", nullable=true, options={"default"="3"})
      */
     private $estatus = 3;
@@ -170,6 +177,30 @@ class Aportacion
     public function getIdAportacion()
     {
         return $this->idAportacion;
+    }
+
+    /**
+     * Set idSolicitud.
+     *
+     * @param int|null $idSolicitud
+     *
+     * @return Aportacion
+     */
+    public function setIdSolicitud($idSolicitud = null)
+    {
+        $this->idSolicitud = $idSolicitud;
+
+        return $this;
+    }
+
+    /**
+     * Get idSolicitud.
+     *
+     * @return int|null
+     */
+    public function getIdSolicitud()
+    {
+        return $this->idSolicitud;
     }
 
     /**

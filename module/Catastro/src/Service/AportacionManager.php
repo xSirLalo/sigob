@@ -97,8 +97,8 @@ class AportacionManager
         $predio->setAntecedentes($data['antecedentes']);
         $predio->setClaveCatastral($data['clave_catastral']);
         $predio->setRegimenPropiedad($data['regimen_propiedad']);
-        $fecha_adquicision = new \DateTime($data['fecha_adquisicion']);
-        $predio->setFechaAdquicision($fecha_adquicision);
+        // $fecha_adquicision = new \DateTime($data['fecha_adquisicion']);
+        // $predio->setFechaAdquicision($fecha_adquicision);
         $predio->setTitularAnterior($data['titular_anterior']);
 
         $this->entityManager->persist($predio);
@@ -150,6 +150,8 @@ class AportacionManager
         $aportacion ->setEstatus($data['status']);//Estatus
         $fecha = new \DateTime($data['vig']);//fecha
         $aportacion->setFecha($fecha);
+        $fecha_adquicision = new \DateTime($data['fecha_adquisicion']);
+        $aportacion->setFechaAdquicision($fecha_adquicision);
         $aportacion->setObservaciones($data['observaciones']);
         $aportacion->setMetrosTerreno($data['terreno']);//Metros2 Terrreno
         $aportacion->setValorZona($data['valor_m2_zona']);//Valor Zona
@@ -165,6 +167,7 @@ class AportacionManager
         $aportacion->setEjercicioFiscal($data['ejercicio_f']);
         $pago_aportacion = $data['tasa_hidden']*$avaluo;
         $aportacion->setPago($pago_aportacion);//Pago aportacion
+        $aportacion->setFactura($data['factura']);
 
         $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
@@ -204,7 +207,7 @@ class AportacionManager
     {
 
         $contribuyente->setNombre($data['contribuyente']);
-        $contribuyente->setFactura($data['factura']);
+        // $contribuyente->setFactura($data['factura']);
         $contribuyente->setGiroComercial($data['giro_comercial']);
         $contribuyente->setNombreComercial($data['nombre_comercial']);
         $contribuyente->setTenencia($data['tenencia']);
@@ -375,7 +378,7 @@ class AportacionManager
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$predio->getRegimenPropiedad().'</font></th>
-                    <th colspan ="2"><font size="7">'.$predio->getFechaAdquicision()->format('d-m-Y').'</font></th>
+                    <th colspan ="2"><font size="7">'.$aportacion->getFechaAdquicision()->format('d-m-Y').'</font></th>
                     <th colspan ="2"><font size="7">'.$predio->getTitularAnterior().'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
@@ -389,7 +392,7 @@ class AportacionManager
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$contribuyente->getNombre().'</font></th>
-                    <th colspan ="1"><font size="7">'.$contribuyente->getFactura().'</font></th>
+                    <th colspan ="1"><font size="7">'.$aportacion->getFactura().'</font></th>
                     <th colspan ="1"><font size="7">'.$contribuyente->getGiroComercial().'</font></th>
                     <th colspan ="2"><font size="7">'.$contribuyente->getNombreComercial().'</font></th>
                 </tr>
@@ -485,9 +488,23 @@ class AportacionManager
 
     public function update($aportacion, $datos)
     {
+        if($datos['status']==1){
+        $cvpersona = $aportacion->getIdContribuyente()->getCvePersona();
+        $pagoAportacion = $aportacion->getPago();
+        $Addsolicitud = $this->opergobserviceadapter->AddSolicitud($cvpersona);
+        $idSolicitud = $Addsolicitud->IdEntity;
+        $FuenteIngreso = $this->opergobserviceadapter->SolicitudFuentaIngreso($idSolicitud, $pagoAportacion);
+        $aportacion->setIdSolicitud($idSolicitud);
         $aportacion->setEstatus($datos['status']);
-
         $this->entityManager->flush();
+        }
+
+        elseif($datos['status']==2){
+        $aportacion->setEstatus($datos['status']);
+        $this->entityManager->flush();
+        }
+
+
     }
 
     public function actualizar($aportacion, $data)

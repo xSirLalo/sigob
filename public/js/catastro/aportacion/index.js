@@ -64,9 +64,9 @@ $(document).ready(function() {
                     orderable: false,
                     render: function(data, type, row, meta){
                         if( row['Estatus'] == 2 || row['Estatus'] == 3 ){
-                            $actionBtn = `<a href="/aportacion/pdff/` + row['idAportacion'] + `"> <button type="button="class="btn btn-primary" disabled>Imprimir</button></a> `;
+                            $actionBtn = `<a href="#"> <button type="button="class="btn btn-primary" disabled>Imprimir</button></a> `;
                         }else {
-                            $actionBtn = `<a href="/aportacion/pdff/` + row['idAportacion'] + `"> <button type="button="class="btn btn-primary" >Imprimir</button></a> `;
+                            $actionBtn = `<a href="http://sistematulum.net:9000/TLANIA/oestadocuentapredialpase.aspx?MTULUM,2021,3,4,` + row['idSolicitud'] + `"> <button type="button="class="btn btn-primary" >Imprimir</button></a> `;
                         }
                         return $actionBtn;
                     },

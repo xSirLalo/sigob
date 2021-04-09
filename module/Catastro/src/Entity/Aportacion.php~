@@ -24,6 +24,13 @@ class Aportacion
     /**
      * @var int|null
      *
+     * @ORM\Column(name="id_solicitud", type="bigint", nullable=true)
+     */
+    private $idSolicitud;
+
+    /**
+     * @var int|null
+     *
      * @ORM\Column(name="estatus", type="integer", nullable=true, options={"default"="3"})
      */
     private $estatus = 3;
