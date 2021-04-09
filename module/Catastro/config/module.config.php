@@ -311,7 +311,7 @@ return [
                                 'archivo' => '[a-zA-Z][a-zA-Z0-9_-]*'
                             ],
                             'defaults' => [
-                                'action' => 'index',
+                                'action' => 'viewFile',
                             ],
                         ],
                     ],
@@ -327,17 +327,45 @@ return [
                             ],
                         ],
                     ],
-                    'eliminar-archivo' => [
+                    'eliminar-archivo-predio' => [
                         'type' => 'segment',
                         'options' => [
 
-                            'route' => '/eliminar-archivo[/:predio[/:archivo]]',
+                            'route' => '/eliminar-archivo-predio[/:predio[/:archivo]]',
                             'constraints' => [
                                 'predio' => '[0-9]+',
                                 'archivo' => '[0-9]+',
                             ],
                             'defaults' => [
                                 'action' => 'deleteFile',
+                            ],
+                        ],
+                    ],
+                    'eliminar-archivo-contribuyente' => [
+                        'type' => 'segment',
+                        'options' => [
+
+                            'route' => '/eliminar-archivo-contribuyente[/:contribuyente[/:archivo]]',
+                            'constraints' => [
+                                'contribuyente' => '[0-9]+',
+                                'archivo' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'deleteFile2',
+                            ],
+                        ],
+                    ],
+                    'eliminar-archivo-aportacion' => [
+                        'type' => 'segment',
+                        'options' => [
+
+                            'route' => '/eliminar-archivo-aportacion[/:aportacion[/:archivo]]',
+                            'constraints' => [
+                                'aportacion' => '[0-9]+',
+                                'archivo' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'deleteFile3',
                             ],
                         ],
                     ],
@@ -639,7 +667,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'datatable', 'searchCatastral', 'autofillCatastral'], 'allow' => '*']
             ],
             Controller\BibliotecaController::class => [
-                ['actions' => ['index', 'add', 'view', 'deleteFile', 'downloadFile', 'viewFile'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'deleteFile', 'deleteFile2', 'deleteFile3', 'downloadFile', 'viewFile'], 'allow' => '*']
             ],
             Controller\BibliotecaCategoriaController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']

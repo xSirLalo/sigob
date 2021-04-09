@@ -179,6 +179,71 @@ class BibliotecaController extends AbstractActionController
 
     public function viewFileAction()
     {
+        $fileName = $this->params()->fromQuery('name', '');
+
+        if (empty($fileName) || strlen($fileName)>128) {
+            throw new \Exception('File name is empty or too long');
+        }
+
+        $fileName = $this->bibliotecaManager->getFilePathByName($fileName);
+
+        $fileInfo = $this->bibliotecaManager->getFileInfo($fileName);
+        if ($fileInfo===false) {
+            // Set 404 Not Found status code
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Write HTTP headers.
+        $response = $this->getResponse();
+        $headers = $response->getHeaders();
+        $headers->addHeaderLine("Content-type: " . $fileInfo['type']);
+        $headers->addHeaderLine("Content-length: " . $fileInfo['size']);
+
+        $fileContent = $this->bibliotecaManager->getFileContent($fileName);
+        if ($fileContent!==false) {
+            $response->setContent($fileContent);
+        } else {
+            // Set 500 Server Error status code
+            $this->getResponse()->setStatusCode(500);
+            return;
+        }
+
+        return $this->getResponse();
+    }
+
+    public function downloadFileAction()
+    {
+        $archivoId = (int)$this->params()->fromRoute('archivo', -1);
+
+        $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
+
+        if ($archivoId == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+        }
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->select('Catastro\Entity\Archivo', 'a')
+            ->andWhere($qb->expr()->eq('a.idArchivo', ':idParam2'))
+            ->setParameter('idParam2', $archivoId);
+        $qb->getQuery();
+
+        $file = 'public/img/'. $file->getUrl();
+
+        $response = new Stream();
+        $response->setStream(fopen($file, 'r'));
+        $response->setStatusCode(200);
+        $response->setStreamName(basename($file));
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="' . basename($file) .'"',
+            'Content-Type' => 'application/octet-stream',
+            'Content-Length' => filesize($file)
+        ));
+        $response->setHeaders($headers);
+        return $response;
     }
 
     public function deleteFileAction()
@@ -218,49 +283,14 @@ class BibliotecaController extends AbstractActionController
         return $this->redirect()->toRoute('predio/ver', ['id' => $id]);
     }
 
-    public function downloadFileAction()
-    {
-        $archivoId = (int)$this->params()->fromRoute('archivo', -1);
-
-        $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
-
-        if ($archivoId == null) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-        }
-
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb ->select('Catastro\Entity\Archivo', 'a')
-            ->andWhere($qb->expr()->eq('a.idArchivo', ':idParam2'))
-            ->setParameter('idParam2', $archivoId);
-        $qb->getQuery();
-
-        $file = 'public/img/'. $file->getUrl();
-
-        $response = new Stream();
-        $response->setStream(fopen($file, 'r'));
-        $response->setStatusCode(200);
-        $response->setStreamName(basename($file));
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . basename($file) .'"',
-            'Content-Type' => 'application/octet-stream',
-            'Content-Length' => filesize($file)
-        ));
-        $response->setHeaders($headers);
-        return $response;
-    }
-
     public function deleteFile2Action()
     {
-        $id = (int)$this->params()->fromRoute('predio', -1);
+        $id = (int)$this->params()->fromRoute('contribuyente', -1);
         $archivoId = (int)$this->params()->fromRoute('archivo', -1);
 
         if ($id < 0 || $archivoId < 0) {
             $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            // return $response->setTemplate('error/404');
         }
 
         $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
@@ -268,12 +298,11 @@ class BibliotecaController extends AbstractActionController
         if ($id == null || $archivoId == null) {
             $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            // return $response->setTemplate('error/404');
         }
 
         $qb = $this->entityManager->createQueryBuilder();
-        $qb ->delete('Catastro\Entity\ArchivoPredio', 'ap')
-            ->where($qb->expr()->eq('ap.idPredio', ':idParam1'))
+        $qb ->delete('Catastro\Entity\ArchivoContribuyente', 'ap')
+            ->where($qb->expr()->eq('ap.idContribuyente', ':idParam1'))
             ->andWhere($qb->expr()->eq('ap.idArchivo', ':idParam2'))
             ->setParameter('idParam1', $id)
             ->setParameter('idParam2', $archivoId);
@@ -288,48 +317,6 @@ class BibliotecaController extends AbstractActionController
         \unlink('public/img/'. $file->getUrl());
         $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
         // return $this->redirect()->toRoute('biblioteca/ver', ['id' => $id]);
-        return $this->redirect()->toRoute('predio/ver', ['id' => $id]);
-    }
-
-    public function downloadFile2Action()
-    {
-        $contribuyenteId = (int)$this->params()->fromRoute('contribuyente', -1);
-        $archivoId = (int)$this->params()->fromRoute('archivo', -1);
-
-        if ($contribuyenteId < 0 || $archivoId < 0) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-        }
-
-        $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
-
-        if ($contribuyenteId == null || $archivoId == null) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-        }
-
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb ->select('Catastro\Entity\Archivo', 'a')
-            ->where($qb->expr()->eq('a.idContribuyente', ':idParam1'))
-            ->andWhere($qb->expr()->eq('a.idArchivo', ':idParam2'))
-            ->setParameter('idParam1', $contribuyenteId)
-            ->setParameter('idParam2', $archivoId);
-        $qb->getQuery();
-
-        $file = 'public/img/'. $file->getUrl();
-
-        $response = new Stream();
-        $response->setStream(fopen($file, 'r'));
-        $response->setStatusCode(200);
-        $response->setStreamName(basename($file));
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . basename($file) .'"',
-            'Content-Type' => 'application/octet-stream',
-            'Content-Length' => filesize($file)
-        ));
-        $response->setHeaders($headers);
-        return $response;
+        return $this->redirect()->toRoute('contribuyente/ver', ['id' => $id]);
     }
 }
