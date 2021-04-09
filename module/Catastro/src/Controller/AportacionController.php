@@ -69,7 +69,7 @@ class AportacionController extends AbstractActionController
                     'Contribuyente' => $r->getIdContribuyente()->getNombre(),
                     'Titular'       => $r->getIdPredio()->getTitular(),
                     'Vigencia'      => $r->getFecha()->format('d-m-Y'),
-                    'Pago'          => "$ ".number_format($r->getPago()),
+                    'Pago'          => "$ ".number_format($r->getPago(), 4),
                     'Estatus'       => $r->getEstatus(),
                     'Opciones'      => "Cargando..."
                 ];
