@@ -9,6 +9,7 @@ use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
 use Laminas\Filter;
+use Laminas\Validator;
 use Laminas\InputFilter\OptionalInputFilter;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
@@ -109,15 +110,26 @@ class PredioController extends AbstractActionController
 
                 $file_folder = $destination . '/' . $newName;
 
-                if (file_exists($file_folder)) {
-                    // FIXME: Vacio aun asi muestra el mensaje
-                    $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
-                    return $this->redirect()->toRoute('predio/agregar');
-                }
+                // if (file_exists($file_folder)) {
+                //     // FIXME: Vacio aun asi muestra el mensaje
+                //     $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
+                //     return $this->redirect()->toRoute('predio/agregar');
+                // }
 
                 $inputFilter = new OptionalInputFilter();
                 $inputFilter->add([
                     'name' => 'archivo',
+                    'required' => true,
+                    'validators' => [
+                        ['name' => Validator\NotEmpty::class],
+                        [
+                            'name' => Validator\File\Size::class,
+                            'options' => [
+                                'min' => '3kB',
+                                'max' => '15MB'
+                            ],
+                        ],
+                    ],
                     'filters' => [
                         [
                             'name' => Filter\File\Rename::class,
@@ -136,8 +148,8 @@ class PredioController extends AbstractActionController
                 $archivoUrl = (array) $this->params()->fromFiles('archivo');
                 $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
 
-                $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
-                $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
+                $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+                $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
 
                 $num = (int) count($archivoUrl);
                 for ($i=0; $i < $num; $i++) {
@@ -162,15 +174,14 @@ class PredioController extends AbstractActionController
                     if ($archivito) {
                         $this->bibliotecaManager->guardarRelacionAP($id, $archivito);
                     }
-
-                    $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
-                    if ($predio) {
-                        $this->predioManager->actualizarPredio($predio, $data);
-                        $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
-                    } else {
-                        $this->predioManager->guardarPredio($data);
-                        $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                    }
+                }
+                $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
+                if ($predio) {
+                    $this->predioManager->actualizarPredio($predio, $data);
+                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
+                } else {
+                    $this->predioManager->guardarPredio($data);
+                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                 }
                 // $data = $form->getData();
 

@@ -36,9 +36,9 @@ $form->prepare();
         <div class="card-body">
             <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form); ?>
-                <div class="form-group">
                 <?= $this->formLabel($form->get('cve_catastral')); ?>
                 <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-select2-predio col-sm-12"])); ?>
+                <div class="text-danger">
                 <?= $this->formElementErrors($form->get('cve_catastral')); ?>
                 </div>
 
@@ -109,15 +109,16 @@ $form->prepare();
                 <?= $this->formElementErrors($form->get('con_oeste')); ?>
                 </div>
                 <br>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
                 <?= $this->formHidden($form->get('csrf')); ?>
                 <?= $this->formElementErrors($form->get('csrf')); ?>
-                <?= $this->formSubmit($form->get('btnGuardar')); ?>
                 <a href="<?= $this->url("predio") ?>" class="btn btn-secondary"> Volver atrás</a>
             <!-- [ closeTag ] start -->
         </div>
     </div>
 </div>
 <!-- [ col] end -->
+
 
 <div class="col-md-6">
     <div class="card">
@@ -135,11 +136,10 @@ $form->prepare();
                         <div class="input-group-append delete">
                             <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
                         </div>
-                        <?= $this->formSelect($form->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)); ?>
-                        <div class="file-loading">
-                            <?= $this->formFile($form->get('archivo')); ?>
-                        </div>
+                        <?= $this->formSelect($form->get('id_archivo_categoria')->setValueOptions($this->categorias)); ?>
+                        <?= $this->formFile($form->get('archivo')); ?>
                         <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('id_archivo_categoria')); ?>
                             <?= $this->formElementErrors($form->get('archivo')); ?>
                         </div>
                     </div>
