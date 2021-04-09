@@ -131,7 +131,8 @@ class AportacionController extends AbstractActionController
                     $data = $form->getData();
                     $data['estatus'] = true;
                     $this->aportacionManager->guardarModal($data);
-                } else {
+                }
+                else {
                     $data['status'] = false;
                     $data['errors'] = $form->getMessages();
                 };

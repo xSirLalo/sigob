@@ -34,18 +34,12 @@ class AportacionManager
         $aportacion->setIdContribuyente($contribuyentebd);
         $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($data['id_predio']);
         $aportacion->setIdPredio($prediobd);
-        // $aportacion->setPago($data['pago_a']);
-        // $fecha = new \DateTime($data['vig']);
-        // $aportacion->setFecha($fecha);
-        // $aportacion->setMetrosTerreno($data['terreno']);
-        // $aportacion->setMetrosConstruccion($data['sup_m']);
-        // $aportacion->setValorTerreno($data['v_terreno']);
-        // $aportacion->setValorConstruccion($data['v_c']);
-        // $aportacion->setAvaluo($data['a_total']);
-        // $aportacion->setEstatus($data['status']);
         $aportacion ->setEstatus($data['status']);//Estatus
         $fecha = new \DateTime($data['vig']);//fecha
         $aportacion->setFecha($fecha);
+        $fecha_adquicision = new \DateTime($data['fecha_adquisicion']);
+        $aportacion->setFechaAdquicision($fecha_adquicision);
+        $aportacion->setObservaciones($data['observaciones']);
         $aportacion->setMetrosTerreno($data['terreno']);//Metros2 Terrreno
         $aportacion->setValorZona($data['valor_m2_zona']);//Valor Zona
         $valor_terreno = $data['terreno'] * $data['valor_m2_zona'];
@@ -60,6 +54,7 @@ class AportacionManager
         $aportacion->setEjercicioFiscal($data['ejercicio_f']);
         $pago_aportacion = $data['tasa_hidden']*$avaluo;
         $aportacion->setPago($pago_aportacion);//Pago aportacion
+        $aportacion->setFactura($data['factura']);
 
         $currentDate = new \DateTime();
         $aportacion->setCreatedAt($currentDate);
@@ -97,8 +92,6 @@ class AportacionManager
         $predio->setAntecedentes($data['antecedentes']);
         $predio->setClaveCatastral($data['clave_catastral']);
         $predio->setRegimenPropiedad($data['regimen_propiedad']);
-        // $fecha_adquicision = new \DateTime($data['fecha_adquisicion']);
-        // $predio->setFechaAdquicision($fecha_adquicision);
         $predio->setTitularAnterior($data['titular_anterior']);
 
         $this->entityManager->persist($predio);

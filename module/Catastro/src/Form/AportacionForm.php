@@ -12,7 +12,7 @@ class AportacionForm extends Form
     public function __construct($name = null)
     {
         parent::__construct('aportacion_form');
-        $this->setAttribute('method', 'post');
+        $this->setAttribute('method', 'post',);
 
         // $this->add([
         //     'type' => Element\Select::class,
@@ -225,6 +225,7 @@ class AportacionForm extends Form
                 //'required' => true,
                 'class' => 'form-control',
                 'onkeypress' => 'return filterFloat(event,this);',
+                'id' => 'norte'
             ]
         ]);
 
@@ -238,6 +239,7 @@ class AportacionForm extends Form
                 //'required' => true,
                 'class' => 'form-control',
                 'onkeypress' => 'return filterFloat(event,this);',
+                'id' => 'sur'
             ]
         ]);
 
@@ -251,6 +253,7 @@ class AportacionForm extends Form
                 //'required' => true,
                 'class' => 'form-control',
                 'onkeypress' => 'return filterFloat(event,this);',
+                'id' => 'este'
             ]
         ]);
 
@@ -264,6 +267,7 @@ class AportacionForm extends Form
                 //'required' => true,
                 'class' => 'form-control',
                 'onkeypress' => 'return filterFloat(event,this);',
+                'id' => 'oeste'
             ]
         ]);
 
@@ -303,7 +307,8 @@ class AportacionForm extends Form
             'min' => '2021-01-01',
             'max' => '2030-01-01',
             'step' => '1', // days; default step interval is 1 day
-            'id' =>'vig',
+            'id' =>'fecha_adquisicion',
+            'required' => true,
         ],
         ]);
 

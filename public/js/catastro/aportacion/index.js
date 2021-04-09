@@ -111,6 +111,9 @@ function formatRepoSelection(repo) {
 
 $(".js-data-example-ajax2").select2({
     language: {
+    inputTooShort:function(e){
+    var t=e.minimum-e.input.length,n="Por favor, introduzca "+t+" car";return t==1?n+="ácter":n+="acteres",n
+    },
     noResults: function() {
     return "No hay resultado";
     },

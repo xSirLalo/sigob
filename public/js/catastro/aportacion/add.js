@@ -12,6 +12,25 @@ $(document).ready(function () {
 });
     $('.btn-ok').on('click', function(e) {
         event.preventDefault(e);
+
+        let fechaAdquicision = document.getElementById("fecha_adquisicion").value;
+        let fecha = document.getElementById("vig").value;
+        let norte = document.getElementById("norte").value;
+        let sur = document.getElementById("sur").value;
+        let este = document.getElementById("este").value;
+        let oeste = document.getElementById("oeste").value;
+        if (fechaAdquicision.length == 0) {
+            alert("Se requiere agregar una Fecha de adquicision");
+            return false;
+        }else if(fecha.length == 0) {
+            alert("Se requiere agregar una Fecha");
+            return false;
+        }else if(norte.length == 0|| sur.length == 0 || este.length == 0 || oeste.length == 0) {
+            alert("Se requiere agregar datos de las colindancias");
+            return false;
+        }
+
+    else{
         var form = $(this).parents('form');
         swal({
                 title: "Buen trabajo!",
@@ -44,6 +63,8 @@ $(document).ready(function () {
                     });
                 }
             });
+        }
+
     });
 
 //formato moneda
