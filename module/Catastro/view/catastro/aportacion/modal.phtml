@@ -404,13 +404,19 @@
                                 <div class="form-group">
                                 <!-- Select Valores de Construccion -->
                                     <label class="form-label">Valores Construcción</label>
-                                    <select class="js-example-basic-single form-control"  name="select_valor_construccion" id="valor_c" onchange="valorC()">
+                                <select class="js-example-basic-single form-control"   name="select_valor_construccion" id="valor_c" onchange="valorC()">
                                 <option value="0">Seleccione uno...</option>
                                 <?php if ($valorConstruccions): ?>
                                             <?php foreach ($valorConstruccions as $valorConstruccion):?>
-                                            <optgroup label=<?= $valorConstruccion->getGrupo()?> >
+                                            <?php
+                                            if($valorConstruccion->getGrupo()==null){?>
                                             <option value="<?= $valorConstruccion->getCosto()?>"><?= $valorConstruccion->getCaracteristicas() ?></option>
-                                        </optgroup>
+                                            <?php
+                                            }else{
+                                            ?>
+                                            <optgroup label=<?= $valorConstruccion->getGrupo()?> >
+                                            </optgroup>
+                                            <?php }?>
                                         <?php endforeach; ?>
                                         <?php endif; ?>
                                 </select>

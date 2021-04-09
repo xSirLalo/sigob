@@ -75,9 +75,15 @@
                                 <option value="0">Seleccione uno...</option>
                                 <?php if ($valorConstruccions): ?>
                                             <?php foreach ($valorConstruccions as $valorConstruccion):?>
-                                            <optgroup label=<?= $valorConstruccion->getGrupo()?> >
+                                            <?php
+                                            if($valorConstruccion->getGrupo()==null){?>
                                             <option value="<?= $valorConstruccion->getCosto()?>"><?= $valorConstruccion->getCaracteristicas() ?></option>
+                                            <?php
+                                            }else{
+                                            ?>
+                                            <optgroup label=<?= $valorConstruccion->getGrupo()?> >
                                             </optgroup>
+                                            <?php }?>
                                         <?php endforeach; ?>
                                         <?php endif; ?>
                                 </select>
