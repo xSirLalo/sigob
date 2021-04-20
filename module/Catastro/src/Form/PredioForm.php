@@ -8,6 +8,7 @@ use Laminas\InputFilter\InputFilter;
 use Laminas\Validator;
 use Laminas\Filter;
 use Laminas\Filter\FilterChain;
+use Laminas\I18n;
 use Laminas\Form\Element;
 use Laminas\Form\Form;
 
@@ -17,6 +18,7 @@ class PredioForm extends Form
     {
         parent::__construct('predio_form');
         $this->setAttribute('method', 'post');
+
         $this->addElements();
         $this->addInputFilter();
     }
@@ -189,8 +191,10 @@ class PredioForm extends Form
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [
-                // 'required' => true,
-                'class' => 'custom-select'
+                'required' => false,
+                // 'multiple'      => true,
+                // 'size' => 1,
+                'class' => 'custom-select',
             ]
         ]);
 
@@ -201,7 +205,7 @@ class PredioForm extends Form
                 'label' => 'Archivos'
             ],
             'attributes' => [
-                // 'required'      => true,
+                'required'      => false,
                 'valueDisabled' => true,
                 'isArray'       => true,
                 'multiple'      => true,
@@ -252,7 +256,7 @@ class PredioForm extends Form
 
         $inputFilter->add([
             'name' => 'archivo',
-            // 'required' => true,
+            'required' => false,
             # note for files we start with validators before we use filters
             'validators' => [
                 // ['name' => Validator\NotEmpty::class],
@@ -285,6 +289,26 @@ class PredioForm extends Form
                     ]
                 ]
             ]
+        ]);
+
+        $inputFilter->add([
+                'name' => 'id_archivo_categoria',
+                'required' => false,
+                'filters' => [
+                    ['name' => Filter\StripTags::class],
+                    ['name' => Filter\StringTrim::class],
+                    ['name' => Filter\ToInt::class],
+                ],
+                // 'validators' => [
+                //     ['name' => Validator\NotEmpty::class],
+                //     ['name' => I18n\Validator\IsInt::class],
+                //     [
+                //         'name' => Validator\InArray::class,
+                //         'options' => [
+                //             'strict'   => false
+                //         ],
+                //     ],
+                // ],
         ]);
 
         $inputFilter->add([
