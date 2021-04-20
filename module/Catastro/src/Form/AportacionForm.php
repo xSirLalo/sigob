@@ -14,19 +14,33 @@ class AportacionForm extends Form
         parent::__construct('aportacion_form');
         $this->setAttribute('method', 'post',);
 
-        // $this->add([
-        //     'type' => Element\Select::class,
-        //     'name' => 'contribuyente_id',
-        //     'options' => [
-        //         'label' => 'Buscar...',
-        //         'empty_option' => 'Seleccione uno..',
-        //         'disable_inarray_validator' => true,
-        //     ],
-        //     'attributes' => [
-        //         'class' => 'custom-select',
-        //         'id' =>'contribuyente_id',
-        //     ]
-        // ]);
+        $this->add([
+            'type' => Element\Select::class,
+            'name' => 'search_aportacion',
+            'options' => [
+                'label' => 'Buscar...',
+                'empty_option' => 'Buscar por ID, Parcela, Propietario o Contribuyente',
+                'disable_inarray_validator' => true,
+            ],
+            'attributes' => [
+                'class' => 'custom-select',
+                'id' =>'searchAportacion',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Select::class,
+            'name' => 'contribuyente_id',
+            'options' => [
+                'label' => 'Buscar...',
+                'empty_option' => 'Seleccione uno..',
+                'disable_inarray_validator' => true,
+            ],
+            'attributes' => [
+                'class' => 'custom-select',
+                'id' =>'contribuyenteId',
+            ]
+        ]);
 
         $this->add([
             'type' => Element\File::class,
@@ -95,28 +109,49 @@ class AportacionForm extends Form
         ]);
 
         $this->add([
-            'type' => Element\Text::class,
+            'type' => Element\Select::class,
             'name' => 'categoria',
             'options' => [
-                'label' => 'Categoria',
+                    'label' => 'Categoria',
+                'value_options' => [
+            'Rustico' => 'Rustico',
+            'Urbano'=>'Urbano',
+        ],
             ],
             'attributes' => [
                 //'required' => true,
-                'class' => 'form-control',
+                'class' => 'custom-select w-30',
             ]
         ]);
 
         $this->add([
-            'type' => Element\Text::class,
+            'type' => Element\Select::class,
             'name' => 'condicion',
             'options' => [
-                'label' => 'Condicion',
+                    'label' => 'Condicion',
+                'value_options' => [
+            'Baldío' => 'Baldío',
+            'Construido'=>'Construido',
+            'Construyendo' => 'Construyendo',
+        ],
             ],
             'attributes' => [
                 //'required' => true,
-                'class' => 'form-control',
+                'class' => 'custom-select w-30',
             ]
         ]);
+
+        // $this->add([
+        //     'type' => Element\Text::class,
+        //     'name' => 'condicion',
+        //     'options' => [
+        //         'label' => 'Condicion',
+        //     ],
+        //     'attributes' => [
+        //         //'required' => true,
+        //         'class' => 'form-control',
+        //     ]
+        // ]);
 
 /////DATOS DE INMUEBLE/////
         $this->add([
@@ -144,14 +179,16 @@ class AportacionForm extends Form
         ]);
 
         $this->add([
-            'type' => Element\Text::class,
+            'type' => Element\Select::class,
             'name' => 'localidad',
             'options' => [
                 'label' => 'Localidad',
+                'value_options' => [
+        ],
             ],
             'attributes' => [
                 //'required' => true,
-                'class' => 'form-control',
+                'class' => 'custom-select w-30',
             ]
         ]);
 
@@ -284,14 +321,24 @@ class AportacionForm extends Form
         ]);
 
         $this->add([
-            'type' => Element\Text::class,
+            'type' => Element\Select::class,
             'name' => 'regimen_propiedad',
             'options' => [
                 'label' => 'Regimen de Propiedad',
+                'value_options' => [
+            'Particular' => 'Particular',
+            'Federal' => 'Federal',
+            'Estatal'=>'Estatal',
+            'Municipal' => 'Municipal',
+            'Ejidal' => 'Ejidal',
+            'Decentralizada' => 'Decentralizada',
+            'Fidecomiso' => 'Fidecomiso',
+            'Posesion Pacifica' => 'Posesion Pacifica',
+        ],
             ],
             'attributes' => [
                 //'required' => true,
-                'class' => 'form-control',
+                'class' => 'custom-select w-30',
             ]
         ]);
 
@@ -309,6 +356,7 @@ class AportacionForm extends Form
             'step' => '1', // days; default step interval is 1 day
             'id' =>'fecha_adquisicion',
             'required' => true,
+            'value' => date("Y-m-d"),
         ],
         ]);
 
@@ -569,18 +617,92 @@ $this->add([
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'ejercicio_f',
-            'options' => [
-                'label' => 'EJERCICIO FISCAL',
-            ],
+            'name' => 'año_hidden',
             'attributes' => [
-                // 'required' => true,
+                // 'readonly' => true,
                 'class' => 'form-control',
-                'onkeypress'=>'return validaNumericos(event)',
-                // 'onkeyup'=>'esvacio()',
-                'id' =>'ejercicio_f',
+                // 'hidden' => true,
+                'id' =>'año_hidden',
             ]
         ]);
+
+        // $this->add([
+        //     'type' => Element\Text::class,
+        //     'name' => 'ejercicio_f',
+        //     'options' => [
+        //         'label' => 'EJERCICIO FISCAL',
+        //     ],
+        //     'attributes' => [
+        //         // 'required' => true,
+        //         'class' => 'form-control',
+        //         'onkeypress'=>'return validaNumericos(event)',
+        //         // 'onkeyup'=>'esvacio()',
+        //         'id' =>'ejercicio_f',
+        //     ]
+        // ]);
+
+
+		$this->add([
+			'type' => Element\DateSelect::class,
+			'name' => 'ejercicio_fiscal',
+			'options' => [
+				'label' => 'Ejercicio Fiscal',
+				// 'create_empty_option' => true,
+				'min_year' => date('Y')-21,
+				'max_year' => date('Y'), # here we want users over the age of 13 only
+				'year' => date('Y'),
+				'render_delimiters' => false,
+				'year_attributes' => [
+					'class' => 'custom-select w-30',
+                    'id' => 'ejercicio_fiscal',
+                    'onchange' => 'CalcularAño()',
+				],
+				'month_attributes' => [
+					'class' => 'custom-select w-30',
+					'hidden' => true,
+				],
+				'day_attributes' => [
+					'class' => 'custom-select w-30',
+					'hidden' => true,
+					'id' => 'day',
+				],
+			],
+			'attributes' => [
+				'required' => true
+
+			]
+		]);
+
+        $this->add([
+			'type' => Element\DateSelect::class,
+			'name' => 'ejercicio_fiscal_final',
+			'options' => [
+				'label' => 'Ejercicio Fiscal Final',
+				// 'create_empty_option' => true,
+				'min_year' => date('Y')-21,
+				'max_year' => date('Y'), # here we want users over the age of 13 only
+				'year' => date('Y'),
+				'render_delimiters' => false,
+				'year_attributes' => [
+					'class' => 'custom-select w-30',
+					'value' => '2021',
+                    'id' => 'ejercicio_fiscal_final',
+                    'onchange' => 'CalcularAño()',
+				],
+				'month_attributes' => [
+					'class' => 'custom-select w-30',
+					'hidden' => true,
+				],
+				'day_attributes' => [
+					'class' => 'custom-select w-30',
+					'hidden' => true,
+					'id' => 'day'
+				],
+			],
+			'attributes' => [
+				'required' => true
+			]
+		]);
 
         $this->add([
             'type' => Element\Text::class,
@@ -625,19 +747,19 @@ $this->add([
             ]
         ]);
 
-        $this->add([
-            'type' => Element\Text::class,
-            'name' => 'parametro',
-            'options' => [
-            ],
-            'attributes' => [
-                'required' => true,
-                'size' => 40,
-                'maxlength' => 10,
-                'class' => 'form-control',
-                'hidden'=> true,
-            ]
-        ]);
+        // $this->add([
+        //     'type' => Element\Text::class,
+        //     'name' => 'parametro',
+        //     'options' => [
+        //     ],
+        //     'attributes' => [
+        //         'required' => true,
+        //         'size' => 40,
+        //         'maxlength' => 10,
+        //         'class' => 'form-control',
+        //         'hidden'=> true,
+        //     ]
+        // ]);
 
         $this->add([
             'type' => Element\Csrf::class,

@@ -1,0 +1,132 @@
+<!-- Modal -->
+    <div class="modal fade" id="addContribuyente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Agregar Contribuyente</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row ml-0">
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                        <label >Tipo de Contribuyente</label>
+                        <select class="custom-select w-30" name="" id="tipoContribuyente" onchange="tipoPersona()">
+                        <option value="Fisica">Fisica</option>
+                        <option value="Moral">Moral</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <!-- PERSONA FISICA -->
+            <div id="personaFisica">
+            <div class="row ml-0">
+                <div class="col-sm-12">
+                    <div id="nombreContribuyente" class="form-group ">
+                    <label>Nombre</label>
+                    <input class="form-control" type="text" name="" id="nombre">
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0">
+                <div class="col-sm-5">
+                    <div class="form-group ">
+                    <label>Fecha de Nacimiento</label>
+                    <input class="form-control" type="text" name="" id="fechaNaciemiento">
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <div class="form-group ">
+                    <label>RFC</label>
+                    <input class="form-control" type="text" name="" id="rfc">
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0">
+                <div class="col-sm-6">
+                    <div class="form-group ">
+                    <label>Correo Electronico</label>
+                    <input class="form-control" type="text" name="" id="correoElectronico">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group ">
+                    <label>Telefono</label>
+                    <input class="form-control" type="text" name="" id="telefono">
+                    </div>
+                </div>
+            </div>
+            </div>
+            <!--FIN PERSONA FISICA -->
+
+            <!-- PERSONA MORAL -->
+            <div id="personaMoral">
+            <div class="row ml-0">
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Nombre</label>
+                    <input class="form-control" type="text" name="" id="nombre">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Apellido Paterno</label>
+                    <input class="form-control" type="text" name="" id="nombre">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Apellido Materno</label>
+                    <input class="form-control" type="text" name="" id="nombre">
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0">
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label style="font-size:11px" >Fecha de Nacimiento</label>
+                    <input class="form-control" type="text" name="" id="fechaNaciemiento">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>RFC</label>
+                    <input class="form-control" type="text" name="" id="rfc">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>CURP</label>
+                    <input class="form-control" type="text" name="" id="rfc">
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0">
+                <div class="col-sm-6">
+                    <div class="form-group ">
+                    <label>Correo Electronico</label>
+                    <input class="form-control" type="text" name="" id="correoElectronico">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group ">
+                    <label>Telefono</label>
+                    <input class="form-control" type="text" name="" id="telefono">
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- FIN PERSONA MORAL -->
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+        </div>
+    </div>
+</div>
+

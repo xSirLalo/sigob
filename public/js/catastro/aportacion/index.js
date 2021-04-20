@@ -1,8 +1,17 @@
+    $('#buscar').on( 'click', function () {
+        // var id =  $('#buscar').val();
+        //var from = $("#query").val();
+        var like = $("#query").val();
+        var from = $("#buscarAportacion").val();
+
+////Inicio DataTable/////
 $(document).ready(function() {
     setTimeout(function() {
         // [ Configuration Option ]
+
         $('#aportaciones').DataTable({
             responsive: true,
+            searching: false,
             autoWidth: false,
             scrollX: true,
             scroller: {
@@ -18,9 +27,13 @@ $(document).ready(function() {
             ajax: {
                 url: "/aportacion/datatable",
                 type: "POST",
+                data:{
+                    like:like,
+                    from,from,
+                },
                 error: function(){
                     $(".aportaciones-error").html("");
-                    $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
+                    $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No se encontraron datos en el servidor. </th></tr></tbody>');
                     $(".dataTables_empty").css("display","none");
                     $("#aportaciones_processing").css("display","none");
                 },
@@ -36,13 +49,13 @@ $(document).ready(function() {
             },
             columns: [
                 {data: 'idAportacion', orderable: true, searchable: false,},
+                {data: 'Parcela'},
+                {data: 'Lote'},
                 {data: 'Contribuyente'},
-                {data: 'Titular'},
-                {data: 'Vigencia'},
-                {data: 'Pago'},
+                {data: 'UltimoPago'},
                 {data: 'Estatus', orderable: false, searchable: false,},
                 {data: 'Opciones', orderable: false, searchable: false },
-            ],
+                ],
             columnDefs: [
                 {
                     targets: 5,
@@ -63,11 +76,11 @@ $(document).ready(function() {
                     targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
-                        if( row['Estatus'] == 2 || row['Estatus'] == 3 ){
-                            $actionBtn = `<a href="#"> <button type="button="class="btn btn-primary" disabled>Imprimir</button></a> `;
-                        }else {
-                            $actionBtn = `<a href="http://sistematulum.net:9000/TLANIA/oestadocuentapredialpase.aspx?MTULUM,2021,3,4,` + row['idSolicitud'] + `"> <button type="button="class="btn btn-primary" >Imprimir</button></a> `;
-                        }
+
+                        $actionBtn = `<a href="aportacion/editar-aportacion"> <button type="button="class="btn btn-warning" >Editar</button></a>
+                        <a href="#"> <button type="button="class="btn btn btn-primary" >Reimprimir</button></a>
+                        <a href="#"> <button type="button="class="btn btn btn-success" >Pase Caja</button></a> `;
+
                         return $actionBtn;
                     },
                 },
@@ -93,6 +106,12 @@ $(document).ready(function() {
         });
 
     }, 350);
+
+});
+
+////Fin DataTable/////
+
+
 function formatRepo(repo) {
     if (repo.loading) return repo.text;
 
@@ -211,7 +230,7 @@ $('.js-data-example-ajax2').change(function(){
     error: function (jqXHR, textStatus, errorThrown)
     {
        $('#modal_alert').modal('show'); // show bootstrap modal
-        }
+    }
     });
 });
 //enviar id por referencia en Javascript
@@ -473,5 +492,51 @@ function validaNumericos(event) {
     }
     return false;
 }
+
+///Inicio Funcion validacion button buscar aportacion////
+$(document).ready(function() {
+    $('#buscar').attr("disabled", true);
+});
+function validacionbutton(){
+    let buscar_aportacion =  $("#buscarAportacion").val();
+
+    if(buscar_aportacion == ""){
+        $('#buscar').attr("disabled", true);
+    }
+    else{
+        $('#buscar').attr("disabled", false);
+    }
+
+};
+///Fin Funcion validacion button buscar aportacion////
+
+
+///Funcion buscador Id-Contribuyente-Propietario-Parcela///
+
+//     $('#buscar').on( 'click', function () {
+
+//         var id = 1;
+//         $.ajax({
+//             url: "/aportacion/datatable",
+//             id:id,
+//             method: 'POST',
+//             data:{id:id},
+
+//             // dataType: 'JSON',
+//             // async: true,
+//             // success: function(data)
+//             // {
+//             //     console.log("variable enviada con excito");
+//             // },
+//             // error: function (jqXHR, textStatus, errorThrown)
+//             // {
+//             //     alert("error");
+//             // }
+//         });
+//     // });
+
+
+// });
+///Fin Funcion buscador Id-Contribuyente-Propietario-Parcela///
 
 

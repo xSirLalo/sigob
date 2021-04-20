@@ -26,6 +26,14 @@ $this->pageBreadcrumbs()->setItems([
 <a class="btn btn-warning" href="<?=$this->url('prueba/agregar')?>">Agregar un dato de prueba</a>
 <hr>
 <br>
+<select class="js-example-basic-single custom-select w-30"   name="select_localidad" >
+    <option value="0">Seleccione uno...</option>
+    <?php if (is_array($data3->GiroComercial)): ?>
+    <?php foreach ($data3->GiroComercial as $GiroComercial):?>
+    <option value="<?= $GiroComercial->GirosComercialesDescripcion?>"><?= $GiroComercial->GirosComercialesDescripcion?></option>
+    <?php endforeach; ?>
+    <?php endif; ?>
+</select>
 <?php
 
 // if (isset($data->Persona)) {
@@ -90,23 +98,36 @@ $this->pageBreadcrumbs()->setItems([
 //     echo "<br>";
 //     echo "seteado";
 // }
-echo "IdSolicitud";
-echo "<br>";
-echo "<hr>";
+// echo "IdSolicitud";
+// echo "<br>";
+// echo "<hr>";
 
-echo "<pre>";
-print_r($data);
-echo "</pre>";
+// echo "<pre>";
+// print_r($data);
+// echo "</pre>";
 
-echo "<br>";
-echo "<hr>";
+// echo "<br>";
+// echo "<hr>";
+// ///////////////////////
+// echo "SolicitudFuentaIngreso";
+// echo "<br>";
+// echo "<hr>";
+
+// echo "<pre>";
+// print_r($data2);
+// echo "</pre>";
+
+// echo "<br>";
+// echo "<hr>";
+////////////////////////
+
 ///////////////////////
-echo "SolicitudFuentaIngreso";
+echo "Localidad";
 echo "<br>";
 echo "<hr>";
 
 echo "<pre>";
-print_r($data2);
+print_r($data3);
 echo "</pre>";
 
 echo "<br>";

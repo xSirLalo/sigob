@@ -34,8 +34,34 @@ $this->inlineScript()
         </div>
         <div class="card-body">
             <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group ">
+                        <a href="<?= $this->url('aportacion/nueva-aportacion');?>"><button type="button="class="btn btn-success">Nueva Aportación</button></a>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group ">
+                        <select class="custom-select w-30" id="my-select" class="form-control" name="">
+                            <option>Buscar por...</option>
+                            <option>ID-Aportacion</option>
+                            <option>Contribuyente.</option>
+                            <option>Por Propietario</option>
+                            <option>Parcela</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group ">
+                        <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group ">
+                        <button type="button="class="btn btn-primary">Buscar</button>
+                    </div>
+                </div>
             </div>
-            <table id="res-config" class="display table table-striped table-hover dt-responsive nowrap" style="width:100%">
+            <table id="validation" class="display table table-striped table-hover dt-responsive nowrap" style="width:100%">
                 <thead>
                     <tr>
                         <th>#</th>

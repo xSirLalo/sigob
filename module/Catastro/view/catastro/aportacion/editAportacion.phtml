@@ -1,0 +1,294 @@
+<?php
+$title = $this->translate('Editar Aportacion');
+$this->headMeta()->appendName('keywords', '');
+$this->headMeta()->appendName('description', '');
+$this->headTitle($this->escapeHtml($title));
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Aportaciones' => $this->url('aportacion'),
+    'Agregar' => $this->url('aportacion/nueva-aportacion'),
+]);
+// Css Requerido
+$this->headLink()
+    // Css Select2
+    ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'));
+// Js Requerido
+$this->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/aportacion/add.js'))
+    // Js Select2
+    ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'))
+    // Js Form validation
+    ->prependFile($this->basePath('assets/js/pages/form-validation.js'))
+    ->prependFile($this->basePath('assets/js/plugins/jquery.validate.min.js'))
+    // Js Bootstrap wizard
+    ->prependFile($this->basePath('assets/js/plugins/jquery.bootstrap.wizard.min.js'))
+    // Js SweetAlert
+    ->prependFile($this->basePath('assets/js/plugins/sweetalert.min.js'))
+    ->prependFile($this->basePath('assets/js/pages/ac-alert.js'))
+    // Css DataTables
+    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
+    ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'));
+?>
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5>Datos de Aportacion</h5>
+        </div>
+        <div class="card-body">
+        <h3 class="text-center bg-secondary">PARCELA 2009</h3>
+            <div class="row ml-0  ">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Parcela</label>
+                        <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Manzana</label>
+                    <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Lote</label>
+                    <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0  ">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Local</label>
+                        <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+                    <div class="col-sm-4">
+                        <div class="form-group ">
+                        <label>Categoria</label>
+                            <select id="my-select" class="form-control custom-select w-30" name="">
+                                <option>Text</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group ">
+                        <label>Condicion</label>
+                            <select id="my-select" class="form-control custom-select w-30" name="">
+                                <option>Text</option>
+                            </select>
+                        </div>
+                    </div>
+            </div>
+            <h3 class="text-center bg-secondary">DATOS DEL INMUEBLE</h3>
+            <div class="row ml-0  ">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Local</label>
+                        <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Ubicación</label>
+                    <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label class="form-label">Localidad</label>
+                        <select class="js-example-basic-single custom-select w-30"name="select_localidad" >
+                            <!-- <option value="0">Seleccione uno...</option> -->
+                            <?php if (is_array($localidades->Localidad)): ?>
+                            <?php foreach ($localidades->Localidad as $localidad):?>
+                                <option value="<?= $localidad->NombreLocalidad?>"><?= $localidad->NombreLocalidad?></option>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0  ">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Antecedentes</label>
+                        <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group ">
+                    <label>Clave Catastral</label>
+                    <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0  ">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                            <label for="my-select">Regimen de Propiedad</label>
+                            <select id="my-select" class="form-control  custom-select w-30" name="">
+                                <option>Text</option>
+                            </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Fecha de Adquicision</label>
+                    <input class="form-control" type="date" name="" value="<?=date("Y-m-d");?>">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Titular anterior</label>
+                    <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0  ">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Documento que acredite la propiedad</label>
+                        <select id="my-select" class="form-control  custom-select w-30" name="">
+                                <option>Text</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Folio</label>
+                    <input class="form-control" type="text" name="">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Fecha del documento</label>
+                    <input class="form-control" type="date" name="" value="<?=date("Y-m-d");?>">
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <h3 class="text-center ">MEDIDAS Y COLINDANCIAS</h3>
+            <div class="row ml-0">
+                <div class="col-sm-3">
+                    <div class="form-group ">
+                        <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addColindancia">Agregar Colindancia</button> -->
+                        <button type="button" class="btn btn-success" id="modalColindancias">Agregar Colindancia</button>
+                    </div>
+                </div>
+            </div>
+        <!-- TABLA COLINDACIAS -->
+            <div class="row ml-0">
+                <div class="col-sm-12">
+                    <div class="form-group ">
+                        <table id="colindacias"  class="display table table-striped table-hover dt-responsive nowrap" >
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Punto Cardinal</th>
+                                    <th>Metros lineales</th>
+                                    <th>Colindancia</th>
+                                    <th>Observaciones</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <!--FIN TABLA COLINDACIAS -->
+        <h3 class="text-center bg-secondary">DATOS DEL USUARIO</h3>
+        <div class="row ml-0">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label>Contribuyente</label>
+                    <input class="form-control" type="text" name="">
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group ">
+                    <label>Factura</label>
+                        <select id="my-select" class="form-control  custom-select w-30" name="">
+                                <option>Si</option>
+                                <option>No</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group ">
+                    <label class="form-label">Giro Comercial</label>
+                        <select class="js-example-basic-single custom-select w-30"name="select_girocomercial" >
+                            <!-- <option value="0">Seleccione uno...</option> -->
+                            <?php if (is_array($girocomerciales->GiroComercial)): ?>
+                            <?php foreach ($girocomerciales->GiroComercial as $girocomercial):?>
+                                <option value="<?= $girocomercial->GirosComercialesDescripcion?>"><?= $girocomercial->GirosComercialesDescripcion?></option>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Nombre Comercial</label>
+                    <input class="form-control" type="text" name="">
+                </div>
+            </div>
+        </div>
+        <div class="row ml-0  ">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label>Tenencia</label>
+                    <input class="form-control" type="text" name="">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group ">
+                <label>RFC</label>
+                <input class="form-control" type="text" name="">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group ">
+                <label>Uso o destino</label>
+                <input class="form-control" type="text" name="">
+                </div>
+            </div>
+        </div>
+        <h3 class="text-center bg-secondary">OBSERVACIONES</h3>
+        <div class="row ml-0  ">
+            <div class="col-sm-3">
+                <div class="form-group ">
+                    <label>Lote en Conflicto</label>
+                        <select id="my-select" class="form-control  custom-select w-30" name="">
+                                <option>No</option>
+                                <option>Si</option>
+                                <option>Sobreposición</option>
+                                <option>Legal</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="form-group">
+                        <textarea id="my-textarea" class="form-control" name="" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 text-md-right mb-3">
+            <button class="btn btn-primary ">Guardar Cambios</button>
+        </div>
+    </div>
+</div>
+

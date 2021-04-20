@@ -1,0 +1,55 @@
+<!-- Modal -->
+    <div class="modal fade" id="addColindancia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Agregar Colindancia</h5>
+            <input class="form-control" type="hidden" name="" id="IdColindancia">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+        <div class="row ml-0">
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                        <label >Punto Cardinal</label>
+                        <select class="custom-select w-30" name="" id="puntoCardinal" >
+                        <option value="Norte">Norte</option>
+                        <option value="Sur">Sur</option>
+                        <option value="Este">Este</option>
+                        <option value="Oeste">Oeste</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                        <label >Colinda con:</label>
+                        <input class="form-control" id="colindaCon" type="text" name="">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                        <label >Medida metros:</label>
+                        <input class="form-control" id="medidasMetros" type="text" name="">
+                    </div>
+                </div>
+        </div>
+        <div class="row ml-0">
+                <div class="col-sm-12">
+                    <label>Observaciones</label>
+                    <div class="form-group ">
+                        <textarea name="observaciones" id="observacionesColindacias" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" id="addRow" class="btn btn-primary">Guardar Cambios</button>
+            <button type="button" id="updateRow" class="btn btn-info">Actulizar Cambios</button>
+        </div>
+        </div>
+    </div>
+</div>
+

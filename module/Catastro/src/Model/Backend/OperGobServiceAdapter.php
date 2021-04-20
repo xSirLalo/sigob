@@ -176,4 +176,42 @@ class OperGobServiceAdapter{
         return $respuesta->AddSolicitudFuenteIngresoResult;
     }
 
+    public function obtenerLocalidadByCveEntidadFederativa($CveEntidadFederativa, $CveMunicipio) {
+        $respuesta = array();
+
+        $parametros = [
+            "CveEntidadFederativa" => $CveEntidadFederativa,
+            "CveMunicipio" => $CveMunicipio.""
+        ];
+
+        $client = new Client();
+        $client->setWsdl(self::URI_SERVICE_OPER);
+        $client->setOptions([
+            "soap_version" => \SOAP_1_1,
+            "encoding" => 'UTF-8',
+        ]);
+
+        $respuesta = $client->GetAllLocalidadByCveEntidadFederativa($parametros);
+        return $respuesta->GetAllLocalidadByCveEntidadFederativaResult;
+    }
+
+    public function obtenerGiroComercialByCveFte($CveFte, $ejercicio) {
+        $respuesta = array();
+
+        $parametros = [
+            "CveFte" => $CveFte,
+            "ejercicio" => $ejercicio
+        ];
+
+        $client = new Client();
+        $client->setWsdl(self::URI_SERVICE_OPER);
+        $client->setOptions([
+            "soap_version" => \SOAP_1_1,
+            "encoding" => 'UTF-8',
+        ]);
+
+        $respuesta = $client->GetAllGiroComercialByCveFte($parametros);
+        return $respuesta->GetAllGiroComercialByCveFteResult;
+    }
+
 }

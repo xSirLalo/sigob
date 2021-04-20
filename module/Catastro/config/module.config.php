@@ -626,6 +626,54 @@ return [
                             ],
                         ],
                     ],
+                    'buscarAportacion' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/buscarAportacion[/:action]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'searchAportacion',
+                            ],
+                        ],
+                    ],
+                    'autorellenaAportacion' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/autorellenaAportacion[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9,a-z,A-Z,-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'autofillAportacion',
+                            ],
+                        ],
+                    ],
+                    'editAportacion' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/editar-aportacion[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9,a-z,A-Z,-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'editaportacion',
+                            ],
+                        ],
+                    ],
+                    'historial' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/historial-aportacion[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9,a-z,A-Z,-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'historial',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
@@ -673,7 +721,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector'], 'allow' => '*']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'historial'], 'allow' => '*']
             ],
         ]
     ],

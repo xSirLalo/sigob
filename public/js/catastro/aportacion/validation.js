@@ -79,6 +79,21 @@ $(document).ready(function(){
 
     }, 350);
 });
+/////datatable-Validacion////
+$(document).ready(function(){
+    $('#validation').DataTable({
+        responsive: true,
+        searching: false,
+
+
+    });
+
+
+});
+
+
+/////Fin-Datatable-Validacion////
+
 //Modal-Funcion Modificar
 function edit_validation(id)
 {

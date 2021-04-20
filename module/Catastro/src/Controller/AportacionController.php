@@ -55,25 +55,63 @@ class AportacionController extends AbstractActionController
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
+        // if ($request->isXmlHttpRequest()) {
+        //     $id = $this->params()->fromRoute('id');
+            // $from = $_POST['from'];
+            $from = $_POST['from'];
+            $like = $_POST['like'];
 
-        $qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
+            //$qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
+            ///////////
+            // $qb->select('c')->from('Catastro\Entity\Contribuyente', 'c')
+            //     ->where($qb->expr()->like('c.nombre', ":word"))
+            //     ->orWhere($qb->expr()->like('c.apellidoPaterno', ":word"))
+            //     ->orWhere($qb->expr()->like('c.apellidoMaterno', ":word"))
+            //     ->orWhere($qb->expr()->like('c.rfc', ":word"))
+            //     ->orWhere($qb->expr()->like('c.cvePersona', ":word"))
+            // ->setParameter("word", '%' . addcslashes($name, '%_') . '%');
+            // $query = $qb->getQuery()->getResult();
+            //////////
+            if($from == "Aportacion"){
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb->select('a')
+                    ->from('Catastro\Entity\Aportacion', 'a')
+                    ->where($qb->expr()->like('a.estatus', ":word"))
+                    //->where('a.idAportacion = :idParam')
+                    ->setParameter("word", '%' . addcslashes($like, '%_') . '%');
+                    //->setParameter('idParam', $like  );
 
-        $query = $qb->getQuery()->getResult();
+                $query = $qb->getQuery()->getResult();
+            //$predioColindancias = $qb->getQuery()->getResult();
+            ///////////
+            //$qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
+            }elseif($from == "Predio"){
+                $qb->select('p')
+                    ->from('Catastro\Entity\Predio', 'p')
+                    ->where('p.parcerla = :idParam')
+                    ->setParameter('idParam', $like  );
 
-        $data = [];
+            }
 
-        foreach ($query as $r) {
-            $data[] = [
-                    'idSolicitud'   => $r->getIdSolicitud(),
-                    'idAportacion'  => $r->getIdAportacion(),
-                    'Contribuyente' => $r->getIdContribuyente()->getNombre(),
-                    'Titular'       => $r->getIdPredio()->getTitular(),
-                    'Vigencia'      => $r->getFecha()->format('d-m-Y'),
-                    'Pago'          => "$ ".number_format($r->getPago(), 4),
-                    'Estatus'       => $r->getEstatus(),
-                    'Opciones'      => "Cargando..."
-                ];
-        }
+
+
+            $data = [];
+
+            foreach ($query as $r) {
+                $data[] = [
+                        'idSolicitud'   => $r->getIdSolicitud(),
+                        'idAportacion'  => $r->getIdAportacion(),
+                        'Contribuyente' => $r->getIdContribuyente()->getNombre(),
+                        'Parcela'       => $r->getIdPredio()->getParcela(),
+                        'Lote'          => $r->getIdPredio()->getLote(),
+                        // 'Vigencia'      => $r->getFecha()->format('d-m-Y'),
+                        // 'Pago'          => "$ ".number_format($r->getPago(), 4),
+                        'UltimoPago'    => $r->getEjercicioFiscal(),
+                        'Estatus'       => $r->getEstatus(),
+                        'Opciones'      => "Cargando..."
+                    ];
+            }
+        //}
         $result = [
                     "draw"            => 1,
                     "recordsTotal"    => count($data),
@@ -95,11 +133,13 @@ class AportacionController extends AbstractActionController
         $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
+        // $localidades = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
+        // $girocomerciales = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
 
-        if ($contribuyente == null) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-        }
+        // if ($contribuyente == null) {
+        //     $this->layout()->setTemplate('error/404');
+        //     $this->getResponse()->setStatusCode(404);
+        // }
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -114,6 +154,7 @@ class AportacionController extends AbstractActionController
                 }
             }
         }
+        //return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente, 'localidades' => $localidades, 'girocomerciales' => $girocomerciales]);
         return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
     }
 
@@ -885,4 +926,168 @@ class AportacionController extends AbstractActionController
         // END OF FILE
         //============================================================+# code...
     }
+
+    public function searchAportacionAction()
+    {
+        $name = $_REQUEST['q'];
+
+        // $qb = $this->entityManager->createQueryBuilder();
+        // $qb->select('c')->from('Catastro\Entity\Contribuyente', 'c')
+        //         ->where($qb->expr()->like('c.nombre', ":word"))
+        //         ->orWhere($qb->expr()->like('c.apellidoPaterno', ":word"))
+        //         ->orWhere($qb->expr()->like('c.apellidoMaterno', ":word"))
+        //         ->orWhere($qb->expr()->like('c.rfc', ":word"))
+        //         ->orWhere($qb->expr()->like('c.cvePersona', ":word"))
+        //     ->setParameter("word", '%' . addcslashes($name, '%_') . '%');
+        /////////////////////////////////////////////////////////
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->select('p')->from('Catastro\Entity\Predio', 'p')
+            ->where($qb->expr()->like('p.parcela', ":word"))
+            ->orWhere($qb->expr()->like('p.titular', ":word"))
+            ->setParameter("word", '%' . addcslashes($name, '%_') . '%');
+
+        $query = $qb->getQuery()->getResult();
+
+        $arreglo  = [];
+        if ($query) {
+            foreach ($query as $r) {
+                $arreglo [] = [
+                        'id' => $r->getIdContribuyente()->getIdContribuyente(),
+                        'titular' => 'Parcela: '.$r->getParcela(). ' Titular: '.$r->getTitular(),
+                    ];
+            }
+        }
+        else if($query == null){
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->select('c')->from('Catastro\Entity\Contribuyente', 'c')
+            ->where($qb->expr()->like('c.nombre', ":word"))
+            ->setParameter("word", '%' . addcslashes($name, '%_') . '%');
+
+        $query = $qb->getQuery()->getResult();
+
+        $arreglo  = [];
+        if ($query) {
+            foreach ($query as $r) {
+                $arreglo [] = [
+                        'id' => $r->getIdContribuyente(),
+                        'titular' => 'Nombre: '.$r->getNombre(),
+                    ];
+            }
+
+        }
+        }
+        // else if($query == null){
+        // $qb = $this->entityManager->createQueryBuilder();
+        // $qb ->select('p')->from('Catastro\Entity\Predio', 'p')
+        //     ->where($qb->expr()->like('p.parcela', ":word"))
+        //     ->setParameter("word", '%' . addcslashes($name, '%_') . '%');
+
+        // $query = $qb->getQuery()->getResult();
+
+        // $arreglo  = [];
+        // if ($query) {
+        //     foreach ($query as $r) {
+        //         $arreglo [] = [
+        //                 'id' => $r->getIdPredio(),
+        //                 'titular' => $r->getParcela().'-Parcela',
+        //             ];
+        //     }
+
+        // }
+        // }
+
+        $data = [
+                'items' => $arreglo,
+                'total_count' => count($arreglo),
+            ];
+
+
+        $json = new JsonModel($data);
+        $json->setTerminal(true);
+
+        return $json;
+    }
+
+    public function autofillAportacionAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            $id = $this->params()->fromRoute('id');
+
+            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
+            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($id);
+
+            $idpredio = $aportacion->getIdPredio();
+
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb->select('p')
+                ->from('Catastro\Entity\PredioColindancia', 'p')
+                ->where('p.idPredio = :idParam')
+                ->setParameter('idParam', $idpredio);
+            $predioColindancias = $qb->getQuery()->getResult();
+
+            foreach ($predioColindancias as $datos) {
+                $medidas[]=$datos->getMedidaMetros();
+                $descripcion[]=$datos->getDescripcion();
+            }
+
+            $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($id);
+            $data = [
+                // 'parcela'           =>  $aportacion->getIdPredio()->getParcela(),
+                'contribuyente'           =>  $aportacion->getIdContribuyente()->getNombre(),
+                // 'lote'              =>  $aportacion->getIdPredio()->getLote(),
+                // 'local'             =>  $aportacion->getIdPredio()->getLocal(),
+                // 'categoria'         =>  $aportacion->getIdPredio()->getCategoria(),
+                // 'condicion'         =>  $aportacion->getIdPredio()->getCondicion(),
+                // 'titular'           =>  $aportacion->getIdPredio()->getTitular(),
+                // 'ubicacion'         =>  $aportacion->getIdPredio()->getUbicacion(),
+                // 'localidad'         =>  $aportacion->getIdPredio()->getLocalidad(),
+                // 'antecedentes'      =>  $aportacion->getIdPredio()->getAntecedentes(),
+                // 'regimenPropiedad'  =>  $aportacion->getIdPredio()->getRegimenPropiedad(),
+                // 'titular_anterior'  =>  $aportacion->getIdPredio()->getTitularAnterior(),
+                // 'id_predio'         =>  $aportacion->getIdPredio()->getIdPredio(),
+                // 'cvlCatastral'      =>  $aportacion->getIdPredio()->getClaveCatastral(),
+
+                // 'idcontribuyente' =>  $contribuyente->getIdContribuyente(),
+                // 'contribuyente'   =>  $contribuyente->getNombre(),
+                // 'giroComercial'   =>  $contribuyente->getGiroComercial(),
+                // 'nombreComercial' =>  $contribuyente->getNombreComercial(),
+                // 'rfc'             =>  $contribuyente->getRfc(),
+                // 'tenencia'        =>  $contribuyente->getTenencia(),
+                // 'usoDestino'      =>  $contribuyente->getUsoDestino(),
+
+                // 'norte'            =>  $medidas[0],
+                // 'sur'              =>  $medidas[1],
+                // 'este'             =>  $medidas[2],
+                // 'oeste'            =>  $medidas[3],
+
+                // 'con_norte'        =>  $descripcion[0],
+                // 'con_sur'          =>  $descripcion[1],
+                // 'con_este'         =>  $descripcion[2],
+                // 'con_oeste'        =>  $descripcion[3],
+
+
+            ];
+
+            return $response->setContent(json_encode($data));
+        } else {
+            echo 'Error get data from ajax';
+        }
+    }
+
+    public function editAportacionAction(){
+        return new ViewModel([]);
+
+    }
+
+    public function historialAction()
+    {
+        return new ViewModel([]);
+    }
+
+
+
+
 }
