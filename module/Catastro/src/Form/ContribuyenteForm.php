@@ -42,27 +42,42 @@ class ContribuyenteForm extends Form
             'type' => Element\Text::class,
             'name' => 'input1',
             'attributes' => [
-                'class' => 'form-control',
-                'title' => 'input1',
-                'placeholder' => 'input1',
                 'hidden'=> true,
             ]
         ]);
 
         $this->add([
-            'type' => Element\Number::class,
-            'name' => 'nombre',
+            'type' => Element\Select::class,
+            'name' => 'tipo_persona',
             'options' => [
-                'label' => 'Nombre',
+                'label' => 'Tipo',
+                'empty_option' => 'Seleccionar...',
+                'value_options' => [
+                    'F'  => 'Física',
+                    'M' => 'Moral',
+                ]
             ],
             'attributes' => [
+                'id' => 'tipo_persona',
                 // 'required' => true,
-                'readonly' => true,
-                'class' => 'form-control',
-                'title' => 'Nombre',
-                'placeholder' => 'Nombre',
+                'class' => 'custom-select'
             ]
         ]);
+
+        // $this->add([
+        //     'type' => Element\Number::class,
+        //     'name' => 'nombre',
+        //     'options' => [
+        //         'label' => 'Nombre',
+        //     ],
+        //     'attributes' => [
+        //         // 'required' => true,
+        //         'readonly' => true,
+        //         'class' => 'form-control',
+        //         'title' => 'Nombre',
+        //         'placeholder' => 'Nombre',
+        //     ]
+        // ]);
 
         $this->add([
             'type' => Element\Text::class,
@@ -73,7 +88,6 @@ class ContribuyenteForm extends Form
             'attributes' => [
                 // 'required' => true,
                 'class' => 'form-control',
-                'title' => 'Nombre',
                 'placeholder' => 'Nombre',
             ]
         ]);
@@ -151,6 +165,11 @@ class ContribuyenteForm extends Form
             ],
             'attributes' => [
                 // 'required' => true,
+                'size' => 40,
+                'maxlength' => 128,
+                'pattern' => '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
+                'autocomplete' => false,
+                'data-toggle' => 'tooltip',
                 'class' => 'form-control',
                 'placeholder' => 'Correo Electrónico',
             ]
@@ -170,61 +189,106 @@ class ContribuyenteForm extends Form
         ]);
 
         $this->add([
-            'type' => Element\Number::class,
+            'type' => Element\Select::class,
             'name' => 'genero',
             'options' => [
                 'label' => 'Genero',
+                'empty_option' => 'Seleccionar...',
+                'value_options' => [
+                    '1' => 'Mujer',
+                    '2' => 'Hombre',
+                    '3' => 'Otro'
+                ],
             ],
             'attributes' => [
                 // 'required' => true,
-                'class' => 'form-control',
-                'placeholder' => 'Genero',
+                'class' => 'custom-select', # styling
             ]
         ]);
 
         $this->add([
-            'type' => Element\Select::class,
-            'name' => 'id_archivo_categoria',
+            'type' => Element\DateSelect::class,
+            'name' => 'birthday',
             'options' => [
-                'label' => 'Categorias',
-                'empty_option' => 'Seleccione una categoría',
-                'disable_inarray_validator' => true,
+                'label' => 'Fecha de nacimiento',
+                'create_empty_option' => true,
+                'max_year' => date('Y') - 13, # here we want users over the age of 13 only
+                'render_delimiters' => false,
+                'year_attributes' => [
+                    'style'            => 'width: 33%',
+                    'class' => 'custom-select'
+                ],
+                'month_attributes' => [
+                    'style'            => 'width: 33%',
+                    'class' => 'custom-select'
+                ],
+                'day_attributes' => [
+                    'style'            => 'width: 33%',
+                    'class' => 'custom-select',
+                    'id' => 'day'
+                ],
             ],
             'attributes' => [
-                // 'required' => true,
-                'class' => 'custom-select'
+                'required' => true
             ]
         ]);
 
-        $this->add([
-            'type' => Element\File::class,
-            'name' => 'archivo',
-            'options' => [
-                'label' => 'Archivos'
-            ],
-            'attributes' => [
-                // 'required'      => true,
-                'valueDisabled' => true,
-                'isArray'       => true,
-                'multiple'      => true,
-                'class'         => 'form-control',
-                'id'            => 'archivo',
-                'data-toggle'   => 'tooltip',
-                'title'         => 'Cargar archivo'
-            ]
-        ]);
+        // $this->add([
+        //     'type' => Element\Select::class,
+        //     'name' => 'genero',
+        //     'options' => [
+        //         'label' => 'Genero',
+        //     ],
+        //     'attributes' => [
+        //         // 'required' => true,
+        //         'class' => 'form-control',
+        //         'placeholder' => 'Genero',
+        //     ]
+        // ]);
 
-        $this->add([
-            'type' => Element\Button::class,
-            'name' => 'add_more',
-            'options' => [
-                'label' => 'Agregar +'
-            ],
-            'attributes' => [
-                'class' => 'btn btn-success',
-                'id' => 'add_more'
-            ]
-        ]);
+        // $this->add([
+        //     'type' => Element\Select::class,
+        //     'name' => 'id_archivo_categoria',
+        //     'options' => [
+        //         'label' => 'Categorias',
+        //         'empty_option' => 'Seleccione una categoría',
+        //         'disable_inarray_validator' => true,
+        //     ],
+        //     'attributes' => [
+        //         // 'required' => true,
+        //         'class' => 'custom-select'
+        //     ]
+        // ]);
+
+        // $this->add([
+        //     'type' => Element\File::class,
+        //     'name' => 'archivo',
+        //     'options' => [
+        //         'label' => 'Archivos'
+        //     ],
+        //     'attributes' => [
+        //         // 'required'      => true,
+        //         'valueDisabled' => true,
+        //         'isArray'       => true,
+        //         'multiple'      => true,
+        //         'class'         => 'form-control',
+        //         'id'            => 'archivo',
+        //         'data-toggle'   => 'tooltip',
+        //         'title'         => 'Cargar archivo'
+        //     ]
+        // ]);
+
+        // $this->add([
+        //     'type' => Element\Button::class,
+        //     'name' => 'add_more',
+        //     'options' => [
+        //         'label' => 'Agregar +'
+        //     ],
+        //     'attributes' => [
+        //         'class' => 'btn btn-success',
+        //         'id' => 'add_more'
+        //     ]
+        // ]);
 
         $this->add([
             'type' => Element\Csrf::class,
@@ -252,42 +316,49 @@ class ContribuyenteForm extends Form
         $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
 
-        $inputFilter->add([
-            'name' => 'archivo',
-            // 'required' => true,
-            # note for files we start with validators before we use filters
-            'validators' => [
-                // ['name' => Validator\NotEmpty::class],
-                // ['name' => Validator\File\IsImage::class],
-                // [
-                //     'name' => Validator\File\MimeType::class,
-                //     'options' => [
-                //         'mimeType' => 'image/png. image/jpeg, image/jpg, image/gif'
-                //     ],
-                // ], # just uncomment this one. I forgot. It always gives issues.
-                [
-                    'name' => Validator\File\Size::class,
-                    'options' => [
-                        'min' => '3kB',
-                        'max' => '15MB'
-                    ],
-                ],
-            ],
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-                [
-                    'name' => Filter\File\RenameUpload::class,
-                    'options' => [
-                        'target' => './public/img',
-                        'use_upload_name' => true,
-                        'use_upload_extension' => true,
-                        'overwrite' => true,
-                        'randomize' => false
-                    ]
-                ]
+        $inputFilter->add(
+            [
+                'name' => 'persona',
+                'required' => false,
             ]
-        ]);
+        );
+
+        // $inputFilter->add([
+        //     'name' => 'archivo',
+        //     // 'required' => true,
+        //     # note for files we start with validators before we use filters
+        //     'validators' => [
+        //         // ['name' => Validator\NotEmpty::class],
+        //         // ['name' => Validator\File\IsImage::class],
+        //         // [
+        //         //     'name' => Validator\File\MimeType::class,
+        //         //     'options' => [
+        //         //         'mimeType' => 'image/png. image/jpeg, image/jpg, image/gif'
+        //         //     ],
+        //         // ], # just uncomment this one. I forgot. It always gives issues.
+        //         [
+        //             'name' => Validator\File\Size::class,
+        //             'options' => [
+        //                 'min' => '3kB',
+        //                 'max' => '15MB'
+        //             ],
+        //         ],
+        //     ],
+        //     'filters' => [
+        //         ['name' => Filter\StripTags::class],
+        //         ['name' => Filter\StringTrim::class],
+        //         [
+        //             'name' => Filter\File\RenameUpload::class,
+        //             'options' => [
+        //                 'target' => './public/img',
+        //                 'use_upload_name' => true,
+        //                 'use_upload_extension' => true,
+        //                 'overwrite' => true,
+        //                 'randomize' => false
+        //             ]
+        //         ]
+        //     ]
+        // ]);
 
         $inputFilter->add([
             'name' => 'nombre',
@@ -402,7 +473,7 @@ class ContribuyenteForm extends Form
 
         $inputFilter->add([
             'name' => 'rfc',
-            'required' => false,
+            'required' => true,
             'filters' => [
                 [	// Remueve las etiquetas HTML y PHP
                     'name' => Filter\StripTags::class,
@@ -473,6 +544,21 @@ class ContribuyenteForm extends Form
                 ],
             ],
         ]);
+
+        $inputFilter->add(
+            [
+                'name' => 'correo',
+                'required' => true,
+                'filters' => [
+                    ['name' => Filter\StripTags::class],
+                    ['name' => Filter\StringTrim::class],
+                ],
+                'validators' => [
+                    // ['name' => Validator\NotEmpty::class],
+                    ['name' => Validator\EmailAddress::class],
+                ],
+            ]
+        );
 
         $inputFilter->add([
             'name' => 'csrf',

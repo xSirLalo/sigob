@@ -17,6 +17,22 @@ $(document).ready(function () {
         return markup;
     }
 
+    $("#tipo_persona").on("change",function(){
+        let valorSelect=$(this).val();
+        var elem = document.getElementById("tipo_persona");
+        if(valorSelect == "M"){
+            console.log( valorSelect);
+            console.log(elem.getAttribute("form-group col-md-3"));
+            $("#aMaterno").hide();
+            $("#aPaterno").hide();
+        }
+        else if(valorSelect == "F"){
+            console.log( valorSelect);
+            $("#aMaterno").show();
+            $("#aPaterno").show();
+        }
+    })
+
     function formatRepoSelection(repo) {
         return repo.item_select_name || repo.text;
     }
@@ -84,7 +100,7 @@ $(document).ready(function () {
                 $('[name ="input1"]').val(data.contribuyente_id);
                 $('[name ="nombre"]').val(data.nombre);
                 $('[name ="apellido_paterno"]').val(data.apellido_paterno);
-                $('[name ="apellido_materno"]').val(data.apellido_matero);
+                $('[name ="apellido_materno"]').val(data.apellido_materno);
                 $('[name ="rfc"]').val(data.rfc);
                 $('[name ="curp"]').val(data.curp);
                 $('[name ="razon_social"]').val(data.razon_social);

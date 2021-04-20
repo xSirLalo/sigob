@@ -24,7 +24,7 @@ $form->setAttribute('action', $this->url('contribuyente/agregar'));
 $form->prepare();
 ?>
 <!-- [ col ] start -->
-<div class="col-md-6">
+<div class="col-md-12">
     <div class="card">
         <div class="card-header">
             <h5><?= $title ?></h5>
@@ -33,99 +33,104 @@ $form->prepare();
             <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form); ?>
                 <div class="form-group">
-                <?= $this->formLabel($form->get('persona')); ?>
-                <?= $this->formSelect($form->get('persona')->setAttributes(['class' => "custom-select js-select2-persona col-sm-12"])); ?>
-                <?= $this->formElementErrors($form->get('persona')); ?>
+                    <?= $this->formLabel($form->get('persona')); ?>
+                    <?= $this->formSelect($form->get('persona')->setAttributes(['class' => "custom-select js-select2-persona col-sm-12"])); ?>
+                    <?= $this->formElementErrors($form->get('persona')); ?>
                 </div>
-                <hr>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('nombre')); ?>
-                    <?= $this->formText($form->get('nombre')); ?>
-                    <?= $this->formElementErrors($form->get('nombre', ['class' => 'text-danger'])); ?>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('apellido_paterno')); ?>
-                    <?= $this->formText($form->get('apellido_paterno')); ?>
-                    <?= $this->formElementErrors($form->get('apellido_paterno')); ?>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('apellido_materno')); ?>
-                    <?= $this->formText($form->get('apellido_materno')); ?>
-                    <?= $this->formElementErrors($form->get('apellido_materno')); ?>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('rfc')); ?>
-                    <?= $this->formText($form->get('rfc')); ?>
-                    <?= $this->formElementErrors($form->get('rfc')); ?>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('curp')); ?>
-                    <?= $this->formText($form->get('curp')); ?>
-                    <?= $this->formElementErrors($form->get('curp')); ?>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('razon_social')); ?>
-                    <?= $this->formText($form->get('razon_social')); ?>
-                    <?= $this->formElementErrors($form->get('razon_social')); ?>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('correo')); ?>
-                    <?= $this->formText($form->get('correo')); ?>
-                    <?= $this->formElementErrors($form->get('correo')); ?>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('telefono')); ?>
-                    <?= $this->formText($form->get('telefono')); ?>
-                    <?= $this->formElementErrors($form->get('telefono')); ?>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('genero')); ?>
-                    <?= $this->formText($form->get('genero')); ?>
-                    <?= $this->formElementErrors($form->get('genero')); ?>
-                </div>
-                <?= $this->formHidden($form->get('csrf')); ?>
-                <?= $this->formElementErrors($form->get('csrf')); ?>
-                <?= $this->formSubmit($form->get('btnGuardar')); ?>
-                <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
-            <!-- [ closeTag ] start -->
-        </div>
-    </div>
-</div>
-<!-- [ col] end -->
-
-<div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
-            <h5><?= $this->formLabel($form->get('archivo')); ?></h5>
-        </div>
-        <div class="card-body">
-            <!-- [ openTag ] start -->
                 <div class="form-group">
                     <?= $this->formText($form->get('input1')); ?>
                     <?= $this->formElementErrors($form->get('input1')); ?>
                 </div>
-                <div class="form-group" id="select">
-                    <div class="input-group">
-                        <div class="input-group-append delete">
-                            <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
-                        </div>
-                        <?= $this->formSelect($form->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)); ?>
-                        <div class="file-loading">
-                            <?= $this->formFile($form->get('archivo')); ?>
-                        </div>
+                <hr>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+				        <?= $this->formLabel($form->get('tipo_persona')); ?>
+                        <?= $this->formSelect($form->get('tipo_persona')); ?>
+                        <?= $this->formElementErrors($form->get('tipo_persona')); ?>
+                    </div>
+                    <div class="form-group col-md-3" id="pNombre">
+                        <?= $this->formLabel($form->get('nombre')); ?>
+                        <?= $this->formText($form->get('nombre')); ?>
                         <div class="text-danger">
-                            <?= $this->formElementErrors($form->get('archivo')); ?>
+                        <?= $this->formElementErrors($form->get('nombre')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3" id="aPaterno">
+                        <?= $this->formLabel($form->get('apellido_paterno')); ?>
+                        <?= $this->formText($form->get('apellido_paterno')); ?>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('apellido_paterno')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3" id="aMaterno">
+                        <?= $this->formLabel($form->get('apellido_materno')); ?>
+                        <?= $this->formText($form->get('apellido_materno')); ?>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('apellido_materno')); ?>
                         </div>
                     </div>
                 </div>
-
-                <div id="additionalselects">
-                    <!-- dynamically created archivos field will be placed here -->
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('razon_social')); ?>
+                    <?= $this->formText($form->get('razon_social')); ?>
+                    <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('razon_social')); ?>
+                    </div>
                 </div>
-                <div class="btn-group float-right">
-
-                <?= $this->formButton($form->get('add_more')); ?>
-            <?= $this->form()->closeTag(); ?>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <?= $this->formLabel($form->get('rfc')); ?>
+                        <?= $this->formText($form->get('rfc')); ?>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('rfc')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <?= $this->formLabel($form->get('curp')); ?>
+                        <?= $this->formText($form->get('curp')); ?>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('curp')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <?= $this->formLabel($form->get('birthday')); ?>
+                        <div>
+                        <?= $this->formDateSelect($form->get('birthday')); ?>
+                        </div>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('birthday')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <?= $this->formLabel($form->get('correo')); ?>
+                        <?= $this->formText($form->get('correo')); ?>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('correo')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <?= $this->formLabel($form->get('telefono')); ?>
+                        <?= $this->formText($form->get('telefono')); ?>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('telefono')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <?= $this->formLabel($form->get('genero')); ?>
+                        <?= $this->formSelect($form->get('genero')); ?>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('genero')); ?>
+                        </div>
+                    </div>
+                </div>
+                <?= $this->formHidden($form->get('csrf')); ?>
+                <div class="text-danger">
+                <?= $this->formElementErrors($form->get('csrf')); ?>
+                </div>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
+                <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
             <!-- [ closeTag ] start -->
         </div>
     </div>
