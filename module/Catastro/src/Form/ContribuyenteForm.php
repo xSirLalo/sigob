@@ -208,7 +208,7 @@ class ContribuyenteForm extends Form
 
         $this->add([
             'type' => Element\DateSelect::class,
-            'name' => 'birthday',
+            'name' => 'fecha_nacimiento',
             'options' => [
                 'label' => 'Fecha de nacimiento',
                 'create_empty_option' => true,

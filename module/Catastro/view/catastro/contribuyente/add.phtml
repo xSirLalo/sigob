@@ -70,13 +70,6 @@ $form->prepare();
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('razon_social')); ?>
-                    <?= $this->formText($form->get('razon_social')); ?>
-                    <div class="text-danger">
-                    <?= $this->formElementErrors($form->get('razon_social')); ?>
-                    </div>
-                </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <?= $this->formLabel($form->get('rfc')); ?>
@@ -85,6 +78,15 @@ $form->prepare();
                         <?= $this->formElementErrors($form->get('rfc')); ?>
                         </div>
                     </div>
+                    <div class="form-group col-md-9">
+                        <?= $this->formLabel($form->get('razon_social')); ?>
+                        <?= $this->formText($form->get('razon_social')); ?>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('razon_social')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row" id="pFisica">
                     <div class="form-group col-md-3">
                         <?= $this->formLabel($form->get('curp')); ?>
                         <?= $this->formText($form->get('curp')); ?>
@@ -93,24 +95,31 @@ $form->prepare();
                         </div>
                     </div>
                     <div class="form-group col-md-6">
-                        <?= $this->formLabel($form->get('birthday')); ?>
+                        <?= $this->formLabel($form->get('fecha_nacimiento')); ?>
                         <div>
-                        <?= $this->formDateSelect($form->get('birthday')); ?>
+                        <?= $this->formDateSelect($form->get('fecha_nacimiento')); ?>
                         </div>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('birthday')); ?>
+                        <?= $this->formElementErrors($form->get('fecha_nacimiento')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <?= $this->formLabel($form->get('genero')); ?>
+                        <?= $this->formSelect($form->get('genero')); ?>
+                        <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('genero')); ?>
                         </div>
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <?= $this->formLabel($form->get('correo')); ?>
                         <?= $this->formText($form->get('correo')); ?>
                         <div class="text-danger">
                         <?= $this->formElementErrors($form->get('correo')); ?>
                         </div>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <?= $this->formLabel($form->get('telefono')); ?>
                         <?= $this->formText($form->get('telefono')); ?>
                         <div class="text-danger">
@@ -118,11 +127,7 @@ $form->prepare();
                         </div>
                     </div>
                     <div class="form-group col-md-4">
-                        <?= $this->formLabel($form->get('genero')); ?>
-                        <?= $this->formSelect($form->get('genero')); ?>
-                        <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('genero')); ?>
-                        </div>
+
                     </div>
                 </div>
                 <?= $this->formHidden($form->get('csrf')); ?>
