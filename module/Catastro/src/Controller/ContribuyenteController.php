@@ -251,6 +251,69 @@ class ContribuyenteController extends AbstractActionController
     public function addAction()
     {
         $form = new ContribuyenteForm();
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $formData = $request->getPost()->toArray();
+            $form->setData($formData);
+            $form->setValidationGroup(['tipo_persona']);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $tipoPersona = $data['tipo_persona'];
+
+                if ($tipoPersona=='F') { // Persona Fisica
+                    $form->setValidationGroup([
+                        'input1',
+                        'tipo_persona',
+                        'nombre',
+                        'apellido_paterno',
+                        'apellido_materno',
+                        'fecha_nacimiento',
+                        'genero',
+                        'rfc',
+                        'curp',
+                        'correo',
+                        'telefono'
+                    ]);
+                } elseif ($tipoPersona=='M') { // Persona Moral
+                    $form->setValidationGroup([
+                        'input1',
+                        'tipo_persona',
+                        'nombre',
+                        'razon_social',
+                        'rfc',
+                        'correo',
+                        'telefono'
+                    ]);
+                }
+                if ($form->isValid()) {
+                    try {
+                        $data = $form->getData();
+
+                        $id = $data['input1'];
+                        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
+                        if ($contribuyente) {
+                            $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
+                            $this->flashMessenger()->addInfoMessage('Se actualizo con éxito!');
+                        } else {
+                            $this->contribuyenteManager->guardarContribuyente($data);
+                            $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                        }
+                        return $this->redirect()->toRoute('contribuyente');
+                    } catch (RuntimeException $exception) {
+                        $this->flashMessenger()->addErrorMessage($exception->getMessage());
+                        return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
+                    }
+                }
+            }
+        }
+        return new ViewModel(['form' => $form]);
+    }
+
+    public function add2Action()
+    {
+        $form = new ContribuyenteForm();
         $categorias = $this->bibliotecaManager->categorias();
         $destination = './public/img';
         $request = $this->getRequest();
@@ -272,85 +335,96 @@ class ContribuyenteController extends AbstractActionController
         // $view->setTerminal(true);
         // } else {
         if ($request->isPost()) {
-            $data = \array_merge_recursive(
-                $request->getFiles()->toArray(),
-                $request->getPost()->toArray(),
-            );
+            // $data = \array_merge_recursive(
+            //     $request->getFiles()->toArray(),
+            //     $request->getPost()->toArray(),
+            // );
             // $data = $this->params()->fromPost();
-            $archivoUrl = (array) $this->params()->fromFiles('archivo');
-            $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+            // $archivoUrl = (array) $this->params()->fromFiles('archivo');
+            // $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
 
-            $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
-            $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
-            $num = (int) count($archivoUrl);
-            for ($i=0; $i < $num; $i++) {
-                $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+            // $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+            // $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+            // $num = (int) count($archivoUrl);
+            // for ($i=0; $i < $num; $i++) {
+            //     $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
 
-                $file_folder = $destination . '/' . $newName;
+            //     $file_folder = $destination . '/' . $newName;
 
-                if (file_exists($file_folder)) {
-                    // FIXME: Vacio aun asi muestra el mensaje
-                    $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
-                    return $this->redirect()->toRoute('contribuyente/agregar');
-                }
+            //     if (file_exists($file_folder)) {
+            //         // FIXME: Vacio aun asi muestra el mensaje
+            //         $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
+            //         return $this->redirect()->toRoute('contribuyente/agregar');
+            //     }
 
-                $inputFilter = new OptionalInputFilter();
-                $inputFilter->add([
-                    'name' => 'archivo',
-                    'filters' => [
-                        [
-                            'name' => Filter\File\Rename::class,
-                            'options' => [
-                                'target' => $destination . '/' . $newName,
-                            ]
-                        ]
-                    ]
-                ]);
-                $form->setInputFilter($inputFilter);
-            }
+            //     $inputFilter = new OptionalInputFilter();
+            //     $inputFilter->add([
+            //         'name' => 'archivo',
+            //         'filters' => [
+            //             [
+            //                 'name' => Filter\File\Rename::class,
+            //                 'options' => [
+            //                     'target' => $destination . '/' . $newName,
+            //                 ]
+            //             ]
+            //         ]
+            //     ]);
+            //     $form->setInputFilter($inputFilter);
+            // }
+            $formData = $request->getPost()->toArray();
+            $form->setData($formData);
+            $form->setValidationGroup(['tipo_persona']);
 
-            $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $archivoUrl = (array) $this->params()->fromFiles('archivo');
-                $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+                $tipoPersona = $data['tipo_persona'];
 
-                $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
-                $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
-
-                $num = (int) count($archivoUrl);
-                for ($i=0; $i < $num; $i++) {
-                    $filename = $_FILES['archivo']['name'][$i];
-                    $filesize = $_FILES['archivo']['size'][$i];
-                    $tmp_name = $_FILES['archivo']['tmp_name'][$i];
-                    $file_type = $_FILES['archivo']['type'][$i];
-                    $date = date("d-m-Y_H-i");
-                    $temp = explode(".", $filename);
-                    $new_filename =   strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
-                    $file_folder = $destination . '/' . $new_filename;
-
-                    $data['archivoBlob'] = file_get_contents($file_folder, true);
-                    $data['extension'] = $temp[count($temp)-1];
-                    $data['size'] = $filesize;
-                    $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-                    $data['categoria'] = $categoria[$i];
-                    $id = $data['input1'];
-
-                    $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
-
-                    if ($archivito) { // TODO: Hacer funcionar
-                        $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
-                    }
-
-                    $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
-                    if ($contribuyente) {
-                        $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
-                        $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
-                    } else {
-                        $this->contribuyenteManager->guardarContribuyente($data);
-                        $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                    }
+                if ($tipoPersona=='F') {
+                    $form->setValidationGroup(['tipo_persona', 'apellido_paterno', 'apellido_materno']);
+                } elseif ($tipoPersona=='M') {
+                    $form->setValidationGroup(['tipo_persona', 'razon_social']);
                 }
+                if ($form->isValid()) {
+                }
+                // $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                // $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+
+                // $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
+                // $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
+
+                // $num = (int) count($archivoUrl);
+                // for ($i=0; $i < $num; $i++) {
+                //     $filename = $_FILES['archivo']['name'][$i];
+                //     $filesize = $_FILES['archivo']['size'][$i];
+                //     $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                //     $file_type = $_FILES['archivo']['type'][$i];
+                //     $date = date("d-m-Y_H-i");
+                //     $temp = explode(".", $filename);
+                //     $new_filename =   strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
+                //     $file_folder = $destination . '/' . $new_filename;
+
+                //     $data['archivoBlob'] = file_get_contents($file_folder, true);
+                //     $data['extension'] = $temp[count($temp)-1];
+                //     $data['size'] = $filesize;
+                //     $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                //     $data['categoria'] = $categoria[$i];
+                $id = $data['input1'];
+
+                //     $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+
+                //     if ($archivito) { // TODO: Hacer funcionar
+                //         $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
+                //     }
+
+                $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
+                if ($contribuyente) {
+                    $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
+                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
+                } else {
+                    $this->contribuyenteManager->guardarContribuyente($data);
+                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                }
+                // }
                 return $this->redirect()->toRoute('contribuyente');
                 // $this->contribuyenteManager->agregar($data);
                 // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');

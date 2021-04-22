@@ -26,130 +26,54 @@ $this->pageBreadcrumbs()->setItems([
 <a class="btn btn-warning" href="<?=$this->url('prueba/agregar')?>">Agregar un dato de prueba</a>
 <hr>
 <br>
-<select class="js-example-basic-single custom-select w-30"   name="select_localidad" >
-    <option value="0">Seleccione uno...</option>
-    <?php if (is_array($data3->GiroComercial)): ?>
-    <?php foreach ($data3->GiroComercial as $GiroComercial):?>
-    <option value="<?= $GiroComercial->GirosComercialesDescripcion?>"><?= $GiroComercial->GirosComercialesDescripcion?></option>
-    <?php endforeach; ?>
-    <?php endif; ?>
-</select>
 <?php
 
-// if (isset($data->Persona)) {
-//     if (is_array($data->Persona)) {
-//         echo $data->Persona[0]->CvePersona;
-//     //     foreach ($data->Persona as $item) {
-//     //         echo $item->CvePersona;
-//     //         echo "<br>";
-//     //     }
-//     }
-//     echo "<br>";
-//     echo "seteado";
-// }
+if (isset($data->Persona)) {
+    if (is_array($data->Persona)) {
+        echo $data->Persona[0]->CvePersona;
+        // foreach ($data->Persona as $item) {
+        //     echo $item->CvePersona;
+        //     echo "<br>";
+        // }
+    }
+    echo "<br>";
+    echo "seteado";
+}
 
+if (isset($data->Predio)) {
+    if (is_array($data->Predio)) {
+        foreach ($data->Predio as $item) {
+            echo $item->PredioId;
+            echo "<br>";
+        }
+    } else {
+        echo $data->Predio->PredioId;
+        echo "<br>";
+    }
+    echo "<br>";
+    echo "seteado";
+}
 
-//if(!(array)$data)
-// if(isset($data))
-// {
-//     echo "NO EXCISTE<br>";
-// }
-// else{
-// echo "<br>";
-// echo "<hr>";
+if (isset($data->PredioColindancia)) {
+    if (is_array($data->PredioColindancia)) {
+        foreach ($data->PredioColindancia as $item) {
+            echo $item->Descripcion;
+            echo "<br>";
+        }
+    } else {
+        echo $data->PredioColindancia->Descripcion;
+        echo "<br>";
+    }
+    echo "<br>";
+    echo "seteado";
+}
 
-// echo "<pre>";
-// print_r($data);
-// echo "</pre>";
-
-// echo "<br>";
-// echo "<hr>";
-// }
-
-// if (isset($data->Predio)) {
-//     if (is_array($data->Predio)) {
-//         foreach ($data->Predio as $item) {
-//             echo $item->PredioId;
-//             echo "<br>";
-//         }
-//     } else {
-//         echo $data->Predio->PredioId;
-//         echo "<br>";
-//     }
-//     echo "<br>";
-//     echo "seteado";
-// }
-
-// if (isset($data->PredioColindancia)) {
-//     if (is_array($data->PredioColindancia)) {
-//         foreach ($data->PredioColindancia as $item) {
-//             echo $item->Descripcion;
-//             echo "<br>";
-//             echo $item->MedidaMts;
-//             echo "<br>";
-//             echo $item->OrientacionGeografica;
-//             echo "<br>";
-//         }
-//     } else {
-//         echo "<h1>asd</h1>";
-//         echo $data->PredioColindancia->Descripcion;
-//         echo "<br>";
-//     }
-//     echo "<br>";
-//     echo "seteado";
-// }
-// echo "IdSolicitud";
-// echo "<br>";
-// echo "<hr>";
-
-// echo "<pre>";
-// print_r($data);
-// echo "</pre>";
-
-// echo "<br>";
-// echo "<hr>";
-// ///////////////////////
-// echo "SolicitudFuentaIngreso";
-// echo "<br>";
-// echo "<hr>";
-
-// echo "<pre>";
-// print_r($data2);
-// echo "</pre>";
-
-// echo "<br>";
-// echo "<hr>";
-////////////////////////
-
-///////////////////////
-echo "Localidad";
 echo "<br>";
 echo "<hr>";
 
 echo "<pre>";
-print_r($data3);
+print_r($data);
 echo "</pre>";
-
-echo "<br>";
-echo "<hr>";
-
-//setlocale(LC_MONETARY, 'es_MX');
-
-$numero = (double) 19999999999.4542;
-
-//echo number_format($data->Predio->PredioTerrenoImporte,4);
-// echo "<br>";
-// $i=1;
-// while ($i<=10) {
-//     echo "7 x $i = ". 7*$i."<br/>";
-//     $i++;
-//     }
-
-// echo money_format('%n', $numero); //Muestra: $ 1,332.52
-// echo '<br>';
-// echo money_format('%n', $string); //Muestra: $ 1,332.52
-// echo '<br>';
-// echo money_format('%i', $numero); //Lo que tú tienes muestra: MXN 1,332.52
 
 ?>
 </div>

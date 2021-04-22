@@ -23,19 +23,22 @@ class ContribuyenteManager
     public function guardarContribuyente($data)
     {
         $contribuyente = new Contribuyente();
+        $currentDate = new \DateTime();
 
-        $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-        $contribuyente->setApellidoMaterno($data['apellido_materno']);
-        $contribuyente->setCurp($data['curp']);
-        // $contribuyente->setCvePersona($data['cve_persona']);
-        $contribuyente->setGenero($data['genero']);
-        $contribuyente->setNombre($data['nombre']);
+        if ($data['tipo_persona'] == 'F') { // Persona Fisica
+            $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
+            $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
+            $contribuyente->setCurp($data['curp']);
+            $contribuyente->setGenero($data['genero']);
+        } elseif ($data['tipo_persona'] == 'M') { // Persona Moral
+            $contribuyente->setRazonSocial($data['razon_social']);
+        }
+
+        $contribuyente->setNombre(ucfirst($data['nombre']));
         $contribuyente->setTelefono($data['telefono']);
         $contribuyente->setCorreo($data['correo']);
         $contribuyente->setRfc($data['rfc']);
-        $contribuyente->getRazonSocial($data['razon_social']);
 
-        $currentDate = new \DateTime();
         $contribuyente->setCreatedAt($currentDate);
         $contribuyente->setUpdatedAt($currentDate);
 
@@ -56,7 +59,7 @@ class ContribuyenteManager
         $contribuyente->setTelefono($data['telefono']);
         $contribuyente->setCorreo($data['correo']);
         $contribuyente->setRfc($data['rfc']);
-        $contribuyente->getRazonSocial($data['razon_social']);
+        $contribuyente->setRazonSocial($data['razon_social']);
 
         $currentDate = new \DateTime();
         $contribuyente->setCreatedAt($currentDate);
@@ -73,18 +76,22 @@ class ContribuyenteManager
 
     public function actualizarContribuyente($contribuyente, $data)
     {
-        $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-        $contribuyente->setApellidoMaterno($data['apellido_materno']);
-        $contribuyente->setCurp($data['curp']);
-        // $contribuyente->setCvePersona($data['cve_persona']);
-        $contribuyente->setGenero($data['genero']);
+        $currentDate = new \DateTime();
+
+        if ($data['tipo_persona'] == 'F') { // Persona Fisica
+            $contribuyente->setApellidoPaterno($data['apellido_paterno']);
+            $contribuyente->setApellidoMaterno($data['apellido_materno']);
+            $contribuyente->setCurp($data['curp']);
+            $contribuyente->setGenero($data['genero']);
+        } elseif ($data['tipo_persona'] == 'M') { // Persona Moral
+            $contribuyente->setRazonSocial($data['razon_social']);
+        }
+
         $contribuyente->setNombre($data['nombre']);
         $contribuyente->setTelefono($data['telefono']);
         $contribuyente->setCorreo($data['correo']);
         $contribuyente->setRfc($data['rfc']);
-        $contribuyente->getRazonSocial($data['razon_social']);
 
-        $currentDate = new \DateTime();
         $contribuyente->setUpdatedAt($currentDate);
 
         $this->entityManager->flush();

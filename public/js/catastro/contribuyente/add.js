@@ -7,6 +7,24 @@ $(document).on('keydown', '.js-select2-persona', function(e) {
     }
 });
 
+function tipoPersonaCambia() {
+    var tipoPersonaSeleccionado = $('#tipo_persona').find(":selected").val();
+
+    if(tipoPersonaSeleccionado=='M') {
+            $('#pNombre').removeClass('col-md-3');
+            $('#pNombre').addClass('col-md-9');
+            $('#aMaterno').hide();
+            $('#aPaterno').hide();
+            $('#pFisica').hide();
+    } else if(tipoPersonaSeleccionado=='F') {
+            $('#pNombre').removeClass('col-md-9');
+            $('#pNombre').addClass('col-md-3');
+            $('#aMaterno').show();
+            $('#aPaterno').show();
+            $('#pFisica').show();
+    }
+}
+
 $(document).ready(function () {
     function formatRepo(repo) {
         if (repo.loading) return repo.text;
@@ -16,6 +34,11 @@ $(document).ready(function () {
 
         return markup;
     }
+    tipoPersonaCambia();
+
+    $("#tipo_persona").change(function() {
+        tipoPersonaCambia();
+    });
 
     function formatRepoSelection(repo) {
         return repo.item_select_name || repo.text;
@@ -64,10 +87,6 @@ $(document).ready(function () {
         templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
     });
 
-    // $('#persona').on('select2:select', function (e) {
-    //     console.log('asd');
-    // });
-
     $('.js-select2-persona').change(function(){
         var id = $(this).val();
         var url = '/contribuyente/autorellenaPersona/'+id;
@@ -79,23 +98,21 @@ $(document).ready(function () {
         async: true,
         success: function(data)
         {
-                console.log(data);
-                // $('[name ="input1"]').val(data.contribuyente_id);
-                $('[name ="input1"]').val(data.contribuyente_id);
-                $('[name ="nombre"]').val(data.nombre);
-                $('[name ="apellido_paterno"]').val(data.apellido_paterno);
-                $('[name ="apellido_materno"]').val(data.apellido_matero);
-                $('[name ="rfc"]').val(data.rfc);
-                $('[name ="curp"]').val(data.curp);
-                $('[name ="razon_social"]').val(data.razon_social);
-                $('[name ="correo"]').val(data.correo);
-                $('[name ="telefono"]').val(data.telefono);
-                $('[name ="genero"]').val(data.genero);
+            console.log(data);
+            $('[name ="input1"]').val(data.contribuyente_id);
+            $('[name ="nombre"]').val(data.nombre);
+            $('[name ="apellido_paterno"]').val(data.apellido_paterno);
+            $('[name ="apellido_materno"]').val(data.apellido_materno);
+            $('[name ="rfc"]').val(data.rfc);
+            $('[name ="curp"]').val(data.curp);
+            $('[name ="razon_social"]').val(data.razon_social);
+            $('[name ="correo"]').val(data.correo);
+            $('[name ="telefono"]').val(data.telefono);
+            $('[name ="genero"]').val(data.genero);
         },
         error: function (jqXHR, textStatus, errorThrown)
             {
                 console.log(data);
-                // $('#modal_alert').modal('show'); // show bootstrap modal
             }
         });
     });

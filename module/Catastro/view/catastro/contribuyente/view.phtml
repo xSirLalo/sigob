@@ -40,9 +40,22 @@ $this->pageBreadcrumbs()->setItems([
                         <td>C.U.R.P.</td>
                         <td><?= $contribuyente->getCurp() ?></td>
                     </tr>
+                    <tr>
+                        <td>Correo Electrónico</td>
+                        <td><?= $contribuyente->getCorreo() ?></td>
+                    </tr>
+                    <tr>
+                        <td>Telefono</td>
+                        <td><?= $contribuyente->getTelefono() ?></td>
+                    </tr>
+                    <tr>
+                        <td>Genero</td>
+                        <td><?= $contribuyente->getGenero() ?></td>
+                    </tr>
                 </tbody>
             </table>
             <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
+            <a href="<?= $this->url('contribuyente/editar', ['action' => 'editar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-warning"> Editar</a>
         </div>
     </div>
 </div>

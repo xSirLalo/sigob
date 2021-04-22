@@ -1,62 +1,31 @@
 $(document).ready(function() {
-    // var info = (myTable == null) ? { "start": 0, "length": 10 } : myTable.page.info();
     setTimeout(function() {
         // [ Configuration Option ]
         $('#contribuyentes').DataTable({
             responsive: true,
             autoWidth: false,
             scrollX: true,
-            // scrollY: 200,
             scroller: {
                 loadingIndicator: true
             },
             processing: true,
-            serverSide: true,
+            // serverSide: true,
             deferRender: true,
             paging: true,
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             pageLength: 10,
             order: [],
-            // ajax: {
-            //     type: "POST",
-            //     url: "/contribuyente",
-            //     dataType: "JSON",
-            //     // "contentType": 'application/json; charset=utf-8',
-            //     data: function (data) {
-            //         // Grab form values containing user options
-            //         // var form = {};
-            //         // $.each($("form").serializeArray(), function (i, field) {
-            //         //     form[field.name] = field.value || "";
-            //         // });
-            //         // Add options used by Datatables
-            //         var out = [];
-
-            //         for ( var i=data.start, ien=data.start+data.length ; i<ien ; i++ ) {
-            //             out.push( [ i+'-1', i+'-2', i+'-3', i+'-4', i+'-5' ] );
-            //         }
-            //         var info = { "start": 0, "length": 10, "draw": 1 };
-            //         // $.extend(form, info);
-            //         // return JSON.stringify(form);
-            //     },
-            //     error: function(){
-            //         $(".contribuyentes-error").html("");
-            //         $("#contribuyentes").append('<tbody class="contribuyentes-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
-            //         $(".dataTables_empty").css("display","none");
-            //         $("#contribuyentes_processing").css("display","none");
-            //     },
-            //     "complete": function(response) {
-            //         console.log(response);
-            //     }
-            // },
-            // sAjaxSource:"/contribuyente/datatable",
-            ajax:{
+            ajax: {
                 url :"/contribuyente/datatable",
-                type: "post",
+                type: "POST",
                 error: function(){
                     $(".contribuyentes-error").html("");
                     $("#contribuyentes").append('<tbody class="contribuyentes-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
                     $(".dataTables_empty").css("display","none");
                     $("#contribuyentes_processing").css("display","none");
+                },
+                "complete": function(response) {
+                    console.log(response);
                 }
             },
             initComplete: function () {
@@ -93,11 +62,6 @@ $(document).ready(function() {
                 url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"
             },
         });
-
-        // [ New Constructor ]
-        // var newcs = $('#new-cons').DataTable();
-
-        // new $.fn.dataTable.Responsive(newcs);
 
         // [ Immediately Show Hidden Details ]
         $('#show-hide-res').DataTable({
