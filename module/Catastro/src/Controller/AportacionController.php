@@ -55,44 +55,10 @@ class AportacionController extends AbstractActionController
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
-        // if ($request->isXmlHttpRequest()) {
-        //     $id = $this->params()->fromRoute('id');
-            // $from = $_POST['from'];
-            $from = $_POST['from'];
-            $like = $_POST['like'];
 
-            //$qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
-            ///////////
-            // $qb->select('c')->from('Catastro\Entity\Contribuyente', 'c')
-            //     ->where($qb->expr()->like('c.nombre', ":word"))
-            //     ->orWhere($qb->expr()->like('c.apellidoPaterno', ":word"))
-            //     ->orWhere($qb->expr()->like('c.apellidoMaterno', ":word"))
-            //     ->orWhere($qb->expr()->like('c.rfc', ":word"))
-            //     ->orWhere($qb->expr()->like('c.cvePersona', ":word"))
-            // ->setParameter("word", '%' . addcslashes($name, '%_') . '%');
-            // $query = $qb->getQuery()->getResult();
-            //////////
-            if($from == "Aportacion"){
-            $qb = $this->entityManager->createQueryBuilder();
-            $qb->select('a')
-                    ->from('Catastro\Entity\Aportacion', 'a')
-                    ->where($qb->expr()->like('a.estatus', ":word"))
-                    //->where('a.idAportacion = :idParam')
-                    ->setParameter("word", '%' . addcslashes($like, '%_') . '%');
-                    //->setParameter('idParam', $like  );
+                $qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
 
                 $query = $qb->getQuery()->getResult();
-            //$predioColindancias = $qb->getQuery()->getResult();
-            ///////////
-            //$qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
-            }elseif($from == "Predio"){
-                $qb->select('p')
-                    ->from('Catastro\Entity\Predio', 'p')
-                    ->where('p.parcerla = :idParam')
-                    ->setParameter('idParam', $like  );
-
-            }
-
 
 
             $data = [];
@@ -111,7 +77,7 @@ class AportacionController extends AbstractActionController
                         'Opciones'      => "Cargando..."
                     ];
             }
-        //}
+
         $result = [
                     "draw"            => 1,
                     "recordsTotal"    => count($data),
@@ -133,8 +99,8 @@ class AportacionController extends AbstractActionController
         $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
-        // $localidades = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
-        // $girocomerciales = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
+        $localidades = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
+        $girocomerciales = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
 
         // if ($contribuyente == null) {
         //     $this->layout()->setTemplate('error/404');
@@ -154,8 +120,8 @@ class AportacionController extends AbstractActionController
                 }
             }
         }
-        //return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente, 'localidades' => $localidades, 'girocomerciales' => $girocomerciales]);
-        return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
+        return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente, 'localidades' => $localidades, 'girocomerciales' => $girocomerciales]);
+        //return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
     }
 
     public function addModalAction()
@@ -183,6 +149,7 @@ class AportacionController extends AbstractActionController
         } else {
             echo 'Error get data from ajax';
         }
+
     }
 
     public function validationAction()
@@ -1077,14 +1044,131 @@ class AportacionController extends AbstractActionController
         }
     }
 
+    public function viewAportacionAction(){
+        $aportacionId = (int)$this->params()->fromRoute('id', -1);
+        $apotacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+        if ($apotacion == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+        }
+
+        return new ViewModel(['aportacionId' => $aportacionId]);
+    }
+
     public function editAportacionAction(){
-        return new ViewModel([]);
+
+
+        $request = $this->getRequest();
+        $aportacionId = (int)$this->params()->fromRoute('id', -1);
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+            $data = [
+                //Predio////
+                'parcela'            => $aportacion->getIdPredio()->getParcela(),
+                'manzana'            => $aportacion->getIdPredio()->getManzana(),
+                'lote'               => $aportacion->getIdPredio()->getLote(),
+                'local'              => $aportacion->getIdPredio()->getlocal(),
+                'categoria'          => $aportacion->getIdPredio()->getCategoria(),
+                'condicion'          => $aportacion->getIdPredio()->getCondicion(),
+                'ubicacion'          => $aportacion->getIdPredio()->getUbicacion(),
+                'localidad'          => $aportacion->getIdPredio()->getLocalidad(),
+                'antecedentes'       => $aportacion->getIdPredio()->getAntecedentes(),
+                'claveCatastral'     => $aportacion->getIdPredio()->getClaveCatastral(),
+                'regimenPropiedad'   => $aportacion->getIdPredio()->getRegimenPropiedad(),
+                'fechaAdquicision'   => $aportacion->getIdPredio()->getFechaAdquicision(),
+                'titularAnterior'    => $aportacion->getIdPredio()->getTitularAnterior(),
+                'documentoPropiedad' => $aportacion->getIdPredio()->getParcela(),
+                'folio'              => $aportacion->getIdPredio()->getParcela(),
+                'fechaDocumento'     => $aportacion->getIdPredio()->getParcela(),
+                'loteConflicto'      => $aportacion->getIdPredio()->getParcela(),
+                'observaciones'      => $aportacion->getIdPredio()->getObservaciones(),
+                ///Contiribuyente//
+                'contribuyente'      => $aportacion->getIdContribuyente()->getNombre(),
+                'factura'            => $aportacion->getIdContribuyente()->getFactura(),
+                'giroComercial'      => $aportacion->getIdContribuyente()->getGiroComercial(),
+                'nombreComercial'    => $aportacion->getIdContribuyente()->getNombreComercial(),
+                'tenencia'           => $aportacion->getIdContribuyente()->getTenencia(),
+                'rfc'                => $aportacion->getIdContribuyente()->getRfc(),
+                'usoDestino'         => $aportacion->getIdContribuyente()->getUsoDestino(),
+                ///Aportacion
+
+            ];
+
+            $view = new JsonModel($data);
+
+        }
+        return $view;
+
 
     }
 
-    public function historialAction()
+    public function updateAportacionAction(){
+
+        $req_post = $this->params()->fromPost();
+
+        $result = $this->aportacionManager->actualizarAportacion($req_post['a'][0]);
+        $json = new JsonModel($datos);
+				$json->setTerminal(true);
+
+
+            $datos = ["resp"=>"ok", "msg"=>"cambios guardados"];
+
+            $json = new JsonModel($datos);
+			$json->setTerminal(true);
+
+            return $json;
+
+    }
+
+
+    public function addTestAction()
     {
-        return new ViewModel([]);
+        $req_post = $this->params()->fromPost();
+
+        $result = $this->aportacionManager->guardarTest($req_post['c'][0]);
+
+        if ($result > 0){
+            $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result];
+        }else{
+            $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
+        }
+
+
+
+
+				$json = new JsonModel($datos);
+				$json->setTerminal(true);
+
+				return $json;
+
+
+    }
+
+    public function addAportacionAction()
+    {
+        $req_post = $this->params()->fromPost();
+
+        $result = $this->aportacionManager->guardarAportacion($req_post['a'][0]);
+        if ($result)
+            {
+            $this->aportacionManager->pdf($result);
+            }
+
+        // if ($result > 0){
+        //     $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion()];
+        // }else{
+        //     $datos = ["resp"=>"no", "msg"=>"No se guardo"];
+        // }
+
+
+				$json = new JsonModel($datos);
+				$json->setTerminal(true);
+
+				return $json;
+
+
+
     }
 
 

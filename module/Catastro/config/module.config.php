@@ -662,15 +662,42 @@ return [
                             ],
                         ],
                     ],
-                    'historial' => [
+                    'verAportacion' => [
                         'type' => 'segment',
                         'options' => [
-                            'route' => '/historial-aportacion[/:id]',
+                            'route' => '/ver-aportacion[/:id]',
                             'constraints' => [
                                 'id' => '[0-9,a-z,A-Z,-]+',
                             ],
                             'defaults' => [
-                                'action' => 'historial',
+                                'action' => 'viewaportacion',
+                            ],
+                        ],
+                    ],
+                    'guardarTest' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/guardarTest',
+                            'defaults' => [
+                                'action' => 'addtest',
+                            ],
+                        ],
+                    ],
+                    'guardarAportacion' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/guardarAportacion',
+                            'defaults' => [
+                                'action' => 'addaportacion',
+                            ],
+                        ],
+                    ],
+                    'actualizarAportacion' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/actualizarAportacion',
+                            'defaults' => [
+                                'action' => 'updateaportacion',
                             ],
                         ],
                     ],
@@ -721,7 +748,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'historial'], 'allow' => '*']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addtest', 'addaportacion', 'updateaportacion','viewaportacion'], 'allow' => '*']
             ],
         ]
     ],

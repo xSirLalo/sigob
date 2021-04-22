@@ -48,7 +48,7 @@ $form->prepare();
                     <li class="nav-item"><a href="#b-w-tab2" class="nav-link" data-toggle="tab">Datos</a></li>
                     <li class="nav-item"><a href="#b-w-tab3" class="nav-link" data-toggle="tab">Calculo de pago</a></li>
                 </ul>
-                <?= $this->form()->openTag($form);?>
+
                 <div class="tab-content">
                     <div class="tab-pane" id="b-w-tab2">
                     <!-- <h class="text-center bg-secondary"></h> -->
@@ -141,7 +141,7 @@ $form->prepare();
                                 <div class="form-group ">
                                 <!-- Input Localidad-->
                                     <label class="form-label">Localidad</label>
-                                    <select class="js-example-basic-single custom-select w-30"name="select_localidad" >
+                                    <select class="js-example-basic-single custom-select w-30"name="select_localidad" id="localidad">
                                         <!-- <option value="0">Seleccione uno...</option> -->
                                         <?php if (is_array($localidades->Localidad)): ?>
                                         <?php foreach ($localidades->Localidad as $localidad):?>
@@ -210,7 +210,7 @@ $form->prepare();
                             <div class="col-sm-4">
                                 <div class="form-group ">
                                     <label for="my-select">Documento que acredite la propiedad</label>
-                                        <select id="my-select" class="form-control custom-select w-30" name="">
+                                        <select id="documentoPropiedad" class="form-control custom-select w-30" name="">
                                             <option>Seleccione uno..</option>
                                             <option>Titulo</option>
                                             <option>Escritura</option>
@@ -222,13 +222,13 @@ $form->prepare();
                             <div class="col-sm-4">
                                 <div class="form-group ">
                                     <label>Folio</label>
-                                    <input class="form-control" type="text" name="">
+                                    <input class="form-control" type="text" id="folio" name="">
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Fecha del documento</label>
-                                    <input class="form-control" type="date" name="" value="<?=date("Y-m-d");?>">
+                                    <input class="form-control" type="date" name="" id="fechaDocumento" value="<?=date("Y-m-d");?>">
                                 </div>
                             </div>
                         </div>
@@ -258,7 +258,7 @@ $form->prepare();
                                             </tr>
                                         </thead>
                                         <tbody id="tbody">
-                                            <tr>
+                                            <tr id="trhidden">
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -315,7 +315,7 @@ $form->prepare();
                                 <div class="form-group ">
                                 <!-- Input Giro Comercial-->
                                     <label class="form-label">Giro Comercial</label>
-                                    <select class="js-example-basic-single custom-select w-30"name="select_girocomercial" >
+                                    <select class="js-example-basic-single custom-select w-30"name="select_girocomercial" id="giroComercial" >
                                         <!-- <option value="0">Seleccione uno...</option> -->
                                         <?php if (is_array($girocomerciales->GiroComercial)): ?>
                                         <?php foreach ($girocomerciales->GiroComercial as $girocomercial):?>
@@ -371,15 +371,24 @@ $form->prepare();
                         <h3 class="text-center bg-secondary">OBSERVACIONES</h3>
                         <!-- Aqui va el Textarea -->
                         <div class="row ml-0">
-                        <div class="col-sm-12">
+                            <div class="col-sm-3">
                                 <div class="form-group ">
-                                <!-- Input Superficie Ocupada-->
-                                <!-- <textarea id="my-textarea" class="form-control" name="" rows="3"></textarea> -->
-                                    <?= $this->formTextarea($form->get('observaciones')); ?>
-                                    <div class="text-danger">
-                                        <?= $this->formElementErrors($form->get('observaciones')); ?>
-                                    </div>
+                                <label>Lote en Conflicto</label>
+                                    <select id="loteConflicto" class="form-control  custom-select w-30" name="">
+                                            <option>No</option>
+                                            <option>Si</option>
+                                            <option>Sobreposición</option>
+                                            <option>Legal</option>
+                                    </select>
                                 </div>
+                            </div>
+                            <div class="col-sm-9">
+                                    <div class="form-group ">
+                                        <?= $this->formTextarea($form->get('observaciones')); ?>
+                                        <div class="text-danger">
+                                            <?= $this->formElementErrors($form->get('observaciones')); ?>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                         <!-- Aqui finaliza Textarea -->
@@ -603,7 +612,7 @@ $form->prepare();
                             <?= $this->formSubmit($form->get('btnGuardar')); ?>
                             </div>
                         </div>
-                    <?= $this->form()->closeTag(); ?>
+
                     </div>
                     <div class="row justify-content-between btn-page">
                         <div class="col-sm-6">
@@ -611,6 +620,8 @@ $form->prepare();
                         </div>
                         <div class="col-sm-6 text-md-right">
                             <a href="#!" class="btn btn-primary button-next">Next</a>
+                            <a href="#!" class="btn btn-primary button-next">Next</a>
+                            <button class="btn btn-primary" id="btn_guardarAportacion">GUARDAR APORTACION</button>
                         </div>
                     </div>
 
