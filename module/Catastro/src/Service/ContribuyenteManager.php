@@ -30,6 +30,7 @@ class ContribuyenteManager
             $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
             $contribuyente->setCurp($data['curp']);
             $contribuyente->setGenero($data['genero']);
+            $contribuyente->setRazonSocial(ucfirst($data['nombre']) ." ". ucfirst($data['apellido_paterno']) ." ". ucfirst($data['apellido_materno']));
         } elseif ($data['tipo_persona'] == 'M') { // Persona Moral
             $contribuyente->setRazonSocial($data['razon_social']);
         }
@@ -83,6 +84,7 @@ class ContribuyenteManager
             $contribuyente->setApellidoMaterno($data['apellido_materno']);
             $contribuyente->setCurp($data['curp']);
             $contribuyente->setGenero($data['genero']);
+            $contribuyente->setRazonSocial(ucfirst($data['nombre']) ." ". ucfirst($data['apellido_paterno']) ." ". ucfirst($data['apellido_materno']));
         } elseif ($data['tipo_persona'] == 'M') { // Persona Moral
             $contribuyente->setRazonSocial($data['razon_social']);
         }
