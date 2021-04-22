@@ -1071,6 +1071,7 @@ class AportacionController extends AbstractActionController
                 'local'              => $aportacion->getIdPredio()->getlocal(),
                 'categoria'          => $aportacion->getIdPredio()->getCategoria(),
                 'condicion'          => $aportacion->getIdPredio()->getCondicion(),
+                'titular'            => $aportacion->getIdPredio()->getTitular(),
                 'ubicacion'          => $aportacion->getIdPredio()->getUbicacion(),
                 'localidad'          => $aportacion->getIdPredio()->getLocalidad(),
                 'antecedentes'       => $aportacion->getIdPredio()->getAntecedentes(),

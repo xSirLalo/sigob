@@ -58,8 +58,26 @@ edit_aportacion($('#hdn_id_cont').val());
 $(document).ready(function() {
     let actualizarAportacion  = function(){
 
-        this.Idaportacion = $("#hdn_id_cont").val();
-        this.parcela = $("#parcela").val();
+        this.Idaportacion       = $("#hdn_id_cont").val();
+        this.parcela            = $("#parcela").val();
+        this.manzana            = $("#manzana").val();
+        this.lote               = $("#lote").val();
+        this.local              = $("#local").val();
+        this.categoria          = $("#categoria").val();
+        this.condicion          = $("#condicion").val();
+        this.titular            = $("#titular").val();
+        this.ubicacion          = $("#ubicacion").val();
+        this.localidad          = $("#localidad").val();
+        this.antecedentes       = $("#antecedentes").val();
+        this.claveCatastral     = $("#claveCatastral").val();
+        this.regimenPropiedad   = $("#regimenPropiedad").val();
+        this.fechaAdquicision   = $("#fechaAdquicision").val();
+        this.titularAnterior    = $("#titularAnterior").val();
+        this.documentoPropiedad = $("#documentoPropiedad").val();
+        this.folio              = $("#folio").val();
+        this.fechaDocumento     = $("#fechaDocumento").val();
+        this.loteConflicto      = $("#loteConflicto").val();
+        this.observaciones      = $("#observaciones").val();
 	}
 
     let guardarCambios = function(aportacion){

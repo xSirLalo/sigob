@@ -657,6 +657,20 @@ class AportacionManager
 
 
         $predio->setParcela($datos['parcela']);
+        $predio->setManzana($datos['manzana']);
+        $predio->setLote($datos['lote']);
+        $predio->setLocal($datos['local']);
+        $predio->setCategoria($datos['categoria']);
+        $predio->setCondicion($datos['condicion']);
+        $predio->setTitular($datos['titular']);
+        // $predio->setUbicacion($datos['ubicacion']);
+        // $predio->setLocalidad($datos['localidad']);
+        // $predio->setAntecedentes($datos['antecedentes']);
+        // $predio->setClaveCatastral($datos['claveCatastral']);
+        // $predio->setRegimenPropiedad($datos['regimenPropiedad']);
+        // $fecha_adquicision = new \DateTime($datos['fechaAdquicision']);
+        // $aportacion->setFechaAdquicision($fecha_adquicision);
+
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
 
