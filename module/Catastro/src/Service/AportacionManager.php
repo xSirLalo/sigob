@@ -213,7 +213,7 @@ class AportacionManager
         $this->entityManager->flush();
     }
 
-    public function pdf($data,$aportacion)
+    public function pdf($aportacion)
     {
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         // set document information
@@ -276,7 +276,8 @@ class AportacionManager
 
         $pdf->SetFont('helvetica', '', 10);
 
-        $contribuyenteId = $data['parametro'];
+        // $contribuyenteId = $data['parametro'];
+        $contribuyenteId = $aportacion->getIdContribuyente()->getIdContribuyente();
 
         // Valida que el parametro exista si no devuelve 404 no encontrado
         if ($contribuyenteId  < 0) {
@@ -342,27 +343,27 @@ class AportacionManager
                 <tr>
                     <th rowspan="4" colspan ="2"><br><br><br><font size="7">'.$predio->getAntecedentes().'</font></th>
                     <th>AL NORTE:</th>
-                    <th><font size="7">'.$medidas[0].'</font></th>
+                    <th><font size="7"></font></th>
                     <th>CON:</th>
-                    <th><font size="7">'.$descripcion[0].'</font></th>
+                    <th><font size="7"></font></th>
                 </tr>
                 <tr>
                     <th>AL SUR:</th>
-                    <th><font size="7">'.$medidas[1].'</font></th>
+                    <th><font size="7"></font></th>
                     <th>CON:</th>
-                    <th><font size="7">'.$descripcion[1].'</font></th>
+                    <th><font size="7"></font></th>
                 </tr>
                 <tr>
                     <th>AL ESTE:</th>
-                    <th><font size="7">'.$medidas[2].'</font></th>
+                    <th><font size="7"></font></th>
                     <th>CON:</th>
-                    <th><font size="7">'.$descripcion[2].'</font></th>
+                    <th><font size="7"></font></th>
                 </tr>
                 <tr>
                     <th>AL OESTE</th>
-                    <th><font size="7">'.$medidas[3].'</font></th>
+                    <th><font size="7"></font></th>
                     <th>CON:</th>
-                    <th><font size="7">'.$descripcion[3].'</font></th>
+                    <th><font size="7"></font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th colspan ="2">REGIMEN DE PROPIEDAD</th>
@@ -539,7 +540,125 @@ class AportacionManager
 
         // $currentDate = new \DateTime();
         // $aportacion->setUpdatedAt($currentDate);
-
+        $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
+    }
+
+    public function guardarTest($datos)
+        {
+            $contribuyente = new Contribuyente();
+            $predio = new Predio();
+
+
+            $contribuyente->setNombre($datos['nombreContribuyente']);
+            $contribuyente->setRfc($datos['rfc']);
+
+            $currentDate = new \DateTime();
+            $contribuyente->setCreatedAt($currentDate);
+            $contribuyente->setUpdatedAt($currentDate);
+
+            $this->entityManager->persist($contribuyente);
+            $this->entityManager->flush();
+
+            if ($contribuyente->getIdContribuyente() > 0) {
+
+                $predio->setIdContribuyente($contribuyente);
+                $predio->setParcela($datos['parcela']);
+
+
+
+                $this->entityManager->persist($predio);
+                $this->entityManager->flush();
+
+
+
+                return $contribuyente->getIdContribuyente();
+            }
+
+            return 0;
+
+
+        }
+
+        public function guardarAportacion($datos)
+    {
+        $contribuyente = new Contribuyente();
+        $aportacion = new Aportacion();
+        $predio = new Predio();
+
+        //////Guardar Contribuyente///////
+            $contribuyente->setNombre($datos['Contribuyente']);
+            $contribuyente->setFactura($datos['factura']);
+            $contribuyente->setGiroComercial($datos['giroComercial']);
+            $contribuyente->setNombreComercial($datos['nombreComercial']);
+            $contribuyente->setTenencia($datos['tenencia']);
+            $contribuyente->setRfc($datos['rfContribuyente']);
+            $contribuyente->setUsoDestino($datos['usoDestino']);
+
+            $currentDate = new \DateTime();
+            $contribuyente->setCreatedAt($currentDate);
+            $contribuyente->setUpdatedAt($currentDate);
+
+            $this->entityManager->persist($contribuyente);
+            $this->entityManager->flush();
+        ///////Guarda Predio////////
+
+            $predio->setIdContribuyente($contribuyente);
+            $predio->setParcela($datos['parcela']);
+            $predio->setManzana($datos['manzana']);
+            $predio->setLote($datos['lote']);
+            $predio->setLocal($datos['local']);
+            $predio->setCategoria($datos['categoria']);
+            $predio->setCondicion($datos['condicion']);
+            $predio->setTitular($datos['titular']);
+            $predio->setUbicacion($datos['ubicacion']);
+            $predio->setLocalidad($datos['localidad']);
+            $predio->setAntecedentes($datos['antecedentes']);
+            $predio->setClaveCatastral($datos['claveCatastral']);
+            $predio->setRegimenPropiedad($datos['regimenPropiedad']);
+            $fecha_adquicision = new \DateTime($datos['fechaAdquicision']);
+            $aportacion->setFechaAdquicision($fecha_adquicision);
+            //$predio->setFechaAdquicision($datos['fechaAdquicision']);
+            $predio->setTitularAnterior($datos['titularAnterior']);
+            //$predio->setParcela($datos['documentoPropiedad']);
+            //$predio->setParcela($datos['folio']);
+            //$predio->setParcela($datos['fechaDocumento']);
+            //$predio->setParcela($datos['loteConflicto']);
+            //$predio->setParcela($datos['observaciones']);
+            $this->entityManager->persist($predio);
+            $this->entityManager->flush();
+
+            ////////Guarda Aportacion///////
+            $aportacion->setIdContribuyente($contribuyente);
+            $aportacion->setIdPredio($predio);
+            $pago = 5000;
+            $aportacion->setPago($pago);
+            $fecha = new \DateTime($datos['fecha']);//fecha
+            $aportacion->setFecha($fecha);
+
+            $this->entityManager->persist($aportacion);
+            $this->entityManager->flush();
+
+            if ($aportacion->getIdAportacion() > 0) {
+                return $aportacion;
+            }
+
+
+    }
+
+    public function actualizarAportacion($datos)
+    {
+        $aportacionId = $datos['Idaportacion'];
+        $apotacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+        $contribuyenteId = $apotacion->getIdContribuyente()->getIdContribuyente();
+        $predioId = $apotacion->getIdPredio()->getIdPredio();
+        $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+
+
+        $predio->setParcela($datos['parcela']);
+        $this->entityManager->persist($predio);
+        $this->entityManager->flush();
+
     }
 }

@@ -27,6 +27,12 @@ $this->inlineScript()
     ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'));
 ?>
 <!-- [ col ] start -->
+<style>
+.dataTables_filter
+    {
+    display: none;
+    }
+</style>
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
@@ -41,23 +47,19 @@ $this->inlineScript()
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group ">
-                        <select class="custom-select w-30" id="buscarAportacion" class="form-control" onchange="validacionbutton()" name="">
+                        <select class="custom-select w-30" id="buscarAportacion" onchange="validacioninput()" class="form-control" name="">
                             <option value="">Buscar por...</option>
-                            <option value="Aportacion">ID-Aportacion</option>
-                            <option value="Contribuyente">Contribuyente.</option>
-                            <option value="Predio">Por Propietario</option>
-                            <option value="Predio">Parcela</option>
+                            <option value="0">ID-Aportacion</option>
+                            <option value="1">Parcela</option>
+                            <option value="2">Contribuyente.</option>
+                            <option value="3">Por Propietario</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group ">
                         <input class="form-control" type="text" name="" id="query">
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="form-group ">
-                        <button type="button=" id="buscar" class="btn btn-primary">Buscar</button>
+                        <input class="form-control" type="hidden" name="" id="query2">
                     </div>
                 </div>
             </div>
@@ -66,14 +68,14 @@ $this->inlineScript()
                     <tr>
                         <th>#</th>
                         <th>Parcela</th>
-                        <th>Lote</th>
                         <th>Contribuyente</th>
+                        <th>Lote</th>
                         <th>Ultimo Año Pagado</th>
                         <th>Estatus</th>
                         <th>Opciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tdbody">
                 </tbody>
             </table>
         </div>

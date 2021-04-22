@@ -1,17 +1,20 @@
-    $('#buscar').on( 'click', function () {
-        // var id =  $('#buscar').val();
-        //var from = $("#query").val();
-        var like = $("#query").val();
-        var from = $("#buscarAportacion").val();
+    // $('#buscar').on( 'click', function () {
+    //     // var id =  $('#buscar').val();
+    //     //var from = $("#query").val();
+    //     var like = $("#query").val();
+    //     var from = $("#buscarAportacion").val();
 
 ////Inicio DataTable/////
+
 $(document).ready(function() {
     setTimeout(function() {
         // [ Configuration Option ]
 
-        $('#aportaciones').DataTable({
+
+
+            var table = $('#aportaciones').DataTable({
             responsive: true,
-            searching: false,
+            searching: true,
             autoWidth: false,
             scrollX: true,
             scroller: {
@@ -27,10 +30,6 @@ $(document).ready(function() {
             ajax: {
                 url: "/aportacion/datatable",
                 type: "POST",
-                data:{
-                    like:like,
-                    from,from,
-                },
                 error: function(){
                     $(".aportaciones-error").html("");
                     $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No se encontraron datos en el servidor. </th></tr></tbody>');
@@ -48,10 +47,10 @@ $(document).ready(function() {
                 }
             },
             columns: [
-                {data: 'idAportacion', orderable: true, searchable: false,},
+                {data: 'idAportacion',},
                 {data: 'Parcela'},
-                {data: 'Lote'},
                 {data: 'Contribuyente'},
+                {data: 'Lote'},
                 {data: 'UltimoPago'},
                 {data: 'Estatus', orderable: false, searchable: false,},
                 {data: 'Opciones', orderable: false, searchable: false },
@@ -76,11 +75,22 @@ $(document).ready(function() {
                     targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
+                        if( row['Estatus'] == 2 || row['Estatus'] == 3 ){
+                        $actionBtn = `<a href="aportacion/ver-aportacion/` + row['idAportacion'] + `"> <button  type="button"class="btn btn-warning">Editar</button></a>
+                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>
+                        <a href="#"> <button type="button="class="btn btn btn-success" disabled >Pase Caja</button></a> `;
 
-                        $actionBtn = `<a href="aportacion/editar-aportacion"> <button type="button="class="btn btn-warning" >Editar</button></a>
-                        <a href="#"> <button type="button="class="btn btn btn-primary" >Reimprimir</button></a>
-                        <a href="#"> <button type="button="class="btn btn btn-success" >Pase Caja</button></a> `;
+                        // $actionBtn = `<button value="` + row['idAportacion'] + `" id="btnEditar" type="button="class="btn btn-warning" onclick="edit_aportacion(` + row['idAportacion'] + `)">Editar</button>
+                        // <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>
+                        // <a href="#"> <button type="button="class="btn btn btn-success" disabled >Pase Caja</button></a> `;
 
+                        }else {
+
+                        $actionBtn = `<a href="aportacion/editar-aportacion"> <button type="button="class="btn btn-warning" disabled>Editar</button></a>
+                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"><button type="button="class="btn btn btn-primary" >Imprimir</button></a>
+                        <a href="http://sistematulum.net:9000/TLANIA/oestadocuentapredialpase.aspx?MTULUM,2021,3,4,` + row['idSolicitud'] + `"> <button type="button="class="btn btn-success" >Pase Caja</button></a>`;
+
+                        }
                         return $actionBtn;
                     },
                 },
@@ -88,7 +98,14 @@ $(document).ready(function() {
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"
             },
+
+
+
+
         });
+
+
+
 
         // [ New Constructor ]
         // var newcs = $('#new-cons').DataTable();
@@ -105,13 +122,34 @@ $(document).ready(function() {
             }
         });
 
+
+//////Inicio Buscar por Contribuyente, ID, Propietario, Parcela/////
+        $(document).on('change', '#buscarAportacion', function () {
+            let select = $('#buscarAportacion').val();
+            $('#query2').val(select);
+            console.log(select);
+            //return select;
+        });
+
+        $('#query').on( 'keyup', function () {
+
+            //console.log(parametro());
+            let colum = $('#query2').val();
+            table
+            .columns(colum)
+            .search( this.value )
+            .draw();
+            } );
+
+
     }, 350);
-
 });
-
 ////Fin DataTable/////
 
 
+
+
+$(document).ready(function() {
 function formatRepo(repo) {
     if (repo.loading) return repo.text;
 
@@ -493,18 +531,18 @@ function validaNumericos(event) {
     return false;
 }
 
-///Inicio Funcion validacion button buscar aportacion////
+//Inicio Funcion validacion button buscar aportacion////
 $(document).ready(function() {
-    $('#buscar').attr("disabled", true);
+    $('#query').attr("disabled", true);
 });
-function validacionbutton(){
+function validacioninput(){
     let buscar_aportacion =  $("#buscarAportacion").val();
 
     if(buscar_aportacion == ""){
-        $('#buscar').attr("disabled", true);
+        $('#query').attr("disabled", true);
     }
     else{
-        $('#buscar').attr("disabled", false);
+        $('#query').attr("disabled", false);
     }
 
 };
@@ -539,4 +577,80 @@ function validacionbutton(){
 // });
 ///Fin Funcion buscador Id-Contribuyente-Propietario-Parcela///
 
+///////////devolver datos con metodo pos////
+$('#xd').click(function(){
+    var id = $(this).val();
+    var url = '/aportacion/editar-aportacion/' + id;
+    //console.log(id);
+    //alert("hola");
+
+    //AJAX request
+    $.ajax({
+    url: url,
+    method: 'POST',
+    dataType: 'JSON',
+    async: true,
+    success: function(data)
+    {
+    console.log(data);
+        $('[name="id_aportacion"]').val(data.id_aportacion);
+
+
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+    //    $('#modal_alert').modal('show'); // show bootstrap modal
+    console.log("error");
+    }
+    });
+});
+// $("#xd").click(function(e){
+//     e.preventDefault();
+
+
+//     //var combo = document.getElementById("contribuyente_id");
+//     //var selected = combo.options[combo.selectedIndex].value;
+//     window.location.href ="aportacion";
+//     $.ajax({
+//     url: url,
+//     method: 'POST',
+//     dataType: 'JSON',
+//     async: true,
+//     success: function(data)
+//     {
+//     console.log(data);
+//         $('[name ="parcela"]').val(data.parcela);
+
+
+//     },
+//     error: function (jqXHR, textStatus, errorThrown)
+//     {
+//        $('#modal_alert').modal('show'); // show bootstrap modal
+//     }
+//     });
+// });
+
+
+// function edit_aportacion(id)
+// {
+
+//     $.ajax({
+//     url : "/aportacion/editar-aportacion/" + id,
+//     type: "POST",
+//     dataType: "JSON",
+//     contentType: "application/json; charset=utf-8",
+//     success: function(data)
+//         {
+//             console.log(data);
+//             $('[name="id_aportacion"]').val(data.id_aportacion);
+
+//         },
+//         error: function (jqXHR, textStatus, errorThrown)
+//         {
+//             alert('Error get data from ajax');
+//         }
+//     });
+// }
+
+// edit_aportacion($().val());
 

@@ -15,7 +15,8 @@ $this->headLink()
 // Js Requerido
 $this->inlineScript()
     // Js de la vista
-    ->prependFile($this->basePath('js/catastro/aportacion/add.js'))
+    // ->prependFile($this->basePath('js/catastro/aportacion/add.js'))
+    ->prependFile($this->basePath('js/catastro/aportacion/edit.js'))
     // Js Select2
     ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'))
     // Js Form validation
@@ -33,10 +34,18 @@ $this->inlineScript()
     ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'));
 ?>
 
+
+
+
+
+
+
+<!--  -->
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
             <h5>Datos de Aportacion</h5>
+            <input class="form-control" type="text" name="id_aportacion" id="hdn_id_cont" value="<?=$aportacionId?>" >
         </div>
         <div class="card-body">
         <h3 class="text-center bg-secondary">PARCELA 2009</h3>
@@ -44,19 +53,19 @@ $this->inlineScript()
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Parcela</label>
-                        <input class="form-control" type="text" name="">
+                        <input class="form-control" type="text" name=""  id="parcela">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group ">
                     <label>Manzana</label>
-                    <input class="form-control" type="text" name="">
+                    <input class="form-control" type="text" name=""id="manzana" >
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group ">
                     <label>Lote</label>
-                    <input class="form-control" type="text" name="">
+                    <input class="form-control" type="text" name="" id="lote">
                     </div>
                 </div>
             </div>
@@ -64,13 +73,13 @@ $this->inlineScript()
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Local</label>
-                        <input class="form-control" type="text" name="">
+                        <input class="form-control" type="text" name=""id="local" >
                     </div>
                 </div>
                     <div class="col-sm-4">
                         <div class="form-group ">
                         <label>Categoria</label>
-                            <select id="my-select" class="form-control custom-select w-30" name="">
+                            <select id="categoria" class="form-control custom-select w-30" name="" >
                                 <option>Text</option>
                             </select>
                         </div>
@@ -78,7 +87,7 @@ $this->inlineScript()
                     <div class="col-sm-4">
                         <div class="form-group ">
                         <label>Condicion</label>
-                            <select id="my-select" class="form-control custom-select w-30" name="">
+                            <select id="condicion" class="form-control custom-select w-30" name="">
                                 <option>Text</option>
                             </select>
                         </div>
@@ -88,20 +97,20 @@ $this->inlineScript()
             <div class="row ml-0  ">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label>Local</label>
-                        <input class="form-control" type="text" name="">
+                        <label>Titular</label>
+                        <input class="form-control" type="text" name="" id="titular">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group ">
                     <label>Ubicación</label>
-                    <input class="form-control" type="text" name="">
+                    <input class="form-control" type="text" name="" id="ubicacion">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group ">
                     <label class="form-label">Localidad</label>
-                        <select class="js-example-basic-single custom-select w-30"name="select_localidad" >
+                        <select class="js-example-basic-single custom-select w-30"name="select_localidad" id="localidad" >
                             <!-- <option value="0">Seleccione uno...</option> -->
                             <?php if (is_array($localidades->Localidad)): ?>
                             <?php foreach ($localidades->Localidad as $localidad):?>
@@ -116,21 +125,21 @@ $this->inlineScript()
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>Antecedentes</label>
-                        <input class="form-control" type="text" name="">
+                        <input class="form-control" type="text" name="" id="antecedentes">
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group ">
                     <label>Clave Catastral</label>
-                    <input class="form-control" type="text" name="">
+                    <input class="form-control" type="text" name="" id="claveCatastral">
                     </div>
                 </div>
             </div>
             <div class="row ml-0  ">
                 <div class="col-sm-4">
                     <div class="form-group">
-                            <label for="my-select">Regimen de Propiedad</label>
-                            <select id="my-select" class="form-control  custom-select w-30" name="">
+                            <label>Regimen de Propiedad</label>
+                            <select id="regimenPropiedad" class="form-control  custom-select w-30" name="">
                                 <option>Text</option>
                             </select>
                     </div>
@@ -138,13 +147,13 @@ $this->inlineScript()
                 <div class="col-sm-4">
                     <div class="form-group ">
                     <label>Fecha de Adquicision</label>
-                    <input class="form-control" type="date" name="" value="<?=date("Y-m-d");?>">
+                    <input class="form-control" type="date" name="" id="fechaAdquicision">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group ">
                     <label>Titular anterior</label>
-                    <input class="form-control" type="text" name="">
+                    <input class="form-control" type="text" name="" id="titularAnterior">
                     </div>
                 </div>
             </div>
@@ -152,7 +161,7 @@ $this->inlineScript()
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Documento que acredite la propiedad</label>
-                        <select id="my-select" class="form-control  custom-select w-30" name="">
+                        <select id="documentoPropiedad" class="form-control  custom-select w-30" name="">
                                 <option>Text</option>
                         </select>
                     </div>
@@ -160,13 +169,13 @@ $this->inlineScript()
                 <div class="col-sm-4">
                     <div class="form-group ">
                     <label>Folio</label>
-                    <input class="form-control" type="text" name="">
+                    <input class="form-control" type="text" name="" id="folio">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group ">
                     <label>Fecha del documento</label>
-                    <input class="form-control" type="date" name="" value="<?=date("Y-m-d");?>">
+                    <input class="form-control" type="date" name="" id="fechaDocumento">
                     </div>
                 </div>
             </div>
@@ -215,22 +224,22 @@ $this->inlineScript()
             <div class="col-sm-4">
                 <div class="form-group">
                     <label>Contribuyente</label>
-                    <input class="form-control" type="text" name="">
+                    <input class="form-control" type="text" name="" id="contribuyente">
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="form-group ">
                     <label>Factura</label>
-                        <select id="my-select" class="form-control  custom-select w-30" name="">
-                                <option>Si</option>
-                                <option>No</option>
+                        <select id="factura" class="form-control  custom-select w-30" name="">
+                                <option value="Si">Si</option>
+                                <option Value="No">No</option>
                         </select>
                     </div>
             </div>
             <div class="col-sm-3">
                 <div class="form-group ">
                     <label class="form-label">Giro Comercial</label>
-                        <select class="js-example-basic-single custom-select w-30"name="select_girocomercial" >
+                        <select class="js-example-basic-single custom-select w-30"name="select_girocomercial" id="giroComercial" >
                             <!-- <option value="0">Seleccione uno...</option> -->
                             <?php if (is_array($girocomerciales->GiroComercial)): ?>
                             <?php foreach ($girocomerciales->GiroComercial as $girocomercial):?>
@@ -243,7 +252,7 @@ $this->inlineScript()
             <div class="col-sm-3">
                 <div class="form-group">
                     <label>Nombre Comercial</label>
-                    <input class="form-control" type="text" name="">
+                    <input class="form-control" type="text" name="" id="nombreComercial">
                 </div>
             </div>
         </div>
@@ -251,19 +260,19 @@ $this->inlineScript()
             <div class="col-sm-4">
                 <div class="form-group">
                     <label>Tenencia</label>
-                    <input class="form-control" type="text" name="">
+                    <input class="form-control" type="text" name=""  id="tenencia">
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group ">
                 <label>RFC</label>
-                <input class="form-control" type="text" name="">
+                <input class="form-control" type="text" name="" id="rfc">
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group ">
                 <label>Uso o destino</label>
-                <input class="form-control" type="text" name="">
+                <input class="form-control" type="text" name="" id="usoDestino">
                 </div>
             </div>
         </div>
@@ -272,7 +281,7 @@ $this->inlineScript()
             <div class="col-sm-3">
                 <div class="form-group ">
                     <label>Lote en Conflicto</label>
-                        <select id="my-select" class="form-control  custom-select w-30" name="">
+                        <select id="loteConflicto" class="form-control  custom-select w-30" name="">
                                 <option>No</option>
                                 <option>Si</option>
                                 <option>Sobreposición</option>
@@ -282,12 +291,12 @@ $this->inlineScript()
             </div>
             <div class="col-sm-9">
                 <div class="form-group">
-                        <textarea id="my-textarea" class="form-control" name="" rows="3"></textarea>
+                        <textarea id="observaciones" class="form-control" name="" rows="3" ></textarea>
                 </div>
             </div>
         </div>
         <div class="col-sm-12 text-md-right mb-3">
-            <button class="btn btn-primary ">Guardar Cambios</button>
+            <button class="btn btn-primary " id="btn_guardarCambios">Guardar Cambios</button>
         </div>
     </div>
 </div>

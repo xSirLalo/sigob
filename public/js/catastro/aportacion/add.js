@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    $("#trhidden").hide();
+
     $('#besicwizard').bootstrapWizard({
         withVisible: false,
         'nextSelector': '.button-next',
@@ -124,10 +126,11 @@ currency: 'USD',
         document.getElementById("avaluo_hidden").value = 0;
     }
      //Tasa_impositiva
-    ºº
+
     let a_total = parseFloat(document.getElementById("avaluo_hidden").value);
     let pago_aportacion = valor_tasa * a_total;
-    document.getElementById("pago_a").value = formatter.format(pago_aportacion);
+    // document.getElementById("pago_a").value = formatter.format(pago_aportacion);
+
     document.getElementById("p_hide").value = pago_aportacion;
     ///Calcular año
     const año_default = 1;
@@ -139,7 +142,7 @@ currency: 'USD',
     let aportacionFinal = pago_aportacion * resultado;
     document.getElementById("año_hidden").value = aportacionFinal;
     console.log(aportacionFinal);
-
+    document.getElementById("pago_a").value = formatter.format(aportacionFinal);
 
 
 }
@@ -207,7 +210,8 @@ function valorC() {
     let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
     let a_total = parseFloat(document.getElementById("avaluo_hidden").value);
     let pago_aportacion = valor_tasa * a_total;
-    document.getElementById("pago_a").value = formatter.format(pago_aportacion);
+    //document.getElementById("pago_a").value = formatter.format(pago_aportacion);
+
     document.getElementById("p_hide").value = pago_aportacion;
      ///Calcular año
     const año_default = 1;
@@ -219,6 +223,7 @@ function valorC() {
     let aportacionFinal = pago_aportacion * resultado;
     document.getElementById("año_hidden").value = aportacionFinal;
     console.log(aportacionFinal);
+    document.getElementById("pago_a").value = formatter.format(aportacionFinal);
 }
 
 //select Tasa impositiva
@@ -235,6 +240,7 @@ function timpositiva() {
     document.getElementById("pago_a").value = formatter.format(pago_aportacion);
     document.getElementById("p_hide").value = pago_aportacion;
     }
+
      ///Calcular año
     const año_default = 1;
     let select_año = document.getElementById("ejercicio_fiscal");
@@ -245,6 +251,17 @@ function timpositiva() {
     let aportacionFinal = pago_aportacion * resultado;
     document.getElementById("año_hidden").value = aportacionFinal;
     console.log(aportacionFinal);
+    document.getElementById("pago_a").value = formatter.format(aportacionFinal);
+
+
+
+    // if(valor_avaluo.length == 0){
+    //     document.getElementById("pago_a").value = formatter.format(0);
+    // }else{
+    // let pago_aportacion = valor_tasa * avaluo_total;
+    // document.getElementById("pago_a").value = formatter.format(pago_aportacion);
+    // document.getElementById("p_hide").value = pago_aportacion;
+    // }
 }
 function CalcularAño() {
     const año_default = 1;
@@ -256,7 +273,7 @@ function CalcularAño() {
     let pago_aportacion = parseFloat(document.getElementById("p_hide").value);
     let aportacionFinal = pago_aportacion * resultado;
     // document.getElementById("año_hidden").value = aportacionFinal;
-    document.getElementById("año_hidden").value = resultado;
+    document.getElementById("año_hidden").value = aportacionFinal;
     console.log(aportacionFinal);
     // let avaluo_total = parseFloat(document.getElementById("avaluo_hidden").value);
     // let valor_avaluo = document.getElementById("a_total").value;
@@ -603,19 +620,23 @@ $('#colindacias').dataTable( {
     searching: false,
     paging: false,
     info: false,
+    // columns: [
+    //             {data: "id"},
+    //             {data: "puntosCardinales"},
+    //             {data: "metrosLinales"},
+    //             {data: "colindancia"},
+    //             {data: "observaciones"},
+    //             {data: "opciones"},
+    //         ],
 } );
 
-///Inicio Agregar filas al DataTable///
 
 $(document).ready(function() {
-    var t = $('#colindacias').DataTable();
-    var counter = 1;
-    var contador = 1;
-
-
+    var table = $('#colindacias').DataTable();
+    //Agregar Colindancias///
     $('#addRow').on( 'click', function () {
 
-        t.row.add( [
+        table.row.add( [
             contador +'',
             counter = $("#puntoCardinal").val(),
             counter = $("#colindaCon").val(),
@@ -629,19 +650,8 @@ $(document).ready(function() {
         contador++;
         $('#addColindancia').modal('hide');
     });
-    // $("#updateRow").hide();
-
-} );
-///Fin Agregar filas al DataTable///
-
-///Inicio Editar fila DataTable///
-$(document).ready(function() {
-    var table = $('#colindacias').DataTable();
+    ////Editar Colindancias////
     $('#tbody').on( 'click', 'tr', '#editarColindancias', function () {
-        //Id = 1 ; //first row
-        //newData = [ "1", "London", "24","lote 7","nose",`<button id="editarColindancias" class="btn btn-warning" >Editar</button><button id="eliminarColindancia" class="btn btn-danger">Eliminar</button>` ]
-        //console.log( table.row(this).data());
-        //table.row(Id).data(newData).draw();
         let Id = table.row(this).data()[0];
         let puntosCardinales = table.row(this).data()[1];
         let metrosLinales = table.row(this).data()[2];
@@ -653,11 +663,10 @@ $(document).ready(function() {
         $("#colindaCon").val(colindancias);
         $("#observacionesColindacias").val(observaciones);
 
+
        // console.log( puntosCardinales );
         $("#addRow").hide();
         $("#updateRow").show();
-
-
 
     } );
 
@@ -674,23 +683,23 @@ $(document).ready(function() {
 
     } );
 
-} );
-///Fin Editar fila DataTable///
-
-///Inicio Eliminar fila DataTable///
-$(document).ready(function() {
-    var table = $('#colindacias').DataTable();
+    //////Eliminar Colindancias////
 
     $('#tbody').on( 'click', '#eliminarColindancia', function () {
         table
             .row( $(this).parents('tr') )
             .remove()
-            .draw();
+            .draw(false);
     } );
-} );
-///Fin Eliminar Fila DataTable////
 
-/////Inicio Modal Add Colindancias///
+
+    var counter = 1;
+    var contador = 1;
+
+
+
+} );
+
 $(document).ready(function() {
     $('#modalColindancias').on( 'click', function () {
         $("#updateRow").hide();
@@ -705,6 +714,165 @@ $(document).ready(function() {
 });
 
 /////Fin Modal Add Colindancias///
+
+
+
+
+
+/////////Guardar Contribuyente metodo post////////////
+$(document).ready(function() {
+    let Contribuyente  = function(){
+        this.nombreContribuyente = $("#nombreContribuyente").val();
+        this.rfc = $("#rfc").val();
+
+        this.parcela = $("#parcela").val();
+	}
+
+    let guardarContribuyente= function(contribuyente){
+
+		$.post('/aportacion/guardarTest', {c:contribuyente}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+                    $("#hdn_id_cont").val(data.id_objeto);
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+
+    $("#btn_guardar").click(function(){
+
+			let addContribuyente = new Contribuyente();
+
+			guardarContribuyente(new Array(addContribuyente));
+		});
+
+
+});
+
+/////////Guardar Aportacion metodo post////////////
+$(document).ready(function() {
+    let Aportacion  = function(){
+        ///Tabla Contribuyente////
+        this.Contribuyente   = $("#Contribuyente").val();
+        this.factura         = $("#factura").val();
+        this.giroComercial   = $("#giroComercial").val();
+        this.nombreComercial = $("#nombreComercial").val();
+        this.tenencia        = $("#tenencia").val();
+        this.rfContribuyente = $("#rfContribuyente").val();
+        this.usoDestino      = $("#usoDestino").val();
+        ///Tabla Predio////
+        this.parcela            = $("#parcela").val();
+        this.manzana            = $("#manzana").val();
+        this.lote               = $("#lote").val();
+        this.local              = $("#local").val();
+        this.categoria          = $("#categoria").val();
+        this.condicion          = $("#condicion").val();
+        this.titular            = $("#titular").val();
+        this.ubicacion          = $("#ubicacion").val();
+        this.localidad          = $("#localidad").val();
+        this.antecedentes       = $("#antecedentes").val();
+        this.claveCatastral     = $("#claveCatastral").val();
+        this.regimenPropiedad   = $("#regimenPropiedad").val();
+        this.fechaAdquicision   = $("#fechaAdquicision").val();
+        this.titularAnterior    = $("#titularAnterior").val();
+        this.documentoPropiedad = $("#documentoPropiedad").val();
+        this.folio              = $("#folio").val();
+        this.fechaDocumento     = $("#fechaDocumento").val();
+        this.loteConflicto      = $("#loteConflicto").val();
+        this.observaciones      = $("#observaciones").val();
+        ///Tabla Aportacion////
+        this.pagoAportacion  = $("#año_hidden").val();
+        this.fecha           = $("#vig").val();
+
+
+
+	}
+
+    let guardarAportacion = function(aportacion){
+
+		$.post('/aportacion/guardarAportacion', {a:aportacion}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+
+    $("#btn_guardarAportacion").click(function(){
+
+
+			let addAportacion = new Aportacion();
+
+			guardarAportacion(new Array(addAportacion));
+		});
+
+
+});
+
+/////////Editar Aportacion metodo post////////////
+$(document).ready(function() {
+    let actualizarAportacion  = function(){
+
+        this.Idaportacion = $("#hdn_id_cont").val();
+        this.parcela = $("#parcela").val();
+	}
+
+    let guardarCambios = function(aportacion){
+
+		$.post('/aportacion/actualizarAportacion', {a:aportacion}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+                    //$("#hdn_id_cont").val(data.id_objeto);
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+
+    $("#btn_guardarCambios").click(function(){
+
+			let updateAportacion = new actualizarAportacion();
+
+			guardarCambios(new Array(updateAportacion));
+
+            window.location = "/aportacion";
+
+
+		});
+
+
+});
+
+
+
+
+
+
+
 
 
 

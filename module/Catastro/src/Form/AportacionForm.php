@@ -69,6 +69,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' => 'parcela',
             ]
         ]);
 
@@ -81,6 +82,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id'=>'manzana',
             ]
         ]);
 
@@ -93,6 +95,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id'=>'lote',
             ]
         ]);
 
@@ -105,6 +108,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id'=>'local',
             ]
         ]);
 
@@ -121,6 +125,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'custom-select w-30',
+                'id'=>'categoria',
             ]
         ]);
 
@@ -138,6 +143,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'custom-select w-30',
+                'id'=>'condicion',
             ]
         ]);
 
@@ -163,6 +169,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' =>'titular',
             ]
         ]);
 
@@ -175,20 +182,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
-            ]
-        ]);
-
-        $this->add([
-            'type' => Element\Select::class,
-            'name' => 'localidad',
-            'options' => [
-                'label' => 'Localidad',
-                'value_options' => [
-        ],
-            ],
-            'attributes' => [
-                //'required' => true,
-                'class' => 'custom-select w-30',
+                'id'=>'ubicacion',
             ]
         ]);
 
@@ -201,6 +195,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id'=>'antecedentes',
             ]
         ]);
 
@@ -317,6 +312,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' => 'claveCatastral'
             ]
         ]);
 
@@ -339,6 +335,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'custom-select w-30',
+                'id'=>'regimenPropiedad',
             ]
         ]);
 
@@ -354,7 +351,7 @@ class AportacionForm extends Form
             'min' => '2021-01-01',
             'max' => '2030-01-01',
             'step' => '1', // days; default step interval is 1 day
-            'id' =>'fecha_adquisicion',
+            'id' =>'fechaAdquicision',
             'required' => true,
             'value' => date("Y-m-d"),
         ],
@@ -369,6 +366,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' =>'titularAnterior'
             ]
         ]);
 /////REGISTRO FISCAL//////
@@ -381,6 +379,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' => 'Contribuyente'
             ]
         ]);
 
@@ -397,6 +396,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' => 'factura'
             ]
         ]);
 
@@ -409,6 +409,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' => 'giro Comercial'
             ]
         ]);
 
@@ -421,6 +422,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' => 'nombreComercial'
             ]
         ]);
 
@@ -433,6 +435,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' => 'tenecia'
             ]
         ]);
 
@@ -445,6 +448,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' => 'rfContribuyente'
             ]
         ]);
 
@@ -469,6 +473,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'id' => 'usoDestino'
             ]
         ]);
 
@@ -487,6 +492,7 @@ $this->add([
             'step' => '1', // days; default step interval is 1 day
             // 'onkeyup'=>'esvacio()',
             'id' =>'vig',
+            'value' => date("Y-m-d"),
         ],
         ]);
 
@@ -496,7 +502,8 @@ $this->add([
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
-                'rows' => '3'
+                'rows' => '3',
+                'id' => 'observaciones',
             ]
         ]);
 
