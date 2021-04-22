@@ -63,47 +63,6 @@ $this->pageBreadcrumbs()->setItems([
 <div class="col-md-6">
     <div class="card">
         <div class="card-header">
-            <h5><?= $title ?></h5>
-        </div>
-        <div class="card-body">
-            <table class="table table-light">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Archivo</th>
-                        <th>Fecha de subida</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($archivos): ?>
-                        <?php foreach ($archivos as $archivo): ?>
-                            <tr>
-                                <td><?= $archivo->getIdArchivo()->getIdArchivoCategoria()->getNombre() ?></td>
-                                <td><?= $archivo->getIdArchivo()->getUrl() ?></td>
-                                <td><?= $archivo->getIdArchivo()->getCreatedAt()->format('Y-m-d h:m:s') ?></td>
-                                <td>
-                                    <a target="_blank" href="<?= $this->url('biblioteca/ver-archivo', ['archivo'=>'file'], ['query'=>['name'=>$archivo->getIdArchivo()->getUrl()]]); ?>"  class="btn btn-info btn-sm" role="button"> Previsualizar</a>
-                                    <a href="<?= $this->url('biblioteca/descargar-archivo', ['action' => 'descargar-archivo', 'archivo' => $archivo->getIdArchivo()->getIdArchivo()]); ?>" class="btn btn-success btn-sm"> Descargar</a>
-                                    <a href="<?= $this->url('biblioteca/eliminar-archivo-predio', ['action' => 'eliminar-archivo-predio', 'predio' => $archivo->getIdPredio()->getIdPredio(), 'archivo' => $archivo->getIdArchivo()->getIdArchivo()]); ?>" class="btn btn-danger btn-sm"> Eliminar</a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="3" class="text-center">No hay archivos...</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!-- [ col] end -->
-<!-- [ col ] start -->
-<div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
             <h5>Colindancias</h5>
         </div>
         <div class="card-body">
@@ -143,6 +102,47 @@ $this->pageBreadcrumbs()->setItems([
                     <?php else: ?>
                         <tr>
                             <td colspan="4" class="text-center">No hay colindancias...</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
+<!-- [ col ] start -->
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5><?= $title ?></h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-light">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Archivo</th>
+                        <th>Fecha de subida</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($archivos): ?>
+                        <?php foreach ($archivos as $archivo): ?>
+                            <tr>
+                                <td><?= $archivo->getIdArchivo()->getIdArchivoCategoria()->getNombre() ?></td>
+                                <td><?= $archivo->getIdArchivo()->getUrl() ?></td>
+                                <td><?= $archivo->getIdArchivo()->getCreatedAt()->format('Y-m-d h:m:s') ?></td>
+                                <td>
+                                    <a target="_blank" href="<?= $this->url('biblioteca/ver-archivo', ['archivo'=>'file'], ['query'=>['name'=>$archivo->getIdArchivo()->getUrl()]]); ?>"  class="btn btn-info btn-sm" role="button"> Previsualizar</a>
+                                    <a href="<?= $this->url('biblioteca/descargar-archivo', ['action' => 'descargar-archivo', 'archivo' => $archivo->getIdArchivo()->getIdArchivo()]); ?>" class="btn btn-success btn-sm"> Descargar</a>
+                                    <a href="<?= $this->url('biblioteca/eliminar-archivo-predio', ['action' => 'eliminar-archivo-predio', 'predio' => $archivo->getIdPredio()->getIdPredio(), 'archivo' => $archivo->getIdArchivo()->getIdArchivo()]); ?>" class="btn btn-danger btn-sm"> Eliminar</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" class="text-center">No hay archivos...</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

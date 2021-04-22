@@ -252,9 +252,15 @@ class ContribuyenteController extends AbstractActionController
     {
         $form = new ContribuyenteForm();
         $request = $this->getRequest();
+        $categorias = $this->bibliotecaManager->categorias();
+        $destino = './public/img';
 
         if ($request->isPost()) {
-            $formData = $request->getPost()->toArray();
+            $formData = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+            // $formData = $request->getPost()->toArray();
             $form->setData($formData);
             $form->setValidationGroup(['tipo_persona']);
 
@@ -274,7 +280,7 @@ class ContribuyenteController extends AbstractActionController
                         'rfc',
                         'curp',
                         'correo',
-                        'telefono'
+                        'telefono',
                     ]);
                 } elseif ($tipoPersona=='M') { // Persona Moral
                     $form->setValidationGroup([
@@ -284,7 +290,7 @@ class ContribuyenteController extends AbstractActionController
                         'razon_social',
                         'rfc',
                         'correo',
-                        'telefono'
+                        'telefono',
                     ]);
                 }
                 if ($form->isValid()) {
@@ -308,7 +314,7 @@ class ContribuyenteController extends AbstractActionController
                 }
             }
         }
-        return new ViewModel(['form' => $form]);
+        return new ViewModel(['form' => $form, 'categorias' => $categorias]);
     }
 
     public function add2Action()

@@ -6,6 +6,7 @@ namespace Catastro\Form;
 
 use Laminas\InputFilter\InputFilter;
 use Laminas\Validator;
+use Laminas\I18n;
 use Laminas\Filter;
 use Laminas\Filter\FilterChain;
 use Laminas\Form\Element;
@@ -169,7 +170,6 @@ class ContribuyenteForm extends Form
                 'maxlength' => 128,
                 'pattern' => '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
                 'autocomplete' => false,
-                'data-toggle' => 'tooltip',
                 'class' => 'form-control',
                 'placeholder' => 'Correo Electrónico',
             ]
@@ -233,62 +233,53 @@ class ContribuyenteForm extends Form
             ]
         ]);
 
-        // $this->add([
-        //     'type' => Element\Select::class,
-        //     'name' => 'genero',
-        //     'options' => [
-        //         'label' => 'Genero',
-        //     ],
-        //     'attributes' => [
-        //         // 'required' => true,
-        //         'class' => 'form-control',
-        //         'placeholder' => 'Genero',
-        //     ]
-        // ]);
+        $this->add([
+            'type' => Element\Select::class,
+            'name' => 'id_archivo_categoria',
+            'options' => [
+                'label' => 'Categorias',
+                'empty_option' => 'Seleccione una categoría',
+                'disable_inarray_validator' => true,
+            ],
+            'attributes' => [
+                // 'required' => true,
+                // 'multiple' => 'multiple',
+                // 'size' => 1 ,
+                'class' => 'custom-select'
+            ]
+        ]);
 
-        // $this->add([
-        //     'type' => Element\Select::class,
-        //     'name' => 'id_archivo_categoria',
-        //     'options' => [
-        //         'label' => 'Categorias',
-        //         'empty_option' => 'Seleccione una categoría',
-        //         'disable_inarray_validator' => true,
-        //     ],
-        //     'attributes' => [
-        //         // 'required' => true,
-        //         'class' => 'custom-select'
-        //     ]
-        // ]);
+        $this->add([
+            'type' => Element\File::class,
+            'name' => 'archivo',
+            'options' => [
+                'label' => 'Seleccione un archivo...',
+                // 'label_attributes' => [
+                //     'class' => 'custom-file-label'
+                // ],
+            ],
+            'attributes' => [
+                // 'required'      => true,
+                'valueDisabled' => true,
+                'isArray'       => true,
+                'multiple'      => true,
+                'class' => 'custom-select',
+                // 'class'         => 'custom-file-input',
+                'id'            => 'archivo',
+            ]
+        ]);
 
-        // $this->add([
-        //     'type' => Element\File::class,
-        //     'name' => 'archivo',
-        //     'options' => [
-        //         'label' => 'Archivos'
-        //     ],
-        //     'attributes' => [
-        //         // 'required'      => true,
-        //         'valueDisabled' => true,
-        //         'isArray'       => true,
-        //         'multiple'      => true,
-        //         'class'         => 'form-control',
-        //         'id'            => 'archivo',
-        //         'data-toggle'   => 'tooltip',
-        //         'title'         => 'Cargar archivo'
-        //     ]
-        // ]);
-
-        // $this->add([
-        //     'type' => Element\Button::class,
-        //     'name' => 'add_more',
-        //     'options' => [
-        //         'label' => 'Agregar +'
-        //     ],
-        //     'attributes' => [
-        //         'class' => 'btn btn-success',
-        //         'id' => 'add_more'
-        //     ]
-        // ]);
+        $this->add([
+            'type' => Element\Button::class,
+            'name' => 'add_more',
+            'options' => [
+                'label' => 'Agregar +'
+            ],
+            'attributes' => [
+                'class' => 'btn btn-success',
+                'id' => 'add_more'
+            ]
+        ]);
 
         $this->add([
             'type' => Element\Csrf::class,
@@ -323,46 +314,68 @@ class ContribuyenteForm extends Form
             ]
         );
 
-        // $inputFilter->add([
-        //     'name' => 'archivo',
-        //     // 'required' => true,
-        //     # note for files we start with validators before we use filters
-        //     'validators' => [
-        //         // ['name' => Validator\NotEmpty::class],
-        //         // ['name' => Validator\File\IsImage::class],
-        //         // [
-        //         //     'name' => Validator\File\MimeType::class,
-        //         //     'options' => [
-        //         //         'mimeType' => 'image/png. image/jpeg, image/jpg, image/gif'
-        //         //     ],
-        //         // ], # just uncomment this one. I forgot. It always gives issues.
-        //         [
-        //             'name' => Validator\File\Size::class,
-        //             'options' => [
-        //                 'min' => '3kB',
-        //                 'max' => '15MB'
-        //             ],
-        //         ],
-        //     ],
-        //     'filters' => [
-        //         ['name' => Filter\StripTags::class],
-        //         ['name' => Filter\StringTrim::class],
-        //         [
-        //             'name' => Filter\File\RenameUpload::class,
-        //             'options' => [
-        //                 'target' => './public/img',
-        //                 'use_upload_name' => true,
-        //                 'use_upload_extension' => true,
-        //                 'overwrite' => true,
-        //                 'randomize' => false
-        //             ]
-        //         ]
-        //     ]
-        // ]);
+        $inputFilter->add(
+            [
+                'name' => 'id_archivo_categoria',
+                'required' => false,
+                'filters' => [
+                    ['name' => Filter\StripTags::class],
+                    ['name' => Filter\StringTrim::class],
+                    ['name' => Filter\ToInt::class],
+                ],
+                'validators' => [
+                    ['name' => Validator\NotEmpty::class],
+                    ['name' => I18n\Validator\IsInt::class],
+                    [
+                        'name' => Validator\InArray::class,
+                        'options' => [
+                            'haystack' => [0, 1]
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $inputFilter->add([
+            'name' => 'archivo',
+            'required' => false,
+            # note for files we start with validators before we use filters
+            'validators' => [
+                // ['name' => Validator\NotEmpty::class],
+                // ['name' => Validator\File\IsImage::class],
+                // [
+                //     'name' => Validator\File\MimeType::class,
+                //     'options' => [
+                //         'mimeType' => 'image/png. image/jpeg, image/jpg, image/gif'
+                //     ],
+                // ], # just uncomment this one. I forgot. It always gives issues.
+                [
+                    'name' => Validator\File\Size::class,
+                    'options' => [
+                        'min' => '3kB',
+                        'max' => '15MB'
+                    ],
+                ],
+            ],
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
+                [
+                    'name' => Filter\File\RenameUpload::class,
+                    'options' => [
+                        'target' => './public/img',
+                        'use_upload_name' => true,
+                        'use_upload_extension' => true,
+                        'overwrite' => true,
+                        'randomize' => false
+                    ]
+                ]
+            ]
+        ]);
 
         $inputFilter->add([
             'name' => 'nombre',
-            // 'required' => true,
+            'required' => true,
             'filters' => [
                 [ 	// Remueve las etiquetas HTML y PHP
                     'name' => Filter\StripTags::class,
@@ -556,6 +569,14 @@ class ContribuyenteForm extends Form
                 'validators' => [
                     // ['name' => Validator\NotEmpty::class],
                     ['name' => Validator\EmailAddress::class],
+						[
+							'name' => Validator\Db\RecordExists::class,
+							'options' => [
+								'table' => 'contribuyente',
+								'field' => 'email',
+								// 'adapter' => $this->adapter,
+							],
+						],
                 ],
             ]
         );

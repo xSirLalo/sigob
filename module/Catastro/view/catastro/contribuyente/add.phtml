@@ -136,6 +136,43 @@ $form->prepare();
                 </div>
                 <?= $this->formSubmit($form->get('btnGuardar')); ?>
                 <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5>Archivitos</h5>
+        </div>
+        <div class="card-body">
+            <!-- [ openTag ] start -->
+                <div class="form-group">
+                    <?= $this->formText($form->get('input1')); ?>
+                    <?= $this->formElementErrors($form->get('input1')); ?>
+                </div>
+                <div class="form-group" id="select">
+                    <div class="input-group mb-3">
+                        <div class="input-group-append delete">
+                            <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
+                        </div>
+                        <?= $this->formSelect($form->get('id_archivo_categoria')->setValueOptions($this->categorias)); ?>
+                        <div class="custom-file">
+                            <?= $this->formFile($form->get('archivo')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($form->get('archivo')); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="additionalselects">
+                </div>
+                <div class="btn-group float-right">
+
+                <?= $this->formButton($form->get('add_more')); ?>
+            <?= $this->form()->closeTag(); ?>
             <!-- [ closeTag ] start -->
         </div>
     </div>
