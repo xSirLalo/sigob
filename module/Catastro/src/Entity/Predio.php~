@@ -129,6 +129,34 @@ class Predio
     /**
      * @var string|null
      *
+     * @ORM\Column(name="documento_propiedad", type="string", length=255, nullable=true)
+     */
+    private $documentoPropiedad;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="folio", type="string", length=255, nullable=true)
+     */
+    private $folio;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="fecha_documento", type="date", nullable=true)
+     */
+    private $fechaDocumento;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="lote_conflicto", type="string", length=255, nullable=true)
+     */
+    private $loteConflicto;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="observaciones", type="text", length=65535, nullable=true)
      */
     private $observaciones;

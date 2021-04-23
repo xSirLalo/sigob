@@ -129,6 +129,34 @@ class Predio
     /**
      * @var string|null
      *
+     * @ORM\Column(name="documento_propiedad", type="string", length=255, nullable=true)
+     */
+    private $documentoPropiedad;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="folio", type="string", length=255, nullable=true)
+     */
+    private $folio;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="fecha_documento", type="date", nullable=true)
+     */
+    private $fechaDocumento;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="lote_conflicto", type="string", length=255, nullable=true)
+     */
+    private $loteConflicto;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="observaciones", type="text", length=65535, nullable=true)
      */
     private $observaciones;
@@ -583,6 +611,102 @@ class Predio
     public function getTitularAnterior()
     {
         return $this->titularAnterior;
+    }
+
+    /**
+     * Set documentoPropiedad.
+     *
+     * @param string|null $documentoPropiedad
+     *
+     * @return Predio
+     */
+    public function setDocumentoPropiedad($documentoPropiedad = null)
+    {
+        $this->documentoPropiedad = $documentoPropiedad;
+
+        return $this;
+    }
+
+    /**
+     * Get documentoPropiedad.
+     *
+     * @return string|null
+     */
+    public function getDocumentoPropiedad()
+    {
+        return $this->documentoPropiedad;
+    }
+
+    /**
+     * Set folio.
+     *
+     * @param string|null $folio
+     *
+     * @return Predio
+     */
+    public function setFolio($folio = null)
+    {
+        $this->folio = $folio;
+
+        return $this;
+    }
+
+    /**
+     * Get folio.
+     *
+     * @return string|null
+     */
+    public function getFolio()
+    {
+        return $this->folio;
+    }
+
+    /**
+     * Set fechaDocumento.
+     *
+     * @param \DateTime|null $fechaDocumento
+     *
+     * @return Predio
+     */
+    public function setFechaDocumento($fechaDocumento = null)
+    {
+        $this->fechaDocumento = $fechaDocumento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaDocumento.
+     *
+     * @return \DateTime|null
+     */
+    public function getFechaDocumento()
+    {
+        return $this->fechaDocumento;
+    }
+
+    /**
+     * Set loteConflicto.
+     *
+     * @param string|null $loteConflicto
+     *
+     * @return Predio
+     */
+    public function setLoteConflicto($loteConflicto = null)
+    {
+        $this->loteConflicto = $loteConflicto;
+
+        return $this;
+    }
+
+    /**
+     * Get loteConflicto.
+     *
+     * @return string|null
+     */
+    public function getLoteConflicto()
+    {
+        return $this->loteConflicto;
     }
 
     /**
