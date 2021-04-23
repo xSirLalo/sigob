@@ -22,25 +22,32 @@ class PredioColindancia
     private $idPredioColindancia;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="punto_cardinal", type="string", length=255, nullable=true)
+     */
+    private $puntoCardinal;
+
+    /**
      * @var float|null
      *
-     * @ORM\Column(name="medida_metros", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="medida_metros_lineales", type="float", precision=10, scale=0, nullable=true)
      */
-    private $medidaMetros;
+    private $medidaMetrosLineales;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="descripcion", type="string", length=255, nullable=true)
+     * @ORM\Column(name="colindancia", type="string", length=255, nullable=true)
      */
-    private $descripcion;
+    private $colindancia;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="orientacion_geografica", type="string", length=45, nullable=true)
+     * @ORM\Column(name="observaciones", type="string", length=255, nullable=true)
      */
-    private $orientacionGeografica;
+    private $observaciones;
 
     /**
      * @var \Catastro\Entity\Predio
@@ -65,75 +72,99 @@ class PredioColindancia
     }
 
     /**
-     * Set medidaMetros.
+     * Set puntoCardinal.
      *
-     * @param float|null $medidaMetros
+     * @param string|null $puntoCardinal
      *
      * @return PredioColindancia
      */
-    public function setMedidaMetros($medidaMetros = null)
+    public function setPuntoCardinal($puntoCardinal = null)
     {
-        $this->medidaMetros = $medidaMetros;
+        $this->puntoCardinal = $puntoCardinal;
 
         return $this;
     }
 
     /**
-     * Get medidaMetros.
+     * Get puntoCardinal.
+     *
+     * @return string|null
+     */
+    public function getPuntoCardinal()
+    {
+        return $this->puntoCardinal;
+    }
+
+    /**
+     * Set medidaMetrosLineales.
+     *
+     * @param float|null $medidaMetrosLineales
+     *
+     * @return PredioColindancia
+     */
+    public function setMedidaMetrosLineales($medidaMetrosLineales = null)
+    {
+        $this->medidaMetrosLineales = $medidaMetrosLineales;
+
+        return $this;
+    }
+
+    /**
+     * Get medidaMetrosLineales.
      *
      * @return float|null
      */
-    public function getMedidaMetros()
+    public function getMedidaMetrosLineales()
     {
-        return $this->medidaMetros;
+        return $this->medidaMetrosLineales;
     }
 
     /**
-     * Set descripcion.
+     * Set colindancia.
      *
-     * @param string|null $descripcion
+     * @param string|null $colindancia
      *
      * @return PredioColindancia
      */
-    public function setDescripcion($descripcion = null)
+    public function setColindancia($colindancia = null)
     {
-        $this->descripcion = $descripcion;
+        $this->colindancia = $colindancia;
 
         return $this;
     }
 
     /**
-     * Get descripcion.
+     * Get colindancia.
      *
      * @return string|null
      */
-    public function getDescripcion()
+    public function getColindancia()
     {
-        return $this->descripcion;
+        return $this->colindancia;
     }
 
     /**
-     * Set orientacionGeografica.
+     * Set observaciones.
      *
-     * @param string|null $orientacionGeografica
+     * @param string|null $observaciones
      *
      * @return PredioColindancia
      */
-    public function setOrientacionGeografica($orientacionGeografica = null)
+    public function setObservaciones($observaciones = null)
     {
-        $this->orientacionGeografica = $orientacionGeografica;
+        $this->observaciones = $observaciones;
 
         return $this;
     }
 
     /**
-     * Get orientacionGeografica.
+     * Get observaciones.
      *
      * @return string|null
      */
-    public function getOrientacionGeografica()
+    public function getObservaciones()
     {
-        return $this->orientacionGeografica;
+        return $this->observaciones;
     }
 
     /**

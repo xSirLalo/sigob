@@ -11,7 +11,10 @@ $this->pageBreadcrumbs()->setItems([
 // Css Requerido
 $this->headLink()
     // Css Select2
-    ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'));
+    ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'))
+    // Css DataTables
+    ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
 // Js Requerido
 $this->inlineScript()
     // Js de la vista
@@ -27,7 +30,7 @@ $this->inlineScript()
     ->prependFile($this->basePath('assets/js/plugins/sweetalert.min.js'))
     ->prependFile($this->basePath('assets/js/pages/ac-alert.js'))
     // Css DataTables
-    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
+    //->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
     ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
     ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
     ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'));
@@ -255,17 +258,10 @@ $form->prepare();
                                                 <th>Colindancia</th>
                                                 <th>Observaciones</th>
                                                 <th>Opciones</th>
+                                                <th>Opciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tbody">
-                                            <tr id="trhidden">
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

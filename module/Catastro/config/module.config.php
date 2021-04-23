@@ -701,6 +701,15 @@ return [
                             ],
                         ],
                     ],
+                    'datatableColidancias' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/datatable-colindancias',
+                            'defaults' => [
+                                'action' => 'datatablecolindancias',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
@@ -748,7 +757,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addtest', 'addaportacion', 'updateaportacion','viewaportacion'], 'allow' => '*']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addtest', 'addaportacion', 'updateaportacion','viewaportacion','datatablecolindancias'], 'allow' => '*']
             ],
         ]
     ],

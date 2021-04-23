@@ -1171,6 +1171,45 @@ class AportacionController extends AbstractActionController
 
 
     }
+////////DataTable Jquery///////////////
+    public function datatableColindanciasAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+                $qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
+
+                $query = $qb->getQuery()->getResult();
+
+
+            $data = [];
+
+            foreach ($query as $r) {
+                $data[] = [
+                        'idSolicitud'   => $r->getIdSolicitud(),
+                        'idAportacion'  => $r->getIdAportacion(),
+                        'Contribuyente' => $r->getIdContribuyente()->getNombre(),
+                        'Parcela'       => $r->getIdPredio()->getParcela(),
+                        'Lote'          => $r->getIdPredio()->getLote(),
+                        // 'Vigencia'      => $r->getFecha()->format('d-m-Y'),
+                        // 'Pago'          => "$ ".number_format($r->getPago(), 4),
+                        'UltimoPago'    => $r->getEjercicioFiscal(),
+                        'Estatus'       => $r->getEstatus(),
+                        'Opciones'      => "Cargando..."
+                    ];
+            }
+
+        $result = [
+                    "draw"            => 1,
+                    "recordsTotal"    => count($data),
+                    "recordsFiltered" => count($data),
+                    'aaData'            => $data,
+                ];
+
+        $json = new JsonModel($result);
+        $json->setTerminal(true);
+        return $json;
+    }
 
 
 

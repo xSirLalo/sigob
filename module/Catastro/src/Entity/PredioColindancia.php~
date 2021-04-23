@@ -22,25 +22,32 @@ class PredioColindancia
     private $idPredioColindancia;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="punto_cardinal", type="string", length=255, nullable=true)
+     */
+    private $puntoCardinal;
+
+    /**
      * @var float|null
      *
-     * @ORM\Column(name="medida_metros", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="medida_metros_lineales", type="float", precision=10, scale=0, nullable=true)
      */
-    private $medidaMetros;
+    private $medidaMetrosLineales;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="descripcion", type="string", length=255, nullable=true)
+     * @ORM\Column(name="colindancia", type="string", length=255, nullable=true)
      */
-    private $descripcion;
+    private $colindancia;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="orientacion_geografica", type="string", length=45, nullable=true)
+     * @ORM\Column(name="observaciones", type="string", length=255, nullable=true)
      */
-    private $orientacionGeografica;
+    private $observaciones;
 
     /**
      * @var \Catastro\Entity\Predio

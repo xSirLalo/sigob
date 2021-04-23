@@ -66,10 +66,10 @@ class Predio extends \Catastro\Entity\Predio implements \Doctrine\ORM\Proxy\Prox
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idPredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'claveCatastral', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titular', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'parcela', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'manzana', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'lote', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'local', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'categoria', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'condicion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ubicacion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'colonia', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'localidad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'antecedentes', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'regimenPropiedad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'fechaAdquicision', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titularAnterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'observaciones', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'municipio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'calle', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroExterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroInterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'tipo', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoEjercicioPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoPeriodoPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'cvePredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'updatedAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idContribuyente'];
+            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idPredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'claveCatastral', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titular', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'parcela', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'manzana', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'lote', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'local', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'categoria', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'condicion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ubicacion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'colonia', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'localidad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'antecedentes', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'regimenPropiedad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'fechaAdquicision', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titularAnterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'documentoPropiedad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'folio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'fechaDocumento', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'loteConflicto', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'observaciones', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'municipio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'calle', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroExterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroInterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'tipo', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoEjercicioPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoPeriodoPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'cvePredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'updatedAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idContribuyente'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idPredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'claveCatastral', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titular', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'parcela', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'manzana', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'lote', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'local', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'categoria', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'condicion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ubicacion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'colonia', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'localidad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'antecedentes', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'regimenPropiedad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'fechaAdquicision', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titularAnterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'observaciones', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'municipio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'calle', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroExterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroInterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'tipo', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoEjercicioPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoPeriodoPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'cvePredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'updatedAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idContribuyente'];
+        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idPredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'claveCatastral', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titular', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'parcela', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'manzana', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'lote', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'local', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'categoria', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'condicion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ubicacion', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'colonia', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'localidad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'antecedentes', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'regimenPropiedad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'fechaAdquicision', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'titularAnterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'documentoPropiedad', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'folio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'fechaDocumento', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'loteConflicto', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'observaciones', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'municipio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'calle', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroExterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'numeroInterior', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'tipo', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoEjercicioPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'ultimoPeriodoPagado', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'cvePredio', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'updatedAt', '' . "\0" . 'Catastro\\Entity\\Predio' . "\0" . 'idContribuyente'];
     }
 
     /**
@@ -519,6 +519,94 @@ class Predio extends \Catastro\Entity\Predio implements \Doctrine\ORM\Proxy\Prox
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTitularAnterior', []);
 
         return parent::getTitularAnterior();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setDocumentoPropiedad($documentoPropiedad = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDocumentoPropiedad', [$documentoPropiedad]);
+
+        return parent::setDocumentoPropiedad($documentoPropiedad);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDocumentoPropiedad()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDocumentoPropiedad', []);
+
+        return parent::getDocumentoPropiedad();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFolio($folio = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFolio', [$folio]);
+
+        return parent::setFolio($folio);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFolio()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFolio', []);
+
+        return parent::getFolio();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFechaDocumento($fechaDocumento = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFechaDocumento', [$fechaDocumento]);
+
+        return parent::setFechaDocumento($fechaDocumento);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFechaDocumento()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFechaDocumento', []);
+
+        return parent::getFechaDocumento();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLoteConflicto($loteConflicto = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLoteConflicto', [$loteConflicto]);
+
+        return parent::setLoteConflicto($loteConflicto);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLoteConflicto()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLoteConflicto', []);
+
+        return parent::getLoteConflicto();
     }
 
     /**

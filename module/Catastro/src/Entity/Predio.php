@@ -24,20 +24,6 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="clave_catastral", type="string", length=255, nullable=true)
-     */
-    private $claveCatastral;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="titular", type="string", length=255, nullable=true)
-     */
-    private $titular;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="parcela", type="string", length=255, nullable=true)
      */
     private $parcela;
@@ -80,16 +66,16 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="ubicacion", type="string", length=255, nullable=true)
+     * @ORM\Column(name="titular", type="string", length=255, nullable=true)
      */
-    private $ubicacion;
+    private $titular;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="colonia", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ubicacion", type="string", length=255, nullable=true)
      */
-    private $colonia;
+    private $ubicacion;
 
     /**
      * @var string|null
@@ -104,6 +90,13 @@ class Predio
      * @ORM\Column(name="antecedentes", type="string", length=255, nullable=true)
      */
     private $antecedentes;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="clave_catastral", type="string", length=255, nullable=true)
+     */
+    private $claveCatastral;
 
     /**
      * @var string|null
@@ -160,6 +153,13 @@ class Predio
      * @ORM\Column(name="observaciones", type="text", length=65535, nullable=true)
      */
     private $observaciones;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="colonia", type="string", length=255, nullable=true)
+     */
+    private $colonia;
 
     /**
      * @var string|null
@@ -251,54 +251,6 @@ class Predio
     public function getIdPredio()
     {
         return $this->idPredio;
-    }
-
-    /**
-     * Set claveCatastral.
-     *
-     * @param string|null $claveCatastral
-     *
-     * @return Predio
-     */
-    public function setClaveCatastral($claveCatastral = null)
-    {
-        $this->claveCatastral = $claveCatastral;
-
-        return $this;
-    }
-
-    /**
-     * Get claveCatastral.
-     *
-     * @return string|null
-     */
-    public function getClaveCatastral()
-    {
-        return $this->claveCatastral;
-    }
-
-    /**
-     * Set titular.
-     *
-     * @param string|null $titular
-     *
-     * @return Predio
-     */
-    public function setTitular($titular = null)
-    {
-        $this->titular = $titular;
-
-        return $this;
-    }
-
-    /**
-     * Get titular.
-     *
-     * @return string|null
-     */
-    public function getTitular()
-    {
-        return $this->titular;
     }
 
     /**
@@ -446,6 +398,30 @@ class Predio
     }
 
     /**
+     * Set titular.
+     *
+     * @param string|null $titular
+     *
+     * @return Predio
+     */
+    public function setTitular($titular = null)
+    {
+        $this->titular = $titular;
+
+        return $this;
+    }
+
+    /**
+     * Get titular.
+     *
+     * @return string|null
+     */
+    public function getTitular()
+    {
+        return $this->titular;
+    }
+
+    /**
      * Set ubicacion.
      *
      * @param string|null $ubicacion
@@ -467,30 +443,6 @@ class Predio
     public function getUbicacion()
     {
         return $this->ubicacion;
-    }
-
-    /**
-     * Set colonia.
-     *
-     * @param string|null $colonia
-     *
-     * @return Predio
-     */
-    public function setColonia($colonia = null)
-    {
-        $this->colonia = $colonia;
-
-        return $this;
-    }
-
-    /**
-     * Get colonia.
-     *
-     * @return string|null
-     */
-    public function getColonia()
-    {
-        return $this->colonia;
     }
 
     /**
@@ -539,6 +491,30 @@ class Predio
     public function getAntecedentes()
     {
         return $this->antecedentes;
+    }
+
+    /**
+     * Set claveCatastral.
+     *
+     * @param string|null $claveCatastral
+     *
+     * @return Predio
+     */
+    public function setClaveCatastral($claveCatastral = null)
+    {
+        $this->claveCatastral = $claveCatastral;
+
+        return $this;
+    }
+
+    /**
+     * Get claveCatastral.
+     *
+     * @return string|null
+     */
+    public function getClaveCatastral()
+    {
+        return $this->claveCatastral;
     }
 
     /**
@@ -731,6 +707,30 @@ class Predio
     public function getObservaciones()
     {
         return $this->observaciones;
+    }
+
+    /**
+     * Set colonia.
+     *
+     * @param string|null $colonia
+     *
+     * @return Predio
+     */
+    public function setColonia($colonia = null)
+    {
+        $this->colonia = $colonia;
+
+        return $this;
+    }
+
+    /**
+     * Get colonia.
+     *
+     * @return string|null
+     */
+    public function getColonia()
+    {
+        return $this->colonia;
     }
 
     /**

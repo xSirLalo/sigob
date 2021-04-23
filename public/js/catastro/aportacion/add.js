@@ -615,90 +615,90 @@ function tipoPersona(){
 ///Fin Funcion Persona Moral/Fisica
 
 //DataTable-Medidas Colindancias////
-$('#colindacias').dataTable( {
-    responsive: false,
-    searching: false,
-    paging: false,
-    info: false,
-    // columns: [
-    //             {data: "id"},
-    //             {data: "puntosCardinales"},
-    //             {data: "metrosLinales"},
-    //             {data: "colindancia"},
-    //             {data: "observaciones"},
-    //             {data: "opciones"},
-    //         ],
-} );
+// $('#colindacias').dataTable( {
+//     responsive: false,
+//     searching: false,
+//     paging: false,
+//     info: false,
+//     // columns: [
+//     //             {data: "id"},
+//     //             {data: "puntosCardinales"},
+//     //             {data: "metrosLinales"},
+//     //             {data: "colindancia"},
+//     //             {data: "observaciones"},
+//     //             {data: "opciones"},
+//     //         ],
+// } );
 
 
-$(document).ready(function() {
-    var table = $('#colindacias').DataTable();
-    //Agregar Colindancias///
-    $('#addRow').on( 'click', function () {
+// $(document).ready(function() {
+//     var table = $('#colindacias').DataTable();
+//     //Agregar Colindancias///
+//     $('#addRow').on( 'click', function () {
 
-        table.row.add( [
-            contador +'',
-            counter = $("#puntoCardinal").val(),
-            counter = $("#colindaCon").val(),
-            counter = $("#medidasMetros").val(),
-            counter = $("#observacionesColindacias").val(),
-            counter = `<button id="editarColindancias" class="btn btn-warning" data-toggle="modal" data-target="#addColindancia">Editar</button><button id="eliminarColindancia" class="btn btn-danger">Eliminar</button>`,
+//         table.row.add( [
+//             contador +'',
+//             counter = $("#puntoCardinal").val(),
+//             counter = $("#colindaCon").val(),
+//             counter = $("#medidasMetros").val(),
+//             counter = $("#observacionesColindacias").val(),
+//             counter = `<button id="editarColindancias" class="btn btn-warning" data-toggle="modal" data-target="#addColindancia">Editar</button><button id="eliminarColindancia" class="btn btn-danger">Eliminar</button>`,
 
-        ] ).draw(false);
+//         ] ).draw(false);
 
-        counter++;
-        contador++;
-        $('#addColindancia').modal('hide');
-    });
-    ////Editar Colindancias////
-    $('#tbody').on( 'click', 'tr', '#editarColindancias', function () {
-        let Id = table.row(this).data()[0];
-        let puntosCardinales = table.row(this).data()[1];
-        let metrosLinales = table.row(this).data()[2];
-        let colindancias = table.row(this).data()[3];
-        let observaciones = table.row(this).data()[4];
-        $("#IdColindancia").val(Id);
-        $("#puntoCardinal").val(puntosCardinales);
-        $("#medidasMetros").val(metrosLinales);
-        $("#colindaCon").val(colindancias);
-        $("#observacionesColindacias").val(observaciones);
-
-
-       // console.log( puntosCardinales );
-        $("#addRow").hide();
-        $("#updateRow").show();
-
-    } );
-
-    $('#updateRow').on( 'click', function () {
-        let Id  =  $("#IdColindancia").val();
-        let puntosCardinales =  $("#puntoCardinal").val();
-        let metrosLinales = $("#medidasMetros").val();
-        let colindancias =  $("#colindaCon").val();
-        let observaciones = $("#observacionesColindacias").val();
-
-        newData = [ Id, puntosCardinales, metrosLinales, colindancias, observaciones, `<button id="editarColindancias" class="btn btn-warning" data-toggle="modal" data-target="#addColindancia">Editar</button><button id="eliminarColindancia" class="btn btn-danger">Eliminar</button>` ];
-        table.row(Id).data(newData).draw();
-        $('#addColindancia').modal('hide');
-
-    } );
-
-    //////Eliminar Colindancias////
-
-    $('#tbody').on( 'click', '#eliminarColindancia', function () {
-        table
-            .row( $(this).parents('tr') )
-            .remove()
-            .draw(false);
-    } );
+//         counter++;
+//         contador++;
+//         $('#addColindancia').modal('hide');
+//     });
+//     ////Editar Colindancias////
+//     $('#tbody').on( 'click', 'tr', '#editarColindancias', function () {
+//         let Id = table.row(this).data()[0];
+//         let puntosCardinales = table.row(this).data()[1];
+//         let metrosLinales = table.row(this).data()[2];
+//         let colindancias = table.row(this).data()[3];
+//         let observaciones = table.row(this).data()[4];
+//         $("#IdColindancia").val(Id);
+//         $("#puntoCardinal").val(puntosCardinales);
+//         $("#medidasMetros").val(metrosLinales);
+//         $("#colindaCon").val(colindancias);
+//         $("#observacionesColindacias").val(observaciones);
 
 
-    var counter = 1;
-    var contador = 1;
+//        // console.log( puntosCardinales );
+//         $("#addRow").hide();
+//         $("#updateRow").show();
+
+//     } );
+
+//     $('#updateRow').on( 'click', function () {
+//         let Id  =  $("#IdColindancia").val();
+//         let puntosCardinales =  $("#puntoCardinal").val();
+//         let metrosLinales = $("#medidasMetros").val();
+//         let colindancias =  $("#colindaCon").val();
+//         let observaciones = $("#observacionesColindacias").val();
+
+//         newData = [ Id, puntosCardinales, metrosLinales, colindancias, observaciones, `<button id="editarColindancias" class="btn btn-warning" data-toggle="modal" data-target="#addColindancia">Editar</button><button id="eliminarColindancia" class="btn btn-danger">Eliminar</button>` ];
+//         table.row(Id).data(newData).draw();
+//         $('#addColindancia').modal('hide');
+
+//     } );
+
+//     //////Eliminar Colindancias////
+
+//     $('#tbody').on( 'click', '#eliminarColindancia', function () {
+//         table
+//             .row( $(this).parents('tr') )
+//             .remove()
+//             .draw(false);
+//     } );
+
+
+//     var counter = 1;
+//     var contador = 1;
 
 
 
-} );
+// } );
 
 $(document).ready(function() {
     $('#modalColindancias').on( 'click', function () {
@@ -868,7 +868,126 @@ $(document).ready(function() {
 });
 
 
+$(document).ready(function() {
+    setTimeout(function() {
+        // [ Configuration Option ]
 
+
+
+            var table = $('#colindacias').DataTable({
+            responsive: true,
+            info: false,
+            searching: false,
+            autoWidth: false,
+            scrollX: true,
+            scroller: {
+                loadingIndicator: true
+            },
+            processing: true,
+            // serverSide: true,
+            deferRender: true,
+            paging: false,
+            lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+            pageLength: 10,
+            order: [],
+            ajax: {
+                url: "/aportacion/datatable-colindancias",
+                type: "POST",
+                error: function(){
+                    $(".colindacias-error").html("");
+                    $("#colindacias").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No se encontraron datos en el servidor. </th></tr></tbody>');
+                    $(".dataTables_empty").css("display","none");
+                    $("#colindacias_processing").css("display","none");
+                },
+                "complete": function(response) {
+                    console.log(response);
+                }
+            },
+            initComplete: function () {
+                $('#lv-links').hide();
+                if ($(this).find('tbody tr').length<=1) {
+                    $(this).parent().show();
+                }
+            },
+            columns: [
+                {data: 'idAportacion',},
+                {data: 'Parcela'},
+                {data: 'Contribuyente'},
+                {data: 'Lote'},
+                {data: 'UltimoPago'},
+                {data: 'Estatus', orderable: false, searchable: false,},
+                {data: 'Opciones', orderable: false, searchable: false },
+                ],
+            columnDefs: [
+                {
+                    targets: 5,
+                    orderable: false,
+                    render: function(data, type, row, meta){
+                        if( row['Estatus'] == 1 ){
+                            $actionBtn = `<span class="badge badge-light-success">Verificado</span>`;
+                        }else if(row['Estatus'] == 2){
+                            $actionBtn = `<span class="badge badge-light-danger">Cancelado</span>`;
+                        }
+                        else {
+                            $actionBtn = `<span class="badge badge-light-warning">En Proceso</span>`;
+                        }
+                        return $actionBtn;
+                    },
+                },
+                {
+                    targets: 6,
+                    orderable: false,
+                    render: function(data, type, row, meta){
+                        if( row['Estatus'] == 2 || row['Estatus'] == 3 ){
+                        $actionBtn = `<a href="aportacion/ver-aportacion/` + row['idAportacion'] + `"> <button  type="button"class="btn btn-warning">Editar</button></a>
+                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>
+                        <a href="#"> <button type="button="class="btn btn btn-success" disabled >Pase Caja</button></a> `;
+
+                        // $actionBtn = `<button value="` + row['idAportacion'] + `" id="btnEditar" type="button="class="btn btn-warning" onclick="edit_aportacion(` + row['idAportacion'] + `)">Editar</button>
+                        // <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>
+                        // <a href="#"> <button type="button="class="btn btn btn-success" disabled >Pase Caja</button></a> `;
+
+                        }else {
+
+                        $actionBtn = `<a href="aportacion/editar-aportacion"> <button type="button="class="btn btn-warning" disabled>Editar</button></a>
+                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"><button type="button="class="btn btn btn-primary" >Imprimir</button></a>
+                        <a href="http://sistematulum.net:9000/TLANIA/oestadocuentapredialpase.aspx?MTULUM,2021,3,4,` + row['idSolicitud'] + `"> <button type="button="class="btn btn-success" >Pase Caja</button></a>`;
+
+                        }
+                        return $actionBtn;
+                    },
+                },
+            ],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"
+            },
+
+
+
+
+        });
+
+
+
+
+        // [ New Constructor ]
+        // var newcs = $('#new-cons').DataTable();
+
+        // new $.fn.dataTable.Responsive(newcs);
+
+        // [ Immediately Show Hidden Details ]
+        $('#show-hide-res').DataTable({
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.childRowImmediate,
+                    type: ''
+                }
+            }
+        });
+
+    }, 350);
+});
+////Fin DataTable/////
 
 
 
