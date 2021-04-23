@@ -1,0 +1,66 @@
+<?php
+
+namespace Catastro\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ArchivoAportacion
+ *
+ * @ORM\Table(name="archivo_aportacion", indexes={@ORM\Index(name="id_archivo", columns={"id_archivo"}), @ORM\Index(name="id_aportacion", columns={"id_aportacion"})})
+ * @ORM\Entity
+ */
+class ArchivoAportacion
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_archivo_aportacion", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idArchivoAportacion;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="estatus", type="integer", nullable=true, options={"default"="1"})
+     */
+    private $estatus = 1;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
+     * @var \Catastro\Entity\Aportacion
+     *
+     * @ORM\ManyToOne(targetEntity="Catastro\Entity\Aportacion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_aportacion", referencedColumnName="id_aportacion")
+     * })
+     */
+    private $idAportacion;
+
+    /**
+     * @var \Catastro\Entity\Archivo
+     *
+     * @ORM\ManyToOne(targetEntity="Catastro\Entity\Archivo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_archivo", referencedColumnName="id_archivo")
+     * })
+     */
+    private $idArchivo;
+
+
+}

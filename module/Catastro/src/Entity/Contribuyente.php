@@ -24,6 +24,13 @@ class Contribuyente
     /**
      * @var string|null
      *
+     * @ORM\Column(name="tipo_persona", type="string", length=1, nullable=true, options={"fixed"=true})
+     */
+    private $tipoPersona;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
      */
     private $nombre;
@@ -41,6 +48,55 @@ class Contribuyente
      * @ORM\Column(name="apellido_materno", type="string", length=255, nullable=true)
      */
     private $apellidoMaterno;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="fecha_nacimiento", type="date", nullable=true)
+     */
+    private $fechaNacimiento;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="genero", type="integer", nullable=false)
+     */
+    private $genero = '0';
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="curp", type="string", length=255, nullable=true)
+     */
+    private $curp;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="rfc", type="string", length=255, nullable=true)
+     */
+    private $rfc;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="razon_social", type="text", length=65535, nullable=true)
+     */
+    private $razonSocial;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="correo", type="string", length=255, nullable=true)
+     */
+    private $correo;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="telefono", type="string", length=255, nullable=true)
+     */
+    private $telefono;
 
     /**
      * @var string|null
@@ -73,13 +129,6 @@ class Contribuyente
     /**
      * @var string|null
      *
-     * @ORM\Column(name="rfc", type="string", length=255, nullable=true)
-     */
-    private $rfc;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="uso_destino", type="string", length=255, nullable=true)
      */
     private $usoDestino;
@@ -90,41 +139,6 @@ class Contribuyente
      * @ORM\Column(name="cve_persona", type="bigint", nullable=true)
      */
     private $cvePersona;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="curp", type="string", length=255, nullable=true)
-     */
-    private $curp;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="razon_social", type="text", length=65535, nullable=true)
-     */
-    private $razonSocial;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="correo", type="string", length=255, nullable=true)
-     */
-    private $correo;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="telefono", type="string", length=255, nullable=true)
-     */
-    private $telefono;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="genero", type="integer", nullable=false)
-     */
-    private $genero = '0';
 
     /**
      * @var \DateTime|null
@@ -150,6 +164,30 @@ class Contribuyente
     public function getIdContribuyente()
     {
         return $this->idContribuyente;
+    }
+
+    /**
+     * Set tipoPersona.
+     *
+     * @param string|null $tipoPersona
+     *
+     * @return Contribuyente
+     */
+    public function setTipoPersona($tipoPersona = null)
+    {
+        $this->tipoPersona = $tipoPersona;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoPersona.
+     *
+     * @return string|null
+     */
+    public function getTipoPersona()
+    {
+        return $this->tipoPersona;
     }
 
     /**
@@ -222,6 +260,174 @@ class Contribuyente
     public function getApellidoMaterno()
     {
         return $this->apellidoMaterno;
+    }
+
+    /**
+     * Set fechaNacimiento.
+     *
+     * @param \DateTime|null $fechaNacimiento
+     *
+     * @return Contribuyente
+     */
+    public function setFechaNacimiento($fechaNacimiento = null)
+    {
+        $this->fechaNacimiento = $fechaNacimiento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaNacimiento.
+     *
+     * @return \DateTime|null
+     */
+    public function getFechaNacimiento()
+    {
+        return $this->fechaNacimiento;
+    }
+
+    /**
+     * Set genero.
+     *
+     * @param int $genero
+     *
+     * @return Contribuyente
+     */
+    public function setGenero($genero)
+    {
+        $this->genero = $genero;
+
+        return $this;
+    }
+
+    /**
+     * Get genero.
+     *
+     * @return int
+     */
+    public function getGenero()
+    {
+        return $this->genero;
+    }
+
+    /**
+     * Set curp.
+     *
+     * @param string|null $curp
+     *
+     * @return Contribuyente
+     */
+    public function setCurp($curp = null)
+    {
+        $this->curp = $curp;
+
+        return $this;
+    }
+
+    /**
+     * Get curp.
+     *
+     * @return string|null
+     */
+    public function getCurp()
+    {
+        return $this->curp;
+    }
+
+    /**
+     * Set rfc.
+     *
+     * @param string|null $rfc
+     *
+     * @return Contribuyente
+     */
+    public function setRfc($rfc = null)
+    {
+        $this->rfc = $rfc;
+
+        return $this;
+    }
+
+    /**
+     * Get rfc.
+     *
+     * @return string|null
+     */
+    public function getRfc()
+    {
+        return $this->rfc;
+    }
+
+    /**
+     * Set razonSocial.
+     *
+     * @param string|null $razonSocial
+     *
+     * @return Contribuyente
+     */
+    public function setRazonSocial($razonSocial = null)
+    {
+        $this->razonSocial = $razonSocial;
+
+        return $this;
+    }
+
+    /**
+     * Get razonSocial.
+     *
+     * @return string|null
+     */
+    public function getRazonSocial()
+    {
+        return $this->razonSocial;
+    }
+
+    /**
+     * Set correo.
+     *
+     * @param string|null $correo
+     *
+     * @return Contribuyente
+     */
+    public function setCorreo($correo = null)
+    {
+        $this->correo = $correo;
+
+        return $this;
+    }
+
+    /**
+     * Get correo.
+     *
+     * @return string|null
+     */
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+    /**
+     * Set telefono.
+     *
+     * @param string|null $telefono
+     *
+     * @return Contribuyente
+     */
+    public function setTelefono($telefono = null)
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    /**
+     * Get telefono.
+     *
+     * @return string|null
+     */
+    public function getTelefono()
+    {
+        return $this->telefono;
     }
 
     /**
@@ -321,30 +527,6 @@ class Contribuyente
     }
 
     /**
-     * Set rfc.
-     *
-     * @param string|null $rfc
-     *
-     * @return Contribuyente
-     */
-    public function setRfc($rfc = null)
-    {
-        $this->rfc = $rfc;
-
-        return $this;
-    }
-
-    /**
-     * Get rfc.
-     *
-     * @return string|null
-     */
-    public function getRfc()
-    {
-        return $this->rfc;
-    }
-
-    /**
      * Set usoDestino.
      *
      * @param string|null $usoDestino
@@ -390,126 +572,6 @@ class Contribuyente
     public function getCvePersona()
     {
         return $this->cvePersona;
-    }
-
-    /**
-     * Set curp.
-     *
-     * @param string|null $curp
-     *
-     * @return Contribuyente
-     */
-    public function setCurp($curp = null)
-    {
-        $this->curp = $curp;
-
-        return $this;
-    }
-
-    /**
-     * Get curp.
-     *
-     * @return string|null
-     */
-    public function getCurp()
-    {
-        return $this->curp;
-    }
-
-    /**
-     * Set razonSocial.
-     *
-     * @param string|null $razonSocial
-     *
-     * @return Contribuyente
-     */
-    public function setRazonSocial($razonSocial = null)
-    {
-        $this->razonSocial = $razonSocial;
-
-        return $this;
-    }
-
-    /**
-     * Get razonSocial.
-     *
-     * @return string|null
-     */
-    public function getRazonSocial()
-    {
-        return $this->razonSocial;
-    }
-
-    /**
-     * Set correo.
-     *
-     * @param string|null $correo
-     *
-     * @return Contribuyente
-     */
-    public function setCorreo($correo = null)
-    {
-        $this->correo = $correo;
-
-        return $this;
-    }
-
-    /**
-     * Get correo.
-     *
-     * @return string|null
-     */
-    public function getCorreo()
-    {
-        return $this->correo;
-    }
-
-    /**
-     * Set telefono.
-     *
-     * @param string|null $telefono
-     *
-     * @return Contribuyente
-     */
-    public function setTelefono($telefono = null)
-    {
-        $this->telefono = $telefono;
-
-        return $this;
-    }
-
-    /**
-     * Get telefono.
-     *
-     * @return string|null
-     */
-    public function getTelefono()
-    {
-        return $this->telefono;
-    }
-
-    /**
-     * Set genero.
-     *
-     * @param int $genero
-     *
-     * @return Contribuyente
-     */
-    public function setGenero($genero)
-    {
-        $this->genero = $genero;
-
-        return $this;
-    }
-
-    /**
-     * Get genero.
-     *
-     * @return int
-     */
-    public function getGenero()
-    {
-        return $this->genero;
     }
 
     /**

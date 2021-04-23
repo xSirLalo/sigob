@@ -25,6 +25,7 @@ let edit_aportacion = function(id)
             $('[id="antecedentes"]').val(data.antecedentes);
             $('[id="claveCatastral"]').val(data.claveCatastral);
             $('[id="regimenPropiedad"]').val(data.regimenPropiedad);
+            $('[id="fechaAdquicision"]').val(data.fechaAdquicision);
             $('[id="titularAnterior"]').val(data.titularAnterior);
             $('[id="documentoPropiedad"]').val(data.documentoPropiedad);
             $('[id="folio"]').val(data.folio);

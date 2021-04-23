@@ -29,6 +29,20 @@ class ArchivoPredio
     private $estatus = 1;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
      * @var \Catastro\Entity\Archivo
      *
      * @ORM\ManyToOne(targetEntity="Catastro\Entity\Archivo")

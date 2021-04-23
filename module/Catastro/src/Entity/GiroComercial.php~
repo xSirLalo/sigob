@@ -1,0 +1,67 @@
+<?php
+
+namespace Catastro\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * GiroComercial
+ *
+ * @ORM\Table(name="giro_comercial")
+ * @ORM\Entity
+ */
+class GiroComercial
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_giro_comercial", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idGiroComercial;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="cve_ftm_mt", type="string", length=255, nullable=true)
+     */
+    private $cveFtmMt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="giro_comercial_descripcion", type="string", length=255, nullable=true)
+     */
+    private $giroComercialDescripcion;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="tarifas_licencias_basura_cve_fte_ing_basura", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $tarifasLicenciasBasuraCveFteIngBasura;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="tarifas_licencias_basura_cve_fte_ing_licencia", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $tarifasLicenciasBasuraCveFteIngLicencia;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="tarifas_licencias_basura_importe_basura", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $tarifasLicenciasBasuraImporteBasura;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="tarifas_licencias_basura_importe_licencia", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $tarifasLicenciasBasuraImporteLicencia;
+
+
+}

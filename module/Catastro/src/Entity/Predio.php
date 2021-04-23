@@ -24,6 +24,20 @@ class Predio
     /**
      * @var string|null
      *
+     * @ORM\Column(name="clave_catastral", type="string", length=255, nullable=true)
+     */
+    private $claveCatastral;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="titular", type="string", length=255, nullable=true)
+     */
+    private $titular;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="parcela", type="string", length=255, nullable=true)
      */
     private $parcela;
@@ -62,13 +76,6 @@ class Predio
      * @ORM\Column(name="condicion", type="string", length=255, nullable=true)
      */
     private $condicion;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="titular", type="string", length=255, nullable=true)
-     */
-    private $titular;
 
     /**
      * @var string|null
@@ -115,13 +122,6 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="clave_catastral", type="string", length=255, nullable=true)
-     */
-    private $claveCatastral;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="titular_anterior", type="string", length=255, nullable=true)
      */
     private $titularAnterior;
@@ -146,13 +146,6 @@ class Predio
      * @ORM\Column(name="calle", type="string", length=255, nullable=true)
      */
     private $calle;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
-     */
-    private $cvePredio;
 
     /**
      * @var string|null
@@ -190,6 +183,13 @@ class Predio
     private $ultimoPeriodoPagado;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
+     */
+    private $cvePredio;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
@@ -223,6 +223,54 @@ class Predio
     public function getIdPredio()
     {
         return $this->idPredio;
+    }
+
+    /**
+     * Set claveCatastral.
+     *
+     * @param string|null $claveCatastral
+     *
+     * @return Predio
+     */
+    public function setClaveCatastral($claveCatastral = null)
+    {
+        $this->claveCatastral = $claveCatastral;
+
+        return $this;
+    }
+
+    /**
+     * Get claveCatastral.
+     *
+     * @return string|null
+     */
+    public function getClaveCatastral()
+    {
+        return $this->claveCatastral;
+    }
+
+    /**
+     * Set titular.
+     *
+     * @param string|null $titular
+     *
+     * @return Predio
+     */
+    public function setTitular($titular = null)
+    {
+        $this->titular = $titular;
+
+        return $this;
+    }
+
+    /**
+     * Get titular.
+     *
+     * @return string|null
+     */
+    public function getTitular()
+    {
+        return $this->titular;
     }
 
     /**
@@ -370,30 +418,6 @@ class Predio
     }
 
     /**
-     * Set titular.
-     *
-     * @param string|null $titular
-     *
-     * @return Predio
-     */
-    public function setTitular($titular = null)
-    {
-        $this->titular = $titular;
-
-        return $this;
-    }
-
-    /**
-     * Get titular.
-     *
-     * @return string|null
-     */
-    public function getTitular()
-    {
-        return $this->titular;
-    }
-
-    /**
      * Set ubicacion.
      *
      * @param string|null $ubicacion
@@ -538,30 +562,6 @@ class Predio
     }
 
     /**
-     * Set claveCatastral.
-     *
-     * @param string|null $claveCatastral
-     *
-     * @return Predio
-     */
-    public function setClaveCatastral($claveCatastral = null)
-    {
-        $this->claveCatastral = $claveCatastral;
-
-        return $this;
-    }
-
-    /**
-     * Get claveCatastral.
-     *
-     * @return string|null
-     */
-    public function getClaveCatastral()
-    {
-        return $this->claveCatastral;
-    }
-
-    /**
      * Set titularAnterior.
      *
      * @param string|null $titularAnterior
@@ -655,30 +655,6 @@ class Predio
     public function getCalle()
     {
         return $this->calle;
-    }
-
-    /**
-     * Set cvePredio.
-     *
-     * @param int|null $cvePredio
-     *
-     * @return Predio
-     */
-    public function setCvePredio($cvePredio = null)
-    {
-        $this->cvePredio = $cvePredio;
-
-        return $this;
-    }
-
-    /**
-     * Get cvePredio.
-     *
-     * @return int|null
-     */
-    public function getCvePredio()
-    {
-        return $this->cvePredio;
     }
 
     /**
@@ -799,6 +775,30 @@ class Predio
     public function getUltimoPeriodoPagado()
     {
         return $this->ultimoPeriodoPagado;
+    }
+
+    /**
+     * Set cvePredio.
+     *
+     * @param int|null $cvePredio
+     *
+     * @return Predio
+     */
+    public function setCvePredio($cvePredio = null)
+    {
+        $this->cvePredio = $cvePredio;
+
+        return $this;
+    }
+
+    /**
+     * Get cvePredio.
+     *
+     * @return int|null
+     */
+    public function getCvePredio()
+    {
+        return $this->cvePredio;
     }
 
     /**

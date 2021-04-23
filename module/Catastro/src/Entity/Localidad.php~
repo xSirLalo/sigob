@@ -1,0 +1,74 @@
+<?php
+
+namespace Catastro\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Localidad
+ *
+ * @ORM\Table(name="localidad")
+ * @ORM\Entity
+ */
+class Localidad
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_localidad", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idLocalidad;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="cve_distrito", type="integer", nullable=true)
+     */
+    private $cveDistrito;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="cve_entidad_federativa", type="integer", nullable=true)
+     */
+    private $cveEntidadFederativa;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="cve_localidad", type="integer", nullable=true)
+     */
+    private $cveLocalidad;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="cve_municipio", type="integer", nullable=true)
+     */
+    private $cveMunicipio;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="cve_region", type="integer", nullable=true)
+     */
+    private $cveRegion;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="nombre_localidad", type="string", length=255, nullable=true)
+     */
+    private $nombreLocalidad;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="nombre_oficial_localidad", type="string", length=255, nullable=true)
+     */
+    private $nombreOficialLocalidad;
+
+
+}

@@ -1077,7 +1077,7 @@ class AportacionController extends AbstractActionController
                 'antecedentes'       => $aportacion->getIdPredio()->getAntecedentes(),
                 'claveCatastral'     => $aportacion->getIdPredio()->getClaveCatastral(),
                 'regimenPropiedad'   => $aportacion->getIdPredio()->getRegimenPropiedad(),
-                'fechaAdquicision'   => $aportacion->getIdPredio()->getFechaAdquicision(),
+                'fechaAdquicision'   => $aportacion->getIdPredio()->getFechaAdquicision()->format('Y-m-d'),
                 'titularAnterior'    => $aportacion->getIdPredio()->getTitularAnterior(),
                 'documentoPropiedad' => $aportacion->getIdPredio()->getParcela(),
                 'folio'              => $aportacion->getIdPredio()->getParcela(),

@@ -5,21 +5,21 @@ namespace Catastro\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ArchivoPredio
+ * ArchivoAportacion
  *
- * @ORM\Table(name="archivo_predio", uniqueConstraints={@ORM\UniqueConstraint(name="unico", columns={"id_archivo", "id_predio"})}, indexes={@ORM\Index(name="id_predio", columns={"id_predio"}), @ORM\Index(name="IDX_7F23DFFAEBB41DF2", columns={"id_archivo"})})
+ * @ORM\Table(name="archivo_aportacion", indexes={@ORM\Index(name="id_archivo", columns={"id_archivo"}), @ORM\Index(name="id_aportacion", columns={"id_aportacion"})})
  * @ORM\Entity
  */
-class ArchivoPredio
+class ArchivoAportacion
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id_archivo_contribuyente", type="bigint", nullable=false)
+     * @ORM\Column(name="id_archivo_aportacion", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idArchivoContribuyente;
+    private $idArchivoAportacion;
 
     /**
      * @var int|null
@@ -43,6 +43,16 @@ class ArchivoPredio
     private $updatedAt;
 
     /**
+     * @var \Catastro\Entity\Aportacion
+     *
+     * @ORM\ManyToOne(targetEntity="Catastro\Entity\Aportacion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_aportacion", referencedColumnName="id_aportacion")
+     * })
+     */
+    private $idAportacion;
+
+    /**
      * @var \Catastro\Entity\Archivo
      *
      * @ORM\ManyToOne(targetEntity="Catastro\Entity\Archivo")
@@ -52,26 +62,16 @@ class ArchivoPredio
      */
     private $idArchivo;
 
-    /**
-     * @var \Catastro\Entity\Predio
-     *
-     * @ORM\ManyToOne(targetEntity="Catastro\Entity\Predio")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_predio", referencedColumnName="id_predio")
-     * })
-     */
-    private $idPredio;
-
 
 
     /**
-     * Get idArchivoContribuyente.
+     * Get idArchivoAportacion.
      *
      * @return int
      */
-    public function getIdArchivoContribuyente()
+    public function getIdArchivoAportacion()
     {
-        return $this->idArchivoContribuyente;
+        return $this->idArchivoAportacion;
     }
 
     /**
@@ -79,7 +79,7 @@ class ArchivoPredio
      *
      * @param int|null $estatus
      *
-     * @return ArchivoPredio
+     * @return ArchivoAportacion
      */
     public function setEstatus($estatus = null)
     {
@@ -103,7 +103,7 @@ class ArchivoPredio
      *
      * @param \DateTime|null $createdAt
      *
-     * @return ArchivoPredio
+     * @return ArchivoAportacion
      */
     public function setCreatedAt($createdAt = null)
     {
@@ -127,7 +127,7 @@ class ArchivoPredio
      *
      * @param \DateTime|null $updatedAt
      *
-     * @return ArchivoPredio
+     * @return ArchivoAportacion
      */
     public function setUpdatedAt($updatedAt = null)
     {
@@ -147,11 +147,35 @@ class ArchivoPredio
     }
 
     /**
+     * Set idAportacion.
+     *
+     * @param \Catastro\Entity\Aportacion|null $idAportacion
+     *
+     * @return ArchivoAportacion
+     */
+    public function setIdAportacion(\Catastro\Entity\Aportacion $idAportacion = null)
+    {
+        $this->idAportacion = $idAportacion;
+
+        return $this;
+    }
+
+    /**
+     * Get idAportacion.
+     *
+     * @return \Catastro\Entity\Aportacion|null
+     */
+    public function getIdAportacion()
+    {
+        return $this->idAportacion;
+    }
+
+    /**
      * Set idArchivo.
      *
      * @param \Catastro\Entity\Archivo|null $idArchivo
      *
-     * @return ArchivoPredio
+     * @return ArchivoAportacion
      */
     public function setIdArchivo(\Catastro\Entity\Archivo $idArchivo = null)
     {
@@ -168,29 +192,5 @@ class ArchivoPredio
     public function getIdArchivo()
     {
         return $this->idArchivo;
-    }
-
-    /**
-     * Set idPredio.
-     *
-     * @param \Catastro\Entity\Predio|null $idPredio
-     *
-     * @return ArchivoPredio
-     */
-    public function setIdPredio(\Catastro\Entity\Predio $idPredio = null)
-    {
-        $this->idPredio = $idPredio;
-
-        return $this;
-    }
-
-    /**
-     * Get idPredio.
-     *
-     * @return \Catastro\Entity\Predio|null
-     */
-    public function getIdPredio()
-    {
-        return $this->idPredio;
     }
 }

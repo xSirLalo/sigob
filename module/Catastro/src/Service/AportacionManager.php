@@ -663,13 +663,13 @@ class AportacionManager
         $predio->setCategoria($datos['categoria']);
         $predio->setCondicion($datos['condicion']);
         $predio->setTitular($datos['titular']);
-        // $predio->setUbicacion($datos['ubicacion']);
-        // $predio->setLocalidad($datos['localidad']);
-        // $predio->setAntecedentes($datos['antecedentes']);
-        // $predio->setClaveCatastral($datos['claveCatastral']);
+        $predio->setUbicacion($datos['ubicacion']);
+        $predio->setLocalidad($datos['localidad']);
+        $predio->setAntecedentes($datos['antecedentes']);
+        $predio->setClaveCatastral($datos['claveCatastral']);
         // $predio->setRegimenPropiedad($datos['regimenPropiedad']);
-        // $fecha_adquicision = new \DateTime($datos['fechaAdquicision']);
-        // $aportacion->setFechaAdquicision($fecha_adquicision);
+        $fecha_adquicision = new \DateTime($datos['fechaAdquicision']);
+        $predio->setFechaAdquicision($fecha_adquicision);
 
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
