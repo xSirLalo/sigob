@@ -21,7 +21,7 @@ $(document).ready(function() {
                 loadingIndicator: true
             },
             processing: true,
-            // serverSide: true,
+            //serverSide: true,
             deferRender: true,
             paging: true,
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],

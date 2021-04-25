@@ -546,33 +546,58 @@ class AportacionManager
 
     public function guardarTest($datos)
         {
-            $contribuyente = new Contribuyente();
-            $predio = new Predio();
+            if($datos['Idaportacion'] > 0 ){
+            $predioColindancias = new PredioColindancia();
+            $aportacionId = $datos['Idaportacion'];
+            $aportacion       = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+            $contribuyenteId = $aportacion->getIdContribuyente()->getIdContribuyente();
+            $predioId        = $aportacion->getIdPredio()->getIdPredio();
+            $predio          = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
+            $contribuyente   = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+            }
+            else
+            {
+            $contribuyente      = new Contribuyente();
+            $predio             = new Predio();
+            $predioColindancias = new PredioColindancia();
+            $aportacion         = new Aportacion();
+            }
 
-
+            //////Contribuyente/////
             $contribuyente->setNombre($datos['nombreContribuyente']);
             $contribuyente->setRfc($datos['rfc']);
 
-            $currentDate = new \DateTime();
-            $contribuyente->setCreatedAt($currentDate);
-            $contribuyente->setUpdatedAt($currentDate);
-
             $this->entityManager->persist($contribuyente);
             $this->entityManager->flush();
+            // //  //////Predio/////
+            $predio->setIdContribuyente($contribuyente);
+            $predio->setParcela($datos['parcela']);
 
-            if ($contribuyente->getIdContribuyente() > 0) {
+            $this->entityManager->persist($predio);
+            $this->entityManager->flush();
+            // // //////PredioColindancia///////
+            $predioColindancias->setIdPredio($predio);
+            $predioColindancias->setPuntoCardinal($datos['puntoCardinal']);
+            $predioColindancias->setPuntoCardinal($datos['colindaCon']);
+            $predioColindancias->setPuntoCardinal($datos['medidasMetros']);
+            $predioColindancias->setPuntoCardinal($datos['observacionesColindacias']);
 
-                $predio->setIdContribuyente($contribuyente);
-                $predio->setParcela($datos['parcela']);
+            $this->entityManager->persist($predioColindancias);
+            $this->entityManager->flush();
+            //////Aportacion/////
+
+            $aportacion->setIdContribuyente($contribuyente);
+            $aportacion->setIdPredio($predio);
+            $pago = 5000 ;
+            $aportacion->setPago($pago);
+
+            $this->entityManager->persist($aportacion);
+            $this->entityManager->flush();
+
+            if ($aportacion->getIdAportacion() > 0) {
 
 
-
-                $this->entityManager->persist($predio);
-                $this->entityManager->flush();
-
-
-
-                return $contribuyente->getIdContribuyente();
+                return $aportacion;
             }
 
             return 0;
@@ -585,6 +610,7 @@ class AportacionManager
         $contribuyente = new Contribuyente();
         $aportacion = new Aportacion();
         $predio = new Predio();
+
 
         //////Guardar Contribuyente///////
             $contribuyente->setNombre($datos['Contribuyente']);
@@ -674,5 +700,86 @@ class AportacionManager
         $this->entityManager->persist($predio);
         $this->entityManager->flush();
 
+    }
+///////////Agregar Colindancias Datatble/////////
+    public function guardarColindancias($datos)
+        {
+            if($datos['Idaportacion'] > 0 ){
+            $predioColindancias = new PredioColindancia();
+            $aportacionId       = $datos['Idaportacion'];
+            $aportacion         = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+            $contribuyenteId    = $aportacion->getIdContribuyente()->getIdContribuyente();
+            $predioId           = $aportacion->getIdPredio()->getIdPredio();
+            $predio             = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
+            $contribuyente      = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+            }
+            else
+            {
+            $contribuyente      = new Contribuyente();
+            $predio             = new Predio();
+            $predioColindancias = new PredioColindancia();
+            $aportacion         = new Aportacion();
+            }
+
+            //////Contribuyente/////
+            $contribuyente->setNombre($datos['nombreContribuyente']);
+
+            $this->entityManager->persist($contribuyente);
+            $this->entityManager->flush();
+            // //  //////Predio/////
+            $predio->setIdContribuyente($contribuyente);
+            $predio->setParcela($datos['parcela']);
+
+            $this->entityManager->persist($predio);
+            $this->entityManager->flush();
+            // // //////PredioColindancia///////
+            $predioColindancias->setIdPredio($predio);
+            $predioColindancias->setPuntoCardinal($datos['puntoCardinal']);
+            $predioColindancias->setMedidaMetrosLineales($datos['medidasMetros']);
+            $predioColindancias->setColindancia($datos['colindaCon']);
+            $predioColindancias->setObservaciones($datos['observacionesColindacias']);
+
+
+            $this->entityManager->persist($predioColindancias);
+            $this->entityManager->flush();
+            //////Aportacion/////
+
+            $aportacion->setIdContribuyente($contribuyente);
+            $aportacion->setIdPredio($predio);
+            $pago = 5000 ;
+            $aportacion->setPago($pago);
+
+            $this->entityManager->persist($aportacion);
+            $this->entityManager->flush();
+
+            if ($aportacion->getIdAportacion() > 0) {
+
+
+                return $aportacion;
+            }
+
+            return 0;
+        }
+///////////Eliminar Colindancias Datatble/////////
+    public function eliminarColindancias($predioColindancia)
+    {
+        $this->entityManager->remove($predioColindancia);
+
+        $this->entityManager->flush();
+    }
+///////////Actualizar Colindancias Datatble/////////
+public function actualizarColindancias($datos)
+    {
+        $predioColindanciasId = $datos['id'];
+        $predioColindancias = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredioColindancia($predioColindanciasId);
+
+
+        $predioColindancias->setPuntoCardinal($datos['puntoCardinal']);
+        $predioColindancias->setMedidaMetrosLineales($datos['medidasMetros']);
+        $predioColindancias->setColindancia($datos['colindaCon']);
+        $predioColindancias->setObservaciones($datos['observacionesColindacias']);
+
+        $this->entityManager->persist($predioColindancias);
+        $this->entityManager->flush();
     }
 }

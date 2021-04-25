@@ -99,8 +99,8 @@ class AportacionController extends AbstractActionController
         $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
-        $localidades = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
-        $girocomerciales = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
+       // $localidades = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
+        //$girocomerciales = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
 
         // if ($contribuyente == null) {
         //     $this->layout()->setTemplate('error/404');
@@ -120,8 +120,8 @@ class AportacionController extends AbstractActionController
                 }
             }
         }
-        return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente, 'localidades' => $localidades, 'girocomerciales' => $girocomerciales]);
-        //return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
+        //return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente, 'localidades' => $localidades, 'girocomerciales' => $girocomerciales]);
+        return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
     }
 
     public function addModalAction()
@@ -1129,21 +1129,16 @@ class AportacionController extends AbstractActionController
 
         $result = $this->aportacionManager->guardarTest($req_post['c'][0]);
 
-        if ($result > 0){
-            $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result];
+        if ($result){
+            $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'nombre' =>$result->getIdContribuyente()->getNombre()];
         }else{
             $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
         }
-
-
-
 
 				$json = new JsonModel($datos);
 				$json->setTerminal(true);
 
 				return $json;
-
-
     }
 
     public function addAportacionAction()
@@ -1151,17 +1146,6 @@ class AportacionController extends AbstractActionController
         $req_post = $this->params()->fromPost();
 
         $result = $this->aportacionManager->guardarAportacion($req_post['a'][0]);
-        if ($result)
-            {
-            $this->aportacionManager->pdf($result);
-            }
-
-        // if ($result > 0){
-        //     $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion()];
-        // }else{
-        //     $datos = ["resp"=>"no", "msg"=>"No se guardo"];
-        // }
-
 
 				$json = new JsonModel($datos);
 				$json->setTerminal(true);
@@ -1177,25 +1161,28 @@ class AportacionController extends AbstractActionController
         $request = $this->getRequest();
         $response = $this->getResponse();
 
-                $qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
+            $req_post = $this->params()->fromPost();
 
-                $query = $qb->getQuery()->getResult();
+            $idpredio = $req_post['id_predio'];
+
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb->select('p')
+                ->from('Catastro\Entity\PredioColindancia', 'p')
+                ->where('p.idPredio = :idParam')
+                ->setParameter('idParam', $idpredio);
+            $predioColindancias = $qb->getQuery()->getResult();
 
 
             $data = [];
 
-            foreach ($query as $r) {
+            foreach ($predioColindancias as $r) {
                 $data[] = [
-                        'idSolicitud'   => $r->getIdSolicitud(),
-                        'idAportacion'  => $r->getIdAportacion(),
-                        'Contribuyente' => $r->getIdContribuyente()->getNombre(),
-                        'Parcela'       => $r->getIdPredio()->getParcela(),
-                        'Lote'          => $r->getIdPredio()->getLote(),
-                        // 'Vigencia'      => $r->getFecha()->format('d-m-Y'),
-                        // 'Pago'          => "$ ".number_format($r->getPago(), 4),
-                        'UltimoPago'    => $r->getEjercicioFiscal(),
-                        'Estatus'       => $r->getEstatus(),
-                        'Opciones'      => "Cargando..."
+                        'idColindancia'    => $r->getIdPredioColindancia(),
+                        'puntoCardinal'    => $r->getPuntoCardinal(),
+                        'metrosLineales'   => $r->getMedidaMetrosLineales(),
+                        'colindancia'      => $r->getColindancia(),
+                        'observaciones'    => $r->getObservaciones(),
+                        'Opciones'         => "Cargando..."
                     ];
             }
 
@@ -1209,6 +1196,87 @@ class AportacionController extends AbstractActionController
         $json = new JsonModel($result);
         $json->setTerminal(true);
         return $json;
+    }
+    ///////////Agregar Datatbale Colindancias /////////
+    public function addcolindanciasAction()
+    {
+        $req_post = $this->params()->fromPost();
+
+        $result = $this->aportacionManager->guardarColindancias($req_post['c'][0]);
+
+        if ($result){
+            $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'id_predio' =>$result->getIdPredio()->getIdPredio()];
+        }else{
+            $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
+        }
+
+				$json = new JsonModel($datos);
+				$json->setTerminal(true);
+
+				return $json;
+
+    }
+       ///////////Eliminar Datatbale Colindancias/////////
+    public function deletecolindanciasAction()
+    {
+        $req_post = $this->params()->fromPost();
+
+        $id_predioColindancias = $req_post['c'][0];
+        $predioColindancias = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredioColindancia($id_predioColindancias);
+        $this->aportacionManager->eliminarColindancias($predioColindancias);
+
+        $datos = ["resp"=>"ok", "msg"=>"se elimino correctamente"];
+
+				$json = new JsonModel($datos);
+				$json->setTerminal(true);
+
+				return $json;
+
+
+    }
+    ///////////Editar Datatbale Colindancias/////////
+        public function editColindanciaAction(){
+
+
+        $request = $this->getRequest();
+        $predioColindanciasId = (int)$this->params()->fromRoute('id', -1);
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            $predioColindancia = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredioColindancia($predioColindanciasId);
+            $data = [
+
+                'idPredioColindancias'         => $predioColindancia->getIdPredioColindancia(),
+                'puntoCardinal'                => $predioColindancia->getPuntoCardinal(),
+                'colindaCon'                   => $predioColindancia->getColindancia(),
+                'medidasMetros'                => $predioColindancia->getMedidaMetrosLineales(),
+                'observacionesColindacias'     => $predioColindancia->getObservaciones(),
+
+
+            ];
+
+            $view = new JsonModel($data);
+
+        }
+        return $view;
+
+
+    }
+     ///////////Actualizar Datatbale Colindancias/////////
+    public function updateColindanciasAction(){
+
+
+        $req_post = $this->params()->fromPost();
+
+        $result = $this->aportacionManager->actualizarColindancias($req_post['c'][0]);
+
+
+            $datos = ["resp"=>"ok", "msg"=>"se actualizo correctamente"];
+
+            $json = new JsonModel($datos);
+			$json->setTerminal(true);
+
+            return $json;
+
     }
 
 

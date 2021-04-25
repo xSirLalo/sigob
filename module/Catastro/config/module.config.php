@@ -702,11 +702,53 @@ return [
                         ],
                     ],
                     'datatableColidancias' => [
-                        'type' => 'literal',
+                        'type' => 'segment',
                         'options' => [
-                            'route' => '/datatable-colindancias',
+                            'route' => '/datatable-colindancias[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9,a-z,A-Z,-]+',
+                            ],
                             'defaults' => [
                                 'action' => 'datatablecolindancias',
+                            ],
+                        ],
+                    ],
+                    'addcolindancias' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/addcolindancias',
+                            'defaults' => [
+                                'action' => 'addcolindancias',
+                            ],
+                        ],
+                    ],
+                    'deletecolindancias' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/deletecolindancias',
+                            'defaults' => [
+                                'action' => 'deletecolindancias',
+                            ],
+                        ],
+                    ],
+                    'editColindancia' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/editar-colindancia[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9,a-z,A-Z,-]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'editcolindancia',
+                            ],
+                        ],
+                    ],
+                    'updatecolindancias' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/updatecolindancias',
+                            'defaults' => [
+                                'action' => 'updatecolindancias',
                             ],
                         ],
                     ],
@@ -757,7 +799,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addtest', 'addaportacion', 'updateaportacion','viewaportacion','datatablecolindancias'], 'allow' => '*']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addtest', 'addaportacion', 'updateaportacion','viewaportacion','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias'], 'allow' => '*']
             ],
         ]
     ],

@@ -700,20 +700,23 @@ function tipoPersona(){
 
 // } );
 
-$(document).ready(function() {
-    $('#modalColindancias').on( 'click', function () {
-        $("#updateRow").hide();
-        $("#addRow").show();
-        $('#addColindancia').modal('show');
-        $("#medidasMetros").val("");
-        $("#colindaCon").val("");
-        $("#observacionesColindacias").val("");
 
 
-    });
-});
+// $(document).ready(function() {
+//     $('#modalColindancias').on( 'click', function () {
+//         $("#updateRow").hide();
+//         $("#addRow").show();
+//         $('#addColindancia').modal('show');
+//         $("#medidasMetros").val("");
+//         $("#colindaCon").val("");
+//         $("#observacionesColindacias").val("");
+
+
+//     });
+// });
 
 /////Fin Modal Add Colindancias///
+
 
 
 
@@ -722,6 +725,7 @@ $(document).ready(function() {
 /////////Guardar Contribuyente metodo post////////////
 $(document).ready(function() {
     let Contribuyente  = function(){
+        this.Idaportacion = $("#id_aportacion").val();
         this.nombreContribuyente = $("#nombreContribuyente").val();
         this.rfc = $("#rfc").val();
 
@@ -736,7 +740,8 @@ $(document).ready(function() {
 
 				if(data.resp == "ok"){
 
-                    $("#hdn_id_cont").val(data.id_objeto);
+                    $("#id_aportacion").val(data.id_objeto);
+                    $("#Contribuyente").val(data.nombre);
 				}else{
 
 					alert(data.msg);
@@ -791,9 +796,6 @@ $(document).ready(function() {
         ///Tabla Aportacion////
         this.pagoAportacion  = $("#año_hidden").val();
         this.fecha           = $("#vig").val();
-
-
-
 	}
 
     let guardarAportacion = function(aportacion){
@@ -869,12 +871,12 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
-    setTimeout(function() {
+
         // [ Configuration Option ]
 
 
-
-            var table = $('#colindacias').DataTable({
+            //let id = $("#id_predio").val();
+            let table = $('#colindacias').DataTable({
             responsive: true,
             info: false,
             searching: false,
@@ -891,8 +893,17 @@ $(document).ready(function() {
             pageLength: 10,
             order: [],
             ajax: {
-                url: "/aportacion/datatable-colindancias",
+                url: "/aportacion/datatable-colindancias/"+$("#id_predio").val(),
+                //url: "/aportacion/datatable-colindancias/",
+               // url: "/aportacion/datatable-colindancias/",
                 type: "POST",
+                data:function(d){
+
+                    var busqueda = new objetoBusqueda();
+
+                    return busqueda;
+                },
+
                 error: function(){
                     $(".colindacias-error").html("");
                     $("#colindacias").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No se encontraron datos en el servidor. </th></tr></tbody>');
@@ -910,12 +921,11 @@ $(document).ready(function() {
                 }
             },
             columns: [
-                {data: 'idAportacion',},
-                {data: 'Parcela'},
-                {data: 'Contribuyente'},
-                {data: 'Lote'},
-                {data: 'UltimoPago'},
-                {data: 'Estatus', orderable: false, searchable: false,},
+                {data: 'idColindancia',},
+                {data: 'puntoCardinal'},
+                {data: 'metrosLineales'},
+                {data: 'colindancia'},
+                {data: 'observaciones'},
                 {data: 'Opciones', orderable: false, searchable: false },
                 ],
             columnDefs: [
@@ -923,37 +933,10 @@ $(document).ready(function() {
                     targets: 5,
                     orderable: false,
                     render: function(data, type, row, meta){
-                        if( row['Estatus'] == 1 ){
-                            $actionBtn = `<span class="badge badge-light-success">Verificado</span>`;
-                        }else if(row['Estatus'] == 2){
-                            $actionBtn = `<span class="badge badge-light-danger">Cancelado</span>`;
-                        }
-                        else {
-                            $actionBtn = `<span class="badge badge-light-warning">En Proceso</span>`;
-                        }
-                        return $actionBtn;
-                    },
-                },
-                {
-                    targets: 6,
-                    orderable: false,
-                    render: function(data, type, row, meta){
-                        if( row['Estatus'] == 2 || row['Estatus'] == 3 ){
-                        $actionBtn = `<a href="aportacion/ver-aportacion/` + row['idAportacion'] + `"> <button  type="button"class="btn btn-warning">Editar</button></a>
-                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>
-                        <a href="#"> <button type="button="class="btn btn btn-success" disabled >Pase Caja</button></a> `;
 
-                        // $actionBtn = `<button value="` + row['idAportacion'] + `" id="btnEditar" type="button="class="btn btn-warning" onclick="edit_aportacion(` + row['idAportacion'] + `)">Editar</button>
-                        // <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>
-                        // <a href="#"> <button type="button="class="btn btn btn-success" disabled >Pase Caja</button></a> `;
+                        $actionBtn =`<button id="editarColindancias" class="btn btn-warning" value="` + row['idColindancia'] + `">Editar</button>
+                        <button id="eliminarColindancia" class="btn btn-danger" value="` + row['idColindancia'] + `">Eliminar</button>`;
 
-                        }else {
-
-                        $actionBtn = `<a href="aportacion/editar-aportacion"> <button type="button="class="btn btn-warning" disabled>Editar</button></a>
-                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"><button type="button="class="btn btn btn-primary" >Imprimir</button></a>
-                        <a href="http://sistematulum.net:9000/TLANIA/oestadocuentapredialpase.aspx?MTULUM,2021,3,4,` + row['idSolicitud'] + `"> <button type="button="class="btn btn-success" >Pase Caja</button></a>`;
-
-                        }
                         return $actionBtn;
                     },
                 },
@@ -966,6 +949,10 @@ $(document).ready(function() {
 
 
         });
+
+        let objetoBusqueda = function(){
+			this.id_predio = $("#id_predio").val();
+		}
 
 
 
@@ -984,10 +971,172 @@ $(document).ready(function() {
                 }
             }
         });
+///////Modal Colindancias///////////
+$('#modalColindancias').on( 'click', function () {
+        $("#updateRow").hide();
+        $("#addRow").show();
+        $('#addColindancia').modal('show');
+        $("#medidasMetros").val("");
+        $("#colindaCon").val("");
+        $("#observacionesColindacias").val("");
 
-    }, 350);
+
+    });
+
+
+/////Add Datatbale row////////
+    let Colindancias = function(){
+        this.Idaportacion = $("#id_aportacion").val();
+        ///Contiribuyente//
+        this.nombreContribuyente = $("#nombreContribuyente").val();
+        ///Predio///
+        this.parcela = $("#parcela").val();
+        ///Colindancias///
+        this.puntoCardinal = $("#puntoCardinal").val();
+        this.colindaCon = $("#colindaCon").val();
+        this.medidasMetros = $("#medidasMetros").val();
+        this.observacionesColindacias = $("#observacionesColindacias").val();
+
+	}
+
+    let guardarColindancia = function(colindancias){
+
+		$.post('/aportacion/addcolindancias', {c:colindancias}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+                    $("#id_aportacion").val(data.id_objeto);
+                    $("#id_predio").val(data.id_predio);
+                    table.ajax.reload();
+
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+    $('#addRow').click(  function () {
+        let addColindancia = new Colindancias();
+
+		guardarColindancia(new Array(addColindancia));
+
+        $('#addColindancia').modal('hide');
+    });
+
+    /////////Eliminar Colindancias///////////////
+    let EliminarColindancia = function(colindancias){
+
+		$.post('/aportacion/deletecolindancias', {c:colindancias}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+                    table.ajax.reload();
+
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+    $('#tbody').on( 'click', '#eliminarColindancia', function () {
+
+        let deleteColindancias = $(this).val();
+
+		EliminarColindancia(new Array(deleteColindancias));
+
+    });
+///////Modal  Editar Colindancias///////////
+    $('#tbody').on( 'click', '#editarColindancias', function () {
+        $("#updateRow").show();
+        $("#addRow").hide();
+        $('#addColindancia').modal('show');
+
+
+    let id = $(this).val();
+    $.ajax({
+    url : "/aportacion/editar-colindancia/" + id,
+    type: "POST",
+    dataType: "JSON",
+    contentType: "application/json; charset=utf-8",
+    success: function(data)
+        {
+            console.log(data);
+            $('[id="idPredioColindancias"]').val(data.idPredioColindancias);
+            $('[id="puntoCardinal"]').val(data.puntoCardinal);
+            $('[id="colindaCon"]').val(data.colindaCon);
+            $('[id="medidasMetros"]').val(data.medidasMetros);
+            $('[id="observacionesColindacias"]').val(data.observacionesColindacias);
+
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error get data from ajax');
+        }
+    });
+
+
+    });
+
+//}
+//////////Actualizar Cambios Datatbale Colindancias////////
+let ActualizarColindancia = function(colindancias){
+
+		$.post('/aportacion/updatecolindancias', {c:colindancias}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+                table.ajax.reload();
+
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+
+    $("#updateRow").click(function(){
+
+		let updateColindacia = {
+
+            id:$('#idPredioColindancias').val(),
+            puntoCardinal:$("#puntoCardinal").val(),
+            colindaCon:$("#colindaCon").val(),
+            medidasMetros: $("#medidasMetros").val(),
+            observacionesColindacias:$("#observacionesColindacias").val(),
+
+        };
+
+		ActualizarColindancia(new Array(updateColindacia));
+        $('#addColindancia').modal('hide');
+
+		});
+
 });
-////Fin DataTable/////
+
+
+
+
+
+
+
+
+
+
 
 
 
