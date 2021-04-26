@@ -547,19 +547,18 @@ class AportacionManager
     public function guardarTest($datos)
         {
             if($datos['Idaportacion'] > 0 ){
-            $predioColindancias = new PredioColindancia();
+
             $aportacionId = $datos['Idaportacion'];
+
             $aportacion       = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
             $contribuyenteId = $aportacion->getIdContribuyente()->getIdContribuyente();
             $predioId        = $aportacion->getIdPredio()->getIdPredio();
             $predio          = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
             $contribuyente   = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
             }
-            else
-            {
+            else{
             $contribuyente      = new Contribuyente();
             $predio             = new Predio();
-            $predioColindancias = new PredioColindancia();
             $aportacion         = new Aportacion();
             }
 
@@ -569,23 +568,13 @@ class AportacionManager
 
             $this->entityManager->persist($contribuyente);
             $this->entityManager->flush();
-            // //  //////Predio/////
+            // // //  //////Predio/////
             $predio->setIdContribuyente($contribuyente);
             $predio->setParcela($datos['parcela']);
 
             $this->entityManager->persist($predio);
             $this->entityManager->flush();
-            // // //////PredioColindancia///////
-            $predioColindancias->setIdPredio($predio);
-            $predioColindancias->setPuntoCardinal($datos['puntoCardinal']);
-            $predioColindancias->setPuntoCardinal($datos['colindaCon']);
-            $predioColindancias->setPuntoCardinal($datos['medidasMetros']);
-            $predioColindancias->setPuntoCardinal($datos['observacionesColindacias']);
-
-            $this->entityManager->persist($predioColindancias);
-            $this->entityManager->flush();
-            //////Aportacion/////
-
+            // //////Aportacion/////
             $aportacion->setIdContribuyente($contribuyente);
             $aportacion->setIdPredio($predio);
             $pago = 5000 ;
@@ -595,10 +584,13 @@ class AportacionManager
             $this->entityManager->flush();
 
             if ($aportacion->getIdAportacion() > 0) {
-
-
                 return $aportacion;
             }
+            // if ($contribuyente->getIdContribuyente() > 0) {
+
+
+            //     return $contribuyente;
+            // }
 
             return 0;
 

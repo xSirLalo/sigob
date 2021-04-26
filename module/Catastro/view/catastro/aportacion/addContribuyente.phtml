@@ -25,24 +25,86 @@
             <!-- PERSONA FISICA -->
             <div id="personaFisica">
             <div class="row ml-0">
-                <div class="col-sm-12">
-                    <div class="form-group ">
+                <div class="col-sm-4">
+                    <div class="form-group">
                     <label>Nombre</label>
+                    <input class="form-control" type="text" name="" id="nombreContribuyente">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                    <label>Apellido Paterno</label>
+                    <input class="form-control" type="text" name="" id="nombreContribuyente">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Apellido Materno</label>
                     <input class="form-control" type="text" name="" id="nombreContribuyente">
                     </div>
                 </div>
             </div>
             <div class="row ml-0">
-                <div class="col-sm-5">
-                    <div class="form-group ">
-                    <label>Fecha de Nacimiento</label>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                    <label>R.F.C.</label>
                     <input class="form-control" type="text" name="" id="fechaNaciemiento">
                     </div>
                 </div>
-                <div class="col-sm-7">
-                    <div class="form-group ">
-                    <label>RFC</label>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                    <label>Razón Social</label>
                     <input class="form-control" type="text" name="" id="rfc">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                    <label>C.U.R.P.</label>
+                    <input class="form-control" type="text" name="" id="rfc">
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                    <font size="1"><label>Fecha de nacimiento</label></font>
+                        <select class="custom-select w-30" name="" id="puntoCardinal" >
+                            <option value="">Día</option>
+                            <?php for ($i=1; $i < 32 ; $i++) { ?>
+                                <option value="<?=$i?>"><?=$i?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                    <br>
+                        <select class="custom-select w-30" name="" id="puntoCardinal" >
+                            <option value="">Mes</option>
+                            <option value="">Enero</option>
+                            <option value="">Febrero</option>
+                            <option value="">Marzo</option>
+                            <option value="">Abril</option>
+                            <option value="">Mayo</option>
+                            <option value="">Junio</option>
+                            <option value="">Julio</option>
+                            <option value="">Agosto</option>
+                            <option value="">Septiembre</option>
+                            <option value="">Octubre</option>
+                            <option value="">Noviembre</option>
+                            <option value="">Diciembre</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <br>
+                        <select class="custom-select w-30" name="" id="puntoCardinal" >
+                            <option value="">Año</option>
+                            <?php for ($i=2008; $i > 1921 ; $i--) { ?>
+                                <option value="<?=$i?>"><?=$i?></option>
+                            <?php } ?>
+                        </select>
                     </div>
                 </div>
             </div>

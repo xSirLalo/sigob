@@ -102,48 +102,41 @@ currency: 'USD',
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
-        document.getElementById("v_terreno").value = formatter.format(0);
-        document.getElementById("a_total").value = formatter.format(0);
+        document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
         document.getElementById("avaluo_hidden").value = 0;
     }
     // //valida si el campo valor m2 zona esta vacio
     if (m_valorZona.length == 0) {
-        document.getElementById("v_terreno").value = formatter.format(0);
-        document.getElementById("a_total").value = formatter.format(0);
+        document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
-        document.getElementById("v_c").value = formatter.format(0);
-        document.getElementById("a_total").value = formatter.format(0);
+        document.getElementById("v_c").value = 0;
+        document.getElementById("a_total").value = 0;
         document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
-        document.getElementById("v_c").value = formatter.format(0);
+        document.getElementById("v_c").value = 0;
         document.getElementById("v_in").value = 0;
-        document.getElementById("a_total").value = formatter.format(0);
+        document.getElementById("a_total").value = 0;
         document.getElementById("avaluo_hidden").value = 0;
     }
      //Tasa_impositiva
-
+    let select_tasa = document.getElementById("tasa_i");
+    let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
     let a_total = parseFloat(document.getElementById("avaluo_hidden").value);
-    let pago_aportacion = valor_tasa * a_total;
-    // document.getElementById("pago_a").value = formatter.format(pago_aportacion);
-
-    document.getElementById("p_hide").value = pago_aportacion;
-    ///Calcular año
     const año_default = 1;
-    let select_año = document.getElementById("ejercicio_fiscal");
-    let año = select_año.options[select_año.selectedIndex].value;
-    let select_año_fin = document.getElementById("ejercicio_fiscal_final");
-    let año_fin = select_año.options[select_año_fin .selectedIndex].value;
-    let resultado = año_fin - año + año_default;
-    let aportacionFinal = pago_aportacion * resultado;
-    document.getElementById("año_hidden").value = aportacionFinal;
-    console.log(aportacionFinal);
+    let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
+    let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
+    let pago_aportacion = valor_tasa * a_total;
+    let resultado =  año_final-año_inicial+año_default;
+    let aportacionFinal = resultado * pago_aportacion;
     document.getElementById("pago_a").value = formatter.format(aportacionFinal);
-
+    document.getElementById("p_hide").value = pago_aportacion;
 
 }
 
@@ -157,7 +150,7 @@ function valorC() {
     let valor_c = document.getElementById("sup_m").value;
     if(valor_c.length == 0){
         metros_construccion = 0;
-        document.getElementById("v_c").value = formatter.format(0);
+        document.getElementById("v_c").value = 0;
     }else{
         document.getElementById("v_c").value = formatter.format(valor_construnccion);
     }
@@ -182,48 +175,41 @@ function valorC() {
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
-        document.getElementById("v_terreno").value = formatter.format(0);
-        document.getElementById("a_total").value = formatter.format(0);
+        document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo valor m2 zona esta vacio
     if (m_valorZona.length == 0) {
-        document.getElementById("v_terreno").value = formatter.format(0);
-        document.getElementById("a_total").value = formatter.format(0);
+        document.getElementById("v_terreno").value = 0;
+        document.getElementById("a_total").value = 0;
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
-        document.getElementById("v_c").value = formatter.format(0);
-        document.getElementById("a_total").value = formatter.format(0);
+        document.getElementById("v_c").value = 0;
+        document.getElementById("a_total").value = 0;
         document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
-        document.getElementById("v_c").value = formatter.format(0);
+        document.getElementById("v_c").value = 0;
         document.getElementById("v_in").value = 0;
-        document.getElementById("a_total").value = formatter.format(0);
+        document.getElementById("a_total").value = 0;
         document.getElementById("avaluo_hidden").value = 0;
     }
     //Tasa_impositiva
     let select_tasa = document.getElementById("tasa_i");
     let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
     let a_total = parseFloat(document.getElementById("avaluo_hidden").value);
-    let pago_aportacion = valor_tasa * a_total;
-    //document.getElementById("pago_a").value = formatter.format(pago_aportacion);
-
-    document.getElementById("p_hide").value = pago_aportacion;
-     ///Calcular año
     const año_default = 1;
-    let select_año = document.getElementById("ejercicio_fiscal");
-    let año = select_año.options[select_año.selectedIndex].value;
-    let select_año_fin = document.getElementById("ejercicio_fiscal_final");
-    let año_fin = select_año.options[select_año_fin .selectedIndex].value;
-    let resultado = año_fin - año + año_default;
-    let aportacionFinal = pago_aportacion * resultado;
-    document.getElementById("año_hidden").value = aportacionFinal;
-    console.log(aportacionFinal);
+    let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
+    let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
+    let pago_aportacion = valor_tasa * a_total;
+    let resultado =  año_final-año_inicial+año_default;
+    let aportacionFinal = resultado * pago_aportacion;
     document.getElementById("pago_a").value = formatter.format(aportacionFinal);
+    document.getElementById("p_hide").value = pago_aportacion;
 }
 
 //select Tasa impositiva
@@ -235,57 +221,39 @@ function timpositiva() {
     let valor_avaluo = document.getElementById("a_total").value;
     if(valor_avaluo.length == 0){
         document.getElementById("pago_a").value = formatter.format(0);
+        document.getElementById("p_hide").value = 0;
     }else{
+    const año_default = 1;
+    let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
+    let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
     let pago_aportacion = valor_tasa * avaluo_total;
-    document.getElementById("pago_a").value = formatter.format(pago_aportacion);
+    let resultado =  año_final-año_inicial+año_default;
+    let aportacionFinal = resultado * pago_aportacion;
+    document.getElementById("pago_a").value = formatter.format(aportacionFinal);
     document.getElementById("p_hide").value = pago_aportacion;
+    // document.getElementById("p_hide").value = formatter.format(pago_aportacion);
     }
 
-     ///Calcular año
-    const año_default = 1;
-    let select_año = document.getElementById("ejercicio_fiscal");
-    let año = select_año.options[select_año.selectedIndex].value;
-    let select_año_fin = document.getElementById("ejercicio_fiscal_final");
-    let año_fin = select_año.options[select_año_fin .selectedIndex].value;
-    let resultado = año_fin - año + año_default;
-    let aportacionFinal = pago_aportacion * resultado;
-    document.getElementById("año_hidden").value = aportacionFinal;
-    console.log(aportacionFinal);
-    document.getElementById("pago_a").value = formatter.format(aportacionFinal);
-
-
-
-    // if(valor_avaluo.length == 0){
-    //     document.getElementById("pago_a").value = formatter.format(0);
-    // }else{
-    // let pago_aportacion = valor_tasa * avaluo_total;
-    // document.getElementById("pago_a").value = formatter.format(pago_aportacion);
-    // document.getElementById("p_hide").value = pago_aportacion;
-    // }
 }
-function CalcularAño() {
-    const año_default = 1;
-    let select_año = document.getElementById("ejercicio_fiscal");
-    let año = select_año.options[select_año.selectedIndex].value;
-    let select_año_fin = document.getElementById("ejercicio_fiscal_final");
-    let año_fin = select_año.options[select_año_fin .selectedIndex].value;
-    let resultado = año_fin - año + año_default;
-    let pago_aportacion = parseFloat(document.getElementById("p_hide").value);
-    let aportacionFinal = pago_aportacion * resultado;
-    // document.getElementById("año_hidden").value = aportacionFinal;
-    document.getElementById("año_hidden").value = aportacionFinal;
-    console.log(aportacionFinal);
-    // let avaluo_total = parseFloat(document.getElementById("avaluo_hidden").value);
-    // let valor_avaluo = document.getElementById("a_total").value;
-    // if(valor_avaluo.length == 0){
-    //     document.getElementById("pago_a").value = formatter.format(0);
+
+function CalcularAño(){
+    $("#ejercicio_fiscal_final").options({
+        min_year:2019,
+    })
+    // const año_default = 1;
+    // let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
+    // let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
+    // let  p_hide = parseFloat($("#p_hide").val());
+    // let  p_hide_legth = $("#p_hide").val();
+    // if (p_hide_legth.length == 0) {
+    //     $("#pago_a").val(formatter.format(0));
     // }else{
-    // let pago_aportacion = valor_tasa * avaluo_total;
-    // document.getElementById("pago_a").value = formatter.format(pago_aportacion);
-    // document.getElementById("p_hide").value = formatter.format(pago_aportacion);
+    // let resultado =  año_final-año_inicial+año_default;
+    // let aportacionFinal = resultado * p_hide;
+    // $("#pago_a").val(formatter.format(aportacionFinal));
     // }
 
-}
+    }
 
 //funcion Calular-Fin
 
@@ -725,14 +693,13 @@ function tipoPersona(){
 /////////Guardar Contribuyente metodo post////////////
 $(document).ready(function() {
     let Contribuyente  = function(){
-        this.Idaportacion = $("#id_aportacion").val();
+        this.Idaportacion        = $("#id_aportacion").val();
         this.nombreContribuyente = $("#nombreContribuyente").val();
-        this.rfc = $("#rfc").val();
-
-        this.parcela = $("#parcela").val();
+        this.rfc                 = $("#rfc").val();
+        this.parcela             = $("#parcela").val();
 	}
 
-    let guardarContribuyente= function(contribuyente){
+    let guardarContribuyente = function(contribuyente){
 
 		$.post('/aportacion/guardarTest', {c:contribuyente}, function(data){
 

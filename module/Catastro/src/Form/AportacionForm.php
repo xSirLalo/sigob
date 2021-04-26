@@ -628,7 +628,7 @@ $this->add([
             'attributes' => [
                 // 'readonly' => true,
                 'class' => 'form-control',
-                // 'hidden' => true,
+                'hidden' => true,
                 'id' =>'año_hidden',
             ]
         ]);
@@ -663,6 +663,7 @@ $this->add([
 					'class' => 'custom-select w-30',
                     'id' => 'ejercicio_fiscal',
                     'onchange' => 'CalcularAño()',
+                    //'value' => date('Y'),
 				],
 				'month_attributes' => [
 					'class' => 'custom-select w-30',
@@ -695,6 +696,7 @@ $this->add([
 					'value' => '2021',
                     'id' => 'ejercicio_fiscal_final',
                     'onchange' => 'CalcularAño()',
+                    'value' => date('Y'),
 				],
 				'month_attributes' => [
 					'class' => 'custom-select w-30',

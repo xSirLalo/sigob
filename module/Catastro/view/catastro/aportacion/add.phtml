@@ -530,7 +530,7 @@ $form->prepare();
                                 <div class="form-group ">
                                 <!-- Input Ejercicio Fiscal -->
                                     <?= $this->formLabel($form->get('ejercicio_fiscal')); ?>
-                                    <?= $this->formDateSelect($form->get('ejercicio_fiscal')); ?>
+                                    <?= $this->formDateSelect($form->get('ejercicio_fiscal')->setOptions(["min_year"=>"2007"])); ?>
                                     <div class="text-danger">
                                         <?= $this->formElementErrors($form->get('ejercicio_fiscal')); ?>
                                     </div>
@@ -547,7 +547,7 @@ $form->prepare();
                                 </div>
                             </div>
                             <!-- Input Oculto para hacer el calculo -->
-                            <input type="hidden" id="v_in">
+                            <input type="hidden" id="v_in" class="form-control col-3">
                             <div class="col-sm-3">
                                 <div class="form-group ">
                                 <!--Input Pago aportacion-->
@@ -560,7 +560,7 @@ $form->prepare();
                             </div>
                         </div>
                         <!-- Input Oculto para validar validacion vacia-->
-                        <input type="text" id="p_hide" class="form-control col-3" >
+                        <input type="hidden" id="p_hide" class="form-control col-3" >
                         <!-- Avaluo input oculto -->
                         <input type="hidden" class="form-control" id="avaluo_hidden">
 
@@ -606,7 +606,8 @@ $form->prepare();
                             <div class="col-sm-12 text-md-right mb-3">
                             <!-- Buton Guardar -->
                             <!-- <?php // echo $this->formSubmit($form->get('btnGuardar')->setAttributes(['onclick' => "confirmReset()"]));?> -->
-                            <?= $this->formSubmit($form->get('btnGuardar')); ?>
+                            <!-- <?= $this->formSubmit($form->get('btnGuardar')); ?> -->
+                            <button class="btn btn-success" id="btn_guardarAportacion">Guardar</button>
                             </div>
                         </div>
 
@@ -617,7 +618,7 @@ $form->prepare();
                         </div>
                         <div class="col-sm-6 text-md-right">
                             <a href="#!" class="btn btn-primary button-next">Next</a>
-                            <button class="btn btn-primary" id="btn_guardarAportacion">GUARDAR APORTACION</button>
+                            <!-- <button class="btn btn-primary" id="btn_guardarAportacion">GUARDAR APORTACION</button> -->
                         </div>
                     </div>
 

@@ -412,35 +412,35 @@ class AportacionController extends AbstractActionController
             $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
             $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdContribuyente($id);
 
-            $idpredio = $aportacion->getIdPredio();
+           // $idpredio = $aportacion->getIdPredio();
 
-            $qb = $this->entityManager->createQueryBuilder();
-            $qb->select('p')
-                ->from('Catastro\Entity\PredioColindancia', 'p')
-                ->where('p.idPredio = :idParam')
-                ->setParameter('idParam', $idpredio);
-            $predioColindancias = $qb->getQuery()->getResult();
+            // $qb = $this->entityManager->createQueryBuilder();
+            // $qb->select('p')
+            //     ->from('Catastro\Entity\PredioColindancia', 'p')
+            //     ->where('p.idPredio = :idParam')
+            //     ->setParameter('idParam', $idpredio);
+            // $predioColindancias = $qb->getQuery()->getResult();
 
-            foreach ($predioColindancias as $datos) {
-                $medidas[]=$datos->getMedidaMetros();
-                $descripcion[]=$datos->getDescripcion();
-            }
+            // foreach ($predioColindancias as $datos) {
+            //     $medidas[]=$datos->getMedidaMetros();
+            //     $descripcion[]=$datos->getDescripcion();
+            // }
 
             $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($id);
             $data = [
-                'parcela'           =>  $aportacion->getIdPredio()->getParcela(),
-                'lote'              =>  $aportacion->getIdPredio()->getLote(),
-                'local'             =>  $aportacion->getIdPredio()->getLocal(),
-                'categoria'         =>  $aportacion->getIdPredio()->getCategoria(),
-                'condicion'         =>  $aportacion->getIdPredio()->getCondicion(),
-                'titular'           =>  $aportacion->getIdPredio()->getTitular(),
-                'ubicacion'         =>  $aportacion->getIdPredio()->getUbicacion(),
-                'localidad'         =>  $aportacion->getIdPredio()->getLocalidad(),
-                'antecedentes'      =>  $aportacion->getIdPredio()->getAntecedentes(),
-                'regimenPropiedad'  =>  $aportacion->getIdPredio()->getRegimenPropiedad(),
-                'titular_anterior'  =>  $aportacion->getIdPredio()->getTitularAnterior(),
-                'id_predio'         =>  $aportacion->getIdPredio()->getIdPredio(),
-                'cvlCatastral'      =>  $aportacion->getIdPredio()->getClaveCatastral(),
+                // 'parcela'           =>  $aportacion->getIdPredio()->getParcela(),
+                // 'lote'              =>  $aportacion->getIdPredio()->getLote(),
+                // 'local'             =>  $aportacion->getIdPredio()->getLocal(),
+                // 'categoria'         =>  $aportacion->getIdPredio()->getCategoria(),
+                // 'condicion'         =>  $aportacion->getIdPredio()->getCondicion(),
+                // 'titular'           =>  $aportacion->getIdPredio()->getTitular(),
+                // 'ubicacion'         =>  $aportacion->getIdPredio()->getUbicacion(),
+                // 'localidad'         =>  $aportacion->getIdPredio()->getLocalidad(),
+                // 'antecedentes'      =>  $aportacion->getIdPredio()->getAntecedentes(),
+                // 'regimenPropiedad'  =>  $aportacion->getIdPredio()->getRegimenPropiedad(),
+                // 'titular_anterior'  =>  $aportacion->getIdPredio()->getTitularAnterior(),
+                // 'id_predio'         =>  $aportacion->getIdPredio()->getIdPredio(),
+                // 'cvlCatastral'      =>  $aportacion->getIdPredio()->getClaveCatastral(),
 
                 'idcontribuyente' =>  $contribuyente->getIdContribuyente(),
                 'contribuyente'   =>  $contribuyente->getNombre(),
@@ -450,15 +450,15 @@ class AportacionController extends AbstractActionController
                 'tenencia'        =>  $contribuyente->getTenencia(),
                 'usoDestino'      =>  $contribuyente->getUsoDestino(),
 
-                'norte'            =>  $medidas[0],
-                'sur'              =>  $medidas[1],
-                'este'             =>  $medidas[2],
-                'oeste'            =>  $medidas[3],
+                // 'norte'            =>  $medidas[0],
+                // 'sur'              =>  $medidas[1],
+                // 'este'             =>  $medidas[2],
+                // 'oeste'            =>  $medidas[3],
 
-                'con_norte'        =>  $descripcion[0],
-                'con_sur'          =>  $descripcion[1],
-                'con_este'         =>  $descripcion[2],
-                'con_oeste'        =>  $descripcion[3],
+                // 'con_norte'        =>  $descripcion[0],
+                // 'con_sur'          =>  $descripcion[1],
+                // 'con_este'         =>  $descripcion[2],
+                // 'con_oeste'        =>  $descripcion[3],
 
 
             ];
@@ -1131,6 +1131,7 @@ class AportacionController extends AbstractActionController
 
         if ($result){
             $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'nombre' =>$result->getIdContribuyente()->getNombre()];
+            //$datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdContribuyente(), 'nombre' =>$result->getNombre()];
         }else{
             $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
         }
@@ -1146,6 +1147,8 @@ class AportacionController extends AbstractActionController
         $req_post = $this->params()->fromPost();
 
         $result = $this->aportacionManager->guardarAportacion($req_post['a'][0]);
+
+            $datos = ["resp"=>"ok", "msg"=>"Np se guardo"];
 
 				$json = new JsonModel($datos);
 				$json->setTerminal(true);
