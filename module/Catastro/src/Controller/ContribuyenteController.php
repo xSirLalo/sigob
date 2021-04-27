@@ -9,6 +9,7 @@ use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
 use Laminas\Filter;
+use Laminas\Validator;
 use Laminas\InputFilter\OptionalInputFilter;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
@@ -261,6 +262,30 @@ class ContribuyenteController extends AbstractActionController
                 $request->getFiles()->toArray()
             );
             // $formData = $request->getPost()->toArray();
+            // $inputFilter = new OptionalInputFilter();
+            // $inputFilter->add([
+            //     'name' => 'correo',
+            //     'required' => true,
+            //     'filters' => [
+            //         ['name' => Filter\StripTags::class],
+            //         ['name' => Filter\StringTrim::class],
+            //     ],
+            //     'validators' => [
+            //         // ['name' => Validator\NotEmpty::class],
+            //         ['name' => Validator\EmailAddress::class],
+            //             [
+            //                 'name' => '\DoctrineModule\Validator\NoObjectExists',
+            //                 'options' => array(
+            //                     'object_repository' => $this->entityManager->getRepository(Contribuyente::class),
+            //                     'fields' => array('correo'),
+            //                     'messages' => array(
+            //                         'objectFound' => 'Este correo ya se encuentra registrado.'
+            //                         ),
+            //                 ),
+            //             ],
+            //     ],
+            // ]);
+            // $form->setInputFilter($inputFilter);
             $form->setData($formData);
             $form->setValidationGroup(['tipo_persona']);
 
@@ -268,9 +293,9 @@ class ContribuyenteController extends AbstractActionController
                 $data = $form->getData();
                 $tipoPersona = $data['tipo_persona'];
 
-                if ($tipoPersona=='F') { // Persona Fisica
+                if ($tipoPersona=='F') { // Persona Física
                     $form->setValidationGroup([
-                        'input1',
+                        'input1', // ID Contribuyente
                         'tipo_persona',
                         'nombre',
                         'apellido_paterno',
@@ -284,7 +309,7 @@ class ContribuyenteController extends AbstractActionController
                     ]);
                 } elseif ($tipoPersona=='M') { // Persona Moral
                     $form->setValidationGroup([
-                        'input1',
+                        'input1', // ID Contribuyente
                         'tipo_persona',
                         'nombre',
                         'razon_social',

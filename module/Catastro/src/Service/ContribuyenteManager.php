@@ -28,6 +28,7 @@ class ContribuyenteManager
         if ($data['tipo_persona'] == 'F') { // Persona Fisica
             $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
             $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
+            $contribuyente->setFechaNacimiento(new \DateTime($data['fecha_nacimiento']));
             $contribuyente->setCurp($data['curp']);
             $contribuyente->setGenero($data['genero']);
             $contribuyente->setRazonSocial(ucfirst($data['nombre']) ." ". ucfirst($data['apellido_paterno']) ." ". ucfirst($data['apellido_materno']));
@@ -35,6 +36,7 @@ class ContribuyenteManager
             $contribuyente->setRazonSocial($data['razon_social']);
         }
 
+        $contribuyente->setTipoPersona($data['tipo_persona']);
         $contribuyente->setNombre(ucfirst($data['nombre']));
         $contribuyente->setTelefono($data['telefono']);
         $contribuyente->setCorreo($data['correo']);
@@ -82,6 +84,7 @@ class ContribuyenteManager
         if ($data['tipo_persona'] == 'F') { // Persona Fisica
             $contribuyente->setApellidoPaterno($data['apellido_paterno']);
             $contribuyente->setApellidoMaterno($data['apellido_materno']);
+            $contribuyente->setFechaNacimiento(new \DateTime($data['fecha_nacimiento']));
             $contribuyente->setCurp($data['curp']);
             $contribuyente->setGenero($data['genero']);
             $contribuyente->setRazonSocial(ucfirst($data['nombre']) ." ". ucfirst($data['apellido_paterno']) ." ". ucfirst($data['apellido_materno']));
@@ -89,6 +92,7 @@ class ContribuyenteManager
             $contribuyente->setRazonSocial($data['razon_social']);
         }
 
+        $contribuyente->setTipoPersona($data['tipo_persona']);
         $contribuyente->setNombre($data['nombre']);
         $contribuyente->setTelefono($data['telefono']);
         $contribuyente->setCorreo($data['correo']);

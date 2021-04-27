@@ -329,7 +329,7 @@ class ContribuyenteForm extends Form
                     [
                         'name' => Validator\InArray::class,
                         'options' => [
-                            'haystack' => [0, 1]
+                            'haystack' => [1, 2]
                         ],
                     ],
                 ],
@@ -569,14 +569,14 @@ class ContribuyenteForm extends Form
                 'validators' => [
                     // ['name' => Validator\NotEmpty::class],
                     ['name' => Validator\EmailAddress::class],
-						[
-							'name' => Validator\Db\RecordExists::class,
-							'options' => [
-								'table' => 'contribuyente',
-								'field' => 'email',
-								// 'adapter' => $this->adapter,
-							],
-						],
+                        // [
+                        // 	'name' => Validator\Db\RecordExists::class,
+                        // 	'options' => [
+                        // 		'table' => 'contribuyente',
+                        // 		'field' => 'email',
+                        // 		// 'adapter' => $this->adapter,
+                        // 	],
+                        // ],
                 ],
             ]
         );
