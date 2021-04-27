@@ -45,7 +45,7 @@ $form->prepare();
     <div class="card">
         <div class="card-header">
             <h5>Aportacion</h5>
-            <input class="form-control" type="text"  id="hdn_id_cont" value="<?=$aportacionId?>" >
+            <input class="form-control" type="text"  id="id_aportacion" value="<?=$aportacionId?>" >
         </div>
         <div class="card-body">
             <div class="bt-wizard" id="besicwizard">
@@ -512,16 +512,16 @@ $form->prepare();
                                             <option value="0.0017">0.0017</option>
                                         </optgroup>
                                         <optgroup label="Predios Urbanos Edificados">
-                                            <option value="0.0050">0.0050</option>
+                                            <option value="0.005">0.0050</option>
                                         </optgroup>
                                         <optgroup label="Tulum">
-                                            <option value="0.0050">0.0050</option>
+                                            <option value="0.005">0.0050</option>
                                         </optgroup>
                                         <optgroup label="Otras Zonas Urbanas">
                                             <option value="0.00567">0.00567</option>
                                         </optgroup>
                                         <optgroup label="Predio Rusticos">
-                                            <option value="0.00380">0.00380</option>
+                                            <option value="0.0038">0.00380</option>
                                         </optgroup>
                                     </select>
                                 </div>
@@ -547,7 +547,10 @@ $form->prepare();
                                 </div>
                             </div>
                             <!-- Input Oculto para hacer el calculo -->
+                            <!-- <div class="form-group ">
+                            <label>v_in</label> -->
                             <input type="hidden" id="v_in" class="form-control col-3">
+                            <!-- </div> -->
                             <div class="col-sm-3">
                                 <div class="form-group ">
                                 <!--Input Pago aportacion-->
@@ -608,7 +611,8 @@ $form->prepare();
                             <!-- <?php // echo $this->formSubmit($form->get('btnGuardar')->setAttributes(['onclick' => "confirmReset()"]));?> -->
                             <!-- <?= $this->formSubmit($form->get('btnGuardar')); ?> -->
                             <button class="btn btn-secondary" id="btn_volver">Volver atrás</button>
-                            <button class="btn btn-success" id="btn_guardarAportacion">Guardar</button>
+                            <!-- <button class="btn btn-success" id="btn_guardarAportacion">Guardar</button> -->
+                            <button class="btn btn-primary " id="btn_guardarCambios">Guardar Cambios</button>
                             </div>
                         </div>
 

@@ -199,6 +199,13 @@ class Predio
     /**
      * @var string|null
      *
+     * @ORM\Column(name="estastus", type="string", length=1, nullable=true, options={"fixed"=true})
+     */
+    private $estastus;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="ultimo_ejercicio_pagado", type="string", length=255, nullable=true)
      */
     private $ultimoEjercicioPagado;
@@ -851,6 +858,30 @@ class Predio
     public function getTipo()
     {
         return $this->tipo;
+    }
+
+    /**
+     * Set estastus.
+     *
+     * @param string|null $estastus
+     *
+     * @return Predio
+     */
+    public function setEstastus($estastus = null)
+    {
+        $this->estastus = $estastus;
+
+        return $this;
+    }
+
+    /**
+     * Get estastus.
+     *
+     * @return string|null
+     */
+    public function getEstastus()
+    {
+        return $this->estastus;
     }
 
     /**

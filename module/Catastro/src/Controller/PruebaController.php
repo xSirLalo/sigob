@@ -56,6 +56,7 @@ class PruebaController extends AbstractActionController
         // $idSolicitud = $data->IdEntity;
         // $data2 = $this->opergobserviceadapter->SolicitudFuentaIngreso($idSolicitud,"1800");
         // $data3 = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
+        $apotacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion("20");
         $data3 = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
         // $data = $this->opergobserviceadapter->obtenerColindancia("1714");
         //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("CABR840209R86");
@@ -63,7 +64,7 @@ class PruebaController extends AbstractActionController
         //$data = $this->opergobserviceadapter->obtenerNombrePersona("11959");
         //$data = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
         // return new ViewModel(['data' => $data, 'data2' => $data2,'data3' => $data3]);
-        return new ViewModel(['data' => $data3]);
+        return new ViewModel(['data' => $apotacion]);
     }
 
     public function addAction()

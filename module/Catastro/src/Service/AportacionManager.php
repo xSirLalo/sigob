@@ -680,6 +680,7 @@ class AportacionManager
             $ValorConstruccion = $datos['metrosConstruccion'] * $datos['valorMConstruccion'];
             $aportacion->setValorConstruccion($ValorConstruccion);
             $aportacion->setEjercicioFiscal($datos['ejercicioFiscal']);
+            $aportacion->setEjercicioFiscalFinal($datos['ejercicioFiscalFinal']);
             $aportacion->setTasa($datos['tasa']);
             $avaluo = $valorTerreno + $ValorConstruccion;
             $aportacion->setAvaluo($avaluo);

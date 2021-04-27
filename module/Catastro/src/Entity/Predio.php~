@@ -199,6 +199,13 @@ class Predio
     /**
      * @var string|null
      *
+     * @ORM\Column(name="estastus", type="string", length=1, nullable=true, options={"fixed"=true})
+     */
+    private $estastus;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="ultimo_ejercicio_pagado", type="string", length=255, nullable=true)
      */
     private $ultimoEjercicioPagado;

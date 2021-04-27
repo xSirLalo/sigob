@@ -99,6 +99,13 @@ class Aportacion
     private $ejercicioFiscal;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="ejercicio_fiscal_final", type="integer", nullable=true)
+     */
+    private $ejercicioFiscalFinal;
+
+    /**
      * @var float|null
      *
      * @ORM\Column(name="tasa", type="float", precision=10, scale=0, nullable=true)
@@ -441,6 +448,30 @@ class Aportacion
     public function getEjercicioFiscal()
     {
         return $this->ejercicioFiscal;
+    }
+
+    /**
+     * Set ejercicioFiscalFinal.
+     *
+     * @param int|null $ejercicioFiscalFinal
+     *
+     * @return Aportacion
+     */
+    public function setEjercicioFiscalFinal($ejercicioFiscalFinal = null)
+    {
+        $this->ejercicioFiscalFinal = $ejercicioFiscalFinal;
+
+        return $this;
+    }
+
+    /**
+     * Get ejercicioFiscalFinal.
+     *
+     * @return int|null
+     */
+    public function getEjercicioFiscalFinal()
+    {
+        return $this->ejercicioFiscalFinal;
     }
 
     /**

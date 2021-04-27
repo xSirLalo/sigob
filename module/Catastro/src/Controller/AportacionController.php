@@ -1048,14 +1048,16 @@ class AportacionController extends AbstractActionController
 
         $aportacionId = (int)$this->params()->fromRoute('id', -1);
         $apotacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
-        //$predio_id = $aportacion->getIdPredio()->getIdPredio();
-        $predio_id = 19;
-        if ($apotacion == null) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-        }
+        $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
 
-        return new ViewModel(['aportacionId' => $aportacionId,'predio_id' => $predio_id , 'form' => $form ]);
+
+        //$predio_id = $aportacion->getIdPredio()->getIdPredio();
+        // if ($apotacion == null) {
+        //     $this->layout()->setTemplate('error/404');
+        //     $this->getResponse()->setStatusCode(404);
+        // }
+
+        return new ViewModel(['aportacionId' => $aportacionId,'form' => $form,'predio_id' => $apotacion->getIdPredio()->getIdPredio(), 'valorConstruccions' => $valorConstruccion ]);
     }
 
     public function editAportacionAction(){
@@ -1097,7 +1099,19 @@ class AportacionController extends AbstractActionController
                 'rfc'                => $aportacion->getIdContribuyente()->getRfc(),
                 'usoDestino'         => $aportacion->getIdContribuyente()->getUsoDestino(),
                 ///Aportacion
-
+                'vig'                   => $aportacion->getFecha()->format('Y-m-d'),
+                //'metrosTerreno'         => '$'.number_format($aportacion->getMetrosTerreno(),2,',','.'),
+                'metrosTerreno'         => $aportacion->getMetrosTerreno(),
+                'valorMZona'            => $aportacion->getValorZona(),
+                'valorTerreno'          => $aportacion->getValorTerreno(),
+                'metrosConstruccion'    => $aportacion->getMetrosConstruccion(),
+                'valorMConstruccion'    => $aportacion->getValorMtsConstruccion(),
+                'valorConstruccion'     => $aportacion->getValorConstruccion(),
+                'ejercicioFiscal'       => $aportacion->getEjercicioFiscal(),
+                'ejercicioFiscalFinal'  => $aportacion->getEjercicioFiscalFinal(),
+                'avaluo'                => $aportacion->getAvaluo(),
+                'tasa'                  => $aportacion->getTasa(),
+                'pago'                  => $aportacion->getPago(),
             ];
 
             $view = new JsonModel($data);
@@ -1131,7 +1145,8 @@ class AportacionController extends AbstractActionController
 
         $req_post = $this->params()->fromPost();
 
-        $result = $this->aportacionManager->actualizarAportacion($req_post['a'][0]);
+        //$result = $this->aportacionManager->actualizarAportacion($req_post['a'][0]);
+        $result = $this->aportacionManager->guardarAportacion($req_post['a'][0]);
         $json = new JsonModel($datos);
 				$json->setTerminal(true);
 

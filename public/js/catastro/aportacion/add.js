@@ -816,6 +816,7 @@ $(document).ready(function() {
 
 				if(data.resp == "ok"){
 
+                    window.location = "/aportacion";
 
 				}else{
 

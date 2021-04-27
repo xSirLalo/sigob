@@ -99,6 +99,13 @@ class Aportacion
     private $ejercicioFiscal;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="ejercicio_fiscal_final", type="integer", nullable=true)
+     */
+    private $ejercicioFiscalFinal;
+
+    /**
      * @var float|null
      *
      * @ORM\Column(name="tasa", type="float", precision=10, scale=0, nullable=true)
