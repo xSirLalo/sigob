@@ -4,7 +4,7 @@
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Agregar Contribuyente</h5>
-            <input id="hdn_id_cont" class="form-control" type="text"  name="">
+            <input id="hdn_id_cont" class="form-control" type="hidden"  name="">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -22,25 +22,23 @@
                 </div>
             </div>
             <hr>
-            <!-- PERSONA FISICA -->
-            <div id="personaFisica">
             <div class="row ml-0">
-                <div class="col-sm-4">
+                <div id="div_nombre" class="col-sm-4">
                     <div class="form-group">
-                    <label>Nombre</label>
-                    <input class="form-control" type="text" name="" id="nombreContribuyente">
+                    <label >Nombre</label>
+                    <input class="form-control" type="text" name="" id="nombreContribuyente" placeholder="Nombre">
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div id="div_apellidoPaterno" class="col-sm-4">
                     <div class="form-group">
                     <label>Apellido Paterno</label>
-                    <input class="form-control" type="text" name="" id="nombreContribuyente">
+                    <input class="form-control" type="text" name="" id="apellidoPaterno"  placeholder="Apellido Paterno" >
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div id="div_apellidoMaterno" class="col-sm-4">
                     <div class="form-group ">
-                    <label>Apellido Materno</label>
-                    <input class="form-control" type="text" name="" id="nombreContribuyente">
+                    <label >Apellido Materno</label>
+                    <input class="form-control" type="text" name="" id="apellidoMaterno"  placeholder="Apellido Materno">
                     </div>
                 </div>
             </div>
@@ -48,27 +46,27 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                     <label>R.F.C.</label>
-                    <input class="form-control" type="text" name="" id="fechaNaciemiento">
+                    <input class="form-control" type="text" name="" id="rfc" placeholder="R.F.C">
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div id="div_razonSocial" class="col-sm-4">
                     <div class="form-group">
                     <label>Razón Social</label>
-                    <input class="form-control" type="text" name="" id="rfc">
+                    <input class="form-control" type="text" name=""  id="razonSocial" placeholder="Razón Social">
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div id="div_curp" class="col-sm-4">
                     <div class="form-group">
                     <label>C.U.R.P.</label>
-                    <input class="form-control" type="text" name="" id="rfc">
+                    <input class="form-control" type="text" name="" id="curp" placeholder="C.U.R.P">
                     </div>
                 </div>
             </div>
             <div class="row ml-0">
-                <div class="col-sm-4">
+                <div id="div_fechaNacimeinto" class="col-sm-4">
                     <div class="form-group">
                     <font size="1"><label>Fecha de nacimiento</label></font>
-                        <select class="custom-select w-30" name="" id="puntoCardinal" >
+                        <select class="custom-select w-30" name="" id="dia" >
                             <option value="">Día</option>
                             <?php for ($i=1; $i < 32 ; $i++) { ?>
                                 <option value="<?=$i?>"><?=$i?></option>
@@ -76,10 +74,10 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div id="div_mes" class="col-sm-4">
                     <div class="form-group">
-                    <br>
-                        <select class="custom-select w-30" name="" id="puntoCardinal" >
+                    <br id="br_mes">
+                        <select class="custom-select w-30" name="">
                             <option value="">Mes</option>
                             <option value="">Enero</option>
                             <option value="">Febrero</option>
@@ -96,10 +94,10 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div id="div_año" class="col-sm-4">
                     <div class="form-group">
-                        <br>
-                        <select class="custom-select w-30" name="" id="puntoCardinal" >
+                        <br id="br_año">
+                        <select class="custom-select w-30" name="">
                             <option value="">Año</option>
                             <?php for ($i=2008; $i > 1921 ; $i--) { ?>
                                 <option value="<?=$i?>"><?=$i?></option>
@@ -109,81 +107,29 @@
                 </div>
             </div>
             <div class="row ml-0">
-                <div class="col-sm-6">
+                <div  id="div_correoElectronico" class="col-sm-4">
                     <div class="form-group ">
-                    <label>Correo Electronico</label>
-                    <input class="form-control" type="text" name="" id="correoElectronico">
+                    <font size="1"><label>Correo Electrónico</label></font>
+                    <input class="form-control" type="text" name="" id="correoElectronico" placeholder="Correo Electrónico">
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="form-group ">
+                <div id="div_telefono" class="col-sm-4">
+                    <div  class="form-group ">
                     <label>Telefono</label>
-                    <input class="form-control" type="text" name="" id="telefono">
+                    <input class="form-control" type="text" name="" id="telefono" placeholder="Telefono">
+                    </div>
+                </div>
+                <div id="div_genero" class="col-sm-4">
+                    <div class="form-group ">
+                    <label>Genero</label>
+                    <select class="custom-select w-30" name="" id="genero">
+                            <option value="Hombre">Hombre</option>
+                            <option value="Mujer">Mujer</option>
+                            <option value="Otro">Otro</option>
+                    </select>
                     </div>
                 </div>
             </div>
-            </div>
-            <!--FIN PERSONA FISICA -->
-
-            <!-- PERSONA MORAL -->
-            <div id="personaMoral">
-            <div class="row ml-0">
-                <div class="col-sm-4">
-                    <div class="form-group ">
-                    <label>Nombre</label>
-                    <input class="form-control" type="text" name="" id="nombre">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group ">
-                    <label>Apellido Paterno</label>
-                    <input class="form-control" type="text" name="" id="nombre">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group ">
-                    <label>Apellido Materno</label>
-                    <input class="form-control" type="text" name="" id="nombre">
-                    </div>
-                </div>
-            </div>
-            <div class="row ml-0">
-                <div class="col-sm-4">
-                    <div class="form-group ">
-                    <label style="font-size:11px" >Fecha de Nacimiento</label>
-                    <input class="form-control" type="text" name="" id="fechaNaciemiento">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group ">
-                    <label>RFC</label>
-                    <input class="form-control" type="text" name="" id="rfc">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group ">
-                    <label>CURP</label>
-                    <input class="form-control" type="text" name="" id="rfc">
-                    </div>
-                </div>
-            </div>
-            <div class="row ml-0">
-                <div class="col-sm-6">
-                    <div class="form-group ">
-                    <label>Correo Electronico</label>
-                    <input class="form-control" type="text" name="" id="correoElectronico">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group ">
-                    <label>Telefono</label>
-                    <input class="form-control" type="text" name="" id="telefono">
-                    </div>
-                </div>
-            </div>
-            </div>
-
-            <!-- FIN PERSONA MORAL -->
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

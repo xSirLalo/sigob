@@ -75,7 +75,7 @@ $(document).ready(function() {
                     targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
-                        if( row['Estatus'] == 2 || row['Estatus'] == 3 ){
+                        if(row['Estatus'] == 3 ){
                         $actionBtn = `<a href="aportacion/ver-aportacion/` + row['idAportacion'] + `"> <button  type="button"class="btn btn-warning">Editar</button></a>
                         <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>
                         <a href="#"> <button type="button="class="btn btn btn-success" disabled >Pase Caja</button></a> `;
@@ -83,6 +83,10 @@ $(document).ready(function() {
                         // $actionBtn = `<button value="` + row['idAportacion'] + `" id="btnEditar" type="button="class="btn btn-warning" onclick="edit_aportacion(` + row['idAportacion'] + `)">Editar</button>
                         // <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>
                         // <a href="#"> <button type="button="class="btn btn btn-success" disabled >Pase Caja</button></a> `;
+                        }else if(row['Estatus'] == 2){
+                        $actionBtn = `<a href="aportacion/editar-aportacion"> <button type="button="class="btn btn-warning" disabled>Editar</button></a>
+                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"><button type="button="class="btn btn btn-primary" disabled>Imprimir</button></a>
+                        <a href="http://sistematulum.net:9000/TLANIA/oestadocuentapredialpase.aspx?MTULUM,2021,3,4,` + row['idSolicitud'] + `"> <button type="button="class="btn btn-success" disabled>Pase Caja</button></a>`;
 
                         }else {
 

@@ -56,10 +56,7 @@ class AportacionController extends AbstractActionController
         $request = $this->getRequest();
         $response = $this->getResponse();
 
-                $qb = $this->entityManager->createQueryBuilder()->select('a')->from('Catastro\Entity\Aportacion', 'a');
-
-                $query = $qb->getQuery()->getResult();
-
+                $query = $this->entityManager->getRepository(Aportacion::class)->findBy(['estatus'=>array(1,2,3)]);
 
             $data = [];
 
@@ -156,7 +153,8 @@ class AportacionController extends AbstractActionController
     {
         //$this->layout()->setTemplate('catastro/aportacion/index-validation');
 
-        $aportaciones = $this->entityManager->getRepository(Aportacion::class)->findAll();
+        //$aportaciones = $this->entityManager->getRepository(Aportacion::class)->findAll();
+        $aportaciones = $this->entityManager->getRepository(Aportacion::class)->findBy(['estatus'=>array(1,2,3)]);
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
 
         $form = new ValidacionForm();
@@ -1044,15 +1042,20 @@ class AportacionController extends AbstractActionController
         }
     }
 
-    public function viewAportacionAction(){
+    public function viewAportacion2Action()
+    {
+        $form = new AportacionForm();
+
         $aportacionId = (int)$this->params()->fromRoute('id', -1);
         $apotacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+        //$predio_id = $aportacion->getIdPredio()->getIdPredio();
+        $predio_id = 19;
         if ($apotacion == null) {
             $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
         }
 
-        return new ViewModel(['aportacionId' => $aportacionId]);
+        return new ViewModel(['aportacionId' => $aportacionId,'predio_id' => $predio_id , 'form' => $form ]);
     }
 
     public function editAportacionAction(){
@@ -1065,6 +1068,7 @@ class AportacionController extends AbstractActionController
             $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
             $data = [
                 //Predio////
+                // 'id_predio'          => $aportacion->getIdPredio()->getIdPredio(),
                 'parcela'            => $aportacion->getIdPredio()->getParcela(),
                 'manzana'            => $aportacion->getIdPredio()->getManzana(),
                 'lote'               => $aportacion->getIdPredio()->getLote(),
@@ -1104,6 +1108,25 @@ class AportacionController extends AbstractActionController
 
     }
 
+    public function addContribuyenteAction()
+    {
+        $req_post = $this->params()->fromPost();
+
+        $result = $this->aportacionManager->guardarTest($req_post['c'][0]);
+
+        if ($result){
+            $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'nombre' =>$result->getIdContribuyente()->getNombre()];
+            //$datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdContribuyente(), 'nombre' =>$result->getNombre()];
+        }else{
+            $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
+        }
+
+				$json = new JsonModel($datos);
+				$json->setTerminal(true);
+
+				return $json;
+    }
+
     public function updateAportacionAction(){
 
         $req_post = $this->params()->fromPost();
@@ -1123,24 +1146,6 @@ class AportacionController extends AbstractActionController
     }
 
 
-    public function addTestAction()
-    {
-        $req_post = $this->params()->fromPost();
-
-        $result = $this->aportacionManager->guardarTest($req_post['c'][0]);
-
-        if ($result){
-            $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'nombre' =>$result->getIdContribuyente()->getNombre()];
-            //$datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdContribuyente(), 'nombre' =>$result->getNombre()];
-        }else{
-            $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
-        }
-
-				$json = new JsonModel($datos);
-				$json->setTerminal(true);
-
-				return $json;
-    }
 
     public function addAportacionAction()
     {
@@ -1148,14 +1153,12 @@ class AportacionController extends AbstractActionController
 
         $result = $this->aportacionManager->guardarAportacion($req_post['a'][0]);
 
-            $datos = ["resp"=>"ok", "msg"=>"Np se guardo"];
+            $datos = ["resp"=>"ok", "msg"=>"se guardo correctamente"];
 
 				$json = new JsonModel($datos);
 				$json->setTerminal(true);
 
 				return $json;
-
-
 
     }
 ////////DataTable Jquery///////////////

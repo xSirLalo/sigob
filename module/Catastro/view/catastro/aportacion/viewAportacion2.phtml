@@ -18,7 +18,8 @@ $this->headLink()
 // Js Requerido
 $this->inlineScript()
     // Js de la vista
-    ->prependFile($this->basePath('js/catastro/aportacion/add.js'))
+    //->prependFile($this->basePath('js/catastro/aportacion/add.js'))
+    ->prependFile($this->basePath('js/catastro/aportacion/edit.js'))
     // Js Select2
     ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'))
     // Js Form validation
@@ -44,7 +45,7 @@ $form->prepare();
     <div class="card">
         <div class="card-header">
             <h5>Aportacion</h5>
-            <input class="form-control" type="text"  id="id_aportacion" value="0" >
+            <input class="form-control" type="text"  id="hdn_id_cont" value="<?=$aportacionId?>" >
         </div>
         <div class="card-body">
             <div class="bt-wizard" id="besicwizard">
@@ -241,7 +242,7 @@ $form->prepare();
                         <div class="row ml-0">
                             <div class="col-sm-3">
                                 <div class="form-group ">
-                                    <input class="form-control" type="hidden" name=""  id="id_predio" value="17" >
+                                    <input class="form-control" type="text" name=""  id="id_predio" value="<?=$predio_id?>">
                                     <button type="button" class="btn btn-success" id="modalColindancias">Agregar Colindancia</button>
                                 </div>
                             </div>

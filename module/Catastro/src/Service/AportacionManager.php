@@ -563,23 +563,29 @@ class AportacionManager
             }
 
             //////Contribuyente/////
+            $contribuyente->setTipoPersona($datos['tipoContribuyente']);
             $contribuyente->setNombre($datos['nombreContribuyente']);
+            $contribuyente->setApellidoPaterno($datos['apellidoPaterno']);
+            $contribuyente->setApellidoMaterno($datos['apellidoMaterno']);
             $contribuyente->setRfc($datos['rfc']);
+            $contribuyente->setRazonSocial($datos['razonSocial']);
+            $contribuyente->setCurp($datos['curp']);
+            $contribuyente->setCorreo($datos['correoElectronico']);
+            $contribuyente->setTelefono($datos['telefono']);
+            //$contribuyente->setRfc($datos['genero']);
 
             $this->entityManager->persist($contribuyente);
             $this->entityManager->flush();
             // // //  //////Predio/////
             $predio->setIdContribuyente($contribuyente);
-            $predio->setParcela($datos['parcela']);
 
             $this->entityManager->persist($predio);
             $this->entityManager->flush();
             // //////Aportacion/////
             $aportacion->setIdContribuyente($contribuyente);
             $aportacion->setIdPredio($predio);
-            $pago = 5000 ;
-            $aportacion->setPago($pago);
 
+            $aportacion->setEstatus(0);
             $this->entityManager->persist($aportacion);
             $this->entityManager->flush();
 
@@ -599,10 +605,22 @@ class AportacionManager
 
         public function guardarAportacion($datos)
     {
-        $contribuyente = new Contribuyente();
-        $aportacion = new Aportacion();
-        $predio = new Predio();
 
+        if($datos['Idaportacion'] > 0 ){
+
+            $aportacionId = $datos['Idaportacion'];
+
+            $aportacion       = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+            $contribuyenteId = $aportacion->getIdContribuyente()->getIdContribuyente();
+            $predioId        = $aportacion->getIdPredio()->getIdPredio();
+            $predio          = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
+            $contribuyente   = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+            }
+            else{
+            $contribuyente      = new Contribuyente();
+            $predio             = new Predio();
+            $aportacion         = new Aportacion();
+            }
 
         //////Guardar Contribuyente///////
             $contribuyente->setNombre($datos['Contribuyente']);
@@ -635,24 +653,43 @@ class AportacionManager
             $predio->setClaveCatastral($datos['claveCatastral']);
             $predio->setRegimenPropiedad($datos['regimenPropiedad']);
             $fecha_adquicision = new \DateTime($datos['fechaAdquicision']);
-            $aportacion->setFechaAdquicision($fecha_adquicision);
-            //$predio->setFechaAdquicision($datos['fechaAdquicision']);
+            $predio->setFechaAdquicision($fecha_adquicision);
             $predio->setTitularAnterior($datos['titularAnterior']);
-            //$predio->setParcela($datos['documentoPropiedad']);
-            //$predio->setParcela($datos['folio']);
-            //$predio->setParcela($datos['fechaDocumento']);
-            //$predio->setParcela($datos['loteConflicto']);
-            //$predio->setParcela($datos['observaciones']);
+            $predio->setDocumentoPropiedad($datos['documentoPropiedad']);
+            $predio->setFolio($datos['folio']);
+            $fecha_documento = new \DateTime($datos['fechaDocumento']);
+            $predio->setFechaDocumento($fecha_documento);
+            $predio->setLoteConflicto($datos['loteConflicto']);
+            $predio->setObservaciones($datos['observaciones']);
             $this->entityManager->persist($predio);
             $this->entityManager->flush();
 
             ////////Guarda Aportacion///////
             $aportacion->setIdContribuyente($contribuyente);
             $aportacion->setIdPredio($predio);
-            $pago = 5000;
-            $aportacion->setPago($pago);
+            $aportacion->setEstatus(3);
+
             $fecha = new \DateTime($datos['fecha']);//fecha
             $aportacion->setFecha($fecha);
+            $aportacion->setMetrosTerreno($datos['metrosTerreno']);
+            $aportacion->setValorZona($datos['valorMZona']);
+            $valorTerreno = $datos['metrosTerreno'] * $datos['valorMZona'];
+            $aportacion->setValorTerreno($valorTerreno);
+            $aportacion->setMetrosConstruccion($datos['metrosConstruccion']);
+            $aportacion->setValorMtsConstruccion($datos['valorMConstruccion']);
+            $ValorConstruccion = $datos['metrosConstruccion'] * $datos['valorMConstruccion'];
+            $aportacion->setValorConstruccion($ValorConstruccion);
+            $aportacion->setEjercicioFiscal($datos['ejercicioFiscal']);
+            $aportacion->setTasa($datos['tasa']);
+            $avaluo = $valorTerreno + $ValorConstruccion;
+            $aportacion->setAvaluo($avaluo);
+            $pagoAportacion = $avaluo * $datos['tasa'];
+            $año_default = 1;
+            $año_inicial = $datos['ejercicioFiscal'];
+            $año_final = $datos['ejercicioFiscalFinal'];
+            $resultado = $año_final-$año_inicial+$año_default;
+            $aportacion_final = $resultado * $pagoAportacion;
+            $aportacion->setPago($aportacion_final);
 
             $this->entityManager->persist($aportacion);
             $this->entityManager->flush();
@@ -714,13 +751,10 @@ class AportacionManager
             }
 
             //////Contribuyente/////
-            $contribuyente->setNombre($datos['nombreContribuyente']);
-
             $this->entityManager->persist($contribuyente);
             $this->entityManager->flush();
             // //  //////Predio/////
             $predio->setIdContribuyente($contribuyente);
-            $predio->setParcela($datos['parcela']);
 
             $this->entityManager->persist($predio);
             $this->entityManager->flush();
@@ -735,11 +769,10 @@ class AportacionManager
             $this->entityManager->persist($predioColindancias);
             $this->entityManager->flush();
             //////Aportacion/////
-
             $aportacion->setIdContribuyente($contribuyente);
             $aportacion->setIdPredio($predio);
-            $pago = 5000 ;
-            $aportacion->setPago($pago);
+            $aportacion->setEstatus(0);
+
 
             $this->entityManager->persist($aportacion);
             $this->entityManager->flush();
@@ -756,7 +789,6 @@ class AportacionManager
     public function eliminarColindancias($predioColindancia)
     {
         $this->entityManager->remove($predioColindancia);
-
         $this->entityManager->flush();
     }
 ///////////Actualizar Colindancias Datatble/////////

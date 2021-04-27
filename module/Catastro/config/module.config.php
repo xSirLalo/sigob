@@ -670,16 +670,16 @@ return [
                                 'id' => '[0-9,a-z,A-Z,-]+',
                             ],
                             'defaults' => [
-                                'action' => 'viewaportacion',
+                                'action' => 'viewaportacion2',
                             ],
                         ],
                     ],
-                    'guardarTest' => [
+                    'guardarContribuyente' => [
                         'type' => 'literal',
                         'options' => [
-                            'route' => '/guardarTest',
+                            'route' => '/guardarContribuyente',
                             'defaults' => [
-                                'action' => 'addtest',
+                                'action' => 'addcontribuyente',
                             ],
                         ],
                     ],
@@ -799,7 +799,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addtest', 'addaportacion', 'updateaportacion','viewaportacion','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias'], 'allow' => '*']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addcontribuyente', 'addaportacion', 'updateaportacion','viewaportacion2','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias'], 'allow' => '*']
             ],
         ]
     ],

@@ -352,7 +352,6 @@ class AportacionForm extends Form
             'max' => '2030-01-01',
             'step' => '1', // days; default step interval is 1 day
             'id' =>'fechaAdquicision',
-            'required' => true,
             'value' => date("Y-m-d"),
         ],
         ]);

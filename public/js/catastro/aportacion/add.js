@@ -237,21 +237,18 @@ function timpositiva() {
 }
 
 function CalcularAño(){
-    $("#ejercicio_fiscal_final").options({
-        min_year:2019,
-    })
-    // const año_default = 1;
-    // let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
-    // let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
-    // let  p_hide = parseFloat($("#p_hide").val());
-    // let  p_hide_legth = $("#p_hide").val();
-    // if (p_hide_legth.length == 0) {
-    //     $("#pago_a").val(formatter.format(0));
-    // }else{
-    // let resultado =  año_final-año_inicial+año_default;
-    // let aportacionFinal = resultado * p_hide;
-    // $("#pago_a").val(formatter.format(aportacionFinal));
-    // }
+    const año_default = 1;
+    let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
+    let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
+    let  p_hide = parseFloat($("#p_hide").val());
+    let  p_hide_legth = $("#p_hide").val();
+    if (p_hide_legth.length == 0) {
+        $("#pago_a").val(formatter.format(0));
+    }else{
+    let resultado =  año_final-año_inicial+año_default;
+    let aportacionFinal = resultado * p_hide;
+    $("#pago_a").val(formatter.format(aportacionFinal));
+    }
 
     }
 
@@ -561,21 +558,52 @@ $('#contribuyenteId').change(function(){
 });
 
 ///Inicio Funcion Persona Moral/Fisica
-$(document).ready(function () {
-$("#personaMoral").hide();
-});
+// $(document).ready(function () {
+// $("#personaMoral").hide();
+// });
 
 function tipoPersona(){
     let tipo_Persona =  $("#tipoContribuyente").val();
 
     if(tipo_Persona == "Moral"){
-        $("#personaMoral").show();
-        $("#personaFisica").hide();
-
+        $('#div_nombre').removeClass('col-sm-4');
+        $('#div_nombre').addClass('col-sm-12');
+        $('#div_correoElectronico').removeClass('col-sm-4');
+        $('#div_correoElectronico').addClass('col-sm-6');
+        $('#div_telefono').removeClass('col-sm-4');
+        $('#div_telefono').addClass('col-sm-6');
+        $('#div_razonSocial').removeClass('col-sm-4');
+        $('#div_razonSocial').addClass('col-sm-8');
+        $('#div_apellidoPaterno').hide();
+        $('#div_apellidoMaterno').hide();
+        $('#div_fechaNacimeinto').hide();
+        $('#div_genero').hide();
+        $('#div_mes').hide();
+        $('#div_año').hide();
+        $('#div_curp').hide();
+        $('#br_año').hide();
+        $('#br_mes').hide();
     }
     else if(tipo_Persona == "Fisica"){
-        $("#personaMoral").hide();
-        $("#personaFisica").show();
+        $('#div_nombre').removeClass('col-sm-12');
+        $('#div_nombre').addClass('col-sm-4');
+        $('#div_correoElectronico').removeClass('col-sm-6');
+        $('#div_correoElectronico').addClass('col-sm-4');
+        $('#div_telefono').removeClass('col-sm-6');
+        $('#div_telefono').addClass('col-sm-4');
+        $('#div_razonSocial').removeClass('col-sm-8');
+        $('#div_razonSocial').addClass('col-sm-4');
+        $('#div_apellidoPaterno').show();
+        $('#div_apellidoMaterno').show();
+        $('#div_fechaNacimeinto').show();
+        $('#div_genero').show();
+        $('#div_mes').show();
+        $('#div_año').show();
+        $('#div_curp').show();
+        $('#br_año').show();
+        $('#br_mes').show();
+
+
 
     }
 
@@ -694,14 +722,21 @@ function tipoPersona(){
 $(document).ready(function() {
     let Contribuyente  = function(){
         this.Idaportacion        = $("#id_aportacion").val();
+        this.tipoContribuyente   = $("#tipoContribuyente").val();
         this.nombreContribuyente = $("#nombreContribuyente").val();
+        this.apellidoPaterno     = $("#apellidoPaterno").val();
+        this.apellidoMaterno     = $("#apellidoMaterno").val();
         this.rfc                 = $("#rfc").val();
-        this.parcela             = $("#parcela").val();
-	}
+        this.razonSocial         = $("#razonSocial").val();
+        this.curp                = $("#curp").val();
+        this.correoElectronico   = $("#correoElectronico").val();
+        this.telefono            = $("#telefono").val();
+        this.genero              = $("#genero").val();
+        }
 
     let guardarContribuyente = function(contribuyente){
 
-		$.post('/aportacion/guardarTest', {c:contribuyente}, function(data){
+		$.post('/aportacion/guardarContribuyente', {c:contribuyente}, function(data){
 
 			if(data != null){
 
@@ -732,6 +767,8 @@ $(document).ready(function() {
 /////////Guardar Aportacion metodo post////////////
 $(document).ready(function() {
     let Aportacion  = function(){
+        ////ID APORTACION PARA VALIDAR///
+        this.Idaportacion = $("#id_aportacion").val();
         ///Tabla Contribuyente////
         this.Contribuyente   = $("#Contribuyente").val();
         this.factura         = $("#factura").val();
@@ -761,8 +798,14 @@ $(document).ready(function() {
         this.loteConflicto      = $("#loteConflicto").val();
         this.observaciones      = $("#observaciones").val();
         ///Tabla Aportacion////
-        this.pagoAportacion  = $("#año_hidden").val();
-        this.fecha           = $("#vig").val();
+        this.fecha                = $("#vig").val();
+        this.metrosTerreno        = $("#terreno").val();
+        this.valorMZona           = $("#valor_zona").val();
+        this.metrosConstruccion   = $("#sup_m").val();
+        this.valorMConstruccion   = $("#valor").val();
+        this.tasa                 = $("#tasa_i").val();
+        this.ejercicioFiscal      = $("#ejercicio_fiscal").val();
+        this.ejercicioFiscalFinal = $("#ejercicio_fiscal_final").val();
 	}
 
     let guardarAportacion = function(aportacion){
@@ -792,6 +835,16 @@ $(document).ready(function() {
 			guardarAportacion(new Array(addAportacion));
 		});
 
+
+});
+/////////Button Volver atras ////////////
+$(document).ready(function() {
+
+    $("#btn_volver").click(function(){
+
+            window.location = "/aportacion";
+
+		});
 
 });
 
@@ -943,6 +996,7 @@ $('#modalColindancias').on( 'click', function () {
         $("#updateRow").hide();
         $("#addRow").show();
         $('#addColindancia').modal('show');
+        $("#puntoCardinal").val("Norte");
         $("#medidasMetros").val("");
         $("#colindaCon").val("");
         $("#observacionesColindacias").val("");
@@ -954,14 +1008,10 @@ $('#modalColindancias').on( 'click', function () {
 /////Add Datatbale row////////
     let Colindancias = function(){
         this.Idaportacion = $("#id_aportacion").val();
-        ///Contiribuyente//
-        this.nombreContribuyente = $("#nombreContribuyente").val();
-        ///Predio///
-        this.parcela = $("#parcela").val();
         ///Colindancias///
-        this.puntoCardinal = $("#puntoCardinal").val();
-        this.colindaCon = $("#colindaCon").val();
-        this.medidasMetros = $("#medidasMetros").val();
+        this.puntoCardinal            = $("#puntoCardinal").val();
+        this.colindaCon               = $("#colindaCon").val();
+        this.medidasMetros            = $("#medidasMetros").val();
         this.observacionesColindacias = $("#observacionesColindacias").val();
 
 	}
@@ -1027,6 +1077,10 @@ $('#modalColindancias').on( 'click', function () {
         $("#updateRow").show();
         $("#addRow").hide();
         $('#addColindancia').modal('show');
+        $("#puntoCardinal").val("Norte");
+        $("#medidasMetros").val("");
+        $("#colindaCon").val("");
+        $("#observacionesColindacias").val("");
 
 
     let id = $(this).val();
