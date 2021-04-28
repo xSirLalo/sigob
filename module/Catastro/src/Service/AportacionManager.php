@@ -6,6 +6,7 @@ use Catastro\Entity\Predio;
 use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
 use Catastro\Entity\Contribuyente;
+use Catastro\Entity\Localidad;
 use Catastro\Model\Backend\OperGobServiceAdapter;
 
 class AportacionManager
@@ -806,5 +807,26 @@ public function actualizarColindancias($datos)
 
         $this->entityManager->persist($predioColindancias);
         $this->entityManager->flush();
+    }
+
+    public function guardarLocalidad()
+    {
+        $localidadesWeb = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
+
+        foreach($localidadesWeb->Localidad as $item)
+        {
+            $localidades = new Localidad();
+
+            $localidades->setCveDistrito($item->CveDistrito);
+            $localidades->setCveEntidadFederativa($item->CveEntidadFederativa);
+            $localidades->setCveLocalidad($item->CveLocalidad);
+            $localidades->setCveMunicipio($item->CveMunicipio);
+            $localidades->setCveRegion($item->CveRegion);
+            $localidades->setNombreLocalidad(utf8_decode($item->NombreLocalidad));
+            $localidades->setNombreOficialLocalidad(utf8_decode($item->NombreOficialLocalidad));
+
+            $this->entityManager->persist($localidades);
+            $this->entityManager->flush();
+        }
     }
 }

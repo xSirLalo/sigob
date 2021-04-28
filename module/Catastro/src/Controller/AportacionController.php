@@ -96,8 +96,9 @@ class AportacionController extends AbstractActionController
         $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
-       // $localidades = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
+        //$localidades = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
         //$girocomerciales = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
+        $this->aportacionManager->guardarLocalidad();
 
         // if ($contribuyente == null) {
         //     $this->layout()->setTemplate('error/404');
@@ -1147,9 +1148,6 @@ class AportacionController extends AbstractActionController
 
         //$result = $this->aportacionManager->actualizarAportacion($req_post['a'][0]);
         $result = $this->aportacionManager->guardarAportacion($req_post['a'][0]);
-        $json = new JsonModel($datos);
-				$json->setTerminal(true);
-
 
             $datos = ["resp"=>"ok", "msg"=>"cambios guardados"];
 

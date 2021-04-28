@@ -102,27 +102,27 @@ currency: 'USD',
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     // //valida si el campo valor m2 zona esta vacio
     if (m_valorZona.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
-        document.getElementById("v_c").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
-        document.getElementById("v_c").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
         document.getElementById("v_in").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
      //Tasa_impositiva
@@ -150,7 +150,7 @@ function valorC() {
     let valor_c = document.getElementById("sup_m").value;
     if(valor_c.length == 0){
         metros_construccion = 0;
-        document.getElementById("v_c").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
     }else{
         document.getElementById("v_c").value = formatter.format(valor_construnccion);
     }
@@ -175,27 +175,27 @@ function valorC() {
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo valor m2 zona esta vacio
     if (m_valorZona.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
-        document.getElementById("v_c").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
-        document.getElementById("v_c").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
         document.getElementById("v_in").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //Tasa_impositiva

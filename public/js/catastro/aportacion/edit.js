@@ -63,7 +63,10 @@ let edit_aportacion = function(id)
             $('[id="ejercicio_fiscal"]').val(data.ejercicioFiscal);
             $('[id="ejercicio_fiscal_final"]').val(data.ejercicioFiscalFinal);
             $('[id="tasa_i"]').val(data.tasa);
+            $('[id="tasa_hidden"]').val(data.tasa);
             $('[id="a_total"]').val(formatter.format(data.avaluo));
+            $('[id="avaluo_hidden"]').val(data.avaluo);
+            $('[id="p_hide"]').val(data.pago);
             $('[id="pago_a"]').val(formatter.format(data.pago));
 
         },
@@ -398,6 +401,7 @@ $(document).ready(function() {
 				if(data.resp == "ok"){
 
                     //$("#hdn_id_cont").val(data.id_objeto);
+                    window.location = "/aportacion";
 				}else{
 
 					alert(data.msg);
@@ -428,6 +432,7 @@ style: 'currency',
 currency: 'USD',
 });
 //funcion Calular Aportacion-Inicio
+ //funcion Calular Aportacion-Inicio
     function Calcular()
 {
     let metros_terreno = parseFloat(document.getElementById("terreno").value);
@@ -450,27 +455,27 @@ currency: 'USD',
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     // //valida si el campo valor m2 zona esta vacio
     if (m_valorZona.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
-        document.getElementById("v_c").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
-        document.getElementById("v_c").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
         document.getElementById("v_in").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
      //Tasa_impositiva
@@ -498,7 +503,7 @@ function valorC() {
     let valor_c = document.getElementById("sup_m").value;
     if(valor_c.length == 0){
         metros_construccion = 0;
-        document.getElementById("v_c").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
     }else{
         document.getElementById("v_c").value = formatter.format(valor_construnccion);
     }
@@ -523,27 +528,27 @@ function valorC() {
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo valor m2 zona esta vacio
     if (m_valorZona.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
-        document.getElementById("v_c").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
-        document.getElementById("v_c").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
         document.getElementById("v_in").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //Tasa_impositiva
@@ -600,6 +605,176 @@ function CalcularAño(){
 
     }
 
+
 //funcion Calular-Fin
 
+//Funcion Solo numeros con 1 punto y maximo tres decimales
+function filterFloat(evt,input){
+    // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
+    var key = window.Event ? evt.which : evt.keyCode;
+    var chark = String.fromCharCode(key);
+    var tempValue = input.value+chark;
+    if(key >= 48 && key <= 57){
+        if(filter(tempValue)=== false){
+            return false;
+        }else{
+            return true;
+        }
+    }else{
+        if(key == 8 || key == 13 || key == 0) {
+            return true;
+        }else if(key == 46){
+                if(filter(tempValue)=== false){
+                    return false;
+                }else{
+                    return true;
+                }
+        }else{
+            return false;
+        }
+    }
+
+}
+function filter(__val__){
+    var preg = /^([0-9]+\.?[0-9]{0,5})$/;
+    if(preg.test(__val__) === true){
+        return true;
+    }else{
+        return false;
+    }
+
+}
+///Fin-Funcion Solo numeros con 1 punto y maximo dos decimales
+
+//validar solo numero
+function validaNumericos(event) {
+    if(event.charCode >= 48 && event.charCode <= 57){
+    return true;
+    }
+    return false;
+}
+
+//////Select Buscar Contribuyente/////
+
+function formatRepo(repo) {
+    if (repo.loading) return repo.text;
+
+    var markup = "";
+    if (repo.titular) {
+        markup += "<div class='select2-result-repository__description'>" + repo.titular + "</div>";
+    }
+console.log(repo);
+    return markup;
+}
+///select///
+
+function formatRepoSelection(repo) {
+    return repo.titular || repo.text;
+}
+
+$('#contribuyenteId').select2({
+    language: {
+    inputTooShort:function(e){
+    var t=e.minimum-e.input.length,n="Por favor, introduzca "+t+" car";return t==1?n+="ácter":n+="acteres",n
+    },
+    noResults: function() {
+    return "No hay resultado";
+    },
+    searching: function() {
+    return "Buscando..";
+    }
+    },
+    width: '100%',
+    // dropdownParent: $("#MyModal"),
+    ajax: {
+        url: "/aportacion/buscarRfc",
+        dataType: 'JSON',
+        delay: 250,
+        data: function(params) {
+            return {
+                q: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function(data, params) {
+            params.page = params.page || 1;
+
+            return {
+                //results: data.items2,
+                results: data.items,
+                pagination: {
+                    more: (params.page * 30) < data.total_count
+                }
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function(markup) {
+        return markup;
+    }, // let our custom formatter work
+    minimumInputLength: 1,
+    templateResult: formatRepo, // omitted for brevity, see the source of this page
+    templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+});
+
+$('#contribuyenteId').change(function(){
+    var id = $(this).val();
+    var url = '/aportacion/autorellaRfc/' + id;
+
+    // AJAX request
+    $.ajax({
+    url: url,
+    method: 'POST',
+    dataType: 'JSON',
+    async: true,
+    success: function(data)
+    {
+    console.log(data);
+        $('[name ="parcela"]').val(data.parcela);
+        $('[name ="manzana"]').val(data.manzana);
+        $('[name ="lote"]').val(data.lote);
+        $('[name ="local"]').val(data.local);
+        $('[name ="categoria"]').val(data.categoria);
+        $('[name ="condicion"]').val(data.condicion);
+        $('[name ="titular"]').val(data.titular);
+        $('[name ="ubicacion"]').val(data.ubicacion);
+        $('[name ="antecedentes"]').val(data.antecedentes);
+        $('[name ="regimen_propiedad"]').val(data.regimenPropiedad);
+        $('[name ="contribuyente"]').val(data.contribuyente);
+        $('[name ="giro_comercial"]').val(data.giroComercial);
+        $('[name ="nombre_comercial"]').val(data.nombreComercial);
+        $('[name ="tenencia"]').val(data.tenencia);
+        $('[name ="rfc"]').val(data.rfc);
+        $('[name ="uso_destino"]').val(data.usoDestino);
+        $('[name ="n_region"]').val(data.n_region);
+        $('[name ="lote"]').val(data.lote);
+        $('[name ="localidad"]').val(data.localidad);
+        $('[name ="d_propiedad"]').val(data.d_propiedad);
+        $('[name ="d_arrendamiento"]').val(data.d_arrendamiento);
+        $('[name ="g_comercial"]').val(data.g_comercial);
+        $('[name ="n_comercial"]').val(data.n_comercial);
+        $('[name ="s_ocupada"]').val(data.s_ocupada);
+        $('[name ="u_destino"]').val(data.u_destino);
+        $('[name ="titular_anterior"]').val(data.titular_anterior);
+        $('[name ="arrendador"]').val(data.arrendador);
+        $('[name ="con_norte"]').val(data.con_norte);
+        $('[name ="con_sur"]').val(data.con_sur);
+        $('[name ="con_este"]').val(data.con_este);
+        $('[name ="con_oeste"]').val(data.con_oeste);
+        $('[name ="norte"]').val(data.norte);
+        $('[name ="sur"]').val(data.sur);
+        $('[name ="este"]').val(data.este);
+        $('[name ="oeste"]').val(data.oeste);
+        $('[name ="id_predio"]').val(data.id_predio);
+        $('[name ="idcontribuyente"]').val(data.idcontribuyente);
+        $('[name ="cvlCatastral"]').val(data.cvlCatastral);
+        $("#formato").show();
+
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+       $('#modal_alert').modal('show'); // show bootstrap modal
+    }
+    });
+});
 

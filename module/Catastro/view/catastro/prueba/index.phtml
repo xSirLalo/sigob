@@ -72,14 +72,15 @@ echo "<br>";
 echo "<hr>";
 
 echo "<pre>";
-print_r($data->getIdAportacion());
+print_r($data);
 echo "</pre>";
 
-
+$text = " Águila Azteca  ";
+echo utf8_encode($text) ."<br>";
+echo utf8_decode($text);
 ?>
 </div>
 <div class="card-body">
-<input class="form-control" type="text" name="" value="<?=$data->getIdPredio()->getIdPredio()?>">
 </div>
 </div>
 </div>
