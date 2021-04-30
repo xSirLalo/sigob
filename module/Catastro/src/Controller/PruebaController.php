@@ -60,7 +60,7 @@ class PruebaController extends AbstractActionController
         //$apotacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion("20");
         //$data = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
         //$data = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
-        $data = $this->opergobserviceadapter->AgregarContribuyente("Eduardo","Cauich","Herrera","H","Soltero","lalo_lego@hotmail.com",0,"",$fecha,$fecha);
+        //$data = $this->opergobserviceadapter->AgregarContribuyente("Eduardo","Cauich","Herrera","H","Soltero","lalo_lego@hotmail.com",0,"",$fecha,$fecha);
         //$data = $this->opergobserviceadapter->obtenerColindancia("1714");
         //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("CABR840209R86");
         //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("POPA450408K72");
