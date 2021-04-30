@@ -27,7 +27,7 @@ let edit_aportacion = function(id)
             $('[id="manzana"]').val(data.manzana);
             $('[id="lote"]').val(data.lote);
             $('[id="local"]').val(data.local);
-            $('[id="categoria"]').val(data.condicion);
+            $('[id="categoria"]').val(data.categoria);
             $('[id="condicion"]').val(data.condicion);
             $('[id="titular"]').val(data.titular);
             $('[id="ubicacion"]').val(data.ubicacion);
@@ -43,6 +43,7 @@ let edit_aportacion = function(id)
             $('[id="loteConflicto"]').val(data.loteConflicto);
             $('[id="observaciones"]').val(data.observaciones);
              ///Contiribuyente//
+            $('[id="idContribuyente"]').val(data.idcontribuyente);
             $('[id="Contribuyente"]').val(data.contribuyente);
             $('[id="factura"]').val(data.factura);
             $('[id="giroComercial"]').val(data.giroComercial);
@@ -353,6 +354,7 @@ $(document).ready(function() {
 
        ////ID APORTACION PARA VALIDAR///
         this.Idaportacion = $("#id_aportacion").val();
+        this.Idcontribuyente = $("#idContribuyente").val();
         ///Tabla Contribuyente////
         this.Contribuyente   = $("#Contribuyente").val();
         this.factura         = $("#factura").val();
@@ -730,43 +732,11 @@ $('#contribuyenteId').change(function(){
     success: function(data)
     {
     console.log(data);
-        $('[name ="parcela"]').val(data.parcela);
-        $('[name ="manzana"]').val(data.manzana);
-        $('[name ="lote"]').val(data.lote);
-        $('[name ="local"]').val(data.local);
-        $('[name ="categoria"]').val(data.categoria);
-        $('[name ="condicion"]').val(data.condicion);
-        $('[name ="titular"]').val(data.titular);
-        $('[name ="ubicacion"]').val(data.ubicacion);
-        $('[name ="antecedentes"]').val(data.antecedentes);
-        $('[name ="regimen_propiedad"]').val(data.regimenPropiedad);
-        $('[name ="contribuyente"]').val(data.contribuyente);
-        $('[name ="giro_comercial"]').val(data.giroComercial);
-        $('[name ="nombre_comercial"]').val(data.nombreComercial);
-        $('[name ="tenencia"]').val(data.tenencia);
+
         $('[name ="rfc"]').val(data.rfc);
-        $('[name ="uso_destino"]').val(data.usoDestino);
-        $('[name ="n_region"]').val(data.n_region);
-        $('[name ="lote"]').val(data.lote);
-        $('[name ="localidad"]').val(data.localidad);
-        $('[name ="d_propiedad"]').val(data.d_propiedad);
-        $('[name ="d_arrendamiento"]').val(data.d_arrendamiento);
-        $('[name ="g_comercial"]').val(data.g_comercial);
-        $('[name ="n_comercial"]').val(data.n_comercial);
-        $('[name ="s_ocupada"]').val(data.s_ocupada);
-        $('[name ="u_destino"]').val(data.u_destino);
-        $('[name ="titular_anterior"]').val(data.titular_anterior);
-        $('[name ="arrendador"]').val(data.arrendador);
-        $('[name ="con_norte"]').val(data.con_norte);
-        $('[name ="con_sur"]').val(data.con_sur);
-        $('[name ="con_este"]').val(data.con_este);
-        $('[name ="con_oeste"]').val(data.con_oeste);
-        $('[name ="norte"]').val(data.norte);
-        $('[name ="sur"]').val(data.sur);
-        $('[name ="este"]').val(data.este);
-        $('[name ="oeste"]').val(data.oeste);
-        $('[name ="id_predio"]').val(data.id_predio);
-        $('[name ="idcontribuyente"]').val(data.idcontribuyente);
+        //$('[name ="contribuyente"]').val(data.contribuyente);
+        $('[name ="contribuyente"]').val(data.contribuyente);
+        $('[id ="idContribuyente"]').val(data.idcontribuyente);
         $('[name ="cvlCatastral"]').val(data.cvlCatastral);
         $("#formato").show();
 
@@ -777,4 +747,72 @@ $('#contribuyenteId').change(function(){
     }
     });
 });
+
+/////////Guardar Contribuyente metodo post////////////
+$(document).ready(function() {
+    let Contribuyente  = function(){
+        this.Idaportacion        = $("#id_aportacion").val();
+        this.Idcontribuyente     = $("#idContribuyente").val();
+        this.tipoContribuyente   = $("#tipoContribuyente").val();
+        this.nombreContribuyente = $("#nombreContribuyente").val();
+        this.apellidoPaterno     = $("#apellidoPaterno").val();
+        this.apellidoMaterno     = $("#apellidoMaterno").val();
+        this.rfc                 = $("#rfc").val();
+        this.razonSocial         = $("#razonSocial").val();
+        this.curp                = $("#curp").val();
+        this.correoElectronico   = $("#correoElectronico").val();
+        this.telefono            = $("#telefono").val();
+        this.genero              = $("#genero").val();
+        }
+
+    let guardarContribuyente = function(contribuyente){
+
+		$.post('/aportacion/guardarContribuyente', {c:contribuyente}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+                    $("#id_aportacion").val(data.id_objeto);
+                    $("#Contribuyente").val(data.nombre);
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+
+    $("#btn_guardar").click(function(){
+
+			let addContribuyente = new Contribuyente();
+
+			guardarContribuyente(new Array(addContribuyente));
+
+            $('#addContribuyente').modal('hide');
+		});
+
+          ///Modal Contribuyente////////////
+    $('#ModalContribuyente').on( 'click', function () {
+        $('#addContribuyente').modal('show');
+        $('#nombreContribuyente').val("");
+        $('#apellidoPaterno').val("");
+        $('#apellidoMaterno').val("");
+        $('#rfc').val("");
+        $('#razonSocial').val("");
+        $('#curp').val("");
+        $('#dia').val("");
+        $('#mes').val("");
+        $('#año').val("");
+        $('#correoElectronico').val("");
+        $('#telefono').val("");
+        $('#genero').val("Hombre");
+
+    });
+
+
+});
+
 

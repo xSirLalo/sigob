@@ -104,7 +104,7 @@ class OperGobServiceAdapter{
         return $respuesta->GetPersonaLikeNameResult;
     }
 
-    public function AddSolicitud($cvpersona) {
+    public function AddSolicitud($cvpersona,$añoInicial,$añoFinal,$ubicacion,$localidad,$id,$observacion,$loteConflicto) {
 
         $hoy = new \DateTime("now");
         $fecha_hoy = new \DateTime("now");
@@ -117,14 +117,14 @@ class OperGobServiceAdapter{
             "TramiteId"                 => "4", //***
             "SolicitudId"               => "0",
             "SolicitudEstado"           => "PP",
-            "SolicitudDescripcion"      => "",
+            "SolicitudDescripcion"      => "APORTACIONES",
             "SolicitudFecha"            => $hoy->format("Y-m-d")."T".$hoy->format("h:i:s"),
             "SolicitudCantidad"         => "0.00",
             "SolicitudRedondear"        => "",
             "CvePersona"                => $cvpersona, //***
             "SolicitudVencimientoFecha" => $fecha_vence->format("Y-m-d")."T".$fecha_vence->format("h:i:s"),
             "SolicitudUsuario"          => "SOPORTE2",
-            "SolicitudObservaciones"    => "",
+            "SolicitudObservaciones"    => "PAGO CORRESPONDIENTE AL EJERCICIO FISCAL DEL AÑO ".$añoInicial."-".$añoFinal.", UBICADO ".$ubicacion." ,LOCALIDAD ".$localidad." ID ".$id." ,".$observacion.", ".$loteConflicto ,
             "SolicitudPadronId"         => "0",
             "SolicitudTipoIngreso"      => "",
         ];
@@ -212,6 +212,45 @@ class OperGobServiceAdapter{
 
         $respuesta = $client->GetAllGiroComercialByCveFte($parametros);
         return $respuesta->GetAllGiroComercialByCveFteResult;
+    }
+
+    public function AgregarContribuyente($nombre, $apellido_materno,$apellido_paterno,$genero,$estado_civiL,$correo_electronico,$rfc,$curp,$fecha_nacimiento) {
+
+        $respuesta = array();
+        $parametros = [
+                    "NombrePersona"           => $nombre,
+                    "ApellidoMaternoPersona"  => $apellido_materno,
+                    "ApellidoPaternoPersona"  => $apellido_paterno,
+                    "NombreCompletoPersona"   => $nombre." ".$apellido_paterno." ".$apellido_materno,
+                    "GeneroPersona"           => $genero,
+                    "EstadoCivilPersona"      => $estado_civil,
+                    "PersonaCorreo"           => $correo_electronico,
+                    "RFCPersona"              => $rfc,
+                    "CURPPersona"             => $curp,
+                    "RazonSocialPersona"      => "",
+                    "FechaNacimientoPersona"  => $fecha_nacimiento->format("Y-m-d")."T".$fecha_nacimiento->format("H:i:s"),
+                    //"FechaAltaPersona"        => "",
+                    "DireccionPersona"        => "",
+                    "PersonaCalle"            => "",
+                    "PersonaNumExt"           => "",
+                    "PersonaNumInt"           => "",
+                    "PersonaCodigoPostal"     => "",
+                    "PersonaColonia"          => "",
+                    "PersonaTelefono"         => "",
+                    "NacionalidadPersona"     => "",
+
+                    "CvePersona"              => 0,
+                    //"LugarNacimientoPersona"  => "",
+                ];
+
+        $client = new Client();
+        $client->setWsdl(self::URI_SERVICE_OPER);
+        $client->setOptions([
+            "soap_version"  => SOAP_1_1,
+            'encoding'      => 'UTF-8',
+        ]);
+        $respuesta = $client->AddPersona(array("persona"=>$parametros));
+        return $respuesta->AddPersonaResult;
     }
 
 }

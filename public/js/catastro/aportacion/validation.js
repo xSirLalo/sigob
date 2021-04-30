@@ -84,6 +84,26 @@ $(document).ready(function(){
     $('#validation').DataTable({
         responsive: true,
         searching: false,
+        language: {
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+    },
 
 
     });
@@ -100,6 +120,7 @@ function edit_validation(id)
     save_method = 'update';
     $('#btnGuardar').show();
     $('#btnGuardar').removeClass('invisible');
+    $('#pago_a').attr('readonly','readonly');
     $('#validacion_form_modal')[0].reset(); // reset form on modals
     $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
     $('.text-danger').empty(); // clear error string
@@ -128,7 +149,9 @@ function edit_validation(id)
             $('[name="select_tasa"]').val(data.select_tasa);
             $('[name="tasa_hidden"]').val(data.tasa_hidden);
             $('[name="ejercicio_f"]').val(data.ejercicio_f);
-            $('[name="pago_a"]').val(formatter.format(data.pago_a));
+           // $('[name="pago_a"]').val(formatter.format(data.pago_a));
+            $('[name="pago_a"]').val(data.pago_a);
+            $('[id="p_hide"]').val(data.p_hide);
             //$('[name="pago_a"]').val(formatter.format(data.pago_a));
             $('#myModal').modal('show'); // show bootstrap modal when complete loaded
             $('.modal-title').text('DIRECCION DE CATASTRO'); // Set Title to Bootstrap modal title
@@ -211,35 +234,41 @@ currency: 'USD',
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     // //valida si el campo valor m2 zona esta vacio
     if (m_valorZona.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
-        document.getElementById("v_c").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
-        document.getElementById("v_c").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
         document.getElementById("v_in").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
      //Tasa_impositiva
     let select_tasa = document.getElementById("tasa_i");
     let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
     let a_total = parseFloat(document.getElementById("avaluo_hidden").value);
+    const año_default = 1;
+    let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
+    let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
     let pago_aportacion = valor_tasa * a_total;
-    document.getElementById("pago_a").value = formatter.format(pago_aportacion);
+    let resultado =  año_final-año_inicial+año_default;
+    let aportacionFinal = resultado * pago_aportacion;
+    document.getElementById("pago_a").value = formatter.format(aportacionFinal);
+    document.getElementById("p_hide").value = pago_aportacion;
 
 }
 
@@ -253,7 +282,7 @@ function valorC() {
     let valor_c = document.getElementById("sup_m").value;
     if(valor_c.length == 0){
         metros_construccion = 0;
-        document.getElementById("v_c").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
     }else{
         document.getElementById("v_c").value = formatter.format(valor_construnccion);
     }
@@ -278,35 +307,41 @@ function valorC() {
     let valor_oculto = document.getElementById("v_in").value;
     //valida si el campo metros Terreno esta vacio
     if (m_terreno.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo valor m2 zona esta vacio
     if (m_valorZona.length == 0) {
-        document.getElementById("v_terreno").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_terreno").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //valida si el campo metros Construccion esta vacio
     if (m_construnccion.length == 0) {
-        document.getElementById("v_c").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
    //valida si el campo oculto no tiene valor
     if (valor_oculto.length == 0) {
-        document.getElementById("v_c").value = 0;
+        document.getElementById("v_c").value = formatter.format(0);
         document.getElementById("v_in").value = 0;
-        document.getElementById("a_total").value = 0;
+        document.getElementById("a_total").value = formatter.format(0);
         document.getElementById("avaluo_hidden").value = 0;
     }
     //Tasa_impositiva
     let select_tasa = document.getElementById("tasa_i");
     let valor_tasa = select_tasa.options[select_tasa.selectedIndex].value;
     let a_total = parseFloat(document.getElementById("avaluo_hidden").value);
+    const año_default = 1;
+    let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
+    let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
     let pago_aportacion = valor_tasa * a_total;
-    document.getElementById("pago_a").value = formatter.format(pago_aportacion);
+    let resultado =  año_final-año_inicial+año_default;
+    let aportacionFinal = resultado * pago_aportacion;
+    document.getElementById("pago_a").value = formatter.format(aportacionFinal);
+    document.getElementById("p_hide").value = pago_aportacion;
 }
 
 //select Tasa impositiva
@@ -317,14 +352,38 @@ function timpositiva() {
     let avaluo_total = parseFloat(document.getElementById("avaluo_hidden").value);
     let valor_avaluo = document.getElementById("a_total").value;
     if(valor_avaluo.length == 0){
-        document.getElementById("pago_a").value = 0;
+        document.getElementById("pago_a").value = formatter.format(0);
+        document.getElementById("p_hide").value = 0;
     }else{
+    const año_default = 1;
+    let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
+    let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
     let pago_aportacion = valor_tasa * avaluo_total;
-    document.getElementById("pago_a").value = formatter.format(pago_aportacion);
-    document.getElementById("p_hide").value = formatter.format(pago_aportacion);
+    let resultado =  año_final-año_inicial+año_default;
+    let aportacionFinal = resultado * pago_aportacion;
+    document.getElementById("pago_a").value = formatter.format(aportacionFinal);
+    document.getElementById("p_hide").value = pago_aportacion;
+    // document.getElementById("p_hide").value = formatter.format(pago_aportacion);
     }
 
 }
+
+function CalcularAño(){
+    const año_default = 1;
+    let  año_inicial = parseFloat($("#ejercicio_fiscal").val());
+    let  año_final = parseFloat($("#ejercicio_fiscal_final").val());
+    let  p_hide = parseFloat($("#p_hide").val());
+    let  p_hide_legth = $("#p_hide").val();
+    if (p_hide_legth.length == 0) {
+        $("#pago_a").val(formatter.format(0));
+    }else{
+    let resultado =  año_final-año_inicial+año_default;
+    let aportacionFinal = resultado * p_hide;
+    $("#pago_a").val(formatter.format(aportacionFinal));
+    }
+
+    }
+
 //funcion Calular-Fin
 
 //Modal-Funcion Solo numeros con 1 punto y maximo dos decimales
@@ -370,6 +429,15 @@ function validaNumericos(event) {
     return false;
 }
 
+$("#btn_edit").on('click', function(e) {
+        event.preventDefault(e);
 
+
+			$("#pago_a").removeAttr("readonly");
+            let pago = $("#pago_a").val();
+            $("#pago_a").val(pago.slice(1));
+
+
+	});
 
 

@@ -15,8 +15,8 @@
                     <div class="form-group ">
                         <label >Tipo de Contribuyente</label>
                         <select class="custom-select w-30" name="" id="tipoContribuyente" onchange="tipoPersona()">
-                        <option value="Fisica">Fisica</option>
-                        <option value="Moral">Moral</option>
+                        <option value="F">Fisica</option>
+                        <option value="M">Moral</option>
                         </select>
                     </div>
                 </div>
@@ -77,27 +77,27 @@
                 <div id="div_mes" class="col-sm-4">
                     <div class="form-group">
                     <br id="br_mes">
-                        <select class="custom-select w-30" name="">
+                        <select class="custom-select w-30" name="" id="mes">
                             <option value="">Mes</option>
-                            <option value="">Enero</option>
-                            <option value="">Febrero</option>
-                            <option value="">Marzo</option>
-                            <option value="">Abril</option>
-                            <option value="">Mayo</option>
-                            <option value="">Junio</option>
-                            <option value="">Julio</option>
-                            <option value="">Agosto</option>
-                            <option value="">Septiembre</option>
-                            <option value="">Octubre</option>
-                            <option value="">Noviembre</option>
-                            <option value="">Diciembre</option>
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="12">Noviembre</option>
+                            <option value="12">Diciembre</option>
                         </select>
                     </div>
                 </div>
                 <div id="div_año" class="col-sm-4">
                     <div class="form-group">
                         <br id="br_año">
-                        <select class="custom-select w-30" name="">
+                        <select class="custom-select w-30" name="" id="año">
                             <option value="">Año</option>
                             <?php for ($i=2008; $i > 1921 ; $i--) { ?>
                                 <option value="<?=$i?>"><?=$i?></option>

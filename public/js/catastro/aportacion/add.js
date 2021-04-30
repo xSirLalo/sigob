@@ -509,44 +509,12 @@ $('#contribuyenteId').change(function(){
     success: function(data)
     {
     console.log(data);
-        $('[name ="parcela"]').val(data.parcela);
-        $('[name ="manzana"]').val(data.manzana);
-        $('[name ="lote"]').val(data.lote);
-        $('[name ="local"]').val(data.local);
-        $('[name ="categoria"]').val(data.categoria);
-        $('[name ="condicion"]').val(data.condicion);
-        $('[name ="titular"]').val(data.titular);
-        $('[name ="ubicacion"]').val(data.ubicacion);
-        $('[name ="antecedentes"]').val(data.antecedentes);
-        $('[name ="regimen_propiedad"]').val(data.regimenPropiedad);
-        $('[name ="contribuyente"]').val(data.contribuyente);
-        $('[name ="giro_comercial"]').val(data.giroComercial);
-        $('[name ="nombre_comercial"]').val(data.nombreComercial);
-        $('[name ="tenencia"]').val(data.tenencia);
         $('[name ="rfc"]').val(data.rfc);
-        $('[name ="uso_destino"]').val(data.usoDestino);
-        $('[name ="n_region"]').val(data.n_region);
-        $('[name ="lote"]').val(data.lote);
-        $('[name ="localidad"]').val(data.localidad);
-        $('[name ="d_propiedad"]').val(data.d_propiedad);
-        $('[name ="d_arrendamiento"]').val(data.d_arrendamiento);
-        $('[name ="g_comercial"]').val(data.g_comercial);
-        $('[name ="n_comercial"]').val(data.n_comercial);
-        $('[name ="s_ocupada"]').val(data.s_ocupada);
-        $('[name ="u_destino"]').val(data.u_destino);
-        $('[name ="titular_anterior"]').val(data.titular_anterior);
-        $('[name ="arrendador"]').val(data.arrendador);
-        $('[name ="con_norte"]').val(data.con_norte);
-        $('[name ="con_sur"]').val(data.con_sur);
-        $('[name ="con_este"]').val(data.con_este);
-        $('[name ="con_oeste"]').val(data.con_oeste);
-        $('[name ="norte"]').val(data.norte);
-        $('[name ="sur"]').val(data.sur);
-        $('[name ="este"]').val(data.este);
-        $('[name ="oeste"]').val(data.oeste);
-        $('[name ="id_predio"]').val(data.id_predio);
-        $('[name ="idcontribuyente"]').val(data.idcontribuyente);
+        //$('[name ="contribuyente"]').val(data.contribuyente);
+        $('[name ="contribuyente"]').val(data.contribuyente);
+        $('[id ="idContribuyente"]').val(data.idcontribuyente);
         $('[name ="cvlCatastral"]').val(data.cvlCatastral);
+        //$('[id ="id_aportacion"]').val(data.idaportacion);
         $("#formato").show();
 
     },
@@ -565,7 +533,7 @@ $('#contribuyenteId').change(function(){
 function tipoPersona(){
     let tipo_Persona =  $("#tipoContribuyente").val();
 
-    if(tipo_Persona == "Moral"){
+    if(tipo_Persona == "M"){
         $('#div_nombre').removeClass('col-sm-4');
         $('#div_nombre').addClass('col-sm-12');
         $('#div_correoElectronico').removeClass('col-sm-4');
@@ -584,7 +552,7 @@ function tipoPersona(){
         $('#br_año').hide();
         $('#br_mes').hide();
     }
-    else if(tipo_Persona == "Fisica"){
+    else if(tipo_Persona == "F"){
         $('#div_nombre').removeClass('col-sm-12');
         $('#div_nombre').addClass('col-sm-4');
         $('#div_correoElectronico').removeClass('col-sm-6');
@@ -722,6 +690,7 @@ function tipoPersona(){
 $(document).ready(function() {
     let Contribuyente  = function(){
         this.Idaportacion        = $("#id_aportacion").val();
+        this.Idcontribuyente     = $("#idContribuyente").val();
         this.tipoContribuyente   = $("#tipoContribuyente").val();
         this.nombreContribuyente = $("#nombreContribuyente").val();
         this.apellidoPaterno     = $("#apellidoPaterno").val();
@@ -729,6 +698,9 @@ $(document).ready(function() {
         this.rfc                 = $("#rfc").val();
         this.razonSocial         = $("#razonSocial").val();
         this.curp                = $("#curp").val();
+        this.dia                 = $("#dia").val();
+        this.mes                 = $("#mes").val();
+        this.año                 = $("#año").val();
         this.correoElectronico   = $("#correoElectronico").val();
         this.telefono            = $("#telefono").val();
         this.genero              = $("#genero").val();
@@ -740,10 +712,16 @@ $(document).ready(function() {
 
 			if(data != null){
 
-				if(data.resp == "ok"){
+                if(data.resp =="okno"){
+                    alert("No se puede guardar porque el RFC ya existe en la Base de datos");
+
+                }
+				else if(data.resp == "ok"){
+                // if(data.resp == "ok"){
 
                     $("#id_aportacion").val(data.id_objeto);
                     $("#Contribuyente").val(data.nombre);
+                    $('#addContribuyente').modal('hide');
 				}else{
 
 					alert(data.msg);
@@ -759,7 +737,26 @@ $(document).ready(function() {
 			let addContribuyente = new Contribuyente();
 
 			guardarContribuyente(new Array(addContribuyente));
+
 		});
+
+    ///Modal Contribuyente////////////
+    $('#ModalContribuyente').on( 'click', function () {
+        $('#addContribuyente').modal('show');
+        $('#nombreContribuyente').val("");
+        $('#apellidoPaterno').val("");
+        $('#apellidoMaterno').val("");
+        $('#rfc').val("");
+        $('#razonSocial').val("");
+        $('#curp').val("");
+        $('#dia').val("");
+        $('#mes').val("");
+        $('#año').val("");
+        $('#correoElectronico').val("");
+        $('#telefono').val("");
+        $('#genero').val("Hombre");
+
+    });
 
 
 });
@@ -768,7 +765,8 @@ $(document).ready(function() {
 $(document).ready(function() {
     let Aportacion  = function(){
         ////ID APORTACION PARA VALIDAR///
-        this.Idaportacion = $("#id_aportacion").val();
+        this.Idaportacion    = $("#id_aportacion").val();
+        this.Idcontribuyente = $("#idContribuyente").val();
         ///Tabla Contribuyente////
         this.Contribuyente   = $("#Contribuyente").val();
         this.factura         = $("#factura").val();
@@ -1151,8 +1149,16 @@ let ActualizarColindancia = function(colindancias){
 });
 
 
+/////Contar filas DataTable/////////
+$('#button').on('click',function()
+{
+    var table = $('#colindacias').DataTable();
+    //Muestro la cantidad de filas
+    console.log("Filas: " + table.rows().count());
 
-
+    //Muestro la cantidad de columnas
+    console.log("Columnas: " + table.columns().count());
+});
 
 
 

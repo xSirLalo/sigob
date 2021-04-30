@@ -50,6 +50,7 @@ $(document).ready(function() {
                 {data: 'idAportacion',},
                 {data: 'Parcela'},
                 {data: 'Contribuyente'},
+                {data: 'Propietario'},
                 {data: 'Lote'},
                 {data: 'UltimoPago'},
                 {data: 'Estatus', orderable: false, searchable: false,},
@@ -57,7 +58,7 @@ $(document).ready(function() {
                 ],
             columnDefs: [
                 {
-                    targets: 5,
+                    targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
                         if( row['Estatus'] == 1 ){
@@ -72,7 +73,7 @@ $(document).ready(function() {
                     },
                 },
                 {
-                    targets: 6,
+                    targets: 7,
                     orderable: false,
                     render: function(data, type, row, meta){
                         if(row['Estatus'] == 3 ){
@@ -92,7 +93,8 @@ $(document).ready(function() {
 
                         $actionBtn = `<a href="aportacion/editar-aportacion"> <button type="button="class="btn btn-warning" disabled>Editar</button></a>
                         <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"><button type="button="class="btn btn btn-primary" >Imprimir</button></a>
-                        <a href="http://sistematulum.net:9000/TLANIA/oestadocuentapredialpase.aspx?MTULUM,2021,3,4,` + row['idSolicitud'] + `"> <button type="button="class="btn btn-success" >Pase Caja</button></a>`;
+                        <a href="http://sistematulum.net:9000/TLANIA/oestadocuentapredialpase.aspx?MTULUM,2021,3,4,` + row['idSolicitud'] + `" target="_blank"> <button type="button="class="btn btn-success" >Pase Caja</button></a>`;
+
 
                         }
                         return $actionBtn;

@@ -18,7 +18,14 @@ use Catastro\Entity\Predio;
 use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
 use Catastro\Entity\TablaValorConstruccion;
-//use Catastro\Entity\TablaValorZona;
+use Catastro\Entity\GiroComercial;
+use Catastro\Entity\localidad;
+use Catastro\Entity\UsoDestino;
+use Catastro\Entity\Condicion;
+use Catastro\Entity\Categoria;
+use Catastro\Entity\RegimenPropiedad;
+use Catastro\Entity\DocumentoPropiedad;
+
 use Catastro\Entity\Contribuyente;
 use Catastro\Form\ValidacionModalForm;
 
@@ -65,11 +72,10 @@ class AportacionController extends AbstractActionController
                         'idSolicitud'   => $r->getIdSolicitud(),
                         'idAportacion'  => $r->getIdAportacion(),
                         'Contribuyente' => $r->getIdContribuyente()->getNombre(),
+                        'Propietario'   => $r->getIdPredio()->getTitular(),
                         'Parcela'       => $r->getIdPredio()->getParcela(),
                         'Lote'          => $r->getIdPredio()->getLote(),
-                        // 'Vigencia'      => $r->getFecha()->format('d-m-Y'),
-                        // 'Pago'          => "$ ".number_format($r->getPago(), 4),
-                        'UltimoPago'    => $r->getEjercicioFiscal(),
+                        'UltimoPago'    => $r->getEjercicioFiscalFinal(),
                         'Estatus'       => $r->getEstatus(),
                         'Opciones'      => "Cargando..."
                     ];
@@ -96,30 +102,23 @@ class AportacionController extends AbstractActionController
         $aportacion =$this->entityManager->getRepository(Aportacion::class)->findAll();
         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
-        //$localidades = $this->opergobserviceadapter->obtenerLocalidadByCveEntidadFederativa("23", "09");
-        //$girocomerciales = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
-        $this->aportacionManager->guardarLocalidad();
+        $localidades = $this->entityManager->getRepository(localidad::class)->findAll();
+        $girocomerciales = $this->entityManager->getRepository(GiroComercial::class)->findAll();
+        $usodestino = $this->entityManager->getRepository(UsoDestino::class)->findAll();
+        $condicion = $this->entityManager->getRepository(Condicion::class)->findAll();
+        $categoria = $this->entityManager->getRepository(Categoria::class)->findAll();
+        $regimenPropiedad = $this->entityManager->getRepository(RegimenPropiedad::class)->findAll();
+        $documentoPropiedad = $this->entityManager->getRepository(DocumentoPropiedad::class)->findAll();
+
+        //$this->aportacionManager->guardarLocalidad();
+        //$this->aportacionManager->guardargiroComercial();
 
         // if ($contribuyente == null) {
         //     $this->layout()->setTemplate('error/404');
         //     $this->getResponse()->setStatusCode(404);
         // }
-
-        if ($this->getRequest()->isPost()) {
-            $data = $this->params()->fromPost();
-            $form->setData($data);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($data['parametro']);
-                $this->aportacionManager->actualizarContribuyente($contribuyente, $data);
-                $aportacion =$this->aportacionManager->guardar($data);
-                if ($aportacion) {
-                    $this->aportacionManager->pdf($data, $aportacion);
-                }
-            }
-        }
-        //return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente, 'localidades' => $localidades, 'girocomerciales' => $girocomerciales]);
-        return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
+        return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente, 'localidades' => $localidades, 'girocomerciales' => $girocomerciales, 'usodestinos' => $usodestino, 'condiciones' => $condicion , 'categorias' => $categoria, 'regimenPropiedades' => $regimenPropiedad, 'documentoPropiedades' => $documentoPropiedad]);
+        //return new ViewModel(['form' => $form, 'id' => $contribuyenteId, 'valorConstruccions' => $valorConstruccion, 'contribuyente'=> $contribuyente]);
     }
 
     public function addModalAction()
@@ -203,7 +202,8 @@ class AportacionController extends AbstractActionController
                 'select_tasa'       =>  $aportacion->getTasa(),
                 'tasa_hidden'       =>  $aportacion->getTasa(),
                 'ejercicio_f'       =>  $aportacion->getEjercicioFiscal(),
-                'pago_a'            =>  $aportacion->getPago(),
+                'pago_a'            =>  "$".$aportacion->getPago(),
+                'p_hide'            =>  $aportacion->getPago(),
             ];
 
             $view = new JsonModel($data);
@@ -847,7 +847,7 @@ class AportacionController extends AbstractActionController
                     <th><font size="7">'.$aportacion->getFecha()->format('d-m-Y').'</font></th>
                     <th><font size="7">$'.number_format($aportacion->getAvaluo()).'</font></th>
                     <th><font size="7">'.number_format($aportacion->getTasa(), 4).'</font></th>
-                    <th colspan ="2"><font size="7">'.$aportacion->getEjercicioFiscal().'</font></th>
+                    <th colspan ="2"><font size="7">'.$aportacion->getEjercicioFiscal().'-'.$aportacion->getEjercicioFiscalFinal().'</font></th>
                     <th><font size="7">$'.number_format($aportacion->getPago(), 4).'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
@@ -1050,6 +1050,13 @@ class AportacionController extends AbstractActionController
         $aportacionId = (int)$this->params()->fromRoute('id', -1);
         $apotacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
         $valorConstruccion = $this->entityManager->getRepository(TablaValorConstruccion::class)->findAll();
+        $localidades = $this->entityManager->getRepository(localidad::class)->findAll();
+        $girocomerciales = $this->entityManager->getRepository(GiroComercial::class)->findAll();
+        $usodestino = $this->entityManager->getRepository(UsoDestino::class)->findAll();
+        $condicion = $this->entityManager->getRepository(Condicion::class)->findAll();
+        $categoria = $this->entityManager->getRepository(Categoria::class)->findAll();
+        $regimenPropiedad = $this->entityManager->getRepository(RegimenPropiedad::class)->findAll();
+        $documentoPropiedad = $this->entityManager->getRepository(DocumentoPropiedad::class)->findAll();
 
 
         //$predio_id = $aportacion->getIdPredio()->getIdPredio();
@@ -1058,7 +1065,8 @@ class AportacionController extends AbstractActionController
         //     $this->getResponse()->setStatusCode(404);
         // }
 
-        return new ViewModel(['aportacionId' => $aportacionId,'form' => $form,'predio_id' => $apotacion->getIdPredio()->getIdPredio(), 'valorConstruccions' => $valorConstruccion ]);
+        // return new ViewModel(['aportacionId' => $aportacionId,'form' => $form,'predio_id' => $apotacion->getIdPredio()->getIdPredio(), 'valorConstruccions' => $valorConstruccion ]);
+        return new ViewModel(['aportacionId' => $aportacionId,'predio_id' => $apotacion->getIdPredio()->getIdPredio(), 'form' => $form, 'valorConstruccions' => $valorConstruccion, 'localidades' => $localidades, 'girocomerciales' => $girocomerciales, 'usodestinos' => $usodestino, 'condiciones' => $condicion , 'categorias' => $categoria, 'regimenPropiedades' => $regimenPropiedad, 'documentoPropiedades' => $documentoPropiedad]);
     }
 
     public function editAportacionAction(){
@@ -1086,12 +1094,13 @@ class AportacionController extends AbstractActionController
                 'regimenPropiedad'   => $aportacion->getIdPredio()->getRegimenPropiedad(),
                 'fechaAdquicision'   => $aportacion->getIdPredio()->getFechaAdquicision()->format('Y-m-d'),
                 'titularAnterior'    => $aportacion->getIdPredio()->getTitularAnterior(),
-                'documentoPropiedad' => $aportacion->getIdPredio()->getParcela(),
-                'folio'              => $aportacion->getIdPredio()->getParcela(),
-                'fechaDocumento'     => $aportacion->getIdPredio()->getParcela(),
-                'loteConflicto'      => $aportacion->getIdPredio()->getParcela(),
+                'documentoPropiedad' => $aportacion->getIdPredio()->getDocumentoPropiedad(),
+                'folio'              => $aportacion->getIdPredio()->getFolio(),
+                'fechaDocumento'     => $aportacion->getIdPredio()->getFechaDocumento()->format('Y-m-d'),
+                'loteConflicto'      => $aportacion->getIdPredio()->getLoteConflicto(),
                 'observaciones'      => $aportacion->getIdPredio()->getObservaciones(),
                 ///Contiribuyente//
+                'idcontribuyente'    => $aportacion->getIdContribuyente()->getIdContribuyente(),
                 'contribuyente'      => $aportacion->getIdContribuyente()->getNombre(),
                 'factura'            => $aportacion->getIdContribuyente()->getFactura(),
                 'giroComercial'      => $aportacion->getIdContribuyente()->getGiroComercial(),
@@ -1127,13 +1136,23 @@ class AportacionController extends AbstractActionController
     {
         $req_post = $this->params()->fromPost();
 
+        $rfc = $this->opergobserviceadapter->obtenerPersonaPorRfc($req_post['c'][0]['rfc']);
+
+
+        if(isset($rfc->Persona)){
+
+        $datos = ["resp"=>"okno", "msg"=>"YA EXCISTE ESA PERSONA"];
+
+        }else{
+
         $result = $this->aportacionManager->guardarTest($req_post['c'][0]);
 
         if ($result){
             $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'nombre' =>$result->getIdContribuyente()->getNombre()];
-            //$datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdContribuyente(), 'nombre' =>$result->getNombre()];
         }else{
             $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
+        }
+
         }
 
 				$json = new JsonModel($datos);
@@ -1141,6 +1160,7 @@ class AportacionController extends AbstractActionController
 
 				return $json;
     }
+
 
     public function updateAportacionAction(){
 

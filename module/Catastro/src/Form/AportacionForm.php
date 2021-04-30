@@ -69,6 +69,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Parcela',
                 'id' => 'parcela',
             ]
         ]);
@@ -82,6 +83,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Manzana',
                 'id'=>'manzana',
             ]
         ]);
@@ -95,6 +97,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Lote',
                 'id'=>'lote',
             ]
         ]);
@@ -108,6 +111,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Lote',
                 'id'=>'local',
             ]
         ]);
@@ -169,6 +173,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Titular',
                 'id' =>'titular',
             ]
         ]);
@@ -182,6 +187,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Ubicación',
                 'id'=>'ubicacion',
             ]
         ]);
@@ -196,6 +202,7 @@ class AportacionForm extends Form
                 //'required' => true,
                 'class' => 'form-control',
                 'id'=>'antecedentes',
+                'placeholder' => 'Antecedentes',
             ]
         ]);
 
@@ -312,7 +319,8 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
-                'id' => 'claveCatastral'
+                'id' => 'claveCatastral',
+                'placeholder' => 'Clave Catastral',
             ]
         ]);
 
@@ -365,7 +373,8 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
-                'id' =>'titularAnterior'
+                'id' =>'titularAnterior',
+                'placeholder' =>'Titular anterior',
             ]
         ]);
 /////REGISTRO FISCAL//////
@@ -378,7 +387,8 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
-                'id' => 'Contribuyente'
+                'id' => 'Contribuyente',
+                'placeholder' =>'Contribuyente',
             ]
         ]);
 
@@ -421,6 +431,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Titular',
                 'id' => 'nombreComercial'
             ]
         ]);
@@ -434,6 +445,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Tenencia',
                 'id' => 'tenecia'
             ]
         ]);
@@ -442,11 +454,12 @@ class AportacionForm extends Form
             'type' => Element\Text::class,
             'name' => 'rfc',
             'options' => [
-                'label' => 'RFC',
+                'label' => 'R.F.C',
             ],
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'R.F.C',
                 'id' => 'rfContribuyente'
             ]
         ]);

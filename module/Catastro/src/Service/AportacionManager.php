@@ -7,6 +7,7 @@ use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
 use Catastro\Entity\Contribuyente;
 use Catastro\Entity\Localidad;
+use Catastro\Entity\GiroComercial;
 use Catastro\Model\Backend\OperGobServiceAdapter;
 
 class AportacionManager
@@ -172,29 +173,33 @@ class AportacionManager
     }
     public function guardarPersona($data)
     {
-        $contribuyente = new Contribuyente();
 
-        $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-        $contribuyente->setApellidoMaterno($data['apellido_materno']);
-        $contribuyente->setCurp($data['curp']);
-        $contribuyente->setCvePersona($data['cve_persona']);
-        $contribuyente->setGenero($data['genero']);
-        $contribuyente->setNombre($data['nombre']);
-        $contribuyente->setTelefono($data['telefono']);
-        $contribuyente->setCorreo($data['correo']);
-        $contribuyente->setRfc($data['rfc']);
-        $contribuyente->getRazonSocial($data['razon_social']);
+            $contribuyente = new Contribuyente();
+            //////Contribuyente/////
+            $contribuyente->setApellidoPaterno($data['apellido_paterno']);
+            $contribuyente->setApellidoMaterno($data['apellido_materno']);
+            $contribuyente->setCurp($data['curp']);
+            $contribuyente->setCvePersona($data['cve_persona']);
+            $contribuyente->setGenero($data['genero']);
+            $contribuyente->setNombre($data['nombre']);
+            $contribuyente->setTelefono($data['telefono']);
+            $contribuyente->setCorreo($data['correo']);
+            $contribuyente->setRfc($data['rfc']);
+            $contribuyente->getRazonSocial($data['razon_social']);
 
-        $currentDate = new \DateTime();
-        $contribuyente->setCreatedAt($currentDate);
-        $contribuyente->setUpdatedAt($currentDate);
+            $currentDate = new \DateTime();
+            $contribuyente->setCreatedAt($currentDate);
+            $contribuyente->setUpdatedAt($currentDate);
 
-        $this->entityManager->persist($contribuyente);
-        $this->entityManager->flush();
-        if ($contribuyente->getIdContribuyente() > 0) {
-            return $contribuyente;
-        }
-        return null;
+            $this->entityManager->persist($contribuyente);
+            $this->entityManager->flush();
+
+            if ($contribuyente->getIdContribuyente() > 0) {
+                return $contribuyente;
+            }
+
+            return 0;
+
     }
 
     public function actualizarContribuyente($contribuyente, $data)
@@ -484,18 +489,40 @@ class AportacionManager
     public function update($aportacion, $datos)
     {
         if($datos['status']==1){
-        $cvpersona = $aportacion->getIdContribuyente()->getCvePersona();
+        // $nombre = $aportacion->getIdContribuyente()->getNombre();
+        // $apellido_materno  = $aportacion->getIdContribuyente()->getNombre();
+        // $apellido_paterno  = $aportacion->getIdContribuyente()->getNombre();
+        // $genero           = $aportacion->getIdContribuyente()->getNombre();
+        // $estado_civiL       = $aportacion->getIdContribuyente()->getNombre();
+        // $correo_electronico  = $aportacion->getIdContribuyente()->getNombre();
+        // $rfc                 = $aportacion->getIdContribuyente()->getNombre();
+        // $curp                 = $aportacion->getIdContribuyente()->getNombre();
+        // $fecha_nacimiento      = $aportacion->getIdContribuyente()->getNombre();
+        $cvpersona  =  $aportacion->getIdContribuyente()->getCvePersona();
+        $añoInicial =  $aportacion->getEjercicioFiscal();
+        $añoFinal =  $aportacion->getEjercicioFiscal();
+        $ubicacion =  $aportacion->getIdPredio()->getUbicacion();
+        $localidad =  $aportacion->getIdPredio()->getLocalidad();
+        $id =  $aportacion->getIdAportacion();
+        $observacion =  $aportacion->getIdPredio()->getObservaciones();
+        $loteConflicto =  $aportacion->getIdPredio()->getLoteConflicto();
         $pagoAportacion = $aportacion->getPago();
-        $Addsolicitud = $this->opergobserviceadapter->AddSolicitud($cvpersona);
+        $Addsolicitud = $this->opergobserviceadapter->AddSolicitud($cvpersona,$añoInicial,$añoFinal,$ubicacion,$localidad,$id,$observacion,$loteConflicto);
         $idSolicitud = $Addsolicitud->IdEntity;
         $FuenteIngreso = $this->opergobserviceadapter->SolicitudFuentaIngreso($idSolicitud, $pagoAportacion);
+
         $aportacion->setIdSolicitud($idSolicitud);
         $aportacion->setEstatus($datos['status']);
+
+        $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
+
         }
 
         elseif($datos['status']==2){
         $aportacion->setEstatus($datos['status']);
+
+        $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
         }
 
@@ -534,9 +561,18 @@ class AportacionManager
         $avaluo = $valor_terreno + $valor_construnccion;
         $aportacion->setAvaluo($avaluo);//Avaluo Total
         $aportacion->setTasa($data['tasa_hidden']);
-        $aportacion->setEjercicioFiscal($data['ejercicio_f']);
-        $pago_aportacion = $data['tasa_hidden']*$avaluo;
-        $aportacion->setPago($pago_aportacion);//Pago aportacion
+        $aportacion->setEjercicioFiscal($data['ejercicio_fiscal']);
+        //$pago_aportacion = $data['tasa_hidden']*$avaluo;
+        //$aportacion->setPago($pago_aportacion);//Pago aportacion
+
+        if (is_numeric($data['pago_a'])) {
+                $aportacion->setPago($data['pago_a']);
+            }else{
+                //$aportacion->setPago(substr($data['pago_a'],1));
+                $pago_aportacion = $data['tasa_hidden']*$avaluo;
+                $aportacion->setPago($pago_aportacion);//Pago aportacion
+            }
+         //Pago aportacion
 
 
         // $currentDate = new \DateTime();
@@ -547,7 +583,18 @@ class AportacionManager
 
     public function guardarTest($datos)
         {
-            if($datos['Idaportacion'] > 0 ){
+            if($datos['Idaportacion'] > 0 && $datos['Idcontribuyente'] > 0){
+
+                $aportacionId = $datos['Idaportacion'];
+                $contribuyenteId = $datos['Idcontribuyente'];
+
+                $aportacion       = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+                $predioId         = $aportacion->getIdPredio()->getIdPredio();
+                $predio           = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
+                $contribuyente    = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+
+            }
+            elseif($datos['Idaportacion'] > 0 && $datos['Idcontribuyente'] < 1){
 
             $aportacionId = $datos['Idaportacion'];
 
@@ -556,6 +603,14 @@ class AportacionManager
             $predioId        = $aportacion->getIdPredio()->getIdPredio();
             $predio          = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
             $contribuyente   = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+            }
+            elseif($datos['Idaportacion'] < 1 && $datos['Idcontribuyente'] > 0){
+
+                $contribuyenteId = $datos['Idcontribuyente'];
+
+                $contribuyente   = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+                $predio             = new Predio();
+                $aportacion         = new Aportacion();
             }
             else{
             $contribuyente      = new Contribuyente();
@@ -571,6 +626,8 @@ class AportacionManager
             $contribuyente->setRfc($datos['rfc']);
             $contribuyente->setRazonSocial($datos['razonSocial']);
             $contribuyente->setCurp($datos['curp']);
+            $fecha_nacimiento = new \DateTime($datos['año']."-".$datos['mes']."-".$datos['dia']);
+            $contribuyente->setFechaNacimiento($fecha_nacimiento);
             $contribuyente->setCorreo($datos['correoElectronico']);
             $contribuyente->setTelefono($datos['telefono']);
             //$contribuyente->setRfc($datos['genero']);
@@ -593,11 +650,6 @@ class AportacionManager
             if ($aportacion->getIdAportacion() > 0) {
                 return $aportacion;
             }
-            // if ($contribuyente->getIdContribuyente() > 0) {
-
-
-            //     return $contribuyente;
-            // }
 
             return 0;
 
@@ -607,7 +659,18 @@ class AportacionManager
         public function guardarAportacion($datos)
     {
 
-        if($datos['Idaportacion'] > 0 ){
+            if($datos['Idaportacion'] > 0 && $datos['Idcontribuyente'] > 0){
+
+                $aportacionId = $datos['Idaportacion'];
+                $contribuyenteId = $datos['Idcontribuyente'];
+
+                $aportacion       = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
+                $predioId         = $aportacion->getIdPredio()->getIdPredio();
+                $predio           = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
+                $contribuyente    = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+
+            }
+            elseif($datos['Idaportacion'] > 0 && $datos['Idcontribuyente'] < 1){
 
             $aportacionId = $datos['Idaportacion'];
 
@@ -616,6 +679,14 @@ class AportacionManager
             $predioId        = $aportacion->getIdPredio()->getIdPredio();
             $predio          = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
             $contribuyente   = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+            }
+            elseif($datos['Idaportacion'] < 1 && $datos['Idcontribuyente'] > 0){
+
+                $contribuyenteId = $datos['Idcontribuyente'];
+
+                $contribuyente   = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+                $predio             = new Predio();
+                $aportacion         = new Aportacion();
             }
             else{
             $contribuyente      = new Contribuyente();
@@ -654,6 +725,7 @@ class AportacionManager
             $predio->setClaveCatastral($datos['claveCatastral']);
             $predio->setRegimenPropiedad($datos['regimenPropiedad']);
             $fecha_adquicision = new \DateTime($datos['fechaAdquicision']);
+            //$fecha_adquicision = new \DateTime($datos['año']."-".$datos['mes']."-".$datos['dia']);
             $predio->setFechaAdquicision($fecha_adquicision);
             $predio->setTitularAnterior($datos['titularAnterior']);
             $predio->setDocumentoPropiedad($datos['documentoPropiedad']);
@@ -826,6 +898,26 @@ public function actualizarColindancias($datos)
             $localidades->setNombreOficialLocalidad(utf8_decode($item->NombreOficialLocalidad));
 
             $this->entityManager->persist($localidades);
+            $this->entityManager->flush();
+        }
+    }
+
+    public function guardargiroComercial()
+    {
+        $girocomercialesWeb = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
+
+        foreach($girocomercialesWeb->GiroComercial as $item)
+        {
+            $girocomerciales = new GiroComercial();
+
+            $girocomerciales->setCveFtmMt($item->CveFteMT);
+            $girocomerciales->setGiroComercialDescripcion($item->GirosComercialesDescripcion);
+            $girocomerciales->setTarifasLicenciasBasuraCveFteIngBasura($item->TarifasLicenciasBasuraCveFteIngBasura);
+            $girocomerciales->setTarifasLicenciasBasuraCveFteIngLicencia($item->TarifasLicenciasBasuraCveFteIngLicencia);
+            $girocomerciales->setTarifasLicenciasBasuraImporteBasura($item->TarifasLicenciasBasuraImporteBasura);
+            $girocomerciales->setTarifasLicenciasBasuraImporteLicencia($item->TarifasLicenciasBasuraImporteLicencia);
+
+            $this->entityManager->persist($girocomerciales);
             $this->entityManager->flush();
         }
     }

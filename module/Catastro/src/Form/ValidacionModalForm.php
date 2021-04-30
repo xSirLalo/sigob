@@ -19,7 +19,7 @@ class ValidacionModalForm extends Form
             'type' => Element\Text::class,
             'name' => 'terreno',
             'options' => [
-                'label' => 'Sup. M2 Terreno',
+                'label' => 'SUP.M2 TERRENO',
             ],
             'attributes' => [
                 // 'required' => true,
@@ -63,7 +63,7 @@ class ValidacionModalForm extends Form
             'type' => Element\Text::class,
             'name' => 'sup_m',
             'options' => [
-                'label' => 'Sup.M2 Construcion',
+                'label' => 'SUP.M2 CONSTRUCCIÓN',
             ],
             'attributes' => [
                 // 'required' => true,
@@ -78,7 +78,7 @@ class ValidacionModalForm extends Form
             'type' => Element\Text::class,
             'name' => 'v_terreno',
             'options' => [
-                'label' => 'Valor del Terreno',
+                'label' => 'VALOR DEL TERRENO',
             ],
             'attributes' => [
                 // 'required' => true,
@@ -92,7 +92,7 @@ class ValidacionModalForm extends Form
             'type' => Element\Text::class,
             'name' => 'v_c',
             'options' => [
-                'label' => 'Valor de la construccion',
+                'label' => 'VALOR DE LA CONSTRUCCION',
             ],
             'attributes' => [
                 // 'required' => true,
@@ -107,7 +107,7 @@ class ValidacionModalForm extends Form
             'type' => Element\Text::class,
             'name' => 'a_total',
             'options' => [
-                'label' => 'Avaluo Total',
+                'label' => 'AVALUO',
             ],
             'attributes' => [
                 // 'required' => true,
@@ -117,26 +117,90 @@ class ValidacionModalForm extends Form
             ]
         ]);
 
+        // $this->add([
+        //     'type' => Element\Text::class,
+        //     'name' => 'ejercicio_f',
+        //     'options' => [
+        //         'label' => 'Ejercicio Fiscal',
+        //     ],
+        //     'attributes' => [
+        //         // 'required' => true,
+        //         'class' => 'form-control',
+        //         'data-toggle' => 'tooltip',
+        //         'onkeypress'=>'return validaNumericos(event)',
+        //         'id' =>'ejercicio_f',
+        //     ]
+        // ]);
+
         $this->add([
-            'type' => Element\Text::class,
-            'name' => 'ejercicio_f',
-            'options' => [
-                'label' => 'Ejercicio Fiscal',
-            ],
-            'attributes' => [
-                // 'required' => true,
-                'class' => 'form-control',
-                'data-toggle' => 'tooltip',
-                'onkeypress'=>'return validaNumericos(event)',
-                'id' =>'ejercicio_f',
-            ]
-        ]);
+			'type' => Element\DateSelect::class,
+			'name' => 'ejercicio_fiscal',
+			'options' => [
+				'label' => 'EJERCICIO FISCAL',
+				// 'create_empty_option' => true,
+				'min_year' => date('Y')-21,
+				'max_year' => date('Y'), # here we want users over the age of 13 only
+				'year' => date('Y'),
+				'render_delimiters' => false,
+				'year_attributes' => [
+					'class' => 'custom-select w-30',
+                    'id' => 'ejercicio_fiscal',
+                    'onchange' => 'CalcularAño()',
+                    //'value' => date('Y'),
+				],
+				'month_attributes' => [
+					'class' => 'custom-select w-30',
+					'hidden' => true,
+				],
+				'day_attributes' => [
+					'class' => 'custom-select w-30',
+					'hidden' => true,
+					'id' => 'day',
+				],
+			],
+			'attributes' => [
+				'required' => true
+
+			]
+		]);
+
+        $this->add([
+			'type' => Element\DateSelect::class,
+			'name' => 'ejercicio_fiscal_final',
+			'options' => [
+				'label' => 'EJERCICIO FISCAL FINAL',
+				// 'create_empty_option' => true,
+				'min_year' => date('Y')-21,
+				'max_year' => date('Y'), # here we want users over the age of 13 only
+				'year' => date('Y'),
+				'render_delimiters' => false,
+				'year_attributes' => [
+					'class' => 'custom-select w-30',
+					'value' => '2021',
+                    'id' => 'ejercicio_fiscal_final',
+                    'onchange' => 'CalcularAño()',
+                    'value' => date('Y'),
+				],
+				'month_attributes' => [
+					'class' => 'custom-select w-30',
+					'hidden' => true,
+				],
+				'day_attributes' => [
+					'class' => 'custom-select w-30',
+					'hidden' => true,
+					'id' => 'day'
+				],
+			],
+			'attributes' => [
+				'required' => true
+			]
+		]);
 
         $this->add([
             'type' => Element\Text::class,
             'name' => 'pago_a',
             'options' => [
-                'label' => 'Pago aportacion',
+                'label' => 'APORTACION',
             ],
             'attributes' => [
                 'readonly' => true,
@@ -242,7 +306,7 @@ class ValidacionModalForm extends Form
             'type' => Element\Date::class,
             'name' => 'vig',
             'options' => [
-            'label' => 'Vigencia',
+            'label' => 'FECHA',
             'format' => 'Y-m-d',
         ],
         'attributes' => [
