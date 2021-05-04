@@ -56,7 +56,7 @@ $(document).ready(function(){
                     targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
-                        $actionBtn = `<div class="row"><a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary">Ver</button></a>
+                        $actionBtn = `<div class="row"><a href="pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary">Ver</button></a>
                         <a class="btn btn-secondary" href="aportacion/editar/` + row['idAportacion'] + `" data-toggle="modal" onclick="edit_validation(` + row['idAportacion'] + `)">Modificar</a>
                         <button class="btn btn-success"  id="confirmar" name="confirmar" value="` + row['idAportacion'] + `"><i class="feather mr-2 icon-check-circle"></i>Confirmar</button>
                         <button class="btn btn-danger" id="cancelar" name="cancelar" value="` + row['idAportacion'] + `"><i class="feather mr-2 icon-x-circle"></i>Cancelar</button>

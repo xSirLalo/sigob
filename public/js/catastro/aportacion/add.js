@@ -540,8 +540,9 @@ function tipoPersona(){
         $('#div_correoElectronico').addClass('col-sm-6');
         $('#div_telefono').removeClass('col-sm-4');
         $('#div_telefono').addClass('col-sm-6');
+        $('#div_razonSocial').show();
         $('#div_razonSocial').removeClass('col-sm-4');
-        $('#div_razonSocial').addClass('col-sm-8');
+        $('#div_razonSocial').addClass('col-sm-6');
         $('#div_apellidoPaterno').hide();
         $('#div_apellidoMaterno').hide();
         $('#div_fechaNacimeinto').hide();
@@ -559,8 +560,11 @@ function tipoPersona(){
         $('#div_correoElectronico').addClass('col-sm-4');
         $('#div_telefono').removeClass('col-sm-6');
         $('#div_telefono').addClass('col-sm-4');
-        $('#div_razonSocial').removeClass('col-sm-8');
-        $('#div_razonSocial').addClass('col-sm-4');
+        $('#div_razonSocial').hide();
+        $('#div_rfc').removeClass('col-sm-4');
+        $('#div_rfc').addClass('col-sm-6');
+        $('#div_curp').removeClass('col-sm-4');
+        $('#div_curp').addClass('col-sm-6');
         $('#div_apellidoPaterno').show();
         $('#div_apellidoMaterno').show();
         $('#div_fechaNacimeinto').show();
@@ -743,6 +747,29 @@ $(document).ready(function() {
     ///Modal Contribuyente////////////
     $('#ModalContribuyente').on( 'click', function () {
         $('#addContribuyente').modal('show');
+        $("#tipoContribuyente").val("F")
+        ///Empezar como persona Fisica/////
+        $('#div_nombre').removeClass('col-sm-12');
+        $('#div_nombre').addClass('col-sm-4');
+        $('#div_correoElectronico').removeClass('col-sm-6');
+        $('#div_correoElectronico').addClass('col-sm-4');
+        $('#div_telefono').removeClass('col-sm-6');
+        $('#div_telefono').addClass('col-sm-4');
+        $('#div_razonSocial').hide();
+        $('#div_rfc').removeClass('col-sm-4');
+        $('#div_rfc').addClass('col-sm-6');
+        $('#div_curp').removeClass('col-sm-4');
+        $('#div_curp').addClass('col-sm-6');
+        $('#div_apellidoPaterno').show();
+        $('#div_apellidoMaterno').show();
+        $('#div_fechaNacimeinto').show();
+        $('#div_genero').show();
+        $('#div_mes').show();
+        $('#div_año').show();
+        $('#div_curp').show();
+        $('#br_año').show();
+        $('#br_mes').show();
+        //////////////////////////////////
         $('#nombreContribuyente').val("");
         $('#apellidoPaterno').val("");
         $('#apellidoMaterno').val("");
@@ -755,6 +782,7 @@ $(document).ready(function() {
         $('#correoElectronico').val("");
         $('#telefono').val("");
         $('#genero').val("Hombre");
+
 
     });
 
