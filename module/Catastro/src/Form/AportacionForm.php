@@ -111,7 +111,7 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
-                'placeholder' => 'Lote',
+                'placeholder' => 'Local',
                 'id'=>'local',
             ]
         ]);

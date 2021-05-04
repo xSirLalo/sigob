@@ -29,6 +29,9 @@ $this->inlineScript()
     // Js SweetAlert
     ->prependFile($this->basePath('assets/js/plugins/sweetalert.min.js'))
     ->prependFile($this->basePath('assets/js/pages/ac-alert.js'))
+    // Js Notification
+    ->prependFile($this->basePath('assets/js/plugins/bootstrap-notify.min.js'))
+    //->prependFile($this->basePath('assets/js/pages/ac-notification.js'))
     // Css DataTables
     //->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
     ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
@@ -294,6 +297,7 @@ $form->prepare();
                             <br>
                                 <!-- <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#addContribuyente" id="ModalContribuyente">Agregar Contribuyente</button> -->
                                 <button type="button" class="btn btn-success" id="ModalContribuyente">Agregar Contribuyente</button>
+
                             </div>
                             </div>
                         <hr>
