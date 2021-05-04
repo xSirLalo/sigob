@@ -116,6 +116,7 @@ class BibliotecaManager
     public function guardarRelacionAP($id, $archivito)
     {
         $filePredio = new ArchivoPredio();
+        $currentDate = new \DateTime();
 
         $Predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($id);
         if ($Predio == null) {
@@ -124,6 +125,8 @@ class BibliotecaManager
 
         $filePredio->setIdArchivo($archivito);
         $filePredio->setIdPredio($Predio);
+        $filePredio->setCreatedAt($currentDate);
+        $filePredio->setUpdatedAt($currentDate);
 
         $this->entityManager->persist($filePredio);
         $this->entityManager->flush();
@@ -132,6 +135,7 @@ class BibliotecaManager
     public function guardarRelacionAC($id, $archivito)
     {
         $fileContribuyente = new ArchivoContribuyente();
+        $currentDate = new \DateTime();
 
         $Contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
         if ($Contribuyente == null) {
@@ -140,6 +144,8 @@ class BibliotecaManager
 
         $fileContribuyente->setIdArchivo($archivito);
         $fileContribuyente->setIdContribuyente($Contribuyente);
+        $fileContribuyente->setCreatedAt($currentDate);
+        $fileContribuyente->setUpdatedAt($currentDate);
 
         $this->entityManager->persist($fileContribuyente);
         $this->entityManager->flush();

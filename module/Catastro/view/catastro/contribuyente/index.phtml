@@ -36,15 +36,11 @@ $this->inlineScript()
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-1 col-xs-12 mb-4" align=center>
-                    <div class="btn-group" role="group" aria-label="Botones">
-                        <!-- <a href="<?= $this->url("contribuyente/agregar") ?>" class="btn btn-primary" data-toggle="modal" onClick="add_contribuyente()">Agregar</a> -->
-                        <a href="<?= $this->url("contribuyente/agregar") ?>" class="btn btn-primary">Agregar</a>
-                        <a href="<?= $this->url("contribuyente/pdf") ?>" class="btn btn-danger">PDF</a>
-                        <a href="<?= $this->url("contribuyente/excel") ?>" class="btn btn-success">Excel</a>
-                    </div>
+                <div class="col-12">
+                    <a href="<?= $this->url("contribuyente/agregar") ?>" class="btn btn-secondary btn-sm float-right">Agregar</a>
                 </div>
             </div>
+            <br>
             <table class="display table table-striped table-hover dt-responsive nowrap" id="contribuyentes" style="width:100%">
                 <thead>
                     <tr>
@@ -67,10 +63,8 @@ $this->inlineScript()
                                 <td><?= $contribuyente->getGenero() ?></td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="<?= $this->url('contribuyente/ver', ['action' => 'ver', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-info"> Detalle</a>
-                                        <!-- <a href="<?= $this->url('contribuyente/ver', ['action' => 'ver', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-info" data-toggle="modal" onclick="view_contribuyente('<?= $contribuyente->getIdContribuyente() ?>')"> Ver</a> -->
-                                        <a href="<?= $this->url('contribuyente/editar', ['action' => 'editar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-warning"> Editar</a>
-                                        <a href="<?= $this->url('contribuyente/eliminar', ['action' => 'eliminar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="<?= $contribuyente->getIdContribuyente() ?>" > Eliminar</a>
+                                        <a href="<?= $this->url('contribuyente/ver', ['action' => 'ver', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-info btn-sm"> Detalle</a>
+                                        <a href="<?= $this->url('contribuyente/eliminar', ['action' => 'eliminar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" data-id="<?= $contribuyente->getIdContribuyente() ?>" > Eliminar</a>
                                     </div>
                                 </td>
                             </tr>
@@ -87,62 +81,6 @@ $this->inlineScript()
 </div>
 <!-- [ col] end -->
 
-<div class="modal fade" id="myModal" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <?= $this->form()->openTag($form); ?>
-                <input type="hidden" value="" name="id_contribuyente" id="id_contribuyente">
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('nombre')); ?>
-                    <?= $this->formElement($form->get('nombre')); ?>
-                    <ul class="text-danger"></ul>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('apellido_paterno')); ?>
-                    <?= $this->formElement($form->get('apellido_paterno')); ?>
-                    <ul class="text-danger"></ul>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('apellido_materno')); ?>
-                    <?= $this->formElement($form->get('apellido_materno')); ?>
-                    <ul class="text-danger"></ul>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('rfc')); ?>
-                    <?= $this->formElement($form->get('rfc')); ?>
-                    <ul class="text-danger"></ul>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('curp')); ?>
-                    <?= $this->formElement($form->get('curp')); ?>
-                    <ul class="text-danger"></ul>
-                </div>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('genero')); ?>
-                    <?= $this->formElement($form->get('genero')); ?>
-                    <ul class="text-danger"></ul>
-                </div>
-                <!-- CSRF -->
-                <?= $this->formHidden($form->get('csrf')); ?>
-                <ul class="text-danger"></ul>
-                <div class="modal-footer">
-                <!-- Boton -->
-                <?= $this->formSubmit($form->get('btnGuardar')); ?>
-                <button id="btnClose" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <?= $this->form()->closeTag(); ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -154,7 +92,7 @@ $this->inlineScript()
                 </button>
             </div>
             <div class="modal-body">
-                <p>Esta apunto de realizar una accion irreversible hasta para el administrador.</p>
+                <p>Esta apunto de realizar una acción irreversible hasta para el administrador.</p>
                 <p>¿Desea continuar?</p>
             </div>
             <div class="modal-footer">

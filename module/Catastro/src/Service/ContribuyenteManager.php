@@ -47,6 +47,11 @@ class ContribuyenteManager
 
         $this->entityManager->persist($contribuyente);
         $this->entityManager->flush();
+
+        if ($contribuyente->getIdContribuyente() > 0) {
+            return $contribuyente;
+        }
+        return false;
     }
 
     public function guardarPersona($data)
@@ -63,6 +68,7 @@ class ContribuyenteManager
         $contribuyente->setCorreo($data['correo']);
         $contribuyente->setRfc($data['rfc']);
         $contribuyente->setRazonSocial($data['razon_social']);
+        $contribuyente->setTipoPersona($data['tipo_persona']);
 
         $currentDate = new \DateTime();
         $contribuyente->setCreatedAt($currentDate);

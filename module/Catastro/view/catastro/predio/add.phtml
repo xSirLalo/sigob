@@ -31,96 +31,96 @@ $form->prepare();
 <div class="col-md-6">
     <div class="card">
         <div class="card-header">
-            <h5><?= $title ?></h5>
+            <h5>Datos del Predio</h5>
         </div>
         <div class="card-body">
-            <!-- [ openTag ] start -->
             <?= $this->form()->openTag($form); ?>
-                <?= $this->formLabel($form->get('cve_catastral')); ?>
-                <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-select2-predio col-sm-12"])); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('cve_catastral')); ?>
-                </div>
-
-                <?= $this->formLabel($form->get('titular')); ?>
-                <?= $this->formText($form->get('titular')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('titular')); ?>
-                </div>
-
-                <?= $this->formLabel($form->get('localidad')); ?>
-                <?= $this->formText($form->get('localidad')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('localidad')); ?>
-                </div>
-
-                <?= $this->formLabel($form->get('titular_anterior')); ?>
-                <?= $this->formText($form->get('titular_anterior')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('titular_anterior')); ?>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('cve_catastral')); ?>
+                    <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-select2-predio col-sm-12"])); ?>
+                    <div class="text-danger">
+                        <?= $this->formElementErrors($form->get('cve_catastral')); ?>
+                    </div>
                 </div>
                 <hr>
-
-                <?= $this->formLabel($form->get('norte')); ?>
-                <?= $this->formText($form->get('norte')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('norte')); ?>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('ultimo_ejercicio_pagado')); ?>
+                        <?= $this->formText($form->get('ultimo_ejercicio_pagado')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('ultimo_ejercicio_pagado')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('ultimo_periodo_pagado')); ?>
+                        <?= $this->formText($form->get('ultimo_periodo_pagado')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('ultimo_periodo_pagado')); ?>
+                        </div>
+                    </div>
                 </div>
-
-                <?= $this->formLabel($form->get('con_norte')); ?>
-                <?= $this->formText($form->get('con_norte')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('con_norte')); ?>
-                </div>
-
-                <?= $this->formLabel($form->get('sur')); ?>
-                <?= $this->formText($form->get('sur')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('sur')); ?>
-                </div>
-
-                <?= $this->formLabel($form->get('con_sur')); ?>
-                <?= $this->formText($form->get('con_sur')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('con_sur')); ?>
-                </div>
-
-                <?= $this->formLabel($form->get('este')); ?>
-                <?= $this->formText($form->get('este')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('este')); ?>
-                </div>
-
-                <?= $this->formLabel($form->get('con_este')); ?>
-                <?= $this->formText($form->get('con_este')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('con_este')); ?>
-                </div>
-
-                <?= $this->formLabel($form->get('oeste')); ?>
-                <?= $this->formText($form->get('oeste')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('oeste')); ?>
-                </div>
-
-                <?= $this->formLabel($form->get('con_oeste')); ?>
-                <?= $this->formText($form->get('con_oeste')); ?>
-                <div class="text-danger">
-                <?= $this->formElementErrors($form->get('con_oeste')); ?>
-                </div>
-                <br>
-                <?= $this->formSubmit($form->get('btnGuardar')); ?>
-                <?= $this->formHidden($form->get('csrf')); ?>
-                <?= $this->formElementErrors($form->get('csrf')); ?>
-                <a href="<?= $this->url("predio") ?>" class="btn btn-secondary"> Volver atrás</a>
-            <!-- [ closeTag ] start -->
         </div>
     </div>
 </div>
 <!-- [ col] end -->
-
-
+<!-- [ col ] start -->
 <div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h5>Ubicacion Geográfica</h5>
+        </div>
+        <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('municipio')); ?>
+                        <?= $this->formText($form->get('municipio')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('municipio')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('localidad')); ?>
+                        <?= $this->formText($form->get('localidad')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('localidad')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('colonia')); ?>
+                        <?= $this->formText($form->get('colonia')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('colonia')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('calle')); ?>
+                        <?= $this->formText($form->get('calle')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('calle')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('numero_exterior')); ?>
+                        <?= $this->formText($form->get('numero_exterior')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('numero_exterior')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('numero_interior')); ?>
+                        <?= $this->formText($form->get('numero_interior')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('numero_interior')); ?>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+<!-- [ col] end -->
+<div class="col-md-12">
     <div class="card">
         <div class="card-header">
             <h5><?= $this->formLabel($form->get('archivo')); ?></h5>
@@ -157,3 +157,8 @@ $form->prepare();
     </div>
 </div>
 <!-- [ col] end -->
+
+                <?= $this->formHidden($form->get('csrf')); ?>
+                <?= $this->formElementErrors($form->get('csrf')); ?>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
+                <a href="<?= $this->url("predio") ?>" class="btn btn-secondary"> Volver atrás</a>

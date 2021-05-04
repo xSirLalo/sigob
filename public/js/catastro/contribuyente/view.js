@@ -32,3 +32,25 @@ function view_contribuyente(id)
         }
     });
 }
+$(document).ready(function () {
+    $("#fileToUpload").fileinput({
+        browseClass: 'btn btn-xs btn-secondary',
+        language: "es",
+        showCaption: true,
+        showRemove: false,
+        showUpload: false,
+        showPreview: false,
+        maxFileCount: 1,
+        browseLabel: '',
+        browseIcon: '<i class="fa fa-folder"></i>',
+        allowedFileExtensions: ["png", "jpeg", "jpg", "bmp", "pdf"],
+        uploadUrl: '/contribuyente/guardar-archivo',
+        uploadAsync: true,
+        uploadExtraData: function (previewId, index) {
+            var info = 0;//{'tk':$("#token").val()};
+            return info;
+        }
+    }).on("filebatchselected", function (event, files) {
+        // $("#archivo").fileinput("upload");
+    });
+});

@@ -113,6 +113,7 @@ $(document).ready(function () {
             $('[name ="nombre"]').val(data.nombre);
             $('[name ="apellido_paterno"]').val(data.apellido_paterno);
             $('[name ="apellido_materno"]').val(data.apellido_materno);
+            $('[name ="tipo_persona"]').val(data.tipo_persona);
             $('[name ="rfc"]').val(data.rfc);
             $('[name ="curp"]').val(data.curp);
             $('[name ="razon_social"]').val(data.razon_social);

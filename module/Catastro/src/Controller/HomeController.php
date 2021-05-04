@@ -19,18 +19,6 @@ class HomeController extends AbstractActionController
 
     public function indexAction()
     {
-        //$resultado = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
-        // $resultado = $this->opergobserviceadapter->obtenerPersonaPorRfc("AVX130125SK7");
-        $resultadoWebService = $this->opergobserviceadapter->obtenerPersonaPorRfc("SAAM920510QQ6");
-        // $resultado = $this->opergobserviceadapter->obtenerPredio("109006000020047-");
-        // $resultado = $this->opergobserviceadapter->obtenerColindancia("730");
-
-        // echo "<pre>";
-        // print_r($resultado->PredioColindancia[0]->Descripcion);
-        // echo "</pre>";
-        // exit();
-        return new ViewModel(['datos' => $resultadoWebService]);
-
         return new ViewModel();
     }
 }

@@ -8,9 +8,22 @@ $this->pageBreadcrumbs()->setItems([
     'Contribuyentes' => $this->url('contribuyente'),
     'Detalle' => $this->url('contribuyente/ver'),
 ]);
+// Css Requerido
+$this->headLink()
+    // Css FileInput
+    ->prependStylesheet($this->basePath('js/plugins/FileInput/css/fileinput.min.css'))
+    ;
+// Js Requerido
+$this ->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/contribuyente/view.js'))
+    // Js FileInput
+    ->prependFile($this->basePath('js/plugins/FileInput/js/locales/es.js'))
+    ->prependFile($this->basePath('js/plugins/FileInput/js/fileinput.min.js'))
+    ;
 ?>
 <!-- [ col ] start -->
-<div class="col-md-6">
+<div class="col-md-12">
     <div class="card">
         <div class="card-header">
             <h5><?= $title ?></h5>
@@ -22,6 +35,7 @@ $this->pageBreadcrumbs()->setItems([
                         <td>Nombre</td>
                         <td><?= $contribuyente->getNombre() ?></td>
                     </tr>
+                    <?php if ($contribuyente->getTipoPersona() == 'F'): ?>
                     <tr>
                         <td>Apellido Paterno</td>
                         <td><?= $contribuyente->getApellidoPaterno() ?></td>
@@ -30,16 +44,31 @@ $this->pageBreadcrumbs()->setItems([
                         <td>Apellido Materno</td>
                         <td><?= $contribuyente->getApellidoMaterno() ?></td>
                     </tr>
+                    <?php endif; ?>
+                    <tr>
+                        <td>Razon Social</td>
+                        <td><?= $contribuyente->getRazonSocial() ?></td>
+                    </tr>
                     </tr>
                     <tr>
                         <td>R.F.C.</td>
                         <td><?= $contribuyente->getRfc() ?></td>
                     </tr>
                     </tr>
+                    <?php if ($contribuyente->getTipoPersona() == 'F'): ?>
                     <tr>
                         <td>C.U.R.P.</td>
                         <td><?= $contribuyente->getCurp() ?></td>
                     </tr>
+                    <tr>
+                        <td>Genero</td>
+                        <td>
+                            <?php echo  $contribuyente->getGenero() == 1 ? 'Hombre' : '' ?>
+                            <?php echo  $contribuyente->getGenero() == 2 ? 'Mujer' : '' ?>
+                            <?php echo  $contribuyente->getGenero() == 3 ? 'Otro' : '' ?>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
                     <tr>
                         <td>Correo Electrónico</td>
                         <td><?= $contribuyente->getCorreo() ?></td>
@@ -49,19 +78,24 @@ $this->pageBreadcrumbs()->setItems([
                         <td><?= $contribuyente->getTelefono() ?></td>
                     </tr>
                     <tr>
-                        <td>Genero</td>
-                        <td><?= $contribuyente->getGenero() ?></td>
+                        <td>Fecha de Alta</td>
+                        <td><?= $contribuyente->getCreatedAt()->format('Y-m-d h:m:s')  ?></td>
                     </tr>
+                    <tr>
+                        <td>Fecha Ultima Modificación</td>
+                        <td><?= $contribuyente->getUpdatedAt()->format('Y-m-d h:m:s')  ?></td>
+                    </tr>
+
                 </tbody>
             </table>
             <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
-            <a href="<?= $this->url('contribuyente/editar', ['action' => 'editar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-warning"> Editar</a>
+            <a href="<?= $this->url('contribuyente/editar', ['action' => 'editar', 'id' => $contribuyente->getIdContribuyente()]); ?>" class="btn btn-warning"> Editar datos</a>
         </div>
     </div>
 </div>
 <!-- [ col] end -->
 <!-- [ col ] start -->
-<div class="col-md-6">
+<div class="col-md-12">
     <div class="card">
         <div class="card-header">
             <h5><?= $title ?></h5>
@@ -92,11 +126,18 @@ $this->pageBreadcrumbs()->setItems([
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="3" class="text-center">No hay archivos...</td>
+                            <td colspan="4" class="text-center">No hay archivos...</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
+            <div class="float-right">
+                <form action="upload.php" method="post" enctype="multipart/form-data">
+                    <div class="file-loading">
+                        <input type="file" name="fileToUpload" id="fileToUpload">
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

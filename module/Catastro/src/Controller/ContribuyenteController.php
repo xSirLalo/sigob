@@ -44,15 +44,6 @@ class ContribuyenteController extends AbstractActionController
 
     public function indexAction()
     {
-        $form = new ContribuyenteModalForm();
-        //$contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-        return new ViewModel(['form' => $form]);
-        //return new ViewModel ([]);
-    }
-
-    public function index2Action()
-    {
-        $form = new ContribuyenteModalForm();
         $request = $this->getRequest();
         $response = $this->getResponse();
         $postData= $_POST;
@@ -116,19 +107,16 @@ class ContribuyenteController extends AbstractActionController
             $view = new JsonModel($result);
             $view->setTerminal(true);
         } else {
-            // $page = $this->params()->fromQuery('page', 1);
-            // $query = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c')->getQuery();
+            $page = $this->params()->fromQuery('page', 1);
+            $query = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c')->getQuery();
 
-            // $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-            // $paginator = new Paginator($adapter);
-            // $paginator->setDefaultItemCountPerPage(10);
-            // $paginator->setCurrentPageNumber($page);
+            $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+            $paginator = new Paginator($adapter);
+            $paginator->setDefaultItemCountPerPage(10);
+            $paginator->setCurrentPageNumber($page);
 
             $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-            $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
-
-            // $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-            // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
+            $view = new ViewModel(['contribuyentes' => $contribuyentes]);
         }
         return $view;
     }
@@ -140,9 +128,6 @@ class ContribuyenteController extends AbstractActionController
         $response = $this->getResponse();
         $postData = $_POST;
 
-
-        // FIXME: Arreglar falla con el datatables solo muestra una pagina
-
         $columns = [
             0 => 'idContribuyente',
             1 => 'nombre',
@@ -152,22 +137,10 @@ class ContribuyenteController extends AbstractActionController
 
         // AJAX response
         if ($request->isXmlHttpRequest()) {
-            // $fields = ['c.idContribuyente', 'c.nombre', 'c.apellidoPaterno', 'c.apellidoMaterno', 'c.genero'];
             $fields = ['c'];
-            // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
             $qb = $this->entityManager->createQueryBuilder();
             $qb ->select($fields)->from('Catastro\Entity\Contribuyente', 'c');
-            //$totalrows = $qb->getResult()->count();
             $count = $qb->getQuery()->getScalarResult();
-                // $query = $qb->getQuery();
-                // $totalrows = $query->getResult()->count();
-                // echo "<pre>";
-                // print_r($count);
-                // echo "</pre>";
-                // exit();
-
-                //$count = $qb->getQuery()->getSingleScalarResult();
-
 
             $searchKeyWord = htmlspecialchars($postData['search']['value']);
             if (isset($searchKeyWord)) {
@@ -184,12 +157,9 @@ class ContribuyenteController extends AbstractActionController
                 $qb ->orderBy('c.idContribuyente', 'DESC');
             }
 
-            if ($postData['length'] != -1)  {
+            if ($postData['length'] != -1) {
                 $qb ->setFirstResult($postData['start'])->setMaxResults($postData['length']);
-                //$qb ->setFirstResult($postData['start']);
             }
-
-
 
             $query = $qb->getQuery()->getResult();
 
@@ -215,7 +185,7 @@ class ContribuyenteController extends AbstractActionController
 
             return $response->setContent(json_encode($result));
 
-        // $response->setStatusCode(200);
+            // $response->setStatusCode(200);
             // $response->setContent(\Laminas\Json\Json::encode($result));
             // return $response;
 
@@ -227,45 +197,6 @@ class ContribuyenteController extends AbstractActionController
             // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
             // echo 'Error get data from ajax';
         }
-    }
-
-    public function datatable2Action()
-    {
-        $request = $this->getRequest();
-        $response = $this->getResponse();
-        //$qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
-        //$query = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-        $qb = $this->entityManager->createQueryBuilder()->select('c')->from('Catastro\Entity\Contribuyente', 'c');
-        $query = $qb->getQuery()->getResult();
-
-        $data = [];
-
-        foreach ($query as $r) {
-            $data[] = [
-                    'idContribuyente' => $r->getIdContribuyente(),
-                    'nombre'          => $r->getNombre(),
-                    'apellidoPaterno' => $r->getApellidoPaterno(),
-                    'apellidoMaterno' => $r->getApellidoMaterno(),
-                    'genero'          => $r->getGenero(),
-                    'opciones'        => "Cargando..."
-                ];
-        }
-        $result = [
-                    "draw"            => 1,
-                    "recordsTotal"    => count($data),
-                    "recordsFiltered" => count($data),
-                    'aaData'          => $data,
-                ];
-
-        // return $response->setContent(json_encode($result));
-
-        // $response->setStatusCode(200);
-        // $response->setContent(\Laminas\Json\Json::encode($result));
-        // return $response;
-
-        $json = new JsonModel($result);
-        $json->setTerminal(true);
-        return $json;
     }
 
     public function addAction()
@@ -280,6 +211,53 @@ class ContribuyenteController extends AbstractActionController
                 $request->getPost()->toArray(),
                 $request->getFiles()->toArray()
             );
+            // $categoriaDefault = $formData['id_archivo_categoria'];
+            // if ($categoriaDefault != '0') {
+            // $archivoUrl = (array) $this->params()->fromFiles('archivo');
+            // $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+
+            // $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+            // $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+            // $num = (int) count($archivoUrl);
+
+            // for ($i=0; $i < $num; $i++) {
+            //     $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+
+            //     $file_folder = $destino . '/' . $newName;
+
+            //     // if (file_exists($file_folder)) {
+            //     //     // FIXME: Vacio aun asi muestra el mensaje
+            //     //     $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
+            //     //     return $this->redirect()->toRoute('predio/agregar');
+            //     // }
+
+            //     $inputFilter = new OptionalInputFilter();
+            //     $inputFilter->add([
+            //             'name' => 'archivo',
+            //             'required' => false,
+            //             'validators' => [
+            //                 ['name' => Validator\NotEmpty::class],
+            //                 [
+            //                     'name' => Validator\File\Size::class,
+            //                     'options' => [
+            //                         'min' => '3kB',
+            //                         'max' => '15MB'
+            //                     ],
+            //                 ],
+            //             ],
+            //             'filters' => [
+            //                 [
+            //                     'name' => Filter\File\Rename::class,
+            //                     'options' => [
+            //                         'target' => $destino . '/' . $newName,
+            //                     ]
+            //                 ]
+            //             ]
+            //         ]);
+            //     $form->setInputFilter($inputFilter);
+            // }
+            // }
+
             // $formData = $request->getPost()->toArray();
             // $inputFilter = new OptionalInputFilter();
             // $inputFilter->add([
@@ -325,6 +303,8 @@ class ContribuyenteController extends AbstractActionController
                         'curp',
                         'correo',
                         'telefono',
+                        'id_archivo_categoria',
+                        'archivo',
                     ]);
                 } elseif ($tipoPersona=='M') { // Persona Moral
                     $form->setValidationGroup([
@@ -335,19 +315,57 @@ class ContribuyenteController extends AbstractActionController
                         'rfc',
                         'correo',
                         'telefono',
+                        'id_archivo_categoria',
+                        'archivo',
                     ]);
                 }
                 if ($form->isValid()) {
                     try {
                         $data = $form->getData();
-
+                        // echo "<pre>";
+                        // print_r($data);
+                        // echo "</pre>";
+                        // exit();
+                        $categoriaDefault = $data['id_archivo_categoria'];
                         $id = $data['input1'];
+                        $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                        $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+                        $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+                        $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+                        $num = (int) count($archivoUrl);
+
+                        for ($i=0; $i < $num; $i++) {
+                            $filename = $_FILES['archivo']['name'][$i];
+                            $filesize = $_FILES['archivo']['size'][$i];
+                            $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                            $file_type = $_FILES['archivo']['type'][$i];
+                            $date = date("d-m-Y_H-i");
+                            $temp = explode(".", $filename);
+                            $new_filename =  strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
+                            $file_folder = $destino . '/' . $new_filename;
+
+                            // if (!file_exists($file_folder)) {
+                            $data['archivoBlob'] = file_get_contents($file_folder, false);
+                            $data['extension'] = $temp[count($temp)-1];
+                            $data['size'] = $filesize;
+                            $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                            $data['categoria'] = $categoria[$i];
+
+                            $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+                            // }
+                        }
                         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
                         if ($contribuyente) {
                             $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
+                            // if (!file_exists($destino)) {
+                            $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
+                            // }
                             $this->flashMessenger()->addInfoMessage('Se actualizo con éxito!');
                         } else {
-                            $this->contribuyenteManager->guardarContribuyente($data);
+                            $contribuyente = $this->contribuyenteManager->guardarContribuyente($data);
+                            // if (!file_exists($destino)) {
+                            $this->bibliotecaManager->guardarRelacionAC($contribuyente, $archivito);
+                            // }
                             $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                         }
                         return $this->redirect()->toRoute('contribuyente');
@@ -359,169 +377,6 @@ class ContribuyenteController extends AbstractActionController
             }
         }
         return new ViewModel(['form' => $form, 'categorias' => $categorias]);
-    }
-
-    public function add2Action()
-    {
-        $form = new ContribuyenteForm();
-        $categorias = $this->bibliotecaManager->categorias();
-        $destination = './public/img';
-        $request = $this->getRequest();
-        // AJAX response
-        // if ($request->isXmlHttpRequest()) {
-        // $form = new ContribuyenteModalForm();
-        // $data = $this->params()->fromPost();
-        // $form->setData($request->getPost());
-        // if ($form->isValid()) {
-        //     $data = $form->getData();
-        //     $data['status'] = true;
-        //     $this->contribuyenteManager->agregar($data);
-        // } else {
-        //     $data['status'] = false;
-        //     $data['errors'] = $form->getMessages();
-        // };
-        // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-        // $view = new JsonModel($data);
-        // $view->setTerminal(true);
-        // } else {
-        if ($request->isPost()) {
-            // $data = \array_merge_recursive(
-            //     $request->getFiles()->toArray(),
-            //     $request->getPost()->toArray(),
-            // );
-            // $data = $this->params()->fromPost();
-            // $archivoUrl = (array) $this->params()->fromFiles('archivo');
-            // $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
-
-            // $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
-            // $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
-            // $num = (int) count($archivoUrl);
-            // for ($i=0; $i < $num; $i++) {
-            //     $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-
-            //     $file_folder = $destination . '/' . $newName;
-
-            //     if (file_exists($file_folder)) {
-            //         // FIXME: Vacio aun asi muestra el mensaje
-            //         $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
-            //         return $this->redirect()->toRoute('contribuyente/agregar');
-            //     }
-
-            //     $inputFilter = new OptionalInputFilter();
-            //     $inputFilter->add([
-            //         'name' => 'archivo',
-            //         'filters' => [
-            //             [
-            //                 'name' => Filter\File\Rename::class,
-            //                 'options' => [
-            //                     'target' => $destination . '/' . $newName,
-            //                 ]
-            //             ]
-            //         ]
-            //     ]);
-            //     $form->setInputFilter($inputFilter);
-            // }
-            $formData = $request->getPost()->toArray();
-            $form->setData($formData);
-            $form->setValidationGroup(['tipo_persona']);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $tipoPersona = $data['tipo_persona'];
-
-                if ($tipoPersona=='F') {
-                    $form->setValidationGroup(['tipo_persona', 'apellido_paterno', 'apellido_materno']);
-                } elseif ($tipoPersona=='M') {
-                    $form->setValidationGroup(['tipo_persona', 'razon_social']);
-                }
-                if ($form->isValid()) {
-                }
-                // $archivoUrl = (array) $this->params()->fromFiles('archivo');
-                // $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
-
-                // $categorias = (array) $this->params()->fromPost('id_archivo_categoria');
-                // $categorias = array_slice($categorias, 0, 5); # we restrict to 5 fields i meant
-
-                // $num = (int) count($archivoUrl);
-                // for ($i=0; $i < $num; $i++) {
-                //     $filename = $_FILES['archivo']['name'][$i];
-                //     $filesize = $_FILES['archivo']['size'][$i];
-                //     $tmp_name = $_FILES['archivo']['tmp_name'][$i];
-                //     $file_type = $_FILES['archivo']['type'][$i];
-                //     $date = date("d-m-Y_H-i");
-                //     $temp = explode(".", $filename);
-                //     $new_filename =   strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
-                //     $file_folder = $destination . '/' . $new_filename;
-
-                //     $data['archivoBlob'] = file_get_contents($file_folder, true);
-                //     $data['extension'] = $temp[count($temp)-1];
-                //     $data['size'] = $filesize;
-                //     $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-                //     $data['categoria'] = $categoria[$i];
-                $id = $data['input1'];
-
-                //     $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
-
-                //     if ($archivito) { // TODO: Hacer funcionar
-                //         $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
-                //     }
-
-                $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
-                if ($contribuyente) {
-                    $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
-                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
-                } else {
-                    $this->contribuyenteManager->guardarContribuyente($data);
-                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                }
-                // }
-                return $this->redirect()->toRoute('contribuyente');
-                // $this->contribuyenteManager->agregar($data);
-                // $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-            }
-        }
-        $view = new ViewModel(['form' => $form, 'categorias' => $categorias]);
-        // }
-        return $view;
-    }
-
-    public function view1Action()
-    {
-        $request = $this->getRequest();
-        $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
-        // AJAX response
-        // if ($request->isXmlHttpRequest()) {
-        //     $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-        //     $data = [
-        //         'id_contribuyente' => $contribuyente->getIdContribuyente(),
-        //         'nombre'           => $contribuyente->getNombre(),
-        //         'apellido_paterno' => $contribuyente->getApellidoPaterno(),
-        //         'apellido_materno' => $contribuyente->getApellidoMaterno(),
-        //         'rfc'              => $contribuyente->getRfc(),
-        //         'curp'             => $contribuyente->getCurp(),
-        //         'genero'           => $contribuyente->getGenero(),
-        //     ];
-
-        //     $view = new JsonModel($data);
-        //     $view->setTerminal(true);
-        // } else {
-        if ($contribuyenteId < 0) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
-        }
-
-        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-
-        if ($contribuyente == null) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
-        }
-
-        $view = new ViewModel(['contribuyente' => $contribuyente]);
-        // }
-        return $view;
     }
 
     public function viewAction()
@@ -562,64 +417,47 @@ class ContribuyenteController extends AbstractActionController
         $request = $this->getRequest();
         $response = $this->getResponse();
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
-        // AJAX response
-        if ($request->isXmlHttpRequest()) {
-            $form = new ContribuyenteModalForm();
+        $form = new ContribuyenteForm();
+        if ($contribuyenteId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
+
+        if ($contribuyente == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+            return $response->setTemplate('error/404');
+        }
+
+        if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            if ($request->isPost()) {
-                $form->setData($request->getPost());
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $data['status'] = true;
-                    $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
-                    $this->contribuyenteManager->actualizar($contribuyente, $data);
-                } else {
-                    $data['status'] = false;
-                    $data['errors'] = $form->getMessages();
-                };
-                $view = new JsonModel($data);
-                $view->setTerminal(true);
+            $form->setData($data);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
+                $this->contribuyenteManager->actualizar($contribuyente, $data);
+                return $this->redirect()->toRoute('contribuyente');
             }
         } else {
-            $form = new ContribuyenteModalForm();
-            if ($contribuyenteId < 0) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
-
-            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-
-            if ($contribuyente == null) {
-                $this->layout()->setTemplate('error/404');
-                $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
-            }
-
-            if ($this->getRequest()->isPost()) {
-                $data = $this->params()->fromPost();
-                $form->setData($data);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
-                    $this->contribuyenteManager->actualizar($contribuyente, $data);
-                    return $this->redirect()->toRoute('contribuyente');
-                }
-            } else {
-                $data = [
-                    'nombre' => $contribuyente->getNombre(),
-                    'apellido_paterno' => $contribuyente->getApellidoPaterno(),
-                    'apellido_materno' => $contribuyente->getApellidoMaterno(),
-                    'rfc' => $contribuyente->getRfc(),
-                    'curp' => $contribuyente->getCurp(),
-                    'genero' => $contribuyente->getGenero(),
-                ];
-                $form->setData($data);
-            }
-            $view = new ViewModel(['form' => $form]);
+            $data = [
+                'tipo_persona' => $contribuyente->getTipoPersona(),
+                'nombre' => $contribuyente->getNombre(),
+                'apellido_paterno' => $contribuyente->getApellidoPaterno(),
+                'apellido_materno' => $contribuyente->getApellidoMaterno(),
+                'fecha_nacimiento' => $contribuyente->getFechaNacimiento(),
+                'razon_social' => $contribuyente->getRazonSocial(),
+                'rfc' => $contribuyente->getRfc(),
+                'curp' => $contribuyente->getCurp(),
+                'genero' => $contribuyente->getGenero(),
+                'correo' => $contribuyente->getCorreo(),
+                'telefono' => $contribuyente->getTelefono(),
+            ];
+            $form->setData($data);
         }
-        return $view;
+        return new ViewModel(['form' => $form]);
     }
 
     public function deleteAction()
@@ -672,9 +510,12 @@ class ContribuyenteController extends AbstractActionController
 
         $qb = $this->entityManager->createQueryBuilder();
 
-        $qb ->select('c')
-            ->from('Catastro\Entity\Contribuyente', 'c')
-            ->where('c.rfc LIKE :word')
+        $qb ->select('c')->from('Catastro\Entity\Contribuyente', 'c')
+                ->where($qb->expr()->like('c.nombre', ":word"))
+                ->orWhere($qb->expr()->like('c.apellidoPaterno', ":word"))
+                ->orWhere($qb->expr()->like('c.apellidoMaterno', ":word"))
+                ->orWhere($qb->expr()->like('c.rfc', ":word"))
+                ->orWhere($qb->expr()->like('c.cvePersona', ":word"))
             ->setParameter("word", '%'.addcslashes($word, '%_').'%');
         $query = $qb->getQuery()->getResult();
 
@@ -683,20 +524,14 @@ class ContribuyenteController extends AbstractActionController
             foreach ($query as $r) {
                 $arreglo [] = [
                     'id' => $r->getIdContribuyente(),
-                    'item_select_name'=> $r->getNombre() . ' ' . $r->getApellidoPaterno() . ' ' . $r->getApellidoMaterno(). ' ' . $r->getRfc(),
+                    'item_select_name'=> $r->getCvePersona().'-'.$r->getNombre(). ' ' .$r->getApellidoPaterno(). ' ' .$r->getApellidoMaterno(),
                 ];
             }
         } else {
-            $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($word);
-            //if((!(array)$WebService))
+            $WebService = $this->opergobserviceadapter->obtenerNombrePersona($word);
             if (empty($WebService->Persona)) {
                 $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($word);
             }
-            // if((array)($WebService))
-            // if(empty($WebService->Persona))
-            // {
-            // $WebService = $this->opergobserviceadapter->obtenerNombrePersona($word);
-            // }
             if (isset($WebService->Persona)) {
                 if (is_array($WebService->Persona)) {
                     $WebServicePersona = [
@@ -704,6 +539,7 @@ class ContribuyenteController extends AbstractActionController
                             'nombre'           => $WebService->Persona[0]->NombrePersona,
                             'apellido_paterno' => $WebService->Persona[0]->ApellidoPaternoPersona,
                             'apellido_materno' => $WebService->Persona[0]->ApellidoPaternoPersona,
+                            'tipo_persona'     => $WebService->Persona[0]->TipoPersona,
                             'rfc'              => $WebService->Persona[0]->RFCPersona,
                             'curp'             => $WebService->Persona[0]->CURPPersona,
                             'razon_social'     => $WebService->Persona[0]->RazonSocialPersona,
@@ -714,10 +550,12 @@ class ContribuyenteController extends AbstractActionController
 
                     $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
 
-                    $arreglo[] = [
-                        'id' => $contribuyente->getIdContribuyente(),
-                        'item_select_name' =>  $WebService->Persona[0]->RazonSocialPersona."-".$WebService->Persona[0]->NombrePersona,
-                    ];
+                    if ($contribuyente) {
+                        $arreglo[] = [
+                                    'id' => $contribuyente->getIdContribuyente(),
+                                    'item_select_name' => $WebService->Persona[0]->CvePersona.' '.$WebService->Persona[0]->NombrePersona,
+                                ];
+                    }
                 } else {
                     if (isset($WebService->Persona)) {
                         $WebServicePersona = [
@@ -735,10 +573,12 @@ class ContribuyenteController extends AbstractActionController
 
                         $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
 
-                        $arreglo[] = [
-                        'id' => $contribuyente->getIdContribuyente(),
-                        'item_select_name' => $WebService->Persona->RazonSocialPersona."-".$WebService->Persona->NombrePersona,
-                    ];
+                        if ($contribuyente) {
+                            $arreglo[] = [
+                                'id' => $contribuyente->getIdContribuyente(),
+                                'item_select_name' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
+                            ];
+                        }
                     }
                 }
             }
@@ -779,6 +619,7 @@ class ContribuyenteController extends AbstractActionController
                         'nombre'           => $r->getNombre(),
                         'apellido_paterno' => $r->getApellidoPaterno(),
                         'apellido_materno' => $r->getApellidoMaterno(),
+                        'tipo_persona'     => $r->getTipoPersona(),
                         'rfc'              => $r->getRfc(),
                         'curp'             => $r->getCurp(),
                         'razon_social'     => $r->getRazonSocial(),
@@ -795,6 +636,7 @@ class ContribuyenteController extends AbstractActionController
                     'nombre'           => $WebService->Persona->NombrePersona,
                     'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
                     'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
+                    'tipo_persona'     => $WebService->Persona->TipoPersona,
                     'rfc'              => $WebService->Persona->RFCPersona,
                     'curp'             => $WebService->Persona->CURPPersona,
                     'razon_social'     => $WebService->Persona->RazonSocialPersona,

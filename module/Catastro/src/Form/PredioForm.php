@@ -52,13 +52,43 @@ class PredioForm extends Form
 
         $this->add([
             'type' => Element\Text::class,
-            'name' => 'titular',
+            'name' => 'ultimo_ejercicio_pagado',
             'options' => [
-                'label' => 'Titular',
+                'label' => 'Ultimo ejercicio pagado',
             ],
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Ultimo ejercicio pagado',
+                'value' => '2021'
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'ultimo_periodo_pagado',
+            'options' => [
+                'label' => 'Ultimo periodo pagado',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+                'placeholder' => 'Ultimo periodo pagado',
+                'value' => '6'
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'municipio',
+            'options' => [
+                'label' => 'Municipio',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+                'placeholder' => 'Municipio',
+                'value' => 'TULUM'
             ]
         ]);
 
@@ -71,6 +101,59 @@ class PredioForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Localidad'
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'colonia',
+            'options' => [
+                'label' => 'Colonia',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+                'placeholder' => 'Colonia'
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'calle',
+            'options' => [
+                'label' => 'Calle',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+                'placeholder' => 'Calle'
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'numero_exterior',
+            'options' => [
+                'label' => 'Número exterior',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+                'placeholder' => 'Número exterior'
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'numero_interior',
+            'options' => [
+                'label' => 'Número interior',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+                'placeholder' => 'Número interior'
             ]
         ]);
 
@@ -79,6 +162,30 @@ class PredioForm extends Form
             'name' => 'titular_anterior',
             'options' => [
                 'label' => 'Titular anterior',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'titular',
+            'options' => [
+                'label' => 'Titular',
+            ],
+            'attributes' => [
+                //'required' => true,
+                'class' => 'form-control',
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Text::class,
+            'name' => 'tipo',
+            'options' => [
+                'label' => 'Tipo de predio',
             ],
             'attributes' => [
                 //'required' => true,
@@ -187,7 +294,7 @@ class PredioForm extends Form
             'name' => 'id_archivo_categoria',
             'options' => [
                 'label' => 'Categorias',
-                'empty_option' => 'Seleccione una categoría',
+                // 'empty_option' => 'Seleccione una categoría',
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [

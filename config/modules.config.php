@@ -1,9 +1,9 @@
 <?php
 
 return [
+    'Laminas\Paginator',
     'Laminas\Mail',
     'Laminas\Serializer',
-    'Laminas\Paginator',
     'Laminas\Cache',
     'Laminas\Di',
     'Laminas\Mvc\Console',
