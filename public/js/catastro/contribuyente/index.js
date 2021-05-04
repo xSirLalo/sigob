@@ -1,23 +1,37 @@
 $(document).ready(function() {
-    setTimeout(function() {
+  //  setTimeout(function() {
         // [ Configuration Option ]
-        $('#contribuyentes').DataTable({
+    var myTable =  $('#contribuyentes').DataTable({
             responsive: true,
-            autoWidth: false,
-            scrollX: true,
-            scroller: {
-                loadingIndicator: true
-            },
+            searching: true,
+            // autoWidth: false,
+            // scrollX: true,
+            // scroller: {
+            //     loadingIndicator: true
+            // },
             processing: true,
-            // serverSide: true,
-            deferRender: true,
+            serverSide: true,
+           // deferRender: true,
             paging: true,
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
-            pageLength: 10,
-            order: [],
+            //pageLength: 10,
+            order: [[ 0, "desc" ]],
             ajax: {
                 url :"/contribuyente/datatable",
                 type: "POST",
+                //dataSrc:"aaData",
+                dataSrc:"data",
+                // data:{function (data)
+                //         {var form = {};
+                //             $.each($("form").serializeArray(), function (i, field) {
+                //                 form[field.name] = field.value || "";
+                //             });
+                //             // Add options used by Datatables
+                //             var info = (myTable == null) ? { "start": 0, "length": 10 } : myTable.page.info();
+                //             $.extend(form, info);
+                //             return JSON.stringify(form);
+                //         }
+                // },
                 error: function(){
                     $(".contribuyentes-error").html("");
                     $("#contribuyentes").append('<tbody class="contribuyentes-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
@@ -61,19 +75,20 @@ $(document).ready(function() {
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"
             },
+
         });
 
         // [ Immediately Show Hidden Details ]
-        $('#show-hide-res').DataTable({
-            responsive: {
-                details: {
-                    display: $.fn.dataTable.Responsive.display.childRowImmediate,
-                    type: ''
-                }
-            }
-        });
+        // $('#show-hide-res').DataTable({
+        //     responsive: {
+        //         details: {
+        //             display: $.fn.dataTable.Responsive.display.childRowImmediate,
+        //             type: ''
+        //         }
+        //     }
+        // });
 
-    }, 350);
+    // }, 350);
 });
 
 function add_contribuyente()

@@ -65,7 +65,7 @@ class PruebaController extends AbstractActionController
         //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("CABR840209R86");
         //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("POPA450408K72");
         //$data = $this->opergobserviceadapter->obtenerNombrePersona("11959");
-        //$data = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
+        //$data = $this->opergobserviceadapter->obtenerPersonaPorCve("0");
         // return new ViewModel(['data' => $data, 'data2' => $data2,'data3' => $data3]);
         return new ViewModel(['data' => $data]);
     }

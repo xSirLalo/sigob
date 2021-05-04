@@ -1,89 +1,8 @@
-$(document).ready(function(){
-    setTimeout(function() {
-        // [ Configuration Option ]
-        $('#aportaciones').DataTable({
-            responsive: true,
-            autoWidth: false,
-            scrollX: true,
-            scroller: {
-                loadingIndicator: true
-            },
-            processing: true,
-            // serverSide: true,
-            deferRender: true,
-            paging: true,
-            lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
-            pageLength: 10,
-            order: [],
-            ajax: {
-                url: "/aportacion/datatable",
-                type: "POST",
-                error: function(){
-                    $(".aportaciones-error").html("");
-                    $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
-                    $(".dataTables_empty").css("display","none");
-                    $("#aportaciones_processing").css("display","none");
-                },
-                "complete": function(response) {
-                    console.log(response);
-                }
-            },
-            initComplete: function () {
-                $('#lv-links').hide();
-                if ($(this).find('tbody tr').length<=1) {
-                    $(this).parent().show();
-                }
-            },
-            columns: [
-                {data: 'idAportacion', orderable: true, searchable: false,},
-                {data: 'Contribuyente'},
-                {data: 'Titular'},
-                {data: 'Vigencia'},
-                {data: 'Pago'},
-                {data: 'Estatus', orderable: false, searchable: false,},
-                {data: 'Opciones', orderable: false, searchable: false },
-            ],
-            columnDefs: [
-                {
-                    targets: 6,
-                    orderable: false,
-                    render: function(data, type, row, meta){
-                    $actionBtn = `
-                        <div class="btn-group">
-                            <a href="/aportacion/pdf/` + row['idAportacion'] + `"> <button class="btn btn-primary"> Imprimir</button> </a>
-                        </div>
-                        `;
-                        return $actionBtn;
-                    }
-                }
-            ],
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"
-            },
-        });
-
-        // [ New Constructor ]
-        // var newcs = $('#new-cons').DataTable();
-
-        // new $.fn.dataTable.Responsive(newcs);
-
-        // [ Immediately Show Hidden Details ]
-        $('#show-hide-res').DataTable({
-            responsive: {
-                details: {
-                    display: $.fn.dataTable.Responsive.display.childRowImmediate,
-                    type: ''
-                }
-            }
-        });
-
-    }, 350);
-});
 /////datatable-Validacion////
 $(document).ready(function(){
-    $('#validation').DataTable({
+    var table = $('#validation').DataTable({
         responsive: true,
-        searching: false,
+        searching: true,
         language: {
         "decimal": "",
         "emptyTable": "No hay información",
@@ -104,9 +23,148 @@ $(document).ready(function(){
             "previous": "Anterior"
         }
     },
+    ajax: {
+                url: "/aportacion/datatablevalidation",
+                type: "POST",
+                error: function(){
+                    $(".aportaciones-error").html("");
+                    $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No se encontraron datos en el servidor. </th></tr></tbody>');
+                    $(".dataTables_empty").css("display","none");
+                    $("#aportaciones_processing").css("display","none");
+                },
+                "complete": function(response) {
+                    console.log(response);
+                }
+            },
+            initComplete: function () {
+                $('#lv-links').hide();
+                if ($(this).find('tbody tr').length<=1) {
+                    $(this).parent().show();
+                }
+            },
+            columns: [
+                {data: 'idAportacion',},
+                {data: 'Parcela'},
+                {data: 'Contribuyente'},
+                {data: 'Propietario'},
+                {data: 'Lote'},
+                {data: 'UltimoPago'},
+                {data: 'Opciones', orderable: false, searchable: false },
+                ],
+            columnDefs: [
+                {
+                    targets: 6,
+                    orderable: false,
+                    render: function(data, type, row, meta){
+                        $actionBtn = `<div class="row"><a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary">Ver</button></a>
+                        <a class="btn btn-secondary" href="aportacion/editar/` + row['idAportacion'] + `" data-toggle="modal" onclick="edit_validation(` + row['idAportacion'] + `)">Modificar</a>
+                        <button class="btn btn-success"  id="confirmar" name="confirmar" value="` + row['idAportacion'] + `"><i class="feather mr-2 icon-check-circle"></i>Confirmar</button>
+                        <button class="btn btn-danger" id="cancelar" name="cancelar" value="` + row['idAportacion'] + `"><i class="feather mr-2 icon-x-circle"></i>Cancelar</button>
+                        </div>`
+                        ;
+
+                        return $actionBtn;
+                    },
+                },
+            ],
 
 
     });
+
+    //////Inicio Buscar por Contribuyente, ID, Propietario, Parcela/////
+        $(document).on('change', '#buscarAportacion', function () {
+            let select = $('#buscarAportacion').val();
+            $('#query2').val(select);
+            console.log(select);
+            //return select;
+        });
+
+        $('#query').on( 'keyup', function () {
+
+            //console.log(parametro());
+            let colum = $('#query2').val();
+            table
+            .columns(colum)
+            .search( this.value )
+            .draw();
+            } );
+
+
+//////////Confirmar Aportacion////////
+let ConfirmarAportacion = function(aportacion){
+
+		$.post('/aportacion/statusvalidation', {a:aportacion}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+                //table.ajax.reload();
+                window.location = "/aportacion/validacion";
+
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+
+    $('#tbody').on( 'click', '#confirmar', function () {
+
+
+		let updateValidation = {
+
+            id:$(this).val(),
+            status:1,
+
+
+        };
+
+		ConfirmarAportacion(new Array(updateValidation));
+
+
+		});
+
+ //////////Cancelar Aportacion////////
+let CancelarAportacion = function(aportacion){
+
+		$.post('/aportacion/statusvalidation', {a:aportacion}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+                //table.ajax.reload();
+                window.location = "/aportacion/validacion";
+
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+
+    $('#tbody').on( 'click', '#cancelar', function () {
+
+
+		let updateValidation = {
+
+            id:$(this).val(),
+            status:2,
+
+
+        };
+
+		CancelarAportacion(new Array(updateValidation));
+
+
+		});
 
 
 });

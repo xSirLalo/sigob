@@ -10,8 +10,6 @@ $(document).ready(function() {
     setTimeout(function() {
         // [ Configuration Option ]
 
-
-
             var table = $('#aportaciones').DataTable({
             responsive: true,
             searching: true,
@@ -22,14 +20,15 @@ $(document).ready(function() {
             },
             processing: true,
             //serverSide: true,
-            deferRender: true,
+            //deferRender: true,
             paging: true,
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
-            pageLength: 10,
-            order: [],
+            //pageLength: 10,
+            order: [[ 0, "desc" ]],
             ajax: {
                 url: "/aportacion/datatable",
                 type: "POST",
+                dataSrc:"data",
                 error: function(){
                     $(".aportaciones-error").html("");
                     $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No se encontraron datos en el servidor. </th></tr></tbody>');
@@ -85,9 +84,9 @@ $(document).ready(function() {
                         // <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>
                         // <a href="#"> <button type="button="class="btn btn btn-success" disabled >Pase Caja</button></a> `;
                         }else if(row['Estatus'] == 2){
-                        $actionBtn = `<a href="aportacion/editar-aportacion"> <button type="button="class="btn btn-warning" disabled>Editar</button></a>
-                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"><button type="button="class="btn btn btn-primary" disabled>Imprimir</button></a>
-                        <a href="http://sistematulum.net:9000/TLANIA/oestadocuentapredialpase.aspx?MTULUM,2021,3,4,` + row['idSolicitud'] + `"> <button type="button="class="btn btn-success" disabled>Pase Caja</button></a>`;
+                        $actionBtn = `<a href="#"> <button type="button="class="btn btn-warning" disabled>Editar</button></a>
+                        <a href="#"><button type="button="class="btn btn btn-primary" disabled>Imprimir</button></a>
+                        <a href="#"> <button type="button="class="btn btn-success" disabled>Pase Caja</button></a>`;
 
                         }else {
 

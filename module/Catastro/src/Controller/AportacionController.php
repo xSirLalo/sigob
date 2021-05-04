@@ -85,13 +85,118 @@ class AportacionController extends AbstractActionController
                     "draw"            => 1,
                     "recordsTotal"    => count($data),
                     "recordsFiltered" => count($data),
-                    'aaData'            => $data,
+                    'data'            => $data,
                 ];
 
         $json = new JsonModel($result);
         $json->setTerminal(true);
         return $json;
     }
+
+
+        public function datatable2Action()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+        $postData = $_POST;
+
+
+        // FIXME: Arreglar falla con el datatables solo muestra una pagina
+
+        $columns = [
+            0 => 'idSolicitud',
+            1 => 'idAportacion',
+            2 => 'Contribuyente',
+            3 => 'Propietario',
+            4 => 'Parcela',
+            5 => 'Lote',
+            6 => 'UltimoPago',
+            7 => 'Estatus',
+            8 => 'Opciones',
+        ];
+
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            // $fields = ['c.idContribuyente', 'c.nombre', 'c.apellidoPaterno', 'c.apellidoMaterno', 'c.genero'];
+            $fields = ['a'];
+            // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb ->select($fields)->from('Catastro\Entity\Aportacion', 'a');
+            //$totalrows = $qb->getResult()->count();
+            $count = $qb->getQuery()->getScalarResult();
+                // $query = $qb->getQuery();
+                // $totalrows = $query->getResult()->count();
+                // echo "<pre>";
+                // print_r($count);
+                // echo "</pre>";
+                // exit();
+
+                //$count = $qb->getQuery()->getSingleScalarResult();
+
+
+            $searchKeyWord = htmlspecialchars($postData['search']['value']);
+            if (isset($searchKeyWord)) {
+                $searchKeyWord = htmlspecialchars($postData['search']['value']);
+                $qb ->where('a.idAportacion LIKE :word')
+                    // ->orWhere('a.apellidoPaterno LIKE :word')
+                    // ->orWhere('a.apellidoMaterno LIKE :word')
+                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
+            }
+
+            if (isset($postData['order'])) {
+                $qb ->orderBy('a.'. $columns[$postData['order'][0]['column']], $postData['order'][0]['dir']);
+            } else {
+                $qb ->orderBy('a.idAportacion', 'DESC');
+            }
+
+            if ($postData['length'] != -1)  {
+                $qb ->setFirstResult($postData['start'])->setMaxResults($postData['length']);
+                //$qb ->setFirstResult($postData['start']);
+            }
+
+
+
+            $query = $qb->getQuery()->getResult();
+
+            $data = [];
+            foreach ($query as $r) {
+                $data[] = [
+                    'idSolicitud'   => $r->getIdSolicitud(),
+                    'idAportacion'  => $r->getIdAportacion(),
+                    'Contribuyente' => $r->getIdContribuyente()->getNombre(),
+                    'Propietario'   => $r->getIdPredio()->getTitular(),
+                    'Parcela'       => $r->getIdPredio()->getParcela(),
+                    'Lote'          => $r->getIdPredio()->getLote(),
+                    'UltimoPago'    => $r->getEjercicioFiscalFinal(),
+                    'Estatus'       => $r->getEstatus(),
+                    'Opciones'      => "Cargando..."
+                ];
+            }
+
+
+            $result = [
+                    "draw"            => intval($postData['draw']),
+                    "recordsTotal"    => count($count),
+                    "recordsFiltered" => count($count),
+                    'data'            => $data
+                ];
+
+            return $response->setContent(json_encode($result));
+
+        // $response->setStatusCode(200);
+            // $response->setContent(\Laminas\Json\Json::encode($result));
+            // return $response;
+
+            // $json = new JsonModel($result);
+            // $json->setTerminal(true);
+            // return $json;
+       // } else {
+            // $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
+            // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
+            // echo 'Error get data from ajax';
+        }
+    }
+
 
     public function addAction()
     {
@@ -159,23 +264,26 @@ class AportacionController extends AbstractActionController
 
         $form = new ValidacionForm();
         $formModal = new ValidacionModalForm();
-        if ($this->getRequest()->isPost()) {
-            $data = $this->params()->fromPost();
-            $form->setData($data);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($data['padron_id']);
-                if ($data['status'] == 1) {
-                    $this->aportacionManager->update($aportacion, $data);
-                    $this->flashMessenger()->addSuccessMessage('La aportacion ha sido confirmado');
-                    return $this->redirect()->toRoute('aportacion/validacion');
-                } else {
-                    $this->aportacionManager->update($aportacion, $data);
-                    $this->flashMessenger()->addErrorMessage('La aportacion ha sido cancelada');
-                    return $this->redirect()->toRoute('aportacion/validacion');
-                }
-            }
-        }
+        // if ($this->getRequest()->isPost()) {
+        //     $data = $this->params()->fromPost();
+        //     $form->setData($data);
+        //     if ($form->isValid()) {
+        //         $data = $form->getData();
+        //         $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($data['padron_id']);
+        //         $Idcontribuyente = $aportacion->getIdContribuyente()->getIdContribuyente();
+        //         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($Idcontribuyente);
+        //         if ($data['status'] == 1) {
+        //             $this->aportacionManager->update($contribuyente,$aportacion, $data);
+        //             $this->flashMessenger()->addSuccessMessage('La aportacion ha sido confirmado');
+        //             return $this->redirect()->toRoute('aportacion/validacion');
+        //         } else {
+        //             $this->aportacionManager->update($contribuyente,$aportacion, $data);
+        //             $this->flashMessenger()->addErrorMessage('La aportacion ha sido cancelada');
+        //             return $this->redirect()->toRoute('aportacion/validacion');
+        //         }
+        //     }
+        // }
+
 
         return new ViewModel(['aportaciones' => $aportaciones, 'form' => $form, 'ValidacionForm' => $formModal, 'valorConstruccions' => $valorConstruccion]);
     }
@@ -1136,14 +1244,14 @@ class AportacionController extends AbstractActionController
     {
         $req_post = $this->params()->fromPost();
 
-        $rfc = $this->opergobserviceadapter->obtenerPersonaPorRfc($req_post['c'][0]['rfc']);
+    //     $rfc = $this->opergobserviceadapter->obtenerPersonaPorRfc($req_post['c'][0]['rfc']);
 
 
-        if(isset($rfc->Persona)){
+    //     if(isset($rfc->Persona)){
 
-        $datos = ["resp"=>"okno", "msg"=>"YA EXCISTE ESA PERSONA"];
+    // $datos = ["resp"=>"okno", "msg"=>"YA EXCISTE ESA PERSONA"];
 
-        }else{
+    // }else{
 
         $result = $this->aportacionManager->guardarTest($req_post['c'][0]);
 
@@ -1153,7 +1261,7 @@ class AportacionController extends AbstractActionController
             $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
         }
 
-        }
+   // }
 
 				$json = new JsonModel($datos);
 				$json->setTerminal(true);
@@ -1318,6 +1426,72 @@ class AportacionController extends AbstractActionController
 
     }
 
+    public function datatableValidationAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+                $query = $this->entityManager->getRepository(Aportacion::class)->findBy(['estatus'=>array(1,2,3)]);
+
+            $data = [];
+
+            foreach ($query as $r) {
+                $data[] = [
+                        'idSolicitud'   => $r->getIdSolicitud(),
+                        'idAportacion'  => $r->getIdAportacion(),
+                        'Contribuyente' => $r->getIdContribuyente()->getNombre(),
+                        'Propietario'   => $r->getIdPredio()->getTitular(),
+                        'Parcela'       => $r->getIdPredio()->getParcela(),
+                        'Lote'          => $r->getIdPredio()->getLote(),
+                        'UltimoPago'    => $r->getEjercicioFiscalFinal(),
+                        'Estatus'       => $r->getEstatus(),
+                        'Opciones'      => "Cargando..."
+                    ];
+            }
+
+        $result = [
+                    "draw"            => 1,
+                    "recordsTotal"    => count($data),
+                    "recordsFiltered" => count($data),
+                    'aaData'            => $data,
+                ];
+
+        $json = new JsonModel($result);
+        $json->setTerminal(true);
+        return $json;
+    }
+
+        public function statusValidationAction()
+    {
+        $req_post = $this->params()->fromPost();
+        $aportacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($req_post['a'][0]['id']);
+        $Idcontribuyente = $aportacion->getIdContribuyente()->getIdContribuyente();
+        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($Idcontribuyente);
+        if ($req_post['a'][0]['status'] == 1) {
+                $status = $req_post['a'][0]['status'];
+                    $this->aportacionManager->update($contribuyente,$aportacion,$status);
+                    $this->flashMessenger()->addSuccessMessage('La aportacion ha sido confirmado');
+                    //return $this->redirect()->toRoute('aportacion/validacion');
+                    $datos = ["resp"=>"ok", "msg"=>"se Confirmo Correctamente"];
+                } elseif($req_post['a'][0]['status'] == 2) {
+                    $status = $req_post['a'][0]['status'];
+                    $this->aportacionManager->update($contribuyente,$aportacion,$status);
+                    $this->flashMessenger()->addErrorMessage('La aportacion ha sido cancelada');
+                    $datos = ["resp"=>"ok", "msg"=>"se Cancelo Correctamente"];
+                }else{
+                $datos = ["resp"=>"no", "msg"=>"Error"];
+                }
+
+
+
+				$json = new JsonModel($datos);
+				$json->setTerminal(true);
+
+				return $json;
+
+
+
+    }
 
 
 

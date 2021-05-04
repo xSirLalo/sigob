@@ -26,6 +26,12 @@ $this->inlineScript()
     ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'));
 
 ?>
+<style>
+.dataTables_filter
+    {
+    display: none;
+    }
+</style>
 
 <div class="col-md-12">
     <div class="card">
@@ -36,7 +42,7 @@ $this->inlineScript()
             <div class="row">
                 <div class="col-sm-2">
                     <div class="form-group ">
-                        <select class="custom-select w-30" id="my-select" class="form-control" name="">
+                        <select class="custom-select w-30" id="buscarAportacion"  onchange="validacioninput()" class="form-control" name="">
                             <option>Buscar por...</option>
                             <option>ID-Aportacion</option>
                             <option>Contribuyente.</option>
@@ -47,7 +53,8 @@ $this->inlineScript()
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group ">
-                        <input class="form-control" type="text" name="">
+                        <input class="form-control" type="text" name="" id="query">
+                        <input class="form-control" type="hidden" name="" id="query2">
                     </div>
                 </div>
             </div>
@@ -55,56 +62,15 @@ $this->inlineScript()
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Parcela</th>
                         <th>Contribuyente</th>
-                        <th>Titular</th>
-                        <th>Fecha</th>
+                        <th>Propietario</th>
+                        <th>Lote</th>
+                        <th>Ultimo Año Pagado</th>
                         <th>Opciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php if ($aportaciones): ?>
-                        <?php foreach ($aportaciones as $aportacion): ?>
-                            <?php
-                            ?>
-                            <tr>
-                                <td><?= $aportacion->getIdAportacion()?></td>
-                                <td><?= $aportacion->getIdContribuyente()->getNombre() ?></td>
-                                <td><?= $aportacion->getIdPredio()->getTitular()?></td>
-                                <td><?= $aportacion->getFecha()->format('d-m-Y');  ?></td>
-                                <td>
-                                    <div class="row">
-                                        <!-- <a href="" class="btn btn-primary">Ver</a> -->
-                                        <a href="<?= $this->url('aportacion/pdfdirrector', ['action' => 'pdfdirrector', 'id' => $aportacion->getIdAportacion()]); ?>"><button type="button="class="btn btn-primary">ver</button></a>
-                                        <!-- <button type="button" class="btn btn-secondary" id="button" data-toggle="modal" data-target="#myModal">
-                                        Modificar
-                                        </button> -->
-                                        <a href="<?= $this->url('aportacion/editar', ['action' => 'editar', 'id' => $aportacion->getIdAportacion()]); ?>" class="btn btn-secondary" data-toggle="modal"  onclick="edit_validation('<?= $aportacion->getIdAportacion() ?>')">Modificar</a>
-                                        <?= $this->form()->openTag($form); ?>
-                                        <?= $this->formHidden($form->get('padron_id')->setValue($aportacion->getIdAportacion())); ?>
-                                        <?= $this->formHidden($form->get('status')->setValue("1"));?>
-                                        <?= $this->formHidden($form->get('csrf')); ?>
-                                        <div class="text-danger">
-                                            <?= $this->formElementErrors($form->get('csrf')); ?>
-                                        </div>
-                                        <?= $this->formButton($form->get('confirmar')->setAttributes(['class' => 'btn btn-success'])->setOptions(['label' => '<i class="feather mr-2 icon-check-circle"></i> Confirmar', 'label_options' => ['disable_html_escape' => true,]])); ?>
-                                        <?= $this->form()->closeTag(); ?>
-                                        <?= $this->form()->openTag($form); ?>
-                                        <?= $this->formHidden($form->get('padron_id')->setValue($aportacion->getIdAportacion())); ?>
-                                        <?= $this->formHidden($form->get('status')->setValue("2")); ?>
-                                        <?= $this->formHidden($form->get('csrf')); ?>
-                                        <div class="text-danger">
-                                            <?= $this->formElementErrors($form->get('csrf')); ?>
-                                        </div>
-                                        <?= $this->formButton($form->get('confirmar')->setAttributes(['class' => 'btn btn-danger '])->setOptions(['label' => '<i class="feather mr-2 icon-x-circle"></i> Cancelar', 'label_options' => ['disable_html_escape' => true,]])); ?>
-                                        <?= $this->form()->closeTag(); ?>
-                                    </div>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td>No hay datos</td>
-                        </tr>
-                    <?php endif; ?>
+                <tbody id="tbody">
                 </tbody>
             </table>
         </div>

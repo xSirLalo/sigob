@@ -486,19 +486,33 @@ class AportacionManager
         //============================================================+# code...
     }
 
-    public function update($aportacion, $datos)
+    public function update($contribuyente,$aportacion, $status)
     {
-        if($datos['status']==1){
-        // $nombre = $aportacion->getIdContribuyente()->getNombre();
-        // $apellido_materno  = $aportacion->getIdContribuyente()->getNombre();
-        // $apellido_paterno  = $aportacion->getIdContribuyente()->getNombre();
-        // $genero           = $aportacion->getIdContribuyente()->getNombre();
-        // $estado_civiL       = $aportacion->getIdContribuyente()->getNombre();
-        // $correo_electronico  = $aportacion->getIdContribuyente()->getNombre();
-        // $rfc                 = $aportacion->getIdContribuyente()->getNombre();
-        // $curp                 = $aportacion->getIdContribuyente()->getNombre();
-        // $fecha_nacimiento      = $aportacion->getIdContribuyente()->getNombre();
-        $cvpersona  =  $aportacion->getIdContribuyente()->getCvePersona();
+        if($status==1){
+            $cvpersona  =  $aportacion->getIdContribuyente()->getCvePersona();
+            if($cvpersona > 0){
+                $cvpersona  =  $aportacion->getIdContribuyente()->getCvePersona();
+            }else{
+                $nombre              = $aportacion->getIdContribuyente()->getNombre();
+                $apellido_paterno    = $aportacion->getIdContribuyente()->getApellidoPaterno();
+                $apellido_materno    = $aportacion->getIdContribuyente()->getApellidoMaterno();
+                // $genero              = $aportacion->getIdContribuyente()->get();
+                $genero              = "H";
+                // $estado_civiL        = $aportacion->getIdContribuyente()->getNombre();
+                $estado_civiL        = "Soltero";
+                $correo_electronico  = $aportacion->getIdContribuyente()->getCorreo();
+                $rfc                 = $aportacion->getIdContribuyente()->getRfc();
+                $curp                = $aportacion->getIdContribuyente()->getCurp();
+                $fecha               = $aportacion->getIdContribuyente()->getFechaNacimiento()->format('Y-m-d');
+                $fecha_nacimiento    = new \DateTime($fecha);
+                $data = $this->opergobserviceadapter->AgregarContribuyente($nombre ,$apellido_paterno ,$apellido_materno ,$genero ,$estado_civiL ,$correo_electronico , $rfc  ,$curp  ,$fecha_nacimiento ,$fecha_nacimiento );
+                $cvpersona = $data->IdEntity;
+
+                $contribuyente->setCvePersona($cvpersona);
+
+                $this->entityManager->persist($contribuyente);
+                $this->entityManager->flush();
+        }
         $añoInicial =  $aportacion->getEjercicioFiscal();
         $añoFinal =  $aportacion->getEjercicioFiscal();
         $ubicacion =  $aportacion->getIdPredio()->getUbicacion();
@@ -512,15 +526,15 @@ class AportacionManager
         $FuenteIngreso = $this->opergobserviceadapter->SolicitudFuentaIngreso($idSolicitud, $pagoAportacion);
 
         $aportacion->setIdSolicitud($idSolicitud);
-        $aportacion->setEstatus($datos['status']);
+        $aportacion->setEstatus($status);
 
         $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
 
         }
 
-        elseif($datos['status']==2){
-        $aportacion->setEstatus($datos['status']);
+        elseif($status==2){
+        $aportacion->setEstatus($status);
 
         $this->entityManager->persist($aportacion);
         $this->entityManager->flush();
@@ -618,6 +632,14 @@ class AportacionManager
             $aportacion         = new Aportacion();
             }
 
+            //Hacer 1 MIllon de registros/////
+            // for ($i = 0; $i < 100; ++$i) {
+            // $contribuyente      = new Contribuyente();
+            // $predio             = new Predio();
+            // $aportacion         = new Aportacion();
+           //}
+           ////////////////////////////
+
             //////Contribuyente/////
             $contribuyente->setTipoPersona($datos['tipoContribuyente']);
             $contribuyente->setNombre($datos['nombreContribuyente']);
@@ -630,6 +652,7 @@ class AportacionManager
             $contribuyente->setFechaNacimiento($fecha_nacimiento);
             $contribuyente->setCorreo($datos['correoElectronico']);
             $contribuyente->setTelefono($datos['telefono']);
+            $contribuyente->setCvePersona(NULL);
             //$contribuyente->setRfc($datos['genero']);
 
             $this->entityManager->persist($contribuyente);
@@ -646,6 +669,8 @@ class AportacionManager
             $aportacion->setEstatus(0);
             $this->entityManager->persist($aportacion);
             $this->entityManager->flush();
+
+
 
             if ($aportacion->getIdAportacion() > 0) {
                 return $aportacion;

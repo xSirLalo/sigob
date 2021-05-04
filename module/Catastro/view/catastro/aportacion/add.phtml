@@ -151,7 +151,7 @@ $form->prepare();
                                 <!-- Input Localidad-->
                                     <label class="form-label">Localidad</label>
                                     <select class="js-example-basic-single custom-select w-30"name="select_localidad" id="localidad">
-                                        <option value="0">Buscar...</option>
+                                        <option value="">Buscar...</option>
                                         <?php if ($localidades): ?>
                                             <?php foreach ($localidades as $localidad):?>
                                                 <option value="<?= utf8_encode($localidad->getNombreLocalidad())?>"><?= utf8_encode($localidad->getNombreLocalidad()) ?></option>
@@ -188,7 +188,7 @@ $form->prepare();
                                 <div class="form-group ">
                                     <label>Regimen de Propiedad</label>
                                     <select class="js-example-basic-single custom-select w-30"name="select_usoDestino" id="regimenPropiedad">
-                                        <option value="0">Buscar...</option>
+                                        <option value="">Buscar...</option>
                                         <?php if ($regimenPropiedades): ?>
                                             <?php foreach ($regimenPropiedades as $regimenPropiedad):?>
                                                 <option value="<?= $regimenPropiedad->getNombreRegimenPropiedad()?>"><?=$regimenPropiedad->getNombreRegimenPropiedad()?></option>
@@ -223,7 +223,7 @@ $form->prepare();
                                 <div class="form-group">
                                     <label for="my-select">Documento que acredite la propiedad</label>
                                         <select class="js-example-basic-single custom-select w-30"name="" id="documentoPropiedad">
-                                        <option value="0">Buscar...</option>
+                                        <option value="">Buscar...</option>
                                         <?php if ($documentoPropiedades): ?>
                                             <?php foreach ($documentoPropiedades as $documentoPropiedad):?>
                                                 <option value="<?= $documentoPropiedad->getNombreDocumentoPropiedad()?>"><?=$documentoPropiedad->getNombreDocumentoPropiedad()?></option>
@@ -369,7 +369,7 @@ $form->prepare();
                                 <div class="form-group ">
                                     <label>Uso Destino</label>
                                     <select class="js-example-basic-single custom-select w-30"name="select_usoDestino" id="usoDestino">
-                                        <option value="0">Buscar...</option>
+                                        <option value="">Buscar...</option>
                                         <?php if ($usodestinos): ?>
                                             <?php foreach ($usodestinos as $usodestino):?>
                                                 <option value="<?= $usodestino->getNombreUsoDestino()?>"><?=$usodestino->getNombreUsoDestino()?></option>

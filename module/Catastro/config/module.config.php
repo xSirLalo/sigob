@@ -752,6 +752,24 @@ return [
                             ],
                         ],
                     ],
+                    'datatableValidation' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/datatablevalidation',
+                            'defaults' => [
+                                'action' => 'datatablevalidation',
+                            ],
+                        ],
+                    ],
+                    'statusValidation' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/statusvalidation',
+                            'defaults' => [
+                                'action' => 'statusvalidation',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
@@ -799,7 +817,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addcontribuyente', 'addaportacion', 'updateaportacion','viewaportacion2','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias'], 'allow' => '*']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addcontribuyente', 'addaportacion', 'updateaportacion','viewaportacion2','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias','datatablevalidation','statusvalidation'], 'allow' => '*']
             ],
         ]
     ],

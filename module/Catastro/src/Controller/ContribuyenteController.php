@@ -45,8 +45,9 @@ class ContribuyenteController extends AbstractActionController
     public function indexAction()
     {
         $form = new ContribuyenteModalForm();
-        $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-        return new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
+        //$contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
+        return new ViewModel(['form' => $form]);
+        //return new ViewModel ([]);
     }
 
     public function index2Action()
@@ -132,12 +133,13 @@ class ContribuyenteController extends AbstractActionController
         return $view;
     }
 
-    public function datatable2Action()
+    public function datatableAction()
     {
         $form = new ContribuyenteModalForm();
         $request = $this->getRequest();
         $response = $this->getResponse();
-        $postData= $_POST;
+        $postData = $_POST;
+
 
         // FIXME: Arreglar falla con el datatables solo muestra una pagina
 
@@ -155,6 +157,17 @@ class ContribuyenteController extends AbstractActionController
             // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
             $qb = $this->entityManager->createQueryBuilder();
             $qb ->select($fields)->from('Catastro\Entity\Contribuyente', 'c');
+            //$totalrows = $qb->getResult()->count();
+            $count = $qb->getQuery()->getScalarResult();
+                // $query = $qb->getQuery();
+                // $totalrows = $query->getResult()->count();
+                // echo "<pre>";
+                // print_r($count);
+                // echo "</pre>";
+                // exit();
+
+                //$count = $qb->getQuery()->getSingleScalarResult();
+
 
             $searchKeyWord = htmlspecialchars($postData['search']['value']);
             if (isset($searchKeyWord)) {
@@ -171,9 +184,12 @@ class ContribuyenteController extends AbstractActionController
                 $qb ->orderBy('c.idContribuyente', 'DESC');
             }
 
-            if ($postData['length'] != -1) {
+            if ($postData['length'] != -1)  {
                 $qb ->setFirstResult($postData['start'])->setMaxResults($postData['length']);
+                //$qb ->setFirstResult($postData['start']);
             }
+
+
 
             $query = $qb->getQuery()->getResult();
 
@@ -188,11 +204,13 @@ class ContribuyenteController extends AbstractActionController
                     'opciones'        => "Cargando..."
                 ];
             }
+
+
             $result = [
                     "draw"            => intval($postData['draw']),
-                    "recordsTotal"    => count($data),
-                    "recordsFiltered" => count($data),
-                    'data'            => $data,
+                    "recordsTotal"    => count($count),
+                    "recordsFiltered" => count($count),
+                    'data'            => $data
                 ];
 
             return $response->setContent(json_encode($result));
@@ -204,18 +222,19 @@ class ContribuyenteController extends AbstractActionController
             // $json = new JsonModel($result);
             // $json->setTerminal(true);
             // return $json;
-        } else {
-            $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-            $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
+       // } else {
+            // $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
+            // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
             // echo 'Error get data from ajax';
         }
     }
 
-    public function datatableAction()
+    public function datatable2Action()
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
-        // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
+        //$qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
+        //$query = $this->entityManager->getRepository(Contribuyente::class)->findAll();
         $qb = $this->entityManager->createQueryBuilder()->select('c')->from('Catastro\Entity\Contribuyente', 'c');
         $query = $qb->getQuery()->getResult();
 
@@ -235,7 +254,7 @@ class ContribuyenteController extends AbstractActionController
                     "draw"            => 1,
                     "recordsTotal"    => count($data),
                     "recordsFiltered" => count($data),
-                    'aaData'            => $data,
+                    'aaData'          => $data,
                 ];
 
         // return $response->setContent(json_encode($result));
