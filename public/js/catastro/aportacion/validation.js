@@ -487,6 +487,8 @@ function validaNumericos(event) {
     return false;
 }
 
+
+/////Buton Editar calculo de la aportacion//////////
 $("#btn_edit").on('click', function(e) {
         event.preventDefault(e);
 
@@ -497,5 +499,21 @@ $("#btn_edit").on('click', function(e) {
 
 
 	});
+////////////////////////////
 
+//Inicio Funcion validacion button buscar aportacion////
+$(document).ready(function() {
+    $('#query').attr("disabled", true);
+});
+function validacioninput(){
+    let buscar_aportacion =  $("#buscarAportacion").val();
 
+    if(buscar_aportacion == ""){
+        $('#query').attr("disabled", true);
+    }
+    else{
+        $('#query').attr("disabled", false);
+    }
+
+};
+///Fin Funcion validacion button buscar aportacion////
