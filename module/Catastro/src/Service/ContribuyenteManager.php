@@ -29,6 +29,7 @@ class ContribuyenteManager
             $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
             $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
             $contribuyente->setFechaNacimiento(new \DateTime($data['fecha_nacimiento']));
+            $contribuyente->setEstadoCivil(ucfirst($data['estado_civil']));
             $contribuyente->setCurp($data['curp']);
             $contribuyente->setGenero($data['genero']);
             $contribuyente->setRazonSocial(ucfirst($data['nombre']) ." ". ucfirst($data['apellido_paterno']) ." ". ucfirst($data['apellido_materno']));
@@ -91,6 +92,7 @@ class ContribuyenteManager
             $contribuyente->setApellidoPaterno($data['apellido_paterno']);
             $contribuyente->setApellidoMaterno($data['apellido_materno']);
             $contribuyente->setFechaNacimiento(new \DateTime($data['fecha_nacimiento']));
+            $contribuyente->setEstadoCivil(ucfirst($data['estado_civil']));
             $contribuyente->setCurp($data['curp']);
             $contribuyente->setGenero($data['genero']);
             $contribuyente->setRazonSocial(ucfirst($data['nombre']) ." ". ucfirst($data['apellido_paterno']) ." ". ucfirst($data['apellido_materno']));

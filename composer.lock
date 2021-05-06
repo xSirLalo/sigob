@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1aa56b926c6b3c3da7f96d548e2292f2",
+    "content-hash": "54a65c0f9e9604fe5ccc11caccfde6a4",
     "packages": [
         {
             "name": "brick/varexporter",
@@ -2811,53 +2811,6 @@
                 "laminas"
             ],
             "time": "2021-02-22T22:27:56+00:00"
-        },
-        {
-            "name": "laminas/laminas-development-mode",
-            "version": "3.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-development-mode.git",
-                "reference": "11b2adc8837e4419a5b31e2a7ae59f06636d4096"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-development-mode/zipball/11b2adc8837e4419a5b31e2a7ae59f06636d4096",
-                "reference": "11b2adc8837e4419a5b31e2a7ae59f06636d4096",
-                "shasum": ""
-            },
-            "require": {
-                "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^7.3 || ~8.0.0"
-            },
-            "replace": {
-                "zfcampus/zf-development-mode": "^3.2.0"
-            },
-            "require-dev": {
-                "laminas/laminas-coding-standard": "~1.0.0",
-                "mikey179/vfsstream": "^1.6.5",
-                "phpunit/phpunit": "^9.3"
-            },
-            "bin": [
-                "bin/laminas-development-mode"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Laminas\\DevelopmentMode\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Laminas development mode script",
-            "homepage": "https://laminas.dev",
-            "keywords": [
-                "framework",
-                "laminas"
-            ],
-            "time": "2020-12-16T22:26:52+00:00"
         },
         {
             "name": "laminas/laminas-di",

@@ -44,15 +44,15 @@ class NavManager
         $items = [];
 
         $items[] = [
-            'id' => 'home',
-            'label' => 'Home',
+            'id' => 'inicio',
+            'label' => 'Inicio',
             'link'  => $url('home'),
             'icon' => 'feather icon-home"'
         ];
 
         $items[] = [
-            'id' => 'about',
-            'label' => 'About',
+            'id' => 'acerca-de',
+            'label' => 'Acerca de',
             'icon' => 'feather icon-message-circle',
             'link'  => $url('about')
         ];

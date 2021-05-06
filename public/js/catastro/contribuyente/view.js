@@ -33,7 +33,7 @@ function view_contribuyente(id)
     });
 }
 $(document).ready(function () {
-    $("#fileToUpload").fileinput({
+    $("#archivo").fileinput({
         browseClass: 'btn btn-xs btn-secondary',
         language: "es",
         showCaption: true,
@@ -47,10 +47,13 @@ $(document).ready(function () {
         uploadUrl: '/biblioteca/guardar-archivo-contribuyente',
         uploadAsync: true,
         uploadExtraData: function (previewId, index) {
-            var info = 0;//{'tk':$("#token").val()};
+            var info = {
+                'id_archivo_categoria':$("#id_archivo_categoria").val(),
+                'input1':$('[name="input1"]').val()
+            };
             return info;
         }
     }).on("filebatchselected", function (event, files) {
-        $("#fileToUpload").fileinput("upload");
+        $("#archivo").fileinput("upload");
     });
 });

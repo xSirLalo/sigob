@@ -22,7 +22,6 @@ return [
     'Laminas\I18n',
     'Laminas\Router',
     'Laminas\Validator',
-    'Laminas\DeveloperTools',
     'Laminas\Diactoros',
     'DoctrineModule',
     'DoctrineORMModule',

@@ -179,7 +179,76 @@ class BibliotecaController extends AbstractActionController
 
     public function saveFileAction()
     {
-        $data['result'] = "Hola mundo";
+        if (!empty($_FILES)){
+            $id = $_REQUEST['input1'];
+            $id_archivo_categoria = $_REQUEST['id_archivo_categoria'];
+            // Definimos la constante con el directorio de destino de los temporales
+            define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal');
+            // Obtenemos el array de ficheros enviados
+            $ficheros = $_FILES['archivo'];
+            // Establecemos el indicador de proceso correcto (simplemente no indicando nada)
+            $estado_proceso = NULL;
+            // Paths para almacenar
+            $paths= array();
+            // Obtenemos los nombres de los ficheros
+            $nombres_ficheros = $ficheros['name'];
+            // Si no existe la carpeta de destino la creamos
+            if(!file_exists(DIR_PUBLIC)) @mkdir(DIR_PUBLIC);    
+
+            if ($ficheros["error"] != 4 || $ficheros["size"] != 0)
+            {
+                // Sólo en el caso de que exista esta carpeta realizaremos el proceso
+                if(file_exists(DIR_PUBLIC)) {
+                    // Extraemos el nombre y la extensión del nombre completo del fichero
+                    $nombre_extension = explode('.', basename($nombres_ficheros));
+                    // Obtenemos la extensión
+                    $extension=array_pop($nombre_extension);
+                    // Obtenemos el nombre
+                    $nombre=array_pop($nombre_extension);
+                    // Creamos la ruta de destino
+                    if ($nombre) {
+                        $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_' . utf8_decode(strtolower(str_replace(" ", "-",$nombre))) . '.' . $extension;
+                        // Mover el archivo de la carpeta temporal a la nueva ubicación
+                        if(move_uploaded_file($ficheros['tmp_name'], $archivo_destino)) {
+                            $filename = $_FILES['archivo']['name'];
+                            $filesize = $_FILES['archivo']['size'];
+                            $tmp_name = $_FILES['archivo']['tmp_name'];
+                            $file_type = $_FILES['archivo']['type'];
+                            $temp = explode(".", $filename);
+
+                            $data['archivoBlob'] = file_get_contents($archivo_destino, true);
+                            $data['extension'] = $temp[count($temp)-1];
+                            $data['size'] = $filesize;
+                            $data['archivoUrl'] = $id . '_' . strtolower(str_replace(" ", "-", $filename));
+                            // Se guarda los datos a la base datos
+                            $archivito = $this->bibliotecaManager->guardarArchivos($data, $id_archivo_categoria);
+                            $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
+                            // Activamos el indicador de proceso correcto
+                            $estado_proceso = true;
+                            // Almacenamos el nombre del archivo de destino
+                            $paths[] = $archivo_destino;
+                        } else {
+                            // Activamos el indicador de proceso erroneo
+                            $estado_proceso = false;
+                        }
+                    }
+                }
+            }
+
+            // $archivo_array = explode(".", $_FILES['fileToUpload']['name']);
+            // print_r($_REQUEST['input1']);
+            // exit();
+            // $tipo = $_FILES['fileToUpload']['type'];
+            // $tempFile   = $_FILES['fileToUpload']['tmp_name'];
+            // $extension  = $archivo_array[count($archivo_array)-1];
+            // $data = file_get_contents($tempFile);
+
+            // $data['data'] =  $data;
+        }else{
+            $data['error'] = "no hay archivo";
+        }
+
+
         $json = new JsonModel($data);
         $json->setTerminal(true);
 
@@ -238,7 +307,7 @@ class BibliotecaController extends AbstractActionController
             ->setParameter('idParam2', $archivoId);
         $qb->getQuery();
 
-        $file = 'public/img/'. $file->getUrl();
+        $file = 'public/temporal/'. $file->getUrl();
 
         $response = new Stream();
         $response->setStream(fopen($file, 'r'));
@@ -256,48 +325,6 @@ class BibliotecaController extends AbstractActionController
     }
 
     public function deleteFileAction()
-    {
-        define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal/');
-
-        $id = (int)$this->params()->fromRoute('predio', -1);
-        $archivoId = (int)$this->params()->fromRoute('archivo', -1);
-
-        if ($id < 0 || $archivoId < 0) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-        }
-
-        $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
-
-        if ($id == null || $archivoId == null) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-        }
-
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb ->delete('Catastro\Entity\ArchivoPredio', 'ap')
-            ->where($qb->expr()->eq('ap.idPredio', ':idParam1'))
-            ->andWhere($qb->expr()->eq('ap.idArchivo', ':idParam2'))
-            ->setParameter('idParam1', $id)
-            ->setParameter('idParam2', $archivoId);
-        $qb->getQuery()->execute();
-
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb ->delete('Catastro\Entity\Archivo', 'a')
-            ->Where($qb->expr()->eq('a.idArchivo', ':idParam2'))
-            ->setParameter('idParam2', $archivoId);
-        $qb->getQuery()->execute();
-
-        if (!file_exists(DIR_PUBLIC . $file->getUrl())) {
-            \unlink(DIR_PUBLIC . $file->getUrl());
-        }
-
-        $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
-        // return $this->redirect()->toRoute('biblioteca/ver', ['id' => $id]);
-        return $this->redirect()->toRoute('predio/ver', ['id' => $id]);
-    }
-
-    public function deleteFile2Action()
     {
         define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal/');
 
@@ -330,7 +357,7 @@ class BibliotecaController extends AbstractActionController
             ->setParameter('idParam2', $archivoId);
         $qb->getQuery()->execute();
 
-        if (!file_exists(DIR_PUBLIC . $file->getUrl())) {
+        if (file_exists(DIR_PUBLIC . $file->getUrl())) {
             \unlink(DIR_PUBLIC . $file->getUrl());
         }
 
@@ -338,4 +365,46 @@ class BibliotecaController extends AbstractActionController
         // return $this->redirect()->toRoute('biblioteca/ver', ['id' => $id]);
         return $this->redirect()->toRoute('contribuyente/ver', ['id' => $id]);
     }
+
+    public function deleteFile2Action()
+    {
+        define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal/');
+
+        $id = (int)$this->params()->fromRoute('predio', -1);
+        $archivoId = (int)$this->params()->fromRoute('archivo', -1);
+
+        if ($id < 0 || $archivoId < 0) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+        }
+
+        $file = $this->entityManager->getRepository(Biblioteca::class)->findOneByIdArchivo($archivoId);
+
+        if ($id == null || $archivoId == null) {
+            $this->layout()->setTemplate('error/404');
+            $this->getResponse()->setStatusCode(404);
+        }
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->delete('Catastro\Entity\ArchivoPredio', 'ap')
+            ->where($qb->expr()->eq('ap.idPredio', ':idParam1'))
+            ->andWhere($qb->expr()->eq('ap.idArchivo', ':idParam2'))
+            ->setParameter('idParam1', $id)
+            ->setParameter('idParam2', $archivoId);
+        $qb->getQuery()->execute();
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb ->delete('Catastro\Entity\Archivo', 'a')
+            ->Where($qb->expr()->eq('a.idArchivo', ':idParam2'))
+            ->setParameter('idParam2', $archivoId);
+        $qb->getQuery()->execute();
+
+        if (file_exists(DIR_PUBLIC . $file->getUrl())) {
+            \unlink(DIR_PUBLIC . $file->getUrl());
+        }
+
+        $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
+        // return $this->redirect()->toRoute('biblioteca/ver', ['id' => $id]);
+        return $this->redirect()->toRoute('predio/ver', ['id' => $id]);
+    }    
 }

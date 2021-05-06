@@ -183,6 +183,7 @@ class ContribuyenteController extends AbstractActionController
                         'apellido_paterno',
                         'apellido_materno',
                         'fecha_nacimiento',
+                        'estado_civil',
                         'genero',
                         'rfc',
                         'curp',
@@ -242,7 +243,7 @@ class ContribuyenteController extends AbstractActionController
                                     $nombre=array_pop($nombre_extension);
                                     // Creamos la ruta de destino
                                     if ($nombre) {
-                                        $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . utf8_decode($nombre) . '.' . $extension;
+                                        $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_' . utf8_decode(strtolower(str_replace(" ", "-",$nombre))) . '.' . $extension;
                                         // Mover el archivo de la carpeta temporal a la nueva ubicación
                                         if(move_uploaded_file($ficheros['tmp_name'][$i], $archivo_destino)) {
                                             $filename = $_FILES['archivo']['name'][$i];
@@ -254,7 +255,7 @@ class ContribuyenteController extends AbstractActionController
                                             $data['archivoBlob'] = file_get_contents($archivo_destino, true);
                                             $data['extension'] = $temp[count($temp)-1];
                                             $data['size'] = $filesize;
-                                            $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                                            $data['archivoUrl'] = $id . '_' . strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
                                             $data['categoria'] = $categoria[$i];
 
                                             $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
@@ -276,25 +277,18 @@ class ContribuyenteController extends AbstractActionController
                         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
                         if ($contribuyente) {
                             $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
-                            if (file_exists($archivo_destino)) {
+                            if ($nombre) {
                                 $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
                             }
                             $this->flashMessenger()->addInfoMessage('Se actualizo con éxito!');
                         } else {
                             $contribuyente = $this->contribuyenteManager->guardarContribuyente($data);
-                            if (file_exists($archivo_destino)) {
+                            if ($nombre) {
                                 $this->bibliotecaManager->guardarRelacionAC($contribuyente, $archivito);
                             }
                             $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                         }
                         return $this->redirect()->toRoute('contribuyente');
-
-// echo "<pre>";
-// print_r($data);
-// echo "</pre>";
-// exit();
-                        // $categoriaDefault = $data['id_archivo_categoria'];
-                        //
                         // $archivoUrl = (array) $this->params()->fromFiles('archivo');
                         // $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
                         // $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
@@ -335,6 +329,8 @@ class ContribuyenteController extends AbstractActionController
     public function viewAction()
     {
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
+        $categorias = $this->bibliotecaManager->categoriasList();
+
 
         if ($contribuyenteId < 0) {
             $this->layout()->setTemplate('error/404');
@@ -362,7 +358,12 @@ class ContribuyenteController extends AbstractActionController
             return $response->setTemplate('error/404');
         }
 
-        return new ViewModel(['contribuyente' => $contribuyente, 'archivos' => $archivos, 'contribuyenteId' => $contribuyenteId]);
+        $data['contribuyente'] =  $contribuyente;
+        $data['archivos'] =  $archivos;
+        $data['contribuyenteId'] =  $contribuyenteId;
+        $data['categorias'] =  $categorias;
+
+        return new ViewModel($data);
     }
 
     public function editAction()
@@ -572,13 +573,15 @@ class ContribuyenteController extends AbstractActionController
                         'nombre'           => $r->getNombre(),
                         'apellido_paterno' => $r->getApellidoPaterno(),
                         'apellido_materno' => $r->getApellidoMaterno(),
+                        'fecha_nacimiento' => $r->getFechaNacimiento(),
+                        'estado_civil'     => $r->getEstadoCivil(),
+                        'genero'           => $r->getGenero(),
                         'tipo_persona'     => $r->getTipoPersona(),
                         'rfc'              => $r->getRfc(),
                         'curp'             => $r->getCurp(),
                         'razon_social'     => $r->getRazonSocial(),
                         'correo'           => $r->getCorreo(),
                         'telefono'         => $r->getTelefono(),
-                        'genero'           => $r->getGenero(),
                     ];
                 }
             } else {

@@ -16,7 +16,7 @@ class BibliotecaManager
      * @var Doctrine\ORM\EntityManager;
      */
     private $entityManager;
-    private $saveToDir = './public/img/';
+    private $saveToDir = './public/temporal/';
     /**
      * Constructor.
      */
@@ -161,5 +161,10 @@ class BibliotecaManager
         }
 
         return $fila;
+    }
+
+    public function categoriasList()
+    {
+        return $this->entityManager->getRepository(ArchivoCategoria::class)->findAll();
     }
 }

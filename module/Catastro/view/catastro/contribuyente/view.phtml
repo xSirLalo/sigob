@@ -63,9 +63,9 @@ $this ->inlineScript()
                     <tr>
                         <td>Genero</td>
                         <td>
-                            <?php echo  $contribuyente->getGenero() == 1 ? 'Hombre' : '' ?>
-                            <?php echo  $contribuyente->getGenero() == 2 ? 'Mujer' : '' ?>
-                            <?php echo  $contribuyente->getGenero() == 3 ? 'Otro' : '' ?>
+                            <?php echo  $contribuyente->getGenero() == 'H' ? 'Hombre' : '' ?>
+                            <?php echo  $contribuyente->getGenero() == 'M' ? 'Mujer' : '' ?>
+                            <?php echo  $contribuyente->getGenero() == 'O' ? 'Otro' : '' ?>
                         </td>
                     </tr>
                     <?php endif; ?>
@@ -150,11 +150,23 @@ $this ->inlineScript()
         </button>
         </div>
         <div class="modal-body">
-        <form action="upload.php" method="post" enctype="multipart/form-data">
-            <div class="file-loading">
-                <input type="file" name="fileToUpload" id="fileToUpload">
-            </div>
-        </form>
+            <form action="upload.php" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="hidden" name="input1" value="<?= $contribuyenteId ?>">
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="id_archivo_categoria" name="id_archivo_categoria">
+                        <?php foreach($categorias as $categoria): ?>
+                            <?= '<option value="'. $categoria->getIdArchivoCategoria() .'">' . $categoria->getNombre() . '</option>'?>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="file-loading">
+                        <input type="file" name="archivo" id="archivo">
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
