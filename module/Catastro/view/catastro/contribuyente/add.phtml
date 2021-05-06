@@ -96,7 +96,7 @@ $form->prepare();
                             <?= $this->formElementErrors($form->get('curp')); ?>
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-5">
                         <?= $this->formLabel($form->get('fecha_nacimiento')); ?>
                         <div>
                         <?= $this->formDateSelect($form->get('fecha_nacimiento')); ?>
@@ -105,11 +105,18 @@ $form->prepare();
                             <?= $this->formElementErrors($form->get('fecha_nacimiento')); ?>
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <?= $this->formLabel($form->get('genero')); ?>
                         <?= $this->formSelect($form->get('genero')); ?>
                         <div class="text-danger">
                             <?= $this->formElementErrors($form->get('genero')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <?= $this->formLabel($form->get('estado_civil')); ?>
+                        <?= $this->formSelect($form->get('estado_civil')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('estado_civil')); ?>
                         </div>
                     </div>
                 </div>
@@ -128,9 +135,30 @@ $form->prepare();
                             <?= $this->formElementErrors($form->get('telefono')); ?>
                         </div>
                     </div>
-                    <div class="form-group col-md-4">
+                </div>
 
+                <?= $this->formLabel($form->get('archivo')); ?>
+                <div class="form-group" id="select">
+                    <div class="input-group mb-3">
+                        <div class="input-group-append delete">
+                            <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
+                        </div>
+                            <?= $this->formSelect($form->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)); ?>
+                        <div class="custom-file">
+                            <?= $this->formFile($form->get('archivo')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($form->get('id_archivo_categoria')); ?>
+                                <?= $this->formElementErrors($form->get('archivo')); ?>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div id="additionalselects">
+                </div>
+
+                <div class="btn-group float-right">
+                    <?= $this->formButton($form->get('add_more')); ?>
                 </div>
                 <?= $this->formHidden($form->get('csrf')); ?>
                 <div class="text-danger">
@@ -138,43 +166,6 @@ $form->prepare();
                 </div>
                 <?= $this->formSubmit($form->get('btnGuardar')); ?>
                 <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
-        </div>
-    </div>
-</div>
-<!-- [ col] end -->
-
-<div class="col-md-12">
-    <div class="card">
-        <div class="card-header">
-            <h5>Archivitos</h5>
-        </div>
-        <div class="card-body">
-            <!-- [ openTag ] start -->
-                <div class="form-group">
-                    <?= $this->formText($form->get('input1')); ?>
-                    <?= $this->formElementErrors($form->get('input1')); ?>
-                </div>
-                <div class="form-group" id="select">
-                    <div class="input-group mb-3">
-                        <div class="input-group-append delete">
-                            <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
-                        </div>
-                        <?= $this->formSelect($form->get('id_archivo_categoria')->setValueOptions($this->categorias)); ?>
-                        <div class="custom-file">
-                            <?= $this->formFile($form->get('archivo')); ?>
-                        <div class="text-danger">
-                            <?= $this->formElementErrors($form->get('id_archivo_categoria')); ?>
-                            <?= $this->formElementErrors($form->get('archivo')); ?>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="additionalselects">
-                </div>
-                <div class="btn-group float-right">
-
-                <?= $this->formButton($form->get('add_more')); ?>
             <?= $this->form()->closeTag(); ?>
             <!-- [ closeTag ] start -->
         </div>

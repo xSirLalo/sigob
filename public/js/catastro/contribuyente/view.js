@@ -44,13 +44,13 @@ $(document).ready(function () {
         browseLabel: '',
         browseIcon: '<i class="fa fa-folder"></i>',
         allowedFileExtensions: ["png", "jpeg", "jpg", "bmp", "pdf"],
-        uploadUrl: '/contribuyente/guardar-archivo',
+        uploadUrl: '/biblioteca/guardar-archivo-contribuyente',
         uploadAsync: true,
         uploadExtraData: function (previewId, index) {
             var info = 0;//{'tk':$("#token").val()};
             return info;
         }
     }).on("filebatchselected", function (event, files) {
-        // $("#archivo").fileinput("upload");
+        $("#fileToUpload").fileinput("upload");
     });
 });

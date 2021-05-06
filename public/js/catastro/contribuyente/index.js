@@ -1,37 +1,25 @@
 $(document).ready(function() {
-  //  setTimeout(function() {
+   setTimeout(function() {
         // [ Configuration Option ]
     var myTable =  $('#contribuyentes').DataTable({
-            responsive: true,
-            searching: true,
-            // autoWidth: false,
-            // scrollX: true,
-            // scroller: {
-            //     loadingIndicator: true
-            // },
+            // responsive: true,
+            // searching: true,
+            autoWidth: false,
+            scrollX: true,
+            scroller: {
+                loadingIndicator: true
+            },
             processing: true,
             serverSide: true,
-           // deferRender: true,
+            deferRender: true,
             paging: true,
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
-            //pageLength: 10,
+            pageLength: 10,
             order: [[ 0, "desc" ]],
             ajax: {
                 url :"/contribuyente/datatable",
                 type: "POST",
-                //dataSrc:"aaData",
                 dataSrc:"data",
-                // data:{function (data)
-                //         {var form = {};
-                //             $.each($("form").serializeArray(), function (i, field) {
-                //                 form[field.name] = field.value || "";
-                //             });
-                //             // Add options used by Datatables
-                //             var info = (myTable == null) ? { "start": 0, "length": 10 } : myTable.page.info();
-                //             $.extend(form, info);
-                //             return JSON.stringify(form);
-                //         }
-                // },
                 error: function(){
                     $(".contribuyentes-error").html("");
                     $("#contribuyentes").append('<tbody class="contribuyentes-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
@@ -63,9 +51,8 @@ $(document).ready(function() {
                     render: function(data, type, row, meta){
                     $actionBtn = `
                         <div class="btn-group">
-                            <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info">Detalle</a>
-                            <a href="/contribuyente/editar/` + row['idContribuyente'] + `" class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `">Eliminar</button>
+                            <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info btn-sm">Detalle</a>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `">Eliminar</button>
                         </div>
                         `;
                         return $actionBtn;
@@ -88,7 +75,7 @@ $(document).ready(function() {
         //     }
         // });
 
-    // }, 350);
+    }, 350);
 });
 
 function add_contribuyente()

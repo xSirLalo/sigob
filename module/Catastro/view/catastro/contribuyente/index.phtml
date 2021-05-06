@@ -41,7 +41,7 @@ $this->inlineScript()
                 </div>
             </div>
             <br>
-            <table class="display table table-striped table-hover dt-responsive nowrap" id="contribuyentes" style="width:100%">
+            <table class="display table table-striped table-hover" id="contribuyentes" style="width:100%">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -76,6 +76,9 @@ $this->inlineScript()
                     <?php endif; ?>
                 </tbody>
             </table>
+            <div class="float-right" id="lv-links">
+                <?= $this->paginationControl($contribuyentes, 'Sliding', 'catastro/partial/paginator', ['route' => 'contribuyente']); ?>
+            </div>
         </div>
     </div>
 </div>

@@ -57,11 +57,18 @@ class Contribuyente
     private $fechaNacimiento;
 
     /**
-     * @var int
+     * @var string|null
      *
-     * @ORM\Column(name="genero", type="integer", nullable=false)
+     * @ORM\Column(name="estado_civil", type="string", length=1, nullable=true, options={"default"="O","fixed"=true})
      */
-    private $genero = '0';
+    private $estadoCivil = 'O';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="genero", type="string", length=1, nullable=false, options={"default"="O","fixed"=true})
+     */
+    private $genero = 'O';
 
     /**
      * @var string|null
@@ -287,9 +294,33 @@ class Contribuyente
     }
 
     /**
+     * Set estadoCivil.
+     *
+     * @param string|null $estadoCivil
+     *
+     * @return Contribuyente
+     */
+    public function setEstadoCivil($estadoCivil = null)
+    {
+        $this->estadoCivil = $estadoCivil;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCivil.
+     *
+     * @return string|null
+     */
+    public function getEstadoCivil()
+    {
+        return $this->estadoCivil;
+    }
+
+    /**
      * Set genero.
      *
-     * @param int $genero
+     * @param string $genero
      *
      * @return Contribuyente
      */
@@ -303,7 +334,7 @@ class Contribuyente
     /**
      * Get genero.
      *
-     * @return int
+     * @return string
      */
     public function getGenero()
     {

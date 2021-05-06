@@ -65,21 +65,6 @@ class ContribuyenteForm extends Form
             ]
         ]);
 
-        // $this->add([
-        //     'type' => Element\Number::class,
-        //     'name' => 'nombre',
-        //     'options' => [
-        //         'label' => 'Nombre',
-        //     ],
-        //     'attributes' => [
-        //         // 'required' => true,
-        //         'readonly' => true,
-        //         'class' => 'form-control',
-        //         'title' => 'Nombre',
-        //         'placeholder' => 'Nombre',
-        //     ]
-        // ]);
-
         $this->add([
             'type' => Element\Text::class,
             'name' => 'nombre',
@@ -195,9 +180,27 @@ class ContribuyenteForm extends Form
                 'label' => 'Genero',
                 'empty_option' => 'Seleccionar...',
                 'value_options' => [
-                    '1' => 'Mujer',
-                    '2' => 'Hombre',
-                    '3' => 'Otro'
+                    'M' => 'Mujer',
+                    'H' => 'Hombre',
+                    'O' => 'Otro'
+                ],
+            ],
+            'attributes' => [
+                // 'required' => true,
+                'class' => 'custom-select', # styling
+            ]
+        ]);
+
+        $this->add([
+            'type' => Element\Select::class,
+            'name' => 'estado_civil',
+            'options' => [
+                'label' => 'Estado Civil',
+                'empty_option' => 'Seleccionar...',
+                'value_options' => [
+                    'S' => 'Soltero',
+                    'C' => 'Casado',
+                    'O' => 'Otro'
                 ],
             ],
             'attributes' => [
@@ -256,7 +259,7 @@ class ContribuyenteForm extends Form
             'type' => Element\File::class,
             'name' => 'archivo',
             'options' => [
-                'label' => 'Seleccione un archivo...',
+                'label' => 'Archivos',
                 // 'label_attributes' => [
                 //     'class' => 'custom-file-label'
                 // ],

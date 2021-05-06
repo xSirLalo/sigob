@@ -21,7 +21,7 @@ $this->pageBreadcrumbs()->setItems([
                 <div class="form-row">
                     <div class="form-group col-md-3">
 				        <?= $this->formLabel($form->get('tipo_persona')); ?>
-                        <?= $this->formSelect($form->get('tipo_persona')->setAttributes(['disabled' => 'disabled'])); ?>
+                        <?= $this->formSelect($form->get('tipo_persona')); ?>
                         <?= $this->formElementErrors($form->get('tipo_persona')); ?>
                     </div>
                     <div class="form-group col-md-3" id="pNombre">

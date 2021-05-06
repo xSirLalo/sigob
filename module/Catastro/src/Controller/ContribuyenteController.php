@@ -44,81 +44,15 @@ class ContribuyenteController extends AbstractActionController
 
     public function indexAction()
     {
-        $request = $this->getRequest();
-        $response = $this->getResponse();
-        $postData= $_POST;
+        $page = $this->params()->fromQuery('page', 1);
+        $query = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c')->getQuery();
 
-        // FIXME: Arreglar falla con el datatables solo muestra una pagina
+        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+        $paginator = new Paginator($adapter);
+        $paginator->setDefaultItemCountPerPage(10);
+        $paginator->setCurrentPageNumber($page);
 
-        $columns = [
-            0 => 'idContribuyente',
-            1 => 'nombre',
-            2 => 'apellidoPaterno',
-            3 => 'apellidoMaterno'
-        ];
-
-        // AJAX response
-        if ($request->isXmlHttpRequest()) {
-            // $fields = ['c.idContribuyente', 'c.nombre', 'c.apellidoPaterno', 'c.apellidoMaterno', 'c.genero'];
-            $fields = ['c'];
-            // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
-            $qb = $this->entityManager->createQueryBuilder();
-            $qb ->select($fields)->from('Catastro\Entity\Contribuyente', 'c');
-
-            $searchKeyWord = htmlspecialchars($postData['search']['value']);
-            if (isset($searchKeyWord)) {
-                $searchKeyWord = htmlspecialchars($postData['search']['value']);
-                $qb ->where('c.nombre LIKE :word')
-                    ->orWhere('c.apellidoPaterno LIKE :word')
-                    ->orWhere('c.apellidoMaterno LIKE :word')
-                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
-            }
-
-            if (isset($postData['order'])) {
-                $qb ->orderBy('c.'. $columns[$postData['order'][0]['column']], $postData['order'][0]['dir']);
-            } else {
-                $qb ->orderBy('c.idContribuyente', 'DESC');
-            }
-
-            if ($postData['length'] != -1) {
-                $qb ->setFirstResult($postData['start'])->setMaxResults($postData['length']);
-            }
-
-            $query = $qb->getQuery()->getResult();
-
-            $data = [];
-            foreach ($query as $r) {
-                $data[] = [
-                    'idContribuyente' => $r->getIdContribuyente(),
-                    'nombre'          => $r->getNombre(),
-                    'apellidoPaterno' => $r->getApellidoPaterno(),
-                    'apellidoMaterno' => $r->getApellidoMaterno(),
-                    'genero'          => $r->getGenero(),
-                    'opciones'        => "Cargando..."
-                ];
-            }
-            $result = [
-                    "draw"            => intval($postData['draw']),
-                    "recordsTotal"    => count($data),
-                    "recordsFiltered" => count($data),
-                    'data'            => $data,
-                ];
-
-            $view = new JsonModel($result);
-            $view->setTerminal(true);
-        } else {
-            $page = $this->params()->fromQuery('page', 1);
-            $query = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c')->getQuery();
-
-            $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-            $paginator = new Paginator($adapter);
-            $paginator->setDefaultItemCountPerPage(10);
-            $paginator->setCurrentPageNumber($page);
-
-            $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-            $view = new ViewModel(['contribuyentes' => $contribuyentes]);
-        }
-        return $view;
+        return new ViewModel(['contribuyentes' => $paginator]);
     }
 
     public function datatableAction()
@@ -175,7 +109,6 @@ class ContribuyenteController extends AbstractActionController
                 ];
             }
 
-
             $result = [
                     "draw"            => intval($postData['draw']),
                     "recordsTotal"    => count($count),
@@ -183,19 +116,17 @@ class ContribuyenteController extends AbstractActionController
                     'data'            => $data
                 ];
 
-            return $response->setContent(json_encode($result));
+            // return $response->setContent(json_encode($result));
 
             // $response->setStatusCode(200);
             // $response->setContent(\Laminas\Json\Json::encode($result));
             // return $response;
 
-            // $json = new JsonModel($result);
-            // $json->setTerminal(true);
-            // return $json;
-       // } else {
-            // $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-            // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
-            // echo 'Error get data from ajax';
+            $json = new JsonModel($result);
+            $json->setTerminal(true);
+            return $json;
+        } else {
+            echo 'Error get data from ajax';
         }
     }
 
@@ -204,59 +135,12 @@ class ContribuyenteController extends AbstractActionController
         $form = new ContribuyenteForm();
         $request = $this->getRequest();
         $categorias = $this->bibliotecaManager->categorias();
-        $destino = './public/img';
 
         if ($request->isPost()) {
             $formData = array_merge_recursive(
                 $request->getPost()->toArray(),
                 $request->getFiles()->toArray()
             );
-            // $categoriaDefault = $formData['id_archivo_categoria'];
-            // if ($categoriaDefault != '0') {
-            // $archivoUrl = (array) $this->params()->fromFiles('archivo');
-            // $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
-
-            // $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
-            // $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
-            // $num = (int) count($archivoUrl);
-
-            // for ($i=0; $i < $num; $i++) {
-            //     $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-
-            //     $file_folder = $destino . '/' . $newName;
-
-            //     // if (file_exists($file_folder)) {
-            //     //     // FIXME: Vacio aun asi muestra el mensaje
-            //     //     $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
-            //     //     return $this->redirect()->toRoute('predio/agregar');
-            //     // }
-
-            //     $inputFilter = new OptionalInputFilter();
-            //     $inputFilter->add([
-            //             'name' => 'archivo',
-            //             'required' => false,
-            //             'validators' => [
-            //                 ['name' => Validator\NotEmpty::class],
-            //                 [
-            //                     'name' => Validator\File\Size::class,
-            //                     'options' => [
-            //                         'min' => '3kB',
-            //                         'max' => '15MB'
-            //                     ],
-            //                 ],
-            //             ],
-            //             'filters' => [
-            //                 [
-            //                     'name' => Filter\File\Rename::class,
-            //                     'options' => [
-            //                         'target' => $destino . '/' . $newName,
-            //                     ]
-            //                 ]
-            //             ]
-            //         ]);
-            //     $form->setInputFilter($inputFilter);
-            // }
-            // }
 
             // $formData = $request->getPost()->toArray();
             // $inputFilter = new OptionalInputFilter();
@@ -283,6 +167,7 @@ class ContribuyenteController extends AbstractActionController
             //     ],
             // ]);
             // $form->setInputFilter($inputFilter);
+            
             $form->setData($formData);
             $form->setValidationGroup(['tipo_persona']);
 
@@ -322,53 +207,121 @@ class ContribuyenteController extends AbstractActionController
                 if ($form->isValid()) {
                     try {
                         $data = $form->getData();
-                        // echo "<pre>";
-                        // print_r($data);
-                        // echo "</pre>";
-                        // exit();
-                        $categoriaDefault = $data['id_archivo_categoria'];
                         $id = $data['input1'];
-                        $archivoUrl = (array) $this->params()->fromFiles('archivo');
-                        $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
-                        $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
-                        $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
-                        $num = (int) count($archivoUrl);
+                        // Definimos la constante con el directorio de destino de los temporales
+                        define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal');
+                        // Obtenemos el array de ficheros enviados
+                        $ficheros = $_FILES['archivo'];
+                        // Establecemos el indicador de proceso correcto (simplemente no indicando nada)
+                        $estado_proceso = NULL;
+                        // Paths para almacenar
+                        $paths= array();
+                        // Obtenemos los nombres de los ficheros
+                        $nombres_ficheros = $ficheros['name'];
+                        // LÍNEAS ENCARGADAS DE REALIZAR EL PROCESO DE UPLOAD POR CADA FICHERO RECIBIDO
+                        // ****************************************************************************
 
-                        for ($i=0; $i < $num; $i++) {
-                            $filename = $_FILES['archivo']['name'][$i];
-                            $filesize = $_FILES['archivo']['size'][$i];
-                            $tmp_name = $_FILES['archivo']['tmp_name'][$i];
-                            $file_type = $_FILES['archivo']['type'][$i];
-                            $date = date("d-m-Y_H-i");
-                            $temp = explode(".", $filename);
-                            $new_filename =  strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
-                            $file_folder = $destino . '/' . $new_filename;
+                        // Si no existe la carpeta de destino la creamos
+                        if(!file_exists(DIR_PUBLIC)) @mkdir(DIR_PUBLIC);    
 
-                            // if (!file_exists($file_folder)) {
-                            $data['archivoBlob'] = file_get_contents($file_folder, false);
-                            $data['extension'] = $temp[count($temp)-1];
-                            $data['size'] = $filesize;
-                            $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-                            $data['categoria'] = $categoria[$i];
+                        if ($ficheros["error"] != 4 || $ficheros["size"] != 0)
+                        {
+                            // Sólo en el caso de que exista esta carpeta realizaremos el proceso
+                            if(file_exists(DIR_PUBLIC)) {
 
-                            $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
-                            // }
+                                $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                                $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+
+                                // Recorremos el array de nombres para realizar proceso de upload
+                                for($i=0; $i < count($nombres_ficheros); $i++){
+                                    // Extraemos el nombre y la extensión del nombre completo del fichero
+                                    $nombre_extension = explode('.', basename($nombres_ficheros[$i]));
+                                    // Obtenemos la extensión
+                                    $extension=array_pop($nombre_extension);
+                                    // Obtenemos el nombre
+                                    $nombre=array_pop($nombre_extension);
+                                    // Creamos la ruta de destino
+                                    if ($nombre) {
+                                        $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . utf8_decode($nombre) . '.' . $extension;
+                                        // Mover el archivo de la carpeta temporal a la nueva ubicación
+                                        if(move_uploaded_file($ficheros['tmp_name'][$i], $archivo_destino)) {
+                                            $filename = $_FILES['archivo']['name'][$i];
+                                            $filesize = $_FILES['archivo']['size'][$i];
+                                            $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                                            $file_type = $_FILES['archivo']['type'][$i];
+                                            $temp = explode(".", $filename);
+
+                                            $data['archivoBlob'] = file_get_contents($archivo_destino, true);
+                                            $data['extension'] = $temp[count($temp)-1];
+                                            $data['size'] = $filesize;
+                                            $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                                            $data['categoria'] = $categoria[$i];
+
+                                            $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+                                            // Activamos el indicador de proceso correcto
+                                            $estado_proceso = true;
+                                            // Almacenamos el nombre del archivo de destino
+                                            $paths[] = $archivo_destino;
+                                        } else {
+                                            // Activamos el indicador de proceso erroneo
+                                            $estado_proceso = false;
+                                            // Rompemos el bucle para que no continue procesando ficheros
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
+
                         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
                         if ($contribuyente) {
                             $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
-                            // if (!file_exists($destino)) {
-                            $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
-                            // }
+                            if (file_exists($archivo_destino)) {
+                                $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
+                            }
                             $this->flashMessenger()->addInfoMessage('Se actualizo con éxito!');
                         } else {
                             $contribuyente = $this->contribuyenteManager->guardarContribuyente($data);
-                            // if (!file_exists($destino)) {
-                            $this->bibliotecaManager->guardarRelacionAC($contribuyente, $archivito);
-                            // }
+                            if (file_exists($archivo_destino)) {
+                                $this->bibliotecaManager->guardarRelacionAC($contribuyente, $archivito);
+                            }
                             $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                         }
                         return $this->redirect()->toRoute('contribuyente');
+
+// echo "<pre>";
+// print_r($data);
+// echo "</pre>";
+// exit();
+                        // $categoriaDefault = $data['id_archivo_categoria'];
+                        //
+                        // $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                        // $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+                        // $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+                        // $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+                        // $num = (int) count($archivoUrl);
+
+                        // for ($i=0; $i < $num; $i++) {
+                        //     $filename = $_FILES['archivo']['name'][$i];
+                        //     $filesize = $_FILES['archivo']['size'][$i];
+                        //     $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                        //     $file_type = $_FILES['archivo']['type'][$i];
+                        //     $date = date("d-m-Y_H-i");
+                        //     $temp = explode(".", $filename);
+                        //     $new_filename =  strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
+                        //     $file_folder = $destino . '/' . $new_filename;
+
+                        //     // if (!file_exists($file_folder)) {
+                        //     $data['archivoBlob'] = file_get_contents($file_folder, false);
+                        //     $data['extension'] = $temp[count($temp)-1];
+                        //     $data['size'] = $filesize;
+                        //     $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                        //     $data['categoria'] = $categoria[$i];
+
+                        //     $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+                        //     // }
+                        // }
+
                     } catch (RuntimeException $exception) {
                         $this->flashMessenger()->addErrorMessage($exception->getMessage());
                         return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
@@ -438,7 +391,7 @@ class ContribuyenteController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
-                $this->contribuyenteManager->actualizar($contribuyente, $data);
+                $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
                 return $this->redirect()->toRoute('contribuyente');
             }
         } else {

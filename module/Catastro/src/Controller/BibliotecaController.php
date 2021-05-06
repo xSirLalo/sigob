@@ -177,6 +177,15 @@ class BibliotecaController extends AbstractActionController
         return new ViewModel(['resultados' => $resultados, 'contribuyenteId' => $contribuyenteId]);
     }
 
+    public function saveFileAction()
+    {
+        $data['result'] = "Hola mundo";
+        $json = new JsonModel($data);
+        $json->setTerminal(true);
+
+        return $json;
+    }
+
     public function viewFileAction()
     {
         $fileName = $this->params()->fromQuery('name', '');
@@ -248,6 +257,8 @@ class BibliotecaController extends AbstractActionController
 
     public function deleteFileAction()
     {
+        define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal/');
+
         $id = (int)$this->params()->fromRoute('predio', -1);
         $archivoId = (int)$this->params()->fromRoute('archivo', -1);
 
@@ -277,7 +288,10 @@ class BibliotecaController extends AbstractActionController
             ->setParameter('idParam2', $archivoId);
         $qb->getQuery()->execute();
 
-        \unlink('public/img/'. $file->getUrl());
+        if (!file_exists(DIR_PUBLIC . $file->getUrl())) {
+            \unlink(DIR_PUBLIC . $file->getUrl());
+        }
+
         $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
         // return $this->redirect()->toRoute('biblioteca/ver', ['id' => $id]);
         return $this->redirect()->toRoute('predio/ver', ['id' => $id]);
@@ -285,6 +299,8 @@ class BibliotecaController extends AbstractActionController
 
     public function deleteFile2Action()
     {
+        define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal/');
+
         $id = (int)$this->params()->fromRoute('contribuyente', -1);
         $archivoId = (int)$this->params()->fromRoute('archivo', -1);
 
@@ -314,7 +330,10 @@ class BibliotecaController extends AbstractActionController
             ->setParameter('idParam2', $archivoId);
         $qb->getQuery()->execute();
 
-        \unlink('public/img/'. $file->getUrl());
+        if (!file_exists(DIR_PUBLIC . $file->getUrl())) {
+            \unlink(DIR_PUBLIC . $file->getUrl());
+        }
+
         $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
         // return $this->redirect()->toRoute('biblioteca/ver', ['id' => $id]);
         return $this->redirect()->toRoute('contribuyente/ver', ['id' => $id]);

@@ -303,6 +303,15 @@ return [
                             ],
                         ],
                     ],
+                    'guardar-archivo-contribuyente' => [
+                        'type' => 'literal',
+                        'options' => [
+                            'route' => '/guardar-archivo-contribuyente',
+                            'defaults' => [
+                                'action' => 'saveFile',
+                            ],
+                        ],
+                    ],
                     'ver-archivo' => [
                         'type' => 'segment',
                         'options' => [
@@ -327,20 +336,6 @@ return [
                             ],
                         ],
                     ],
-                    'eliminar-archivo-predio' => [
-                        'type' => 'segment',
-                        'options' => [
-
-                            'route' => '/eliminar-archivo-predio[/:predio[/:archivo]]',
-                            'constraints' => [
-                                'predio' => '[0-9]+',
-                                'archivo' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'deleteFile',
-                            ],
-                        ],
-                    ],
                     'eliminar-archivo-contribuyente' => [
                         'type' => 'segment',
                         'options' => [
@@ -348,6 +343,20 @@ return [
                             'route' => '/eliminar-archivo-contribuyente[/:contribuyente[/:archivo]]',
                             'constraints' => [
                                 'contribuyente' => '[0-9]+',
+                                'archivo' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'deleteFile',
+                            ],
+                        ],
+                    ],
+                    'eliminar-archivo-predio' => [
+                        'type' => 'segment',
+                        'options' => [
+
+                            'route' => '/eliminar-archivo-predio[/:predio[/:archivo]]',
+                            'constraints' => [
+                                'predio' => '[0-9]+',
                                 'archivo' => '[0-9]+',
                             ],
                             'defaults' => [
@@ -811,7 +820,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'datatable', 'searchCatastral', 'autofillCatastral'], 'allow' => '*']
             ],
             Controller\BibliotecaController::class => [
-                ['actions' => ['index', 'add', 'view', 'deleteFile', 'deleteFile2', 'deleteFile3', 'downloadFile', 'viewFile'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'saveFile', 'deleteFile', 'deleteFile2', 'downloadFile', 'viewFile'], 'allow' => '*']
             ],
             Controller\BibliotecaCategoriaController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
@@ -829,7 +838,7 @@ return [
             Service\AportacionManager::class => Service\Factory\AportacionFactory::class,
             Service\BibliotecaManager::class => Service\Factory\BibliotecaFactory::class,
             Service\BibliotecaCategoriaManager::class => Service\Factory\BibliotecaCategoriaFactory::class,
-            Service\AportacionControllerManager::class => Service\Factory\AportacionFactory::class,
+            Service\AportacionManager::class => Service\Factory\AportacionFactory::class,
         ]
     ],
     'view_manager' => [

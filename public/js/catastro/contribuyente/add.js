@@ -27,7 +27,6 @@ function tipoPersonaCambia() {
 
 $(document).ready(function () {
 
-
     $('.custom-file input').change(function (e) {
         var files = [];
         for (var i = 0; i < $(this)[0].files.length; i++) {
