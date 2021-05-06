@@ -729,11 +729,12 @@ $(document).ready(function() {
 
                 }
 				else if(data.resp == "ok"){
-                // if(data.resp == "ok"){
 
                     $("#id_aportacion").val(data.id_objeto);
                     $("#Contribuyente").val(data.nombre);
+                    $("#rfContribuyente").val(data.rfc);
                     $('#addContribuyente').modal('hide');
+
 				}else{
 
 					alert(data.msg);
@@ -745,6 +746,8 @@ $(document).ready(function() {
 
 
     $("#btn_guardar").click(function(){
+
+   ////////Funcion Validar Rfc///////////////
 
     function rfcValido(rfc, aceptarGenerico = true) {
         const re       = /^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
@@ -782,138 +785,7 @@ $(document).ready(function() {
             return false;
         return rfcSinDigito + digitoVerificador;
     }
-
-    let  nombreContribuyente  = $("#nombreContribuyente").val();
-    let  apellidoPaterno = $("#apellidoPaterno").val();
-    let  apellidoMaterno = $("#apellidoMaterno").val();
-    let  rfc = $("#rfc").val();
-    let  curp = $("#curp").val();
-    let  dia = $("#dia").val();
-    let  mes = $("#mes").val();
-    let  año = $("#año").val();
-    let  correoElectronico = $("#correoElectronico").val();
-    let  telefono = $("#telefono").val();
-    let  razonSocial = $("#razonSocial").val();
-
-
-    if($("#tipoContribuyente").val()==="F"){
-
-    if(nombreContribuyente == 0) {
-        $.notify({
-
-            message: 'Por favor Ingrese el Nombre del Contribuyente'
-        },
-        {
-            type: 'danger',
-            z_index: 999999,
-        });
-
-    }
-    else if(apellidoPaterno.length == 0) {
-        $.notify({
-
-            message: 'Por favor Ingrese el Apellido Paterno'
-        },
-        {
-            type: 'danger',
-            z_index: 999999,
-        });
-
-    }
-    else if(apellidoMaterno.length == 0) {
-            $.notify({
-
-            message: 'Por favor Ingrese el Apellido Materno'
-        },
-        {
-            type: 'danger',
-            z_index: 999999,
-        });
-
-    }
-    else if(rfc.length == 0) {
-        $.notify({
-
-            message: 'Por favor Ingrese el R.F.C'
-        },
-        {
-            type: 'danger',
-            z_index: 999999,
-        });
-    }
-
-    else if(curp.length == 0){
-        $.notify({
-
-            message: 'Por favor Ingrese el C.U.R.P.'
-        },
-        {
-            type: 'danger',
-            z_index: 999999,
-        });
-
-
-    }
-else if(dia.length == 0||mes.length == 0||año.length == 0){
-    $.notify({
-
-                message: 'Ingrese Una Fecha de Nacimiento Por favor'
-            },
-            {
-                type: 'danger',
-                z_index: 999999,
-            });
-
-}
-
-
-
-else if(correoElectronico.length > 0){
-    if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
-        $.notify({
-
-                message: 'El correo electrónico introducido no es correcto.'
-            },
-            {
-                type: 'danger',
-                z_index: 999999,
-            });
-    }
-
-
-}
-
-
-else if(telefono.length > 0){
-    if(isNaN($("#telefono").val())) {
-        $.notify({
-
-                message: 'El teléfono solo debe contener números.'
-            },
-            {
-                type: 'danger',
-                z_index: 999999,
-            });
-
-    }else if($("#telefono").val().length < 9){
-        $.notify({
-
-                message: 'El teléfono debe tener 9 caracteres.'
-            },
-            {
-                type: 'danger',
-                z_index: 999999,
-            });
-
-    }
-}
-
-
-if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 || correoElectronico.length > 0 || telefono.length >0  || correoElectronico.length > 0 && telefono.length >0){
-
-
-
-         //Función para validar una CURP
+    ////////////Funcion Validar CURP///////////////
     function curpValida(curp) {
         var re = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/,
             validado = curp.match(re);
@@ -940,73 +812,115 @@ if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMater
         return true; //Validado
     }
 
+    //////////////////////////////////////////////
 
-    //Handler para el evento cuando cambia el input
-    //Lleva la CURP a mayúsculas para validarlo
-   // let = curp = $("#curp").val();
+    let  nombreContribuyente  = $("#nombreContribuyente").val();
+    let  apellidoPaterno = $("#apellidoPaterno").val();
+    let  apellidoMaterno = $("#apellidoMaterno").val();
+    let  rfc = $("#rfc").val();
+    let  curp = $("#curp").val();
+    let  dia = $("#dia").val();
+    let  mes = $("#mes").val();
+    let  año = $("#año").val();
+    let  correoElectronico = $("#correoElectronico").val();
+    let  telefono = $("#telefono").val();
+    let  razonSocial = $("#razonSocial").val();
 
-        if (!curpValida(curp)) { // ⬅️ Acá se comprueba
+
+    if($("#tipoContribuyente").val()==="F"){
+
+    if(nombreContribuyente == 0) {
+        $.notify({
+
+            message: 'Por favor, Ingrese El Nombre del Contribuyente'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+    }
+    else if(apellidoPaterno.length == 0) {
+        $.notify({
+
+            message: 'Por favor, Ingrese El Apellido Paterno'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+    }
+    else if(apellidoMaterno.length == 0) {
             $.notify({
 
-                message: 'El C.U.R.P. Ingresado no es valido Por favor Intente de Nuevo'
+            message: 'Por favor, Ingrese El Apellido Materno'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+    }
+    else if(rfc.length == 0) {
+        $.notify({
+
+            message: 'Por favor, Ingrese el R.F.C.'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+    }
+
+    else if(curp.length == 0){
+        $.notify({
+
+            message: 'Por favor, Ingrese el C.U.R.P.'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+
+    }
+else if(dia.length == 0||mes.length == 0||año.length == 0){
+    $.notify({
+
+                message: 'Por favor, Ingrese Una Fecha de Nacimiento'
             },
             {
                 type: 'danger',
                 z_index: 999999,
             });
 
+}
 
-    }else{
-           //////////////validar RFC/////////////////
-    //Función para validar un RFC
-    // Devuelve el RFC sin espacios ni guiones si es correcto
-    // Devuelve false si es inválido
-    // (debe estar en mayúsculas, guiones y espacios intermedios opcionales)
-    function rfcValido(rfc, aceptarGenerico = true) {
-        const re       = /^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
-        var   validado = rfc.match(re);
 
-        if (!validado)  //Coincide con el formato general del regex?
-            return false;
+if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length == 0 && telefono.length == 0 ){
 
-        //Separar el dígito verificador del resto del RFC
-        const digitoVerificador = validado.pop(),
-            rfcSinDigito      = validado.slice(1).join(''),
-            len               = rfcSinDigito.length,
+if(curp.length > 0){
+    let  curCorrecto = curpValida(curp)
+    if (!curCorrecto) {
+            $.notify({
 
-        //Obtener el digito esperado
-            diccionario       = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ Ñ",
-            indice            = len + 1;
-        var   suma,
-            digitoEsperado;
+                message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
 
-        if (len == 12) suma = 0
-        else suma = 481; //Ajuste para persona moral
+    }else if(rfc.length > 0){
 
-        for(var i=0; i<len; i++)
-            suma += diccionario.indexOf(rfcSinDigito.charAt(i)) * (indice - i);
-        digitoEsperado = 11 - suma % 11;
-        if (digitoEsperado == 11) digitoEsperado = 0;
-        else if (digitoEsperado == 10) digitoEsperado = "A";
 
-        //El dígito verificador coincide con el esperado?
-        // o es un RFC Genérico (ventas a público general)?
-        if ((digitoVerificador != digitoEsperado)
-        && (!aceptarGenerico || rfcSinDigito + digitoVerificador != "XAXX010101000"))
-            return false;
-        else if (!aceptarGenerico && rfcSinDigito + digitoVerificador == "XEXX010101000")
-            return false;
-        return rfcSinDigito + digitoVerificador;
-    }
+    let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+    if (!rfcCorrecto) {
 
-        //var rfc =  $("#rfc").val();
-
-        var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
-
-            if (!rfcCorrecto) {
                 $.notify({
 
-                message: 'El R.F.C Ingresado no es valido Por favor Intente de Nuevo'
+                message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
             },
             {
                 type: 'danger',
@@ -1019,12 +933,166 @@ if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMater
             guardarContribuyente(new Array(addContribuyente));
         }
     }
+}
+
+
+}else if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length > 0 && telefono.length < 1 ){
+
+    if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
+        $.notify({
+
+                message: 'El correo electrónico introducido no es correcto.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+        }else if(curp.length > 0){
+            let  curCorrecto = curpValida(curp)
+            if (!curCorrecto) {
+                    $.notify({
+
+                        message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+            }else if(rfc.length > 0){
+
+
+            let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+
+                        $.notify({
+
+                        message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+                }else{
+                    let addContribuyente = new Contribuyente();
+
+                    guardarContribuyente(new Array(addContribuyente));
+                }
+            }
+        }
+
+
+}else if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length < 1 && telefono.length  > 0 ){
+
+    if($("#telefono").val().length < 9){
+            $.notify({
+
+                message: 'El teléfono debe tener 9 caracteres.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else if(curp.length > 0){
+            let  curCorrecto = curpValida(curp)
+            if (!curCorrecto) {
+                    $.notify({
+
+                        message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+            }else if(rfc.length > 0){
+
+
+            let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+
+                        $.notify({
+
+                        message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+                }else{
+                    let addContribuyente = new Contribuyente();
+
+                    guardarContribuyente(new Array(addContribuyente));
+                }
+            }
+        }
+
+
+}else if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length > 0 && telefono.length > 0 ){
+
+    if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
+        $.notify({
+
+                message: 'El correo electrónico introducido no es correcto.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+        }else if($("#telefono").val().length < 9){
+            $.notify({
+
+                message: 'El teléfono debe tener 9 caracteres.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else if(curp.length > 0){
+            let  curCorrecto = curpValida(curp)
+            if (!curCorrecto) {
+                    $.notify({
+
+                        message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+            }else if(rfc.length > 0){
+
+
+            let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+
+                        $.notify({
+
+                        message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+                }else{
+                    let addContribuyente = new Contribuyente();
+
+                    guardarContribuyente(new Array(addContribuyente));
+                }
+            }
+        }
+
 
 }
 
 
 
-
+///////Validacion Persona Moral////////////
 
 }else if($("#tipoContribuyente").val()==="M"){
     if(nombreContribuyente == 0) {
@@ -1047,7 +1115,22 @@ if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMater
             z_index: 999999,
         });
 
-    }else if(rfc.length > 0){
+    }else if(razonSocial == 0) {
+        $.notify({
+
+            message: 'Por favor Ingrese una Razón Social'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+
+    }
+
+else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length == 0 && correoElectronico.length == 0){
+
+if(rfc.length > 0){
 
 
     var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
@@ -1062,33 +1145,17 @@ if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMater
                 z_index: 999999,
             });
 
+        }else{
+            let addContribuyente = new Contribuyente();
+
+            guardarContribuyente(new Array(addContribuyente));
         }
-    }else if(razonSocial == 0) {
-        $.notify({
-
-            message: 'Por favor Ingrese una Razón Socil'
-        },
-        {
-            type: 'danger',
-            z_index: 999999,
-        });
-
-
-    }else if(telefono > 0){
-        if($("#telefono").val().length < 9){
-        $.notify({
-
-                message: 'El teléfono debe tener 9 caracteres.'
-            },
-            {
-                type: 'danger',
-                z_index: 999999,
-            });
-
     }
 
 
-    }else if(correoElectronico.length > 0){
+
+}else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length < 1 & correoElectronico.length > 0 ){
+
     if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
         $.notify({
 
@@ -1098,31 +1165,100 @@ if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMater
                 type: 'danger',
                 z_index: 999999,
             });
-    }
+        }else if(rfc.length > 0){
+            var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+                $.notify({
+
+                    message: 'El R.F.C Ingresado no es valido Por favor Intente de Nuevo'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+            }else{
+                let addContribuyente = new Contribuyente();
+
+                guardarContribuyente(new Array(addContribuyente));
+            }
+
+        }
 
 
-}
+}else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length > 0 & correoElectronico.length < 1 ){
 
-if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0){
+    if($("#telefono").val().length < 9){
+            $.notify({
+
+                message: 'El teléfono debe tener 9 caracteres.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else if(rfc.length > 0){
+            var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+                $.notify({
+
+                    message: 'El R.F.C Ingresado no es valido Por favor Intente de Nuevo'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+            }else{
+                let addContribuyente = new Contribuyente();
+
+                guardarContribuyente(new Array(addContribuyente));
+            }
+
+        }
 
 
-        // var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+}else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length > 0 & correoElectronico.length > 0 ){
 
-        //     if (!rfcCorrecto) {
-        //         $.notify({
+    if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
+        $.notify({
 
-        //         message: 'El R.F.C Ingresado no es valido Por favor Intente de Nuevo'
-        //     },
-        //     {
-        //         type: 'danger',
-        //         z_index: 999999,
-        //     });
+                message: 'El correo electrónico introducido no es correcto.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+        }else if($("#telefono").val().length < 9){
+            $.notify({
 
-        // }else{
-        //     let addContribuyente = new Contribuyente();
+                message: 'El teléfono debe tener 9 caracteres.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
 
-        //     guardarContribuyente(new Array(addContribuyente));
-        // }
+        }else if(rfc.length > 0){
+            var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+                $.notify({
+
+                    message: 'El R.F.C Ingresado no es valido Por favor Intente de Nuevo'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+            }else{
+                let addContribuyente = new Contribuyente();
+
+                guardarContribuyente(new Array(addContribuyente));
+            }
+
+        }
 
 
 }
@@ -1142,71 +1278,7 @@ if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0){
 
 
 
-//////////////validar RFC/////////////////
-//Función para validar un RFC
-// Devuelve el RFC sin espacios ni guiones si es correcto
-// Devuelve false si es inválido
-// (debe estar en mayúsculas, guiones y espacios intermedios opcionales)
-// function rfcValido(rfc, aceptarGenerico = true) {
-//     const re       = /^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
-//     var   validado = rfc.match(re);
-
-//     if (!validado)  //Coincide con el formato general del regex?
-//         return false;
-
-//     //Separar el dígito verificador del resto del RFC
-//     const digitoVerificador = validado.pop(),
-//         rfcSinDigito      = validado.slice(1).join(''),
-//         len               = rfcSinDigito.length,
-
-//     //Obtener el digito esperado
-//         diccionario       = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ Ñ",
-//         indice            = len + 1;
-//     var   suma,
-//         digitoEsperado;
-
-//     if (len == 12) suma = 0
-//     else suma = 481; //Ajuste para persona moral
-
-//     for(var i=0; i<len; i++)
-//         suma += diccionario.indexOf(rfcSinDigito.charAt(i)) * (indice - i);
-//     digitoEsperado = 11 - suma % 11;
-//     if (digitoEsperado == 11) digitoEsperado = 0;
-//     else if (digitoEsperado == 10) digitoEsperado = "A";
-
-//     //El dígito verificador coincide con el esperado?
-//     // o es un RFC Genérico (ventas a público general)?
-//     if ((digitoVerificador != digitoEsperado)
-//     && (!aceptarGenerico || rfcSinDigito + digitoVerificador != "XAXX010101000"))
-//         return false;
-//     else if (!aceptarGenerico && rfcSinDigito + digitoVerificador == "XEXX010101000")
-//         return false;
-//     return rfcSinDigito + digitoVerificador;
-// }
-
-//     var rfc =  $("#rfc").val();
-
-//     var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
-
-//     if (rfcCorrecto) {
-//         alert("Es valido");
-//     } else {
-//     alert("No es valido");
-//     }
-
-
-
-/////////////////////////////////////////
-
-
-////Si pasa todas las validaciones hacer eso////
-// let addContribuyente = new Contribuyente();
-
-// guardarContribuyente(new Array(addContribuyente));
-
-
-
-    ///Modal Contribuyente////////////
+///////Modal Contribuyente////////////
     $('#ModalContribuyente').on( 'click', function () {
         $('#addContribuyente').modal('show');
         $("#tipoContribuyente").val("F")
@@ -1320,10 +1392,28 @@ $(document).ready(function() {
 
     $("#btn_guardarAportacion").click(function(){
 
+    //////////////Validaciones///////////////////
+    var table = $('#colindacias').DataTable();
+    //Muestro la cantidad de filas
+    console.log("Filas: " + table.rows().count());
+    let filas = parseInt(table.rows().count());;
 
-			let addAportacion = new Aportacion();
+    if(filas < 4){
+        $.notify({
 
-			guardarAportacion(new Array(addAportacion));
+                    message: 'El minimo de colindancias agregados debe ser de 4'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+    }
+
+
+    ////////////////////////////////////////////
+    // let addAportacion = new Aportacion();
+
+    // guardarAportacion(new Array(addAportacion));
 		});
 
 

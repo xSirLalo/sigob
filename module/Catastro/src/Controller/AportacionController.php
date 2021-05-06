@@ -1244,24 +1244,24 @@ class AportacionController extends AbstractActionController
     {
         $req_post = $this->params()->fromPost();
 
-        $rfc = $this->opergobserviceadapter->obtenerPersonaPorRfc($req_post['c'][0]['rfc']);
+      //  $rfc = $this->opergobserviceadapter->obtenerPersonaPorRfc($req_post['c'][0]['rfc']);
 
 
-        if(isset($rfc->Persona)){
+      //  if(isset($rfc->Persona)){
 
-    $datos = ["resp"=>"okno", "msg"=>"YA EXISTE ESA PERSONA"];
+    //$datos = ["resp"=>"okno", "msg"=>"YA EXISTE ESA PERSONA"];
 
-    }else{
+    //}else{
 
         $result = $this->aportacionManager->guardarTest($req_post['c'][0]);
 
         if ($result){
-            $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'nombre' =>$result->getIdContribuyente()->getNombre()];
+            $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'nombre' =>$result->getIdContribuyente()->getNombre(), 'rfc' =>$result->getIdContribuyente()->getRfc() ];
         }else{
             $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
         }
 
-    }
+   // }
 
 				$json = new JsonModel($datos);
 				$json->setTerminal(true);

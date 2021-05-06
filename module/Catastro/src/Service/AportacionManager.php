@@ -641,19 +641,30 @@ class AportacionManager
            ////////////////////////////
 
             //////Contribuyente/////
+            if($datos['tipoContribuyente']=="F"){
             $contribuyente->setTipoPersona($datos['tipoContribuyente']);
             $contribuyente->setNombre($datos['nombreContribuyente']);
             $contribuyente->setApellidoPaterno($datos['apellidoPaterno']);
             $contribuyente->setApellidoMaterno($datos['apellidoMaterno']);
             $contribuyente->setRfc($datos['rfc']);
-            $contribuyente->setRazonSocial($datos['razonSocial']);
+            $contribuyente->setRazonSocial($datos['nombreContribuyente']." ".$datos['apellidoPaterno']." ".$datos['apellidoMaterno']);
             $contribuyente->setCurp($datos['curp']);
             $fecha_nacimiento = new \DateTime($datos['año']."-".$datos['mes']."-".$datos['dia']);
             $contribuyente->setFechaNacimiento($fecha_nacimiento);
             $contribuyente->setCorreo($datos['correoElectronico']);
             $contribuyente->setTelefono($datos['telefono']);
+            //$contribuyente->setGenero($datos['genero']);
+            //$contribuyente->setEstadoCivil($datos['estadoCivil']);
             $contribuyente->setCvePersona(NULL);
-            //$contribuyente->setRfc($datos['genero']);
+            }else if($datos['tipoContribuyente']=="M"){
+            $contribuyente->setTipoPersona($datos['tipoContribuyente']);
+            $contribuyente->setNombre($datos['nombreContribuyente']);
+            $contribuyente->setRfc($datos['rfc']);
+            $contribuyente->setRazonSocial($datos['razonSocial']);
+            $contribuyente->setCorreo($datos['correoElectronico']);
+            $contribuyente->setTelefono($datos['telefono']);
+            $contribuyente->setCvePersona(NULL);
+            }
 
             $this->entityManager->persist($contribuyente);
             $this->entityManager->flush();
