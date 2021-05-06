@@ -543,10 +543,13 @@ function tipoPersona(){
         $('#div_razonSocial').show();
         $('#div_razonSocial').removeClass('col-sm-4');
         $('#div_razonSocial').addClass('col-sm-6');
+        $('#div_rfc').removeClass('col-sm-4');
+        $('#div_rfc').addClass('col-sm-6');
         $('#div_apellidoPaterno').hide();
         $('#div_apellidoMaterno').hide();
         $('#div_fechaNacimeinto').hide();
         $('#div_genero').hide();
+        $('#div_estadoCivil').hide();
         $('#div_mes').hide();
         $('#div_año').hide();
         $('#div_curp').hide();
@@ -561,14 +564,15 @@ function tipoPersona(){
         $('#div_telefono').removeClass('col-sm-6');
         $('#div_telefono').addClass('col-sm-4');
         $('#div_razonSocial').hide();
-        $('#div_rfc').removeClass('col-sm-4');
-        $('#div_rfc').addClass('col-sm-6');
-        $('#div_curp').removeClass('col-sm-4');
-        $('#div_curp').addClass('col-sm-6');
+        $('#div_rfc').removeClass('col-sm-6');
+        $('#div_rfc').addClass('col-sm-4');
+        // $('#div_curp').removeClass('col-sm-4');
+        // $('#div_curp').addClass('col-sm-6');
         $('#div_apellidoPaterno').show();
         $('#div_apellidoMaterno').show();
         $('#div_fechaNacimeinto').show();
         $('#div_genero').show();
+        $('#div_estadoCivil').show();
         $('#div_mes').show();
         $('#div_año').show();
         $('#div_curp').show();
@@ -582,114 +586,6 @@ function tipoPersona(){
 };
 ///Fin Funcion Persona Moral/Fisica
 
-//DataTable-Medidas Colindancias////
-// $('#colindacias').dataTable( {
-//     responsive: false,
-//     searching: false,
-//     paging: false,
-//     info: false,
-//     // columns: [
-//     //             {data: "id"},
-//     //             {data: "puntosCardinales"},
-//     //             {data: "metrosLinales"},
-//     //             {data: "colindancia"},
-//     //             {data: "observaciones"},
-//     //             {data: "opciones"},
-//     //         ],
-// } );
-
-
-// $(document).ready(function() {
-//     var table = $('#colindacias').DataTable();
-//     //Agregar Colindancias///
-//     $('#addRow').on( 'click', function () {
-
-//         table.row.add( [
-//             contador +'',
-//             counter = $("#puntoCardinal").val(),
-//             counter = $("#colindaCon").val(),
-//             counter = $("#medidasMetros").val(),
-//             counter = $("#observacionesColindacias").val(),
-//             counter = `<button id="editarColindancias" class="btn btn-warning" data-toggle="modal" data-target="#addColindancia">Editar</button><button id="eliminarColindancia" class="btn btn-danger">Eliminar</button>`,
-
-//         ] ).draw(false);
-
-//         counter++;
-//         contador++;
-//         $('#addColindancia').modal('hide');
-//     });
-//     ////Editar Colindancias////
-//     $('#tbody').on( 'click', 'tr', '#editarColindancias', function () {
-//         let Id = table.row(this).data()[0];
-//         let puntosCardinales = table.row(this).data()[1];
-//         let metrosLinales = table.row(this).data()[2];
-//         let colindancias = table.row(this).data()[3];
-//         let observaciones = table.row(this).data()[4];
-//         $("#IdColindancia").val(Id);
-//         $("#puntoCardinal").val(puntosCardinales);
-//         $("#medidasMetros").val(metrosLinales);
-//         $("#colindaCon").val(colindancias);
-//         $("#observacionesColindacias").val(observaciones);
-
-
-//        // console.log( puntosCardinales );
-//         $("#addRow").hide();
-//         $("#updateRow").show();
-
-//     } );
-
-//     $('#updateRow').on( 'click', function () {
-//         let Id  =  $("#IdColindancia").val();
-//         let puntosCardinales =  $("#puntoCardinal").val();
-//         let metrosLinales = $("#medidasMetros").val();
-//         let colindancias =  $("#colindaCon").val();
-//         let observaciones = $("#observacionesColindacias").val();
-
-//         newData = [ Id, puntosCardinales, metrosLinales, colindancias, observaciones, `<button id="editarColindancias" class="btn btn-warning" data-toggle="modal" data-target="#addColindancia">Editar</button><button id="eliminarColindancia" class="btn btn-danger">Eliminar</button>` ];
-//         table.row(Id).data(newData).draw();
-//         $('#addColindancia').modal('hide');
-
-//     } );
-
-//     //////Eliminar Colindancias////
-
-//     $('#tbody').on( 'click', '#eliminarColindancia', function () {
-//         table
-//             .row( $(this).parents('tr') )
-//             .remove()
-//             .draw(false);
-//     } );
-
-
-//     var counter = 1;
-//     var contador = 1;
-
-
-
-// } );
-
-
-
-// $(document).ready(function() {
-//     $('#modalColindancias').on( 'click', function () {
-//         $("#updateRow").hide();
-//         $("#addRow").show();
-//         $('#addColindancia').modal('show');
-//         $("#medidasMetros").val("");
-//         $("#colindaCon").val("");
-//         $("#observacionesColindacias").val("");
-
-
-//     });
-// });
-
-/////Fin Modal Add Colindancias///
-
-
-
-
-
-
 /////////Guardar Contribuyente metodo post////////////
 $(document).ready(function() {
     let Contribuyente  = function(){
@@ -702,6 +598,7 @@ $(document).ready(function() {
         this.rfc                 = $("#rfc").val();
         this.razonSocial         = $("#razonSocial").val();
         this.curp                = $("#curp").val();
+        this.estadoCivil         = $("#estadoCivil").val();
         this.dia                 = $("#dia").val();
         this.mes                 = $("#mes").val();
         this.año                 = $("#año").val();
@@ -1098,7 +995,7 @@ if(curp.length > 0){
     if(nombreContribuyente == 0) {
         $.notify({
 
-            message: 'Por favor Ingrese el Nombre del Contribuyente'
+            message: 'Por favor, Ingrese el Nombre del Contribuyente'
         },
         {
             type: 'danger',
@@ -1108,7 +1005,7 @@ if(curp.length > 0){
     }else if(rfc == 0) {
         $.notify({
 
-            message: 'Por favor Ingrese el R.F.C'
+            message: 'Por favor, Ingrese el R.F.C'
         },
         {
             type: 'danger',
@@ -1118,7 +1015,7 @@ if(curp.length > 0){
     }else if(razonSocial == 0) {
         $.notify({
 
-            message: 'Por favor Ingrese una Razón Social'
+            message: 'Por favor, Ingrese una Razón Social'
         },
         {
             type: 'danger',
@@ -1290,14 +1187,13 @@ if(rfc.length > 0){
         $('#div_telefono').removeClass('col-sm-6');
         $('#div_telefono').addClass('col-sm-4');
         $('#div_razonSocial').hide();
-        $('#div_rfc').removeClass('col-sm-4');
-        $('#div_rfc').addClass('col-sm-6');
-        $('#div_curp').removeClass('col-sm-4');
-        $('#div_curp').addClass('col-sm-6');
+        $('#div_rfc').removeClass('col-sm-6');
+        $('#div_rfc').addClass('col-sm-4');
         $('#div_apellidoPaterno').show();
         $('#div_apellidoMaterno').show();
         $('#div_fechaNacimeinto').show();
         $('#div_genero').show();
+        $('#div_estadoCivil').show();
         $('#div_mes').show();
         $('#div_año').show();
         $('#div_curp').show();
@@ -1315,7 +1211,7 @@ if(rfc.length > 0){
         $('#año').val("");
         $('#correoElectronico').val("");
         $('#telefono').val("");
-        $('#genero').val("Hombre");
+        $('#genero').val("M");
 
 
     });
@@ -1391,15 +1287,312 @@ $(document).ready(function() {
 
 
     $("#btn_guardarAportacion").click(function(){
+    //////Input///////////////////
+    let parcela   = $("#parcela").val();
+    let manzana   = $("#manzana").val();
+    let lote      = $("#lote").val();
+    let local     = $("#local").val();
+    let categoria = $("#categoria").val();
+    let condicion = $("#condicion").val();
+    let titular   = $("#titular").val();
+    let ubicacion = $("#ubicacion").val();
+    let localidad = $("#localidad").val();
+    let antecedentes         = $("#antecedentes").val();
+    let claveCatastral       = $("#claveCatastral").val();
+    let regimenPropiedad     = $("#regimenPropiedad").val();
+    let titularAnterior      = $("#titularAnterior").val();
+    let documentoPropiedad   = $("#documentoPropiedad").val();
+    let folio                = $("#folio").val();
+    let Contribuyente        = $("#Contribuyente").val();
+    let factura              = $("#factura").val();
+    let giroComercial        = $("#giroComercial").val();
+    let nombreComercial      = $("#nombreComercial").val();
+    let tenecia              = $("#tenecia").val();
+    let rfContribuyente      = $("#rfContribuyente").val();
+    let usoDestino           = $("#usoDestino").val();
+    let terreno              = $("#terreno").val();
+    let valor_zona           = $("#valor_zona").val();
+    let sup_m                = $("#sup_m").val();
+    let valor_c              = $("#valor_c").val();
+    let tasa                 = $("#tasa_i").val();
+    let ejercicio_fiscal           = $("#ejercicio_fiscal").val();
+    let ejercicio_fiscal_final     = $("#ejercicio_fiscal_final").val();
 
-    //////////////Validaciones///////////////////
+    /////Para Validar filas de Colindacias/////////
     var table = $('#colindacias').DataTable();
     //Muestro la cantidad de filas
     console.log("Filas: " + table.rows().count());
     let filas = parseInt(table.rows().count());;
+    //////////////Validaciones///////////////////
 
-    if(filas < 4){
-        $.notify({
+    if(parcela.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese una Parcela'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(categoria.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione una Categoria'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(condicion.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione una Condicion'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(titular.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese un Titular'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(ubicacion.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese una ubicacion'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(localidad.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione una Localidad'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(antecedentes.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese los Antecedentes'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(regimenPropiedad.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione un Regimen de Propiedad'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(titularAnterior.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese El Titular Anterior'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(documentoPropiedad.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione un Documento de Propiedad'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(folio.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese un Folio'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(Contribuyente.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese El Contribuyente'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(giroComercial.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione el Giro Comercial'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(nombreComercial.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese El Nombre Comercial'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(tenecia.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese Una Tenencia'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(usoDestino.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione El Uso Destino.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(terreno.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese los Metros Terreno.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(valor_zona.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, El Valor de Metros Zona.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(sup_m.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese los Metros Construccion.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(valor_c.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione Valores de Construcción.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(tasa.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione la Tasa Impositiva.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(ejercicio_fiscal > ejercicio_fiscal_final){
+            $.notify({
+
+                    message: 'El Año de Ejercicio Fiscal no debe ser Mayor que Ejercicio Fiscal Final'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+
+    else if(parcela.length > 0 && categoria.length > 0 && condicion.length > 0 && titular.length > 0 && ubicacion.length > 0 && localidad.length > 0 && antecedentes.length > 0 && regimenPropiedad.length > 0 && titularAnterior.length > 0 && documentoPropiedad.length > 0 && folio.length > 0 && Contribuyente.length > 0 && factura.length > 0 && giroComercial.length > 0 && nombreComercial.length > 0 && tenecia.length > 0 && usoDestino.length > 0 && terreno.length > 0 && valor_zona.length > 0 && sup_m.length > 0 && valor_c.length > 0 && tasa.length > 0 ){
+
+        if(filas < 4){
+            $.notify({
 
                     message: 'El minimo de colindancias agregados debe ser de 4'
                 },
@@ -1407,14 +1600,16 @@ $(document).ready(function() {
                     type: 'danger',
                     z_index: 999999,
                 });
-    }
 
+        }else{
 
-    ////////////////////////////////////////////
-    // let addAportacion = new Aportacion();
+            let addAportacion = new Aportacion();
 
-    // guardarAportacion(new Array(addAportacion));
-		});
+            guardarAportacion(new Array(addAportacion));
+        }
+        }
+
+    });
 
 
 });
@@ -1748,18 +1943,48 @@ let ActualizarColindancia = function(colindancias){
 
     $("#updateRow").click(function(){
 
-		let updateColindacia = {
+    /////Validaciones/////////////
+        let  colindaCon  = $("#colindaCon").val();
+        let  medidasMetros  = $("#medidasMetros").val();
+        if(isNaN(medidasMetros)){
+            $.notify({
 
-            id:$('#idPredioColindancias').val(),
-            puntoCardinal:$("#puntoCardinal").val(),
-            colindaCon:$("#colindaCon").val(),
-            medidasMetros: $("#medidasMetros").val(),
-            observacionesColindacias:$("#observacionesColindacias").val(),
+                    message: 'Este campo solo debe contener números.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
 
-        };
+        }
+        else if(colindaCon.length == 0|| medidasMetros == 0){
+            $.notify({
 
-		ActualizarColindancia(new Array(updateColindacia));
-        $('#addColindancia').modal('hide');
+                message: 'Por favor llene los campos'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else{
+
+
+
+            let updateColindacia = {
+
+                id:$('#idPredioColindancias').val(),
+                puntoCardinal:$("#puntoCardinal").val(),
+                colindaCon:$("#colindaCon").val(),
+                medidasMetros: $("#medidasMetros").val(),
+                observacionesColindacias:$("#observacionesColindacias").val(),
+
+            };
+
+            ActualizarColindancia(new Array(updateColindacia));
+            $('#addColindancia').modal('hide');
+
+        }
 
 		});
 
@@ -1776,60 +2001,3 @@ $('#button').on('click',function()
     //Muestro la cantidad de columnas
     console.log("Columnas: " + table.columns().count());
 });
-
-
-/////NOTIFICACION//////
-
-// 'use strict';
-// $(window).on('load', function() {
-//     function notify(message, type) {
-//         $.notify({
-//             message: message
-//         }, {
-//             type: type,
-//             allow_dismiss: false,
-//             label: 'Cancel',
-//             className: 'btn-xs btn-inverse',
-//             placement: {
-//                 from: 'bottom',
-//                 align: 'right'
-//             },
-//             delay: 2500,
-//             animate: {
-//                 enter: 'animated fadeInRight',
-//                 exit: 'animated fadeOutRight'
-//             },
-//             offset: {
-//                 x: 30,
-//                 y: 30
-//             }
-//         });
-//     };
-//     notify('Bienvenido', 'inverse');
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

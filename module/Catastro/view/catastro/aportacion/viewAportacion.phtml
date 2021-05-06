@@ -6,16 +6,19 @@ $this->headTitle($this->escapeHtml($title));
 $this->pageBreadcrumbs()->setItems([
     'Home' => $this->url('home'),
     'Aportaciones' => $this->url('aportacion'),
-    'Agregar' => $this->url('aportacion/nueva-aportacion'),
+    'Editar' => $this->url('aportacion/nueva-aportacion'),
 ]);
 // Css Requerido
 $this->headLink()
     // Css Select2
-    ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'));
+    ->prependStylesheet($this->basePath('assets/css/plugins/select2.min.css'))
+    // Css DataTables
+    ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
 // Js Requerido
 $this->inlineScript()
     // Js de la vista
-    // ->prependFile($this->basePath('js/catastro/aportacion/add.js'))
+    //->prependFile($this->basePath('js/catastro/aportacion/add.js'))
     ->prependFile($this->basePath('js/catastro/aportacion/edit.js'))
     // Js Select2
     ->prependFile($this->basePath('assets/js/plugins/select2.full.min.js'))
@@ -27,296 +30,630 @@ $this->inlineScript()
     // Js SweetAlert
     ->prependFile($this->basePath('assets/js/plugins/sweetalert.min.js'))
     ->prependFile($this->basePath('assets/js/pages/ac-alert.js'))
+      // Js Notification
+    ->prependFile($this->basePath('assets/js/plugins/bootstrap-notify.min.js'))
     // Css DataTables
-    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
+    //->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
     ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
     ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
     ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'));
+$form = $this->form;
+$form->setAttribute('action', $this->url('aportacion/nueva-aportacion'));
+$form->prepare();
+
 ?>
 
-
-
-
-
-
-
-<!--  -->
 <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h5>Editar Aportacion</h5>
-                <input class="form-control" type="text" name="id_aportacion" id="hdn_id_cont" value="<?=$aportacionId?>" >
-            </div>
-            <div class="card-body">
-                <div class="bt-wizard" id="besicwizard">
-                    <ul class="nav nav-pills nav-fill mb-3">
-                        <li class="nav-item"><a href="#b-w-tab2" class="nav-link" data-toggle="tab">Datos</a></li>
-                        <li class="nav-item"><a href="#b-w-tab3" class="nav-link" data-toggle="tab">Calculo de pago</a></li>
-                    </ul>
+    <div class="card">
+        <div class="card-header">
+            <h5>Aportacion</h5>
+            <input class="form-control" type="hidden"  id="id_aportacion" value="<?=$aportacionId?>" >
+        </div>
+        <div class="card-body">
+            <div class="bt-wizard" id="besicwizard">
+                <ul class="nav nav-pills nav-fill mb-3">
+                    <li class="nav-item"><a href="#b-w-tab2" class="nav-link" data-toggle="tab">Datos</a></li>
+                    <li class="nav-item"><a href="#b-w-tab3" class="nav-link" data-toggle="tab">Calcular Aportacion</a></li>
+                </ul>
 
-                    <h3 class="text-center bg-secondary">PARCELA 2009</h3>
+                <div class="tab-content">
+                    <div class="tab-pane" id="b-w-tab2">
+                    <!-- <h class="text-center bg-secondary"></h> -->
                     <div class="row ml-0  ">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label>Parcela</label>
-                                <input class="form-control" type="text" name=""  id="parcela">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
-                            <label>Manzana</label>
-                            <input class="form-control" type="text" name=""id="manzana" >
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
-                            <label>Lote</label>
-                            <input class="form-control" type="text" name="" id="lote">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row ml-0  ">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Local</label>
-                                <input class="form-control" type="text" name=""id="local" >
+                            <!-- Select Contirbuyente Id -->
+                                    <?= $this->formLabel($form->get('parcela')); ?>
+                                        <?= $this->formText($form->get('parcela')); ?>
+                                        <div class="text-danger">
+                                            <?= $this->formElementErrors($form->get('parcela')); ?>
+                                        </div>
                             </div>
                         </div>
                             <div class="col-sm-4">
                                 <div class="form-group ">
-                                <label>Categoria</label>
-                                    <select id="categoria" class="form-control custom-select w-30" name="" >
-                                        <option value="Rustico">Rustico</option>
-                                        <option value="Urbano">Urbano</option>
+                                <!-- Input Categoria-->
+                                    <?= $this->formLabel($form->get('manzana')); ?>
+                                    <?= $this->formText($form->get('manzana')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('manzana')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Condicion-->
+                                    <?= $this->formLabel($form->get('lote')); ?>
+                                    <?= $this->formText($form->get('lote')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('lote')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ml-0  ">
+                        <div class="col-sm-4">
+                        <div class="form-group">
+                                <?= $this->formLabel($form->get('local')); ?>
+                                    <?= $this->formText($form->get('local')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('local')); ?>
+                                    </div>
+                        </div>
+                    </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                    <label>Categoria</label>
+                                    <select class="js-example-basic-single custom-select w-30"name="select_categoria" id="categoria">
+                                        <option value="0">Buscar...</option>
+                                        <?php if ($categorias): ?>
+                                            <?php foreach ($categorias as $categoria):?>
+                                                <option value="<?= $categoria->getTipoCategoria()?>"><?=$categoria->getTipoCategoria()?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group ">
-                                <label>Condicion</label>
-                                    <select id="condicion" class="form-control custom-select w-30" name="">
-                                        <option>Baldío</option>
-                                        <option>Construido</option>
-                                        <option>Construyendo</option>
+                                    <label>Condicion</label>
+                                    <select class="js-example-basic-single custom-select w-30"name="select_condicion" id="condicion">
+                                        <option value="0">Buscar...</option>
+                                        <?php if ($condiciones): ?>
+                                            <?php foreach ($condiciones as $condicion):?>
+                                                <option value="<?= $condicion->getTipoCondicion()?>"><?=$condicion->getTipoCondicion()?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
                             </div>
-                    </div>
-                    <h3 class="text-center bg-secondary">DATOS DEL INMUEBLE</h3>
-                    <div class="row ml-0  ">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Titular</label>
-                                <input class="form-control" type="text" name="" id="titular">
+                        </div>
+                        <h3 class="text-center bg-secondary">DATOS DEL INMUEBLE</h3>
+                        <div class="row ml-0">
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Titular-->
+                                <?= $this->formLabel($form->get('titular')); ?>
+                                    <?= $this->formText($form->get('titular')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('titular')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Ubicacion-->
+                                    <?= $this->formLabel($form->get('ubicacion')); ?>
+                                    <?= $this->formText($form->get('ubicacion')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('ubicacion')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Localidad-->
+                                    <label class="form-label">Localidad</label>
+                                    <select class="js-example-basic-single custom-select w-30"name="select_localidad" id="localidad">
+                                        <option value="0">Buscar...</option>
+                                        <?php if ($localidades): ?>
+                                            <?php foreach ($localidades as $localidad):?>
+                                                <option value="<?= utf8_encode($localidad->getNombreLocalidad())?>"><?= utf8_encode($localidad->getNombreLocalidad()) ?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
-                            <label>Ubicación</label>
-                            <input class="form-control" type="text" name="" id="ubicacion">
+                        <div class="row ml-0">
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                <!-- Input Antecedentes-->
+                                    <?= $this->formLabel($form->get('antecedentes')); ?>
+                                    <?= $this->formText($form->get('antecedentes')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('antecedentes')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                <!-- Input Este-->
+                                        <?= $this->formLabel($form->get('clave_catastral')); ?>
+                                        <?= $this->formText($form->get('clave_catastral')); ?>
+                                        <div class="text-danger">
+                                            <?= $this->formElementErrors($form->get('clave_catastral')); ?>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
-                            <label class="form-label">Localidad</label>
-                                <select class="js-example-basic-single custom-select w-30"name="select_localidad" id="localidad" >
-                                    <!-- <option value="0">Seleccione uno...</option> -->
-                                    <?php if (is_array($localidades->Localidad)): ?>
-                                    <?php foreach ($localidades->Localidad as $localidad):?>
-                                        <option value="<?= $localidad->NombreLocalidad?>"><?= $localidad->NombreLocalidad?></option>
-                                    <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row ml-0  ">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Antecedentes</label>
-                                <input class="form-control" type="text" name="" id="antecedentes">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                            <label>Clave Catastral</label>
-                            <input class="form-control" type="text" name="" id="claveCatastral">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row ml-0  ">
-                        <div class="col-sm-4">
-                            <div class="form-group">
+                        <div class="row ml-0">
+                            <div class="col-sm-4">
+                                <div class="form-group ">
                                     <label>Regimen de Propiedad</label>
-                                    <select id="regimenPropiedad" class="form-control  custom-select w-30" name="">
-                                        <option>Text</option>
-                                        <option>Text</option>
-                                        <option>Text</option>
-                                        <option>Text</option>
-                                        <option>Text</option>
-                                        <option>Text</option>
-                                        <option>Text</option>
-                                        <option>Text</option>
+                                    <select class="js-example-basic-single custom-select w-30"name="select_usoDestino" id="regimenPropiedad">
+                                        <option value="0">Buscar...</option>
+                                        <?php if ($regimenPropiedades): ?>
+                                            <?php foreach ($regimenPropiedades as $regimenPropiedad):?>
+                                                <option value="<?= $regimenPropiedad->getNombreRegimenPropiedad()?>"><?=$regimenPropiedad->getNombreRegimenPropiedad()?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                            <!-- Input Fecha Adquicision-->
+                                    <?= $this->formLabel($form->get('fecha_adquisicion')); ?>
+                                    <?= $this->formDate($form->get('fecha_adquisicion')) ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('fecha_adquisicion')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Titulo anterior-->
+                                    <?= $this->formLabel($form->get('titular_anterior')); ?>
+                                    <?= $this->formText($form->get('titular_anterior')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('titular_anterior')); ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="row ml-0">
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                        <label for="my-select">Documento que acredite la propiedad</label>
+                                        <select class="js-example-basic-single custom-select w-30"name="" id="documentoPropiedad">
+                                        <option value="0">Buscar...</option>
+                                        <?php if ($documentoPropiedades): ?>
+                                            <?php foreach ($documentoPropiedades as $documentoPropiedad):?>
+                                                <option value="<?= $documentoPropiedad->getNombreDocumentoPropiedad()?>"><?=$documentoPropiedad->getNombreDocumentoPropiedad()?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                    <label>Folio</label>
+                                    <input class="form-control" type="text" id="folio" name="">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Fecha del documento</label>
+                                    <input class="form-control" type="date" name="" id="fechaDocumento" value="<?=date("Y-m-d");?>">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <h3 class="text-center ">MEDIDAS Y COLINDANCIAS</h3>
+                        <div class="row ml-0">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                    <input class="form-control" type="hidden" name=""  id="id_predio" value="<?=$predio_id?>">
+                                    <button type="button" class="btn btn-success" id="modalColindancias">Agregar Colindancia</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- TABLA COLINDACIAS -->
+                        <div class="row ml-0">
+                            <div class="col-sm-12">
+                                <div class="form-group ">
+                                    <table id="colindacias"  class="display table table-striped table-hover dt-responsive nowrap" >
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Punto Cardinal</th>
+                                                <th>Metros lineales</th>
+                                                <th>Colindancia</th>
+                                                <th>Observaciones</th>
+                                                <th>Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!--FIN TABLA COLINDACIAS -->
+                        <h3 class="text-center bg-secondary">DATOS DEL USUARIO</h3>
+                        <div class="row ml-0">
                         <div class="col-sm-4">
-                            <div class="form-group ">
-                            <label>Fecha de Adquicision</label>
-                            <input class="form-control" type="date" name="" id="fechaAdquicision">
+                                <div class="form-group ">
+                                <!-- Select Buscar por Contribuyente-->
+                                <input class="form-control" type="hidden" id="idContribuyente" value="0">
+                                <?= $this->formLabel($form->get('contribuyente_id')); ?>
+                                <?= $this->formSelect($form->get('contribuyente_id'));?>
+                                <div class="text-danger">
+                                    <?= $this->formElementErrors($form->get('contribuyente_id')); ?>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-xs-12 mb-4" align="center">
+                            <br>
+                                <!-- <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#addContribuyente">Agregar Contribuyente</button> -->
+                                <button type="button" class="btn btn-success" id="ModalContribuyente">Agregar Contribuyente</button>
+                            </div>
+                            </div>
+                        <hr>
+                        <div class="row ml-0">
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Giro Comercial-->
+                                <?= $this->formLabel($form->get('contribuyente')); ?>
+                                <?= $this->formtext($form->get('contribuyente'));?>
+                                <div class="text-danger">
+                                    <?= $this->formElementErrors($form->get('contribuyente')); ?>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group ">
+                                <!-- Select Factura-->
+                            <?= $this->formLabel($form->get('factura')); ?>
+                            <?= $this->formSelect($form->get('factura'));?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($form->get('factura')); ?>
+                            </div>
+                            </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                    <label class="form-label">Giro Comercial</label>
+                                    <select class="js-example-basic-single custom-select w-30"name="select_girocomercial" id="giroComercial" >
+                                        <option value="0">Buscar...</option>
+                                        <?php if ($girocomerciales): ?>
+                                            <?php foreach ($girocomerciales as $girocomercial):?>
+                                                <option value="<?= $girocomercial->getGiroComercialDescripcion()?>"><?= $girocomercial->getGiroComercialDescripcion() ?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input -Nombre comercial-->
+                                    <?= $this->formLabel($form->get('nombre_comercial')); ?>
+                                    <?= $this->formText($form->get('nombre_comercial')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('nombre_comercial')); ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
-                            <label>Titular anterior</label>
-                            <input class="form-control" type="text" name="" id="titularAnterior">
+                        <div class="row ml-0">
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Superficie Ocupada-->
+                                    <?= $this->formLabel($form->get('tenencia')); ?>
+                                    <?= $this->formText($form->get('tenencia')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('tenencia')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Superficie Ocupada-->
+                                    <?= $this->formLabel($form->get('rfc')); ?>
+                                    <?= $this->formText($form->get('rfc')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('rfc')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                    <label>Uso Destino</label>
+                                    <select class="js-example-basic-single custom-select w-30"name="select_usoDestino" id="usoDestino">
+                                        <option value="0">Buscar...</option>
+                                        <?php if ($usodestinos): ?>
+                                            <?php foreach ($usodestinos as $usodestino):?>
+                                                <option value="<?= $usodestino->getNombreUsoDestino()?>"><?=$usodestino->getNombreUsoDestino()?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
                             </div>
                         </div>
+                        <h3 class="text-center bg-secondary">OBSERVACIONES</h3>
+                        <!-- Aqui va el Textarea -->
+                        <div class="row ml-0">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <label>Lote en Conflicto</label>
+                                    <select id="loteConflicto" class="form-control  custom-select w-30" name="">
+                                            <option value="No">No</option>
+                                            <option value="Si">Si</option>
+                                            <option value="*SP">Sobreposición</option>
+                                            <option value="Legal">Legal</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                    <div class="form-group ">
+                                        <?= $this->formTextarea($form->get('observaciones')); ?>
+                                        <div class="text-danger">
+                                            <?= $this->formElementErrors($form->get('observaciones')); ?>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <!-- Aqui finaliza Textarea -->
                     </div>
-                    <div class="row ml-0  ">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Documento que acredite la propiedad</label>
-                                <select id="documentoPropiedad" class="form-control  custom-select w-30" name="">
-                                        <option>Text</option>
+                    <div class="tab-pane" id="b-w-tab3">
+                    <!-- Inicio Del Calculo de pago -->
+                    <h3 class="text-center bg-secondary">AVALUO</h3>
+                        <div class="row ml-0">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input Sup. M2 Terreno -->
+                                <?= $this->formLabel($form->get('vig')); ?>
+                                    <?= $this->formDate($form->get('vig')) ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('vig')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input Sup. M2 Terreno -->
+                                <?= $this->formLabel($form->get('terreno')); ?>
+                                    <?= $this->formText($form->get('terreno')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('terreno')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input Sup. M2 Terreno -->
+                                <?= $this->formLabel($form->get('valor_m2_zona')); ?>
+                                    <?= $this->formText($form->get('valor_m2_zona')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('valor_m2_zona')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input Valor del Terreno -->
+                                    <?= $this->formLabel($form->get('v_terreno')); ?>
+                                    <?= $this->formText($form->get('v_terreno')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('v_terreno')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row ml-0">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!-- Input Sup.M2 Construcion -->
+                                    <?= $this->formLabel($form->get('sup_m')); ?>
+                                    <?= $this->formText($form->get('sup_m')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('sup_m')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                <!-- Select Valores de Construccion -->
+                                    <label class="form-label">VALORES DE CONSTRUCCIÓN</label>
+                                <select class="js-example-basic-single custom-select w-30"   name="select_valor_construccion" id="valor_c" onchange="valorC()">
+                                <!-- <select class="js-example-basic-single"   name="select_valor_construccion" id="valor_c" onchange="valorC()"> -->
+                                <option value="0">Seleccione uno...</option>
+                                <?php if ($valorConstruccions): ?>
+                                            <?php foreach ($valorConstruccions as $valorConstruccion):?>
+                                            <?php
+                                            if($valorConstruccion->getGrupo()==null){?>
+                                            <option value="<?= $valorConstruccion->getCosto()?>"><?= $valorConstruccion->getCaracteristicas() ?></option>
+                                            <?php
+                                            }else{
+                                            ?>
+                                            <optgroup  label=<?= $valorConstruccion->getGrupo()?> >
+                                            </optgroup>
+                                            <?php }?>
+                                        <?php endforeach; ?>
+                                        <?php endif; ?>
                                 </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!--Input Valor de la construccion-->
+                                    <?= $this->formLabel($form->get('valor')); ?>
+                                    <?= $this->formText($form->get('valor')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('valor')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!--Input Valor de la construccion-->
+                                    <?= $this->formLabel($form->get('v_c')); ?>
+                                    <?= $this->formText($form->get('v_c')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('v_c')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row ml-0">
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!--Input Avaluo Total -->
+                                    <?= $this->formLabel($form->get('a_total')); ?>
+                                    <?= $this->formText($form->get('a_total')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('a_total')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                <!-- Select Tasa Impositiva -->
+                                    <label class="form-label">TASA</label>
+                                    <!-- <select class="form-control" name="tasa_i" id="tasa_i" onchange="timpositiva()"> -->
+                                    <select class="form-control" name="select_tasa" id="tasa_i" onchange="timpositiva()">
+                                        <option value="0">Selecione uno..</option>
+                                        <optgroup label="Predios Urbanos Edificados">
+                                            <option value="0.0017">0.0017</option>
+                                        </optgroup>
+                                        <optgroup label="Predios Urbanos Edificados">
+                                            <option value="0.005">0.0050</option>
+                                        </optgroup>
+                                        <optgroup label="Tulum">
+                                            <option value="0.005">0.0050</option>
+                                        </optgroup>
+                                        <optgroup label="Otras Zonas Urbanas">
+                                            <option value="0.00567">0.00567</option>
+                                        </optgroup>
+                                        <optgroup label="Predio Rusticos">
+                                            <option value="0.0038">0.00380</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group ">
+                                <!-- Input Ejercicio Fiscal -->
+                                    <?= $this->formLabel($form->get('ejercicio_fiscal')); ?>
+                                    <?= $this->formDateSelect($form->get('ejercicio_fiscal')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('ejercicio_fiscal')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group ">
+                                <!-- Input Ejercicio Fiscal -->
+                                    <?= $this->formLabel($form->get('ejercicio_fiscal_final')); ?>
+                                    <?= $this->formDateSelect($form->get('ejercicio_fiscal_final')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('ejercicio_fiscal_final')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Input Oculto para hacer el calculo -->
+                            <!-- <div class="form-group ">
+                            <label>v_in</label> -->
+                            <input type="hidden" id="v_in" class="form-control col-3">
+                            <!-- </div> -->
+                            <div class="col-sm-3">
+                                <div class="form-group ">
+                                <!--Input Pago aportacion-->
+                                    <?= $this->formLabel($form->get('pago_a'));?>
+                                    <?= $this->formText($form->get('pago_a'));?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('pago_a')); ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
-                            <label>Folio</label>
-                            <input class="form-control" type="text" name="" id="folio">
+                        <!-- Input Oculto para validar validacion vacia-->
+                        <input type="hidden" id="p_hide" class="form-control col-3" >
+                        <!-- Avaluo input oculto -->
+                        <input type="hidden" class="form-control" id="avaluo_hidden">
+
+                        <div class="row ml-0">
+                            <div class="col-sm-4">
+                            <!-- Input Estatus Oculto -->
+                                <?= $this->formText($form->get('status')); ?>
+                                <div class="text-danger">
+                                    <?= $this->formElementErrors($form->get('status')); ?>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                            <!-- Input cvpredio Oculto -->
+                                <?= $this->formText($form->get('cvepredio')); ?>
+                                <div class="text-danger">
+                                    <?= $this->formElementErrors($form->get('cvepredio')); ?>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Id oculto -->
+                                    <?= $this->formText($form->get('tasa_hidden')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('tasa_hidden')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                <!-- Input Id oculto -->
+                                    <?= $this->formText($form->get('año_hidden')); ?>
+                                    <div class="text-danger">
+                                        <?= $this->formElementErrors($form->get('año_hidden')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?= $this->formHidden($form->get('csrf')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($form->get('csrf')); ?>
+                            </div>
+                            <div class="col-sm-12 text-md-right mb-3">
+                            <!-- Buton Guardar -->
+                            <!-- <?php // echo $this->formSubmit($form->get('btnGuardar')->setAttributes(['onclick' => "confirmReset()"]));?> -->
+                            <!-- <?= $this->formSubmit($form->get('btnGuardar')); ?> -->
+                            <button class="btn btn-secondary" id="btn_volver">Volver atrás</button>
+                            <!-- <button class="btn btn-success" id="btn_guardarAportacion">Guardar</button> -->
+                            <button class="btn btn-primary " id="btn_guardarCambios">Guardar Cambios</button>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
-                            <label>Fecha del documento</label>
-                            <input class="form-control" type="date" name="" id="fechaDocumento">
-                            </div>
+
+                    </div>
+                    <div class="row justify-content-between btn-page">
+                        <div class="col-sm-6">
+                            <a href="#!" class="btn btn-primary button-previous">Previous</a>
+                        </div>
+                        <div class="col-sm-6 text-md-right">
+                            <a href="#!" class="btn btn-primary button-next">Next</a>
+                            <!-- <button class="btn btn-primary" id="btn_guardarAportacion">GUARDAR APORTACION</button> -->
                         </div>
                     </div>
-                    <hr>
-                    <h3 class="text-center ">MEDIDAS Y COLINDANCIAS</h3>
-                    <div class="row ml-0">
-                        <div class="col-sm-3">
-                            <div class="form-group ">
-                                <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addColindancia">Agregar Colindancia</button> -->
-                                <button type="button" class="btn btn-success" id="modalColindancias">Agregar Colindancia</button>
-                            </div>
-                        </div>
-                    </div>
-                <!-- TABLA COLINDACIAS -->
-                    <div class="row ml-0">
-                        <div class="col-sm-12">
-                            <div class="form-group ">
-                                <table id="colindacias"  class="display table table-striped table-hover dt-responsive nowrap" >
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Punto Cardinal</th>
-                                            <th>Metros lineales</th>
-                                            <th>Colindancia</th>
-                                            <th>Observaciones</th>
-                                            <th>Opciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody">
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                <!--FIN TABLA COLINDACIAS -->
-                <h3 class="text-center bg-secondary">DATOS DEL USUARIO</h3>
-                <div class="row ml-0">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label>Contribuyente</label>
-                            <input class="form-control" type="text" name="" id="contribuyente">
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="form-group ">
-                            <label>Factura</label>
-                                <select id="factura" class="form-control  custom-select w-30" name="">
-                                        <option value="Si">Si</option>
-                                        <option Value="No">No</option>
-                                </select>
-                            </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group ">
-                            <label class="form-label">Giro Comercial</label>
-                                <select class="js-example-basic-single custom-select w-30"name="select_girocomercial" id="giroComercial" >
-                                    <!-- <option value="0">Seleccione uno...</option> -->
-                                    <?php if (is_array($girocomerciales->GiroComercial)): ?>
-                                    <?php foreach ($girocomerciales->GiroComercial as $girocomercial):?>
-                                        <option value="<?= $girocomercial->GirosComercialesDescripcion?>"><?= $girocomercial->GirosComercialesDescripcion?></option>
-                                    <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Nombre Comercial</label>
-                            <input class="form-control" type="text" name="" id="nombreComercial">
-                        </div>
-                    </div>
-                </div>
-                <div class="row ml-0  ">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label>Tenencia</label>
-                            <input class="form-control" type="text" name=""  id="tenencia">
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                        <label>RFC</label>
-                        <input class="form-control" type="text" name="" id="rfc">
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                        <label>Uso o destino</label>
-                        <input class="form-control" type="text" name="" id="usoDestino">
-                        </div>
-                    </div>
-                </div>
-                <h3 class="text-center bg-secondary">OBSERVACIONES</h3>
-                <div class="row ml-0  ">
-                    <div class="col-sm-3">
-                        <div class="form-group ">
-                            <label>Lote en Conflicto</label>
-                                <select id="loteConflicto" class="form-control  custom-select w-30" name="">
-                                        <option>No</option>
-                                        <option>Si</option>
-                                        <option>Sobreposición</option>
-                                        <option>Legal</option>
-                                </select>
-                            </div>
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="form-group">
-                                <textarea id="observaciones" class="form-control" name="" rows="3" ></textarea>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-12 text-md-right mb-3">
-                    <button class="btn btn-primary " id="btn_guardarCambios">Guardar Cambios</button>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal Agregar Contribuyente -->
+<?= $this->partial('catastro/aportacion/addContribuyente') ?>
+<?= $this->partial('catastro/aportacion/addColindancia') ?>
+
+
+
+
 

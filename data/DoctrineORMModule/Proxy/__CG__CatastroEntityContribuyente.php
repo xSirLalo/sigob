@@ -66,10 +66,10 @@ class Contribuyente extends \Catastro\Entity\Contribuyente implements \Doctrine\
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'idContribuyente', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'tipoPersona', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoPaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoMaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'fechaNacimiento', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'genero', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'curp', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'rfc', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'razonSocial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'correo', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'telefono', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'factura', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'giroComercial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombreComercial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'tenencia', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'usoDestino', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'cvePersona', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'updatedAt'];
+            return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'idContribuyente', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'tipoPersona', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoPaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoMaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'fechaNacimiento', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'estadoCivil', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'genero', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'curp', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'rfc', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'razonSocial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'correo', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'telefono', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'factura', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'giroComercial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombreComercial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'tenencia', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'usoDestino', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'cvePersona', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'updatedAt'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'idContribuyente', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'tipoPersona', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoPaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoMaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'fechaNacimiento', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'genero', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'curp', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'rfc', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'razonSocial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'correo', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'telefono', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'factura', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'giroComercial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombreComercial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'tenencia', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'usoDestino', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'cvePersona', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'updatedAt'];
+        return ['__isInitialized__', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'idContribuyente', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'tipoPersona', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombre', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoPaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'apellidoMaterno', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'fechaNacimiento', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'estadoCivil', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'genero', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'curp', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'rfc', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'razonSocial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'correo', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'telefono', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'factura', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'giroComercial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'nombreComercial', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'tenencia', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'usoDestino', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'cvePersona', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'createdAt', '' . "\0" . 'Catastro\\Entity\\Contribuyente' . "\0" . 'updatedAt'];
     }
 
     /**
@@ -299,6 +299,28 @@ class Contribuyente extends \Catastro\Entity\Contribuyente implements \Doctrine\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFechaNacimiento', []);
 
         return parent::getFechaNacimiento();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEstadoCivil($estadoCivil = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEstadoCivil', [$estadoCivil]);
+
+        return parent::setEstadoCivil($estadoCivil);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEstadoCivil()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEstadoCivil', []);
+
+        return parent::getEstadoCivil();
     }
 
     /**

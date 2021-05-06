@@ -1,4 +1,3 @@
-
 INSERT INTO `localidad` (`id_localidad`, `cve_distrito`, `cve_entidad_federativa`, `cve_localidad`, `cve_municipio`, `cve_region`, `nombre_localidad`, `nombre_oficial_localidad`) VALUES
 	(1, 1, 23, 1, 9, 1, 'Tulum                                   ', 'Tulum                                                                                               '),
 	(2, 1, 23, 2, 9, 1, 'El Abadejo                              ', 'El Abadejo                                                                                          '),

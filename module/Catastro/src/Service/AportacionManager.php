@@ -653,16 +653,22 @@ class AportacionManager
             $contribuyente->setFechaNacimiento($fecha_nacimiento);
             $contribuyente->setCorreo($datos['correoElectronico']);
             $contribuyente->setTelefono($datos['telefono']);
-            //$contribuyente->setGenero($datos['genero']);
-            //$contribuyente->setEstadoCivil($datos['estadoCivil']);
+            $contribuyente->setGenero($datos['genero']);
+            $contribuyente->setEstadoCivil($datos['estadoCivil']);
             $contribuyente->setCvePersona(NULL);
             }else if($datos['tipoContribuyente']=="M"){
             $contribuyente->setTipoPersona($datos['tipoContribuyente']);
             $contribuyente->setNombre($datos['nombreContribuyente']);
+            $contribuyente->setApellidoPaterno(NULL);
+            $contribuyente->setApellidoMaterno(NULL);
             $contribuyente->setRfc($datos['rfc']);
             $contribuyente->setRazonSocial($datos['razonSocial']);
+            $contribuyente->setCurp(NULL);
+            $currentDate = new \DateTime();
+            $contribuyente->setFechaNacimiento($currentDate);
             $contribuyente->setCorreo($datos['correoElectronico']);
             $contribuyente->setTelefono($datos['telefono']);
+            $contribuyente->setEstadoCivil(NULL);
             $contribuyente->setCvePersona(NULL);
             }
 

@@ -322,6 +322,31 @@ let ActualizarColindancia = function(colindancias){
 
 
     $("#updateRow").click(function(){
+          /////Validaciones/////////////
+        let  colindaCon  = $("#colindaCon").val();
+        let  medidasMetros  = $("#medidasMetros").val();
+        if(isNaN(medidasMetros)){
+            $.notify({
+
+                    message: 'Este campo solo debe contener números.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+        }
+        else if(colindaCon.length == 0|| medidasMetros == 0){
+            $.notify({
+
+                message: 'Por favor llene los campos'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else{
 
 		let updateColindacia = {
 
@@ -335,6 +360,8 @@ let ActualizarColindancia = function(colindancias){
 
 		ActualizarColindancia(new Array(updateColindacia));
         $('#addColindancia').modal('hide');
+
+        }
 
 		});
 
@@ -797,6 +824,28 @@ $(document).ready(function() {
           ///Modal Contribuyente////////////
     $('#ModalContribuyente').on( 'click', function () {
         $('#addContribuyente').modal('show');
+        $("#tipoContribuyente").val("F")
+        ///Empezar como persona Fisica/////
+        $('#div_nombre').removeClass('col-sm-12');
+        $('#div_nombre').addClass('col-sm-4');
+        $('#div_correoElectronico').removeClass('col-sm-6');
+        $('#div_correoElectronico').addClass('col-sm-4');
+        $('#div_telefono').removeClass('col-sm-6');
+        $('#div_telefono').addClass('col-sm-4');
+        $('#div_razonSocial').hide();
+        $('#div_rfc').removeClass('col-sm-6');
+        $('#div_rfc').addClass('col-sm-4');
+        $('#div_apellidoPaterno').show();
+        $('#div_apellidoMaterno').show();
+        $('#div_fechaNacimeinto').show();
+        $('#div_genero').show();
+        $('#div_estadoCivil').show();
+        $('#div_mes').show();
+        $('#div_año').show();
+        $('#div_curp').show();
+        $('#br_año').show();
+        $('#br_mes').show();
+        //////////////////////////////////
         $('#nombreContribuyente').val("");
         $('#apellidoPaterno').val("");
         $('#apellidoMaterno').val("");
@@ -808,11 +857,66 @@ $(document).ready(function() {
         $('#año').val("");
         $('#correoElectronico').val("");
         $('#telefono').val("");
-        $('#genero').val("Hombre");
+        $('#genero').val("M");
 
     });
 
 
 });
+
+function tipoPersona(){
+    let tipo_Persona =  $("#tipoContribuyente").val();
+
+    if(tipo_Persona == "M"){
+        $('#div_nombre').removeClass('col-sm-4');
+        $('#div_nombre').addClass('col-sm-12');
+        $('#div_correoElectronico').removeClass('col-sm-4');
+        $('#div_correoElectronico').addClass('col-sm-6');
+        $('#div_telefono').removeClass('col-sm-4');
+        $('#div_telefono').addClass('col-sm-6');
+        $('#div_razonSocial').show();
+        $('#div_razonSocial').removeClass('col-sm-4');
+        $('#div_razonSocial').addClass('col-sm-6');
+        $('#div_rfc').removeClass('col-sm-4');
+        $('#div_rfc').addClass('col-sm-6');
+        $('#div_apellidoPaterno').hide();
+        $('#div_apellidoMaterno').hide();
+        $('#div_fechaNacimeinto').hide();
+        $('#div_genero').hide();
+        $('#div_estadoCivil').hide();
+        $('#div_mes').hide();
+        $('#div_año').hide();
+        $('#div_curp').hide();
+        $('#br_año').hide();
+        $('#br_mes').hide();
+    }
+    else if(tipo_Persona == "F"){
+        $('#div_nombre').removeClass('col-sm-12');
+        $('#div_nombre').addClass('col-sm-4');
+        $('#div_correoElectronico').removeClass('col-sm-6');
+        $('#div_correoElectronico').addClass('col-sm-4');
+        $('#div_telefono').removeClass('col-sm-6');
+        $('#div_telefono').addClass('col-sm-4');
+        $('#div_razonSocial').hide();
+        $('#div_rfc').removeClass('col-sm-6');
+        $('#div_rfc').addClass('col-sm-4');
+        // $('#div_curp').removeClass('col-sm-4');
+        // $('#div_curp').addClass('col-sm-6');
+        $('#div_apellidoPaterno').show();
+        $('#div_apellidoMaterno').show();
+        $('#div_fechaNacimeinto').show();
+        $('#div_genero').show();
+        $('#div_estadoCivil').show();
+        $('#div_mes').show();
+        $('#div_año').show();
+        $('#div_curp').show();
+        $('#br_año').show();
+        $('#br_mes').show();
+
+
+
+    }
+
+};
 
 

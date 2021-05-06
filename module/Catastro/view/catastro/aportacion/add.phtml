@@ -327,7 +327,7 @@ $form->prepare();
                                 <!-- Input Giro Comercial-->
                                     <label class="form-label">Giro Comercial</label>
                                     <select class="js-example-basic-single custom-select w-30"name="select_girocomercial" id="giroComercial" >
-                                        <option value="0">Buscar...</option>
+                                        <option value="">Buscar...</option>
                                         <?php if ($girocomerciales): ?>
                                             <?php foreach ($girocomerciales as $girocomercial):?>
                                                 <option value="<?= $girocomercial->getGiroComercialDescripcion()?>"><?= $girocomercial->getGiroComercialDescripcion() ?></option>
@@ -470,7 +470,7 @@ $form->prepare();
                                     <label class="form-label">VALORES DE CONSTRUCCIÓN</label>
                                 <select class="js-example-basic-single custom-select w-30"   name="select_valor_construccion" id="valor_c" onchange="valorC()">
                                 <!-- <select class="js-example-basic-single"   name="select_valor_construccion" id="valor_c" onchange="valorC()"> -->
-                                <option value="0">Seleccione uno...</option>
+                                <option value="">Seleccione uno...</option>
                                 <?php if ($valorConstruccions): ?>
                                             <?php foreach ($valorConstruccions as $valorConstruccion):?>
                                             <?php
@@ -525,7 +525,7 @@ $form->prepare();
                                     <label class="form-label">TASA</label>
                                     <!-- <select class="form-control" name="tasa_i" id="tasa_i" onchange="timpositiva()"> -->
                                     <select class="form-control" name="select_tasa" id="tasa_i" onchange="timpositiva()">
-                                        <option value="0">Selecione uno..</option>
+                                        <option value="">Selecione uno..</option>
                                         <optgroup label="Predios Urbanos Edificados">
                                             <option value="0.0017">0.0017</option>
                                         </optgroup>

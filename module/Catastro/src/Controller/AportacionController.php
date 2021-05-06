@@ -1151,7 +1151,7 @@ class AportacionController extends AbstractActionController
         }
     }
 
-    public function viewAportacion2Action()
+    public function viewAportacionAction()
     {
         $form = new AportacionForm();
 
@@ -1244,24 +1244,38 @@ class AportacionController extends AbstractActionController
     {
         $req_post = $this->params()->fromPost();
 
-      //  $rfc = $this->opergobserviceadapter->obtenerPersonaPorRfc($req_post['c'][0]['rfc']);
+        if($req_post['c'][0]['rfc'] == "XAXX010101000" ||$req_post['c'][0]['rfc'] == "XEXX010101000"){
+
+            $result = $this->aportacionManager->guardarTest($req_post['c'][0]);
+
+            if ($result){
+                $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'nombre' =>$result->getIdContribuyente()->getNombre(), 'rfc' =>$result->getIdContribuyente()->getRfc() ];
+            }else{
+                $datos = ["resp"=>"no", "msg"=>"No se guardo"];
+            }
 
 
-      //  if(isset($rfc->Persona)){
+        }else {
 
-    //$datos = ["resp"=>"okno", "msg"=>"YA EXISTE ESA PERSONA"];
+        $rfc = $this->opergobserviceadapter->obtenerPersonaPorRfc($req_post['c'][0]['rfc']);
 
-    //}else{
+
+        if(isset($rfc->Persona)){
+
+            $datos = ["resp"=>"okno", "msg"=>"YA EXISTE ESA PERSONA"];
+
+        }else{
 
         $result = $this->aportacionManager->guardarTest($req_post['c'][0]);
 
         if ($result){
             $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'nombre' =>$result->getIdContribuyente()->getNombre(), 'rfc' =>$result->getIdContribuyente()->getRfc() ];
         }else{
-            $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
+            $datos = ["resp"=>"no", "msg"=>"No se guardo"];
         }
 
-   // }
+        }
+    }
 
 				$json = new JsonModel($datos);
 				$json->setTerminal(true);

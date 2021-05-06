@@ -459,8 +459,8 @@ class AportacionForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
-                'placeholder' => 'R.F.C',
-                'id' => 'rfContribuyente'
+                'id' => 'rfContribuyente',
+                'readonly' => true ,
             ]
         ]);
 

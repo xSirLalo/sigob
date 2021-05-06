@@ -1,4 +1,3 @@
-
 INSERT INTO `giro_comercial` (`id_giro_comercial`, `cve_ftm_mt`, `giro_comercial_descripcion`, `tarifas_licencias_basura_cve_fte_ing_basura`, `tarifas_licencias_basura_cve_fte_ing_licencia`, `tarifas_licencias_basura_importe_basura`, `tarifas_licencias_basura_importe_licencia`) VALUES
 	(1, 'MTULUM    ', 'AGENCIAS DE LOTERIA ZONA A', 4319020123, 4307010104, 3059.16, 600),
 	(2, 'MTULUM    ', 'AGENCIAS DE VIAJE ZONA A', 4319020210, 4307010104, 3090, 600),
