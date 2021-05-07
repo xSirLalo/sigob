@@ -1371,6 +1371,7 @@ $(document).ready(function() {
 
     if(parcela.length == 0)
     {
+
             $.notify({
 
                     message: 'Por favor, Ingrese una Parcela'
@@ -1379,7 +1380,6 @@ $(document).ready(function() {
                     type: 'danger',
                     z_index: 999999,
                 });
-
     }
     else if(categoria.length == 0)
     {

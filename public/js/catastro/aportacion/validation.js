@@ -7,7 +7,7 @@ $(document).ready(function(){
         "decimal": "",
         "emptyTable": "No hay información",
         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoEmpty": "Mostrando 0 to 0 de 0 Registros",
         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
         "infoPostFix": "",
         "thousands": ",",
@@ -57,12 +57,15 @@ $(document).ready(function(){
                     targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
+                        if(row['Estatus'] == 3 ){
                         $actionBtn = `<div class="row"><a href="pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary">Ver</button></a>
                         <a class="btn btn-secondary" href="aportacion/editar/` + row['idAportacion'] + `" data-toggle="modal" onclick="edit_validation(` + row['idAportacion'] + `)">Modificar</a>
                         <button class="btn btn-success"  id="confirmar" name="confirmar" value="` + row['idAportacion'] + `"><i class="feather mr-2 icon-check-circle"></i>Confirmar</button>
                         <button class="btn btn-danger" id="cancelar" name="cancelar" value="` + row['idAportacion'] + `"><i class="feather mr-2 icon-x-circle"></i>Cancelar</button>
-                        </div>`
-                        ;
+                        </div>`;
+                        }else if(row['Estatus'] == 1 ||row['Estatus'] == 2 ){
+                        $actionBtn = `<div class="row"><a href="pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary">Ver</button></a></div>`;
+                        }
 
                         return $actionBtn;
                     },

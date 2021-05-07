@@ -1152,7 +1152,7 @@ class AportacionController extends AbstractActionController
         }
     }
 
-    public function viewAportacionAction()
+    public function viewaportacionAction()
     {
         $form = new AportacionForm();
 
