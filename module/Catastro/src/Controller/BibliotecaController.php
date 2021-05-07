@@ -208,6 +208,8 @@ class BibliotecaController extends AbstractActionController
                     // Creamos la ruta de destino
                     if ($nombre) {
                         $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_' . utf8_decode(strtolower(str_replace(" ", "-",$nombre))) . '.' . $extension;
+                        $respuestaJson['directorio'] = DIR_PUBLIC;
+                        $respuestaJson['directorio2'] = $archivo_destino;
                         // Mover el archivo de la carpeta temporal a la nueva ubicación
                         if(move_uploaded_file($ficheros['tmp_name'], $archivo_destino)) {
                             $filename = $_FILES['archivo']['name'];
@@ -216,6 +218,7 @@ class BibliotecaController extends AbstractActionController
                             $file_type = $_FILES['archivo']['type'];
                             $temp = explode(".", $filename);
 
+                            $respuestaJson['response'] = "ok";
                             $data['archivoBlob'] = file_get_contents($archivo_destino, true);
                             $data['extension'] = $temp[count($temp)-1];
                             $data['size'] = $filesize;
@@ -223,33 +226,25 @@ class BibliotecaController extends AbstractActionController
                             // Se guarda los datos a la base datos
                             $archivito = $this->bibliotecaManager->guardarArchivos($data, $id_archivo_categoria);
                             $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
+
                             // Activamos el indicador de proceso correcto
                             $estado_proceso = true;
+
                             // Almacenamos el nombre del archivo de destino
                             $paths[] = $archivo_destino;
                         } else {
                             // Activamos el indicador de proceso erroneo
                             $estado_proceso = false;
+                            $respuestaJson['error'] = "2. Error archivo...";
                         }
                     }
                 }
             }
 
-            // $archivo_array = explode(".", $_FILES['fileToUpload']['name']);
-            // print_r($_REQUEST['input1']);
-            // exit();
-            // $tipo = $_FILES['fileToUpload']['type'];
-            // $tempFile   = $_FILES['fileToUpload']['tmp_name'];
-            // $extension  = $archivo_array[count($archivo_array)-1];
-            // $data = file_get_contents($tempFile);
-
-            // $data['data'] =  $data;
         }else{
-            $data['error'] = "no hay archivo";
+            $respuestaJson['error'] = "1. Error archivo...";
         }
-
-
-        $json = new JsonModel($data);
+        $json = new JsonModel($respuestaJson);
         $json->setTerminal(true);
 
         return $json;

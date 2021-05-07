@@ -56,4 +56,16 @@ $(document).ready(function () {
     }).on("filebatchselected", function (event, files) {
         $("#archivo").fileinput("upload");
     });
+
+    $("#archivo").on('fileuploaded', function(event, data, previewId, index) {
+        var data = data.response;
+        // console.log(data);
+        if(data.response == "ok"){
+            $('#subirArchivoForm')[0].reset();
+            $("#archivosList").load(" #archivosList");
+            $('#subirArchivoModal').modal('hide');
+        }else{
+            alert("Error: " + data.error);
+        }
+    });    
 });

@@ -2,13 +2,13 @@ $(document).ready(function() {
    setTimeout(function() {
         // [ Configuration Option ]
     var myTable =  $('#contribuyentes').DataTable({
-            // responsive: true,
+            responsive: true,
             // searching: true,
-            autoWidth: false,
-            scrollX: true,
-            scroller: {
-                loadingIndicator: true
-            },
+            autoWidth: true,
+            // scrollX: true,
+            // scroller: {
+            //     loadingIndicator: true
+            // },
             processing: true,
             serverSide: true,
             deferRender: true,

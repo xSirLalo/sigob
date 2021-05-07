@@ -100,11 +100,11 @@ $this ->inlineScript()
         <div class="card-header">
             <h5>Archivos</h5>
             <div class="float-right">
-                <button id="agregar-archivo" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal">Agregar+</button>
+                <button id="agregar-archivo" class="btn btn-success btn-sm" data-toggle="modal" data-target="#subirArchivoModal">Agregar+</button>
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-light">
+            <table class="table table-light" id="archivosList">
                 <thead class="thead-dark">
                     <tr>
                         <th>Tipo</th>
@@ -140,17 +140,17 @@ $this ->inlineScript()
 </div>
 <!-- [ col] end -->
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="subirArchivoModal" tabindex="-1" role="dialog" aria-labelledby="subirArchivoLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Cargar archivo...</h5>
+        <h5 class="modal-title" id="subirArchivoLabel">Cargar archivo...</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
         <div class="modal-body">
-            <form action="upload.php" method="post" enctype="multipart/form-data">
+            <form action="#" method="post" enctype="multipart/form-data" id="subirArchivoForm">
                 <div class="form-group">
                     <input type="hidden" name="input1" value="<?= $contribuyenteId ?>">
                 </div>

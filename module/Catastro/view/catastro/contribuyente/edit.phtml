@@ -28,21 +28,21 @@ $this->pageBreadcrumbs()->setItems([
                         <?= $this->formLabel($form->get('nombre')); ?>
                         <?= $this->formText($form->get('nombre')); ?>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('nombre')); ?>
+                            <?= $this->formElementErrors($form->get('nombre')); ?>
                         </div>
                     </div>
                     <div class="form-group col-md-3" id="aPaterno">
                         <?= $this->formLabel($form->get('apellido_paterno')); ?>
                         <?= $this->formText($form->get('apellido_paterno')); ?>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('apellido_paterno')); ?>
+                            <?= $this->formElementErrors($form->get('apellido_paterno')); ?>
                         </div>
                     </div>
                     <div class="form-group col-md-3" id="aMaterno">
                         <?= $this->formLabel($form->get('apellido_materno')); ?>
                         <?= $this->formText($form->get('apellido_materno')); ?>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('apellido_materno')); ?>
+                            <?= $this->formElementErrors($form->get('apellido_materno')); ?>
                         </div>
                     </div>
                 </div>
@@ -51,14 +51,14 @@ $this->pageBreadcrumbs()->setItems([
                         <?= $this->formLabel($form->get('rfc')); ?>
                         <?= $this->formText($form->get('rfc')); ?>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('rfc')); ?>
+                            <?= $this->formElementErrors($form->get('rfc')); ?>
                         </div>
                     </div>
                     <div class="form-group col-md-9">
                         <?= $this->formLabel($form->get('razon_social')); ?>
                         <?= $this->formText($form->get('razon_social')); ?>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('razon_social')); ?>
+                            <?= $this->formElementErrors($form->get('razon_social')); ?>
                         </div>
                     </div>
                 </div>
@@ -67,23 +67,30 @@ $this->pageBreadcrumbs()->setItems([
                         <?= $this->formLabel($form->get('curp')); ?>
                         <?= $this->formText($form->get('curp')); ?>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('curp')); ?>
+                            <?= $this->formElementErrors($form->get('curp')); ?>
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-5">
                         <?= $this->formLabel($form->get('fecha_nacimiento')); ?>
                         <div>
                         <?= $this->formDateSelect($form->get('fecha_nacimiento')); ?>
                         </div>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('fecha_nacimiento')); ?>
+                            <?= $this->formElementErrors($form->get('fecha_nacimiento')); ?>
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <?= $this->formLabel($form->get('genero')); ?>
                         <?= $this->formSelect($form->get('genero')); ?>
                         <div class="text-danger">
                         <?= $this->formElementErrors($form->get('genero')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <?= $this->formLabel($form->get('estado_civil')); ?>
+                        <?= $this->formSelect($form->get('estado_civil')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('estado_civil')); ?>
                         </div>
                     </div>
                 </div>

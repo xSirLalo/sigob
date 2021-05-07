@@ -208,7 +208,7 @@ class ContribuyenteController extends AbstractActionController
                 if ($form->isValid()) {
                     try {
                         $data = $form->getData();
-                        
+
                         // echo "<pre>";
                         // print_r($data);
                         // echo "</pre>";
@@ -397,8 +397,8 @@ class ContribuyenteController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
                 $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
+                $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
                 return $this->redirect()->toRoute('contribuyente');
             }
         } else {
@@ -407,6 +407,7 @@ class ContribuyenteController extends AbstractActionController
                 'nombre' => $contribuyente->getNombre(),
                 'apellido_paterno' => $contribuyente->getApellidoPaterno(),
                 'apellido_materno' => $contribuyente->getApellidoMaterno(),
+                'estado_civil' => $contribuyente->getEstadoCivil(),
                 'fecha_nacimiento' => $contribuyente->getFechaNacimiento(),
                 'razon_social' => $contribuyente->getRazonSocial(),
                 'rfc' => $contribuyente->getRfc(),

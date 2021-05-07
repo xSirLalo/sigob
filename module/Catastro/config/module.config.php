@@ -808,25 +808,25 @@ return [
         ],
         'controllers' => [
             Controller\HomeController::class => [
-                ['actions' => ['index'], 'allow' => '*'],
+                ['actions' => ['index'], 'allow' => '@'],
             ],
             Controller\PruebaController::class => [
-                ['actions' => ['index', 'add'], 'allow' => '*'],
+                ['actions' => ['index', 'add'], 'allow' => '@'],
             ],
             Controller\ContribuyenteController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search', 'searchPersona', 'autofillPersona'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search', 'searchPersona', 'autofillPersona'], 'allow' => '@']
             ],
             Controller\PredioController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'datatable', 'searchCatastral', 'autofillCatastral'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'datatable', 'searchCatastral', 'autofillCatastral'], 'allow' => '@']
             ],
             Controller\BibliotecaController::class => [
-                ['actions' => ['index', 'add', 'view', 'saveFile', 'deleteFile', 'deleteFile2', 'downloadFile', 'viewFile'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'saveFile', 'deleteFile', 'deleteFile2', 'downloadFile', 'viewFile'], 'allow' => '@']
             ],
             Controller\BibliotecaCategoriaController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '*']
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '@']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addcontribuyente', 'addaportacion', 'updateaportacion','viewaportacion','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias','datatablevalidation','statusvalidation'], 'allow' => '*']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addcontribuyente', 'addaportacion', 'updateaportacion','viewaportacion','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias','datatablevalidation','statusvalidation'], 'allow' => '@']
             ],
         ]
     ],
