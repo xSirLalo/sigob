@@ -1319,6 +1319,19 @@ else if(dia.length == 0||mes.length == 0||año.length == 0){
             });
 
 }
+else if(mes == 2 && dia > 28|| mes == 4 && dia > 30 || mes == 6 && dia > 30 || mes == 9 && dia > 30 || mes == 11 && dia > 30 ){
+
+        $.notify({
+
+                message: 'Por favor, Ingrese una fecha valida.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+
+}else{
 
 
 if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length == 0 && telefono.length == 0 ){
@@ -1513,7 +1526,7 @@ if(curp.length > 0){
 
 }
 
-
+}
 
 ///////Validacion Persona Moral////////////
 

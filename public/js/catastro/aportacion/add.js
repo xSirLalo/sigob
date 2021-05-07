@@ -794,43 +794,87 @@ else if(dia.length == 0||mes.length == 0||año.length == 0){
 
 }
 
+// if(mes == 2 && dia > 28 ){
+
+//     if(año % 400 == 0 || (año % 100 != 0 && año % 4 == 0)){
+//         if(dia > 29){
+//             $.notify({
+
+//                 message: 'Por favor, Ingrese una fecha valida.'
+//             },
+//             {
+//                 type: 'danger',
+//                 z_index: 999999,
+//             });
+
+//         }
+
+
+//     }else if(mes == 2 && dia > 28) {
+//         $.notify({
+
+//                 message: 'Por favor, Ingrese una fecha valida.'
+//             },
+//             {
+//                 type: 'danger',
+//                 z_index: 999999,
+//             });
+//     }
+// }
+
+else if(mes == 2 && dia > 28|| mes == 4 && dia > 30 || mes == 6 && dia > 30 || mes == 9 && dia > 30 || mes == 11 && dia > 30 ){
+
+        $.notify({
+
+                message: 'Por favor, Ingrese una fecha valida.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+
+}else{
+
 
 if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length == 0 && telefono.length == 0 ){
 
-if(curp.length > 0){
-    let  curCorrecto = curpValida(curp)
-    if (!curCorrecto) {
-            $.notify({
-
-                message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
-            },
-            {
-                type: 'danger',
-                z_index: 999999,
-            });
-
-    }else if(rfc.length > 0){
-
-
-    let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
-    if (!rfcCorrecto) {
-
+if (curp.length > 0){
+        let  curCorrecto = curpValida(curp)
+        if (!curCorrecto) {
                 $.notify({
 
-                message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
-            },
-            {
-                type: 'danger',
-                z_index: 999999,
-            });
+                    message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
 
-        }else{
-            let addContribuyente = new Contribuyente();
+        }else if(rfc.length > 0){
 
-            guardarContribuyente(new Array(addContribuyente));
+
+        let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+        if (!rfcCorrecto) {
+
+                    $.notify({
+
+                    message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+            }else{
+                let addContribuyente = new Contribuyente();
+
+                guardarContribuyente(new Array(addContribuyente));
+            }
         }
     }
-}
+
+
 
 
 }else if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length > 0 && telefono.length < 1 ){
@@ -987,7 +1031,7 @@ if(curp.length > 0){
 
 }
 
-
+}
 
 ///////Validacion Persona Moral////////////
 
