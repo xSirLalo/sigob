@@ -49,7 +49,7 @@ let edit_aportacion = function(id)
             $('[id="giroComercial"]').val(data.giroComercial);
             $('[id="nombreComercial"]').val(data.nombreComercial);
             $('[id="tenencia"]').val(data.tenencia);
-            $('[id="rfcContribuyente"]').val(data.rfContribuyente);
+            $('[id="rfContribuyente"]').val(data.rfContribuyente);
             $('[id="usoDestino"]').val(data.usoDestino);
             /////Aportacion////////////
             $('[id="vig"]').val(data.vig);
@@ -229,11 +229,40 @@ $('#modalColindancias').on( 'click', function () {
 	};
 
     $('#addRow').click(  function () {
+            /////Validaciones/////////////
+    let  colindaCon  = $("#colindaCon").val();
+    let  medidasMetros  = $("#medidasMetros").val();
+    if(isNaN(medidasMetros)){
+        $.notify({
+
+                message: 'Este campo solo debe contener números.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+    }
+    else if(colindaCon.length == 0|| medidasMetros == 0){
+        $.notify({
+
+            message: 'Por favor llene los campos'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+    }else{
+
+
         let addColindancia = new Colindancias();
 
 		guardarColindancia(new Array(addColindancia));
 
         $('#addColindancia').modal('hide');
+
+        }
     });
 
     /////////Eliminar Colindancias///////////////
@@ -429,7 +458,7 @@ $(document).ready(function() {
 
 				if(data.resp == "ok"){
 
-                    //$("#hdn_id_cont").val(data.id_objeto);
+
                     window.location = "/aportacion";
 				}else{
 
@@ -442,12 +471,327 @@ $(document).ready(function() {
 
 
     $("#btn_guardarCambios").click(function(){
+          //////Input///////////////////
+    let parcela   = $("#parcela").val();
+    let manzana   = $("#manzana").val();
+    let lote      = $("#lote").val();
+    let local     = $("#local").val();
+    let categoria = $("#categoria").val();
+    let condicion = $("#condicion").val();
+    let titular   = $("#titular").val();
+    let ubicacion = $("#ubicacion").val();
+    let localidad = $("#localidad").val();
+    let antecedentes         = $("#antecedentes").val();
+    let claveCatastral       = $("#claveCatastral").val();
+    let regimenPropiedad     = $("#regimenPropiedad").val();
+    let titularAnterior      = $("#titularAnterior").val();
+    let documentoPropiedad   = $("#documentoPropiedad").val();
+    let folio                = $("#folio").val();
+    let Contribuyente        = $("#Contribuyente").val();
+    let factura              = $("#factura").val();
+    let giroComercial        = $("#giroComercial").val();
+    let nombreComercial      = $("#nombreComercial").val();
+    let tenencia              = $("#tenencia").val();
+    let rfContribuyente      = $("#rfContribuyente").val();
+    let usoDestino           = $("#usoDestino").val();
+    let terreno              = $("#terreno").val();
+    let valor_zona           = $("#valor_zona").val();
+    let sup_m                = $("#sup_m").val();
+    let valor_c              = $("#valor_c").val();
+    let tasa                 = $("#tasa_i").val();
+    let ejercicio_fiscal           = $("#ejercicio_fiscal").val();
+    let ejercicio_fiscal_final     = $("#ejercicio_fiscal_final").val();
 
-			let updateAportacion = new actualizarAportacion();
+    /////Para Validar filas de Colindacias/////////
+    var table = $('#colindacias').DataTable();
+    //Muestro la cantidad de filas
+    console.log("Filas: " + table.rows().count());
+    let filas = parseInt(table.rows().count());;
+    //////////////Validaciones///////////////////
+
+    if(parcela.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese una Parcela'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(categoria.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione una Categoria'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(condicion.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione una Condicion'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(titular.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese un Titular'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(ubicacion.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese una ubicacion'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(localidad.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione una Localidad'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(antecedentes.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese los Antecedentes'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(regimenPropiedad.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione un Regimen de Propiedad'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(titularAnterior.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese El Titular Anterior'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(documentoPropiedad.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione un Documento de Propiedad'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(folio.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese un Folio'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(Contribuyente.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese El Contribuyente'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(giroComercial.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione el Giro Comercial'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(nombreComercial.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese El Nombre Comercial'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(tenencia.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese Una Tenencia'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(usoDestino.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione El Uso Destino.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(terreno.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese los Metros Terreno.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(valor_zona.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, El Valor de Metros Zona.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(sup_m.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Ingrese los Metros Construccion.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(valor_c.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione Valores de Construcción.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(tasa.length == 0)
+    {
+            $.notify({
+
+                    message: 'Por favor, Seleccione la Tasa Impositiva.'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+    else if(ejercicio_fiscal > ejercicio_fiscal_final){
+            $.notify({
+
+                    message: 'El Año de Ejercicio Fiscal no debe ser Mayor que Ejercicio Fiscal Final'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+    }
+
+    else if(parcela.length > 0 && categoria.length > 0 && condicion.length > 0 && titular.length > 0 && ubicacion.length > 0 && localidad.length > 0 && antecedentes.length > 0 && regimenPropiedad.length > 0 && titularAnterior.length > 0 && documentoPropiedad.length > 0 && folio.length > 0 && Contribuyente.length > 0 && factura.length > 0 && giroComercial.length > 0 && nombreComercial.length > 0 && tenencia.length > 0 && usoDestino.length > 0 && terreno.length > 0 && valor_zona.length > 0 && sup_m.length > 0 && valor_c.length > 0 && tasa.length > 0 ){
+
+        if(filas < 4){
+            $.notify({
+
+                    message: 'El minimo de colindancias agregados debe ser de 4'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+        }else{
+
+            let updateAportacion = new actualizarAportacion();
 
 			guardarCambios(new Array(updateAportacion));
-
-            //window.location = "/aportacion";
+        }
+        }
 
 
 		});
@@ -798,10 +1142,23 @@ $(document).ready(function() {
 
 			if(data != null){
 
-				if(data.resp == "ok"){
+            if(data.resp =="okno"){
+
+                    $.notify({
+
+                message: 'No se puede guardar porque el RFC ya existe en la Base de datos'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+                }else if(data.resp == "ok"){
 
                     $("#id_aportacion").val(data.id_objeto);
                     $("#Contribuyente").val(data.nombre);
+                    $("#rfContribuyente").val(data.rfc);
+                    $('#addContribuyente').modal('hide');
 				}else{
 
 					alert(data.msg);
@@ -813,12 +1170,529 @@ $(document).ready(function() {
 
 
     $("#btn_guardar").click(function(){
+           ////////Funcion Validar Rfc///////////////
 
-			let addContribuyente = new Contribuyente();
+    function rfcValido(rfc, aceptarGenerico = true) {
+        const re       = /^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
+        var   validado = rfc.match(re);
 
-			guardarContribuyente(new Array(addContribuyente));
+        if (!validado)  //Coincide con el formato general del regex?
+            return false;
 
-            $('#addContribuyente').modal('hide');
+        //Separar el dígito verificador del resto del RFC
+        const digitoVerificador = validado.pop(),
+            rfcSinDigito      = validado.slice(1).join(''),
+            len               = rfcSinDigito.length,
+
+        //Obtener el digito esperado
+            diccionario       = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ Ñ",
+            indice            = len + 1;
+        var   suma,
+            digitoEsperado;
+
+        if (len == 12) suma = 0
+        else suma = 481; //Ajuste para persona moral
+
+        for(var i=0; i<len; i++)
+            suma += diccionario.indexOf(rfcSinDigito.charAt(i)) * (indice - i);
+        digitoEsperado = 11 - suma % 11;
+        if (digitoEsperado == 11) digitoEsperado = 0;
+        else if (digitoEsperado == 10) digitoEsperado = "A";
+
+        //El dígito verificador coincide con el esperado?
+        // o es un RFC Genérico (ventas a público general)?
+        if ((digitoVerificador != digitoEsperado)
+        && (!aceptarGenerico || rfcSinDigito + digitoVerificador != "XAXX010101000"))
+            return false;
+        else if (!aceptarGenerico && rfcSinDigito + digitoVerificador == "XEXX010101000")
+            return false;
+        return rfcSinDigito + digitoVerificador;
+    }
+    ////////////Funcion Validar CURP///////////////
+    function curpValida(curp) {
+        var re = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/,
+            validado = curp.match(re);
+
+        if (!validado)  //Coincide con el formato general?
+        return false;
+
+        //Validar que coincida el dígito verificador
+        function digitoVerificador(curp17) {
+            //Fuente https://consultas.curp.gob.mx/CurpSP/
+            var diccionario  = "0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ",
+                lngSuma      = 0.0,
+                lngDigito    = 0.0;
+            for(var i=0; i<17; i++)
+                lngSuma = lngSuma + diccionario.indexOf(curp17.charAt(i)) * (18 - i);
+            lngDigito = 10 - lngSuma % 10;
+            if (lngDigito == 10) return 0;
+            return lngDigito;
+        }
+
+        if (validado[2] != digitoVerificador(validado[1]))
+        return false;
+
+        return true; //Validado
+    }
+
+    //////////////////////////////////////////////
+
+    let  nombreContribuyente  = $("#nombreContribuyente").val();
+    let  apellidoPaterno = $("#apellidoPaterno").val();
+    let  apellidoMaterno = $("#apellidoMaterno").val();
+    let  rfc = $("#rfc").val();
+    let  curp = $("#curp").val();
+    let  dia = $("#dia").val();
+    let  mes = $("#mes").val();
+    let  año = $("#año").val();
+    let  correoElectronico = $("#correoElectronico").val();
+    let  telefono = $("#telefono").val();
+    let  razonSocial = $("#razonSocial").val();
+
+
+    if($("#tipoContribuyente").val()==="F"){
+
+    if(nombreContribuyente == 0) {
+        $.notify({
+
+            message: 'Por favor, Ingrese El Nombre del Contribuyente'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+    }
+    else if(apellidoPaterno.length == 0) {
+        $.notify({
+
+            message: 'Por favor, Ingrese El Apellido Paterno'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+    }
+    else if(apellidoMaterno.length == 0) {
+            $.notify({
+
+            message: 'Por favor, Ingrese El Apellido Materno'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+    }
+    else if(rfc.length == 0) {
+        $.notify({
+
+            message: 'Por favor, Ingrese el R.F.C.'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+    }
+
+    else if(curp.length == 0){
+        $.notify({
+
+            message: 'Por favor, Ingrese el C.U.R.P.'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+
+    }
+else if(dia.length == 0||mes.length == 0||año.length == 0){
+    $.notify({
+
+                message: 'Por favor, Ingrese Una Fecha de Nacimiento'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+}
+
+
+if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length == 0 && telefono.length == 0 ){
+
+if(curp.length > 0){
+    let  curCorrecto = curpValida(curp)
+    if (!curCorrecto) {
+            $.notify({
+
+                message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+    }else if(rfc.length > 0){
+
+
+    let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+    if (!rfcCorrecto) {
+
+                $.notify({
+
+                message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else{
+            let addContribuyente = new Contribuyente();
+
+            guardarContribuyente(new Array(addContribuyente));
+        }
+    }
+}
+
+
+}else if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length > 0 && telefono.length < 1 ){
+
+    if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
+        $.notify({
+
+                message: 'El correo electrónico introducido no es correcto.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+        }else if(curp.length > 0){
+            let  curCorrecto = curpValida(curp)
+            if (!curCorrecto) {
+                    $.notify({
+
+                        message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+            }else if(rfc.length > 0){
+
+
+            let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+
+                        $.notify({
+
+                        message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+                }else{
+                    let addContribuyente = new Contribuyente();
+
+                    guardarContribuyente(new Array(addContribuyente));
+                }
+            }
+        }
+
+
+}else if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length < 1 && telefono.length  > 0 ){
+
+    if($("#telefono").val().length < 9){
+            $.notify({
+
+                message: 'El teléfono debe tener 9 caracteres.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else if(curp.length > 0){
+            let  curCorrecto = curpValida(curp)
+            if (!curCorrecto) {
+                    $.notify({
+
+                        message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+            }else if(rfc.length > 0){
+
+
+            let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+
+                        $.notify({
+
+                        message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+                }else{
+                    let addContribuyente = new Contribuyente();
+
+                    guardarContribuyente(new Array(addContribuyente));
+                }
+            }
+        }
+
+
+}else if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length > 0 && telefono.length > 0 ){
+
+    if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
+        $.notify({
+
+                message: 'El correo electrónico introducido no es correcto.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+        }else if($("#telefono").val().length < 9){
+            $.notify({
+
+                message: 'El teléfono debe tener 9 caracteres.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else if(curp.length > 0){
+            let  curCorrecto = curpValida(curp)
+            if (!curCorrecto) {
+                    $.notify({
+
+                        message: 'El C.U.R.P. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+            }else if(rfc.length > 0){
+
+
+            let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+
+                        $.notify({
+
+                        message: 'El R.F.C. Ingresado no es válido por favor inténtelo de Nuevo'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                    });
+
+                }else{
+                    let addContribuyente = new Contribuyente();
+
+                    guardarContribuyente(new Array(addContribuyente));
+                }
+            }
+        }
+
+
+}
+
+
+
+///////Validacion Persona Moral////////////
+
+}else if($("#tipoContribuyente").val()==="M"){
+    if(nombreContribuyente == 0) {
+        $.notify({
+
+            message: 'Por favor, Ingrese el Nombre del Contribuyente'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+    }else if(rfc == 0) {
+        $.notify({
+
+            message: 'Por favor, Ingrese el R.F.C'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+    }else if(razonSocial == 0) {
+        $.notify({
+
+            message: 'Por favor, Ingrese una Razón Social'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+
+    }
+
+else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length == 0 && correoElectronico.length == 0){
+
+if(rfc.length > 0){
+
+
+    var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+    if (!rfcCorrecto) {
+
+                $.notify({
+
+                message: 'El R.F.C Ingresado no es valido Por favor Intente de Nuevo'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else{
+            let addContribuyente = new Contribuyente();
+
+            guardarContribuyente(new Array(addContribuyente));
+        }
+    }
+
+
+
+}else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length < 1 & correoElectronico.length > 0 ){
+
+    if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
+        $.notify({
+
+                message: 'El correo electrónico introducido no es correcto.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+        }else if(rfc.length > 0){
+            var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+                $.notify({
+
+                    message: 'El R.F.C Ingresado no es valido Por favor Intente de Nuevo'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+            }else{
+                let addContribuyente = new Contribuyente();
+
+                guardarContribuyente(new Array(addContribuyente));
+            }
+
+        }
+
+
+}else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length > 0 & correoElectronico.length < 1 ){
+
+    if($("#telefono").val().length < 9){
+            $.notify({
+
+                message: 'El teléfono debe tener 9 caracteres.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else if(rfc.length > 0){
+            var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+                $.notify({
+
+                    message: 'El R.F.C Ingresado no es valido Por favor Intente de Nuevo'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+            }else{
+                let addContribuyente = new Contribuyente();
+
+                guardarContribuyente(new Array(addContribuyente));
+            }
+
+        }
+
+
+}else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length > 0 & correoElectronico.length > 0 ){
+
+    if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
+        $.notify({
+
+                message: 'El correo electrónico introducido no es correcto.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+        }else if($("#telefono").val().length < 9){
+            $.notify({
+
+                message: 'El teléfono debe tener 9 caracteres.'
+            },
+            {
+                type: 'danger',
+                z_index: 999999,
+            });
+
+        }else if(rfc.length > 0){
+            var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
+            if (!rfcCorrecto) {
+                $.notify({
+
+                    message: 'El R.F.C Ingresado no es valido Por favor Intente de Nuevo'
+                },
+                {
+                    type: 'danger',
+                    z_index: 999999,
+                });
+
+            }else{
+                let addContribuyente = new Contribuyente();
+
+                guardarContribuyente(new Array(addContribuyente));
+            }
+
+        }
+
+
+}
+
+
+
+
+
+
+}
+
 		});
 
           ///Modal Contribuyente////////////

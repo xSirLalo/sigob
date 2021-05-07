@@ -326,7 +326,7 @@ class Contribuyente extends \Catastro\Entity\Contribuyente implements \Doctrine\
     /**
      * {@inheritDoc}
      */
-    public function setGenero($genero)
+    public function setGenero($genero = NULL)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGenero', [$genero]);

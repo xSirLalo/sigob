@@ -818,8 +818,9 @@ class AportacionController extends AbstractActionController
         $predioColindancias = $qb->getQuery()->getResult();
 
         foreach ($predioColindancias as $datos) {
-            $medidas[]=$datos->getMedidaMetros();
-            $descripcion[]=$datos->getDescripcion();
+            $puntoCardinal[]=$datos->getPuntoCardinal();
+            $medidas[]=$datos->getMedidaMetrosLineales();
+            $descripcion[]=$datos->getColindancia();
         }
 
         $pdf->Image('public/img/tulum.png', 23, 20, 30, 30, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
@@ -863,25 +864,25 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th rowspan="4" colspan ="2"><font size="7"><br><br><br>'.$predio->getAntecedentes().'</font></th>
-                    <th><font size="7">AL NORTE:</font></th>
+                    <th><font size="7">AL '.$puntoCardinal[0].':</font></th>
                     <th><font size="7">'.$medidas[0].'</font></th>
                     <th><font size="7">CON:</font></th>
                     <th><font size="7">'.$descripcion[0].'</font></th>
                 </tr>
                 <tr>
-                    <th><font size="7">AL SUR:</font></th>
+                    <th><font size="7">AL '.$puntoCardinal[1].':</font></th>
                     <th><font size="7">'.$medidas[1].'</font></th>
                     <th><font size="7">CON:</font></th>
                     <th><font size="7">'.$descripcion[1].'</font></th>
                 </tr>
                 <tr>
-                    <th><font size="7">AL ESTE:</font></th>
+                    <th><font size="7">AL '.$puntoCardinal[2].':</font></th>
                     <th><font size="7">'.$medidas[2].'</font></th>
                     <th><font size="7">CON:</font></th>
                     <th><font size="7">'.$descripcion[2].'</font></th>
                 </tr>
                 <tr>
-                    <th><font size="7">AL OESTE</font></th>
+                    <th><font size="7">AL '.$puntoCardinal[3].'</font></th>
                     <th><font size="7">'.$medidas[3].'</font></th>
                     <th><font size="7">CON:</font></th>
                     <th><font size="7">'.$descripcion[3].'</font></th>
@@ -893,7 +894,7 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$predio->getRegimenPropiedad().'</font></th>
-                    <th colspan ="2"><font size="7">'.$aportacion->getFechaAdquicision()->format('d-m-Y').'</font></th>
+                    <th colspan ="2"><font size="7">'.$predio->getFechaAdquicision()->format('d-m-Y').'</font></th>
                     <th colspan ="2"><font size="7">'.$predio->getTitularAnterior().'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
@@ -907,7 +908,7 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$contribuyente->getNombre().'</font></th>
-                    <th colspan ="1"><font size="7">'.$aportacion->getFactura().'</font></th>
+                    <th colspan ="1"><font size="7">'.$contribuyente->getFactura().'</font></th>
                     <th colspan ="1"><font size="7">'.$contribuyente->getGiroComercial().'</font></th>
                     <th colspan ="2"><font size="7">'.$contribuyente->getNombreComercial().'</font></th>
                 </tr>
@@ -931,8 +932,8 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$aportacion->getMetrosTerreno().'</font></th>
-                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorZona(), 4).'</font></th>
-                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorTerreno(), 4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorZona(), 2).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorTerreno(), 2).'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th colspan ="2">SUP.M2 CONSTRUCCIÓN</th>
@@ -941,8 +942,8 @@ class AportacionController extends AbstractActionController
                 </tr>
                 <tr>
                     <th colspan ="2"><font size="7">'.$aportacion->getMetrosConstruccion().'</font></th>
-                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorMtsConstruccion(), 4).'</font></th>
-                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorConstruccion(), 4).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorMtsConstruccion(), 2).'</font></th>
+                    <th colspan ="2"><font size="7">$'.number_format($aportacion->getValorConstruccion(), 2).'</font></th>
                 </tr>
                 <tr style="background-color:#47A7AC;color:black;">
                 <th>FECHA</th>
@@ -956,7 +957,7 @@ class AportacionController extends AbstractActionController
                     <th><font size="7">$'.number_format($aportacion->getAvaluo()).'</font></th>
                     <th><font size="7">'.number_format($aportacion->getTasa(), 4).'</font></th>
                     <th colspan ="2"><font size="7">'.$aportacion->getEjercicioFiscal().'-'.$aportacion->getEjercicioFiscalFinal().'</font></th>
-                    <th><font size="7">$'.number_format($aportacion->getPago(), 4).'</font></th>
+                    <th><font size="7">$'.number_format($aportacion->getPago(), 2).'</font></th>
                 </tr>
                 <tr style="background-color:#9b9b9b;color:black;">
                 <th colspan ="6" >OBSERVACIONES</th>
@@ -1214,7 +1215,7 @@ class AportacionController extends AbstractActionController
                 'giroComercial'      => $aportacion->getIdContribuyente()->getGiroComercial(),
                 'nombreComercial'    => $aportacion->getIdContribuyente()->getNombreComercial(),
                 'tenencia'           => $aportacion->getIdContribuyente()->getTenencia(),
-                'rfc'                => $aportacion->getIdContribuyente()->getRfc(),
+                'rfContribuyente'                => $aportacion->getIdContribuyente()->getRfc(),
                 'usoDestino'         => $aportacion->getIdContribuyente()->getUsoDestino(),
                 ///Aportacion
                 'vig'                   => $aportacion->getFecha()->format('Y-m-d'),
@@ -1287,6 +1288,7 @@ class AportacionController extends AbstractActionController
     public function updateAportacionAction(){
 
         $req_post = $this->params()->fromPost();
+
 
         //$result = $this->aportacionManager->actualizarAportacion($req_post['a'][0]);
         $result = $this->aportacionManager->guardarAportacion($req_post['a'][0]);

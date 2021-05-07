@@ -64,9 +64,9 @@ class Contribuyente
     private $estadoCivil = 'O';
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="genero", type="string", length=1, nullable=false, options={"default"="O","fixed"=true})
+     * @ORM\Column(name="genero", type="string", length=1, nullable=true, options={"default"="O","fixed"=true})
      */
     private $genero = 'O';
 

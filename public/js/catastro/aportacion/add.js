@@ -1307,7 +1307,7 @@ $(document).ready(function() {
     let factura              = $("#factura").val();
     let giroComercial        = $("#giroComercial").val();
     let nombreComercial      = $("#nombreComercial").val();
-    let tenecia              = $("#tenecia").val();
+    let tenencia              = $("#tenencia").val();
     let rfContribuyente      = $("#rfContribuyente").val();
     let usoDestino           = $("#usoDestino").val();
     let terreno              = $("#terreno").val();
@@ -1493,7 +1493,7 @@ $(document).ready(function() {
                 });
 
     }
-    else if(tenecia.length == 0)
+    else if(tenencia.length == 0)
     {
             $.notify({
 
@@ -1589,7 +1589,7 @@ $(document).ready(function() {
 
     }
 
-    else if(parcela.length > 0 && categoria.length > 0 && condicion.length > 0 && titular.length > 0 && ubicacion.length > 0 && localidad.length > 0 && antecedentes.length > 0 && regimenPropiedad.length > 0 && titularAnterior.length > 0 && documentoPropiedad.length > 0 && folio.length > 0 && Contribuyente.length > 0 && factura.length > 0 && giroComercial.length > 0 && nombreComercial.length > 0 && tenecia.length > 0 && usoDestino.length > 0 && terreno.length > 0 && valor_zona.length > 0 && sup_m.length > 0 && valor_c.length > 0 && tasa.length > 0 ){
+    else if(parcela.length > 0 && categoria.length > 0 && condicion.length > 0 && titular.length > 0 && ubicacion.length > 0 && localidad.length > 0 && antecedentes.length > 0 && regimenPropiedad.length > 0 && titularAnterior.length > 0 && documentoPropiedad.length > 0 && folio.length > 0 && Contribuyente.length > 0 && factura.length > 0 && giroComercial.length > 0 && nombreComercial.length > 0 && tenencia.length > 0 && usoDestino.length > 0 && terreno.length > 0 && valor_zona.length > 0 && sup_m.length > 0 && valor_c.length > 0 && tasa.length > 0 ){
 
         if(filas < 4){
             $.notify({

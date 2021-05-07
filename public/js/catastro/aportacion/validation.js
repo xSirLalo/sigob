@@ -26,6 +26,7 @@ $(document).ready(function(){
     ajax: {
                 url: "/aportacion/datatablevalidation",
                 type: "POST",
+                dataSrc:"aaData",
                 error: function(){
                     $(".aportaciones-error").html("");
                     $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No se encontraron datos en el servidor. </th></tr></tbody>');

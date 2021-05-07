@@ -446,7 +446,7 @@ class AportacionForm extends Form
                 //'required' => true,
                 'class' => 'form-control',
                 'placeholder' => 'Tenencia',
-                'id' => 'tenecia'
+                'id' => 'tenencia'
             ]
         ]);
 
