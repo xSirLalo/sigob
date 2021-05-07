@@ -39,9 +39,9 @@ $(document).ready(function() {
             columns: [
                 {data: 'idContribuyente', orderable: true, searchable: false,},
                 {data: 'nombre'},
-                {data: 'apellidoPaterno'},
-                {data: 'apellidoMaterno'},
-                {data: 'genero', orderable: false, searchable: false,},
+                {data: 'rfc'},
+                {data: 'curp'},
+                {data: 'tipoPersona', orderable: false, searchable: false,},
                 {data: 'opciones', orderable: false, searchable: false },
             ],
             columnDefs: [

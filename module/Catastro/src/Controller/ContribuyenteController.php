@@ -65,8 +65,8 @@ class ContribuyenteController extends AbstractActionController
         $columns = [
             0 => 'idContribuyente',
             1 => 'nombre',
-            2 => 'apellidoPaterno',
-            3 => 'apellidoMaterno'
+            2 => 'rfc',
+            3 => 'curp'
         ];
 
         // AJAX response
@@ -80,8 +80,8 @@ class ContribuyenteController extends AbstractActionController
             if (isset($searchKeyWord)) {
                 $searchKeyWord = htmlspecialchars($postData['search']['value']);
                 $qb ->where('c.nombre LIKE :word')
-                    ->orWhere('c.apellidoPaterno LIKE :word')
-                    ->orWhere('c.apellidoMaterno LIKE :word')
+                    ->orWhere('c.rfc LIKE :word')
+                    ->orWhere('c.curp LIKE :word')
                     ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
             }
 
@@ -102,9 +102,9 @@ class ContribuyenteController extends AbstractActionController
                 $data[] = [
                     'idContribuyente' => $r->getIdContribuyente(),
                     'nombre'          => $r->getNombre(),
-                    'apellidoPaterno' => $r->getApellidoPaterno(),
-                    'apellidoMaterno' => $r->getApellidoMaterno(),
-                    'genero'          => $r->getGenero(),
+                    'rfc' => $r->getRfc(),
+                    'curp' => $r->getCurp(),
+                    'tipoPersona'          => $r->getTipoPersona(),
                     'opciones'        => "Cargando..."
                 ];
             }
@@ -208,6 +208,12 @@ class ContribuyenteController extends AbstractActionController
                 if ($form->isValid()) {
                     try {
                         $data = $form->getData();
+                        
+                        // echo "<pre>";
+                        // print_r($data);
+                        // echo "</pre>";
+                        // exit();
+
                         $id = $data['input1'];
                         // Definimos la constante con el directorio de destino de los temporales
                         define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal');
