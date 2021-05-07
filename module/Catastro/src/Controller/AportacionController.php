@@ -19,7 +19,7 @@ use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Aportacion;
 use Catastro\Entity\TablaValorConstruccion;
 use Catastro\Entity\GiroComercial;
-use Catastro\Entity\localidad;
+use Catastro\Entity\Localidad;
 use Catastro\Entity\UsoDestino;
 use Catastro\Entity\Condicion;
 use Catastro\Entity\Categoria;
