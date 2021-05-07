@@ -59,8 +59,8 @@ class ContribuyenteManager
     {
         $contribuyente = new Contribuyente();
 
-        $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-        $contribuyente->setApellidoMaterno($data['apellido_materno']);
+        $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
+        $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
         $contribuyente->setCurp($data['curp']);
         $contribuyente->setCvePersona($data['cve_persona']);
         $contribuyente->setGenero($data['genero']);
@@ -89,8 +89,8 @@ class ContribuyenteManager
         $currentDate = new \DateTime();
 
         if ($data['tipo_persona'] == 'F') { // Persona Fisica
-            $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-            $contribuyente->setApellidoMaterno($data['apellido_materno']);
+            $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
+            $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
             $contribuyente->setFechaNacimiento(new \DateTime($data['fecha_nacimiento']));
             $contribuyente->setEstadoCivil(ucfirst($data['estado_civil']));
             $contribuyente->setCurp($data['curp']);

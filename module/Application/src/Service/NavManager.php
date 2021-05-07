@@ -104,12 +104,12 @@ class NavManager
                     'link'  => $url('contribuyente')
                 ];
 
-                $items[] = [
-                    'id' => 'predio',
-                    'label' => 'Predios',
-                    'icon' => 'feather icon-codepen',
-                    'link'  => $url('predio')
-                ];
+                // $items[] = [
+                //     'id' => 'predio',
+                //     'label' => 'Predios',
+                //     'icon' => 'feather icon-codepen',
+                //     'link'  => $url('predio')
+                // ];
 
                 $items[] = [
                     'id' => 'bibliotecas',
