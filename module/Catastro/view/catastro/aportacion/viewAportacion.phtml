@@ -158,7 +158,7 @@ $form->prepare();
                                         <option value="0">Buscar...</option>
                                         <?php if ($localidades): ?>
                                             <?php foreach ($localidades as $localidad):?>
-                                                <option value="<?= utf8_encode($localidad->getNombreLocalidad())?>"><?= utf8_encode($localidad->getNombreLocalidad()) ?></option>
+                                                <option value="<?= $localidad->getNombreLocalidad()?>"><?= $localidad->getNombreLocalidad() ?></option>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </select>
