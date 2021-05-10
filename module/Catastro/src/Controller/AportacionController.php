@@ -58,7 +58,7 @@ class AportacionController extends AbstractActionController
         return new ViewModel(['aportaciones' => $aportaciones, 'valorConstruccions' => $valorConstruccion, 'form' => $form]);
     }
 
-    public function datatableAction()
+    public function datatable2Action()
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
@@ -94,7 +94,7 @@ class AportacionController extends AbstractActionController
     }
 
 
-        public function datatable2Action()
+        public function datatableAction()
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
@@ -117,41 +117,71 @@ class AportacionController extends AbstractActionController
 
         // AJAX response
         if ($request->isXmlHttpRequest()) {
-            // $fields = ['c.idContribuyente', 'c.nombre', 'c.apellidoPaterno', 'c.apellidoMaterno', 'c.genero'];
-            $fields = ['a'];
-            // $qb = $this->entityManager->getRepository(Contribuyente::class)->createQueryBuilder('c');
-            $qb = $this->entityManager->createQueryBuilder();
-            $qb ->select($fields)->from('Catastro\Entity\Aportacion', 'a');
-            //$totalrows = $qb->getResult()->count();
-            $count = $qb->getQuery()->getScalarResult();
-                // $query = $qb->getQuery();
-                // $totalrows = $query->getResult()->count();
-                // echo "<pre>";
-                // print_r($count);
-                // echo "</pre>";
-                // exit();
 
-                //$count = $qb->getQuery()->getSingleScalarResult();
+            $qb = $this->entityManager->createQueryBuilder();
+
+            $qb ->select('a')
+            ->from('Catastro\Entity\Aportacion', 'a')
+            ->join('Catastro\Entity\Contribuyente', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idContribuyente = c.idContribuyente')
+            ->join('Catastro\Entity\Predio', 'p', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idPredio = p.idPredio')
+            ->where('a.estatus = 1')
+            ->orWhere('a.estatus = 2')
+            ->orWhere('a.estatus = 3');
+            $count = $qb->getQuery()->getScalarResult();
 
 
             $searchKeyWord = htmlspecialchars($postData['search']['value']);
+            $filter_options = htmlspecialchars($postData['filter_options']);
             if (isset($searchKeyWord)) {
                 $searchKeyWord = htmlspecialchars($postData['search']['value']);
-                $qb ->where('a.idAportacion LIKE :word')
-                    // ->orWhere('a.apellidoPaterno LIKE :word')
-                    // ->orWhere('a.apellidoMaterno LIKE :word')
+                if($filter_options == "0" ){
+                    $qb ->where('a.estatus = 3 and a.idAportacion LIKE :word')
+                    ->orWhere('a.estatus = 2 and a.idAportacion LIKE :word')
+                    ->orWhere('a.estatus = 1 and a.idAportacion LIKE :word')
                     ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
+                }else if($filter_options == "1" ){
+                    $qb ->where('a.estatus = 3 and p.parcela LIKE :word')
+                    ->orWhere('a.estatus = 2 and p.parcela LIKE :word')
+                    ->orWhere('a.estatus = 1 and p.parcela LIKE :word')
+                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
+                }else if($filter_options == "2" ){
+                    $qb ->where('a.estatus = 3 and c.nombre LIKE :word')
+                    ->orWhere('a.estatus = 2 and c.nombre LIKE :word')
+                    ->orWhere('a.estatus = 1 and c.nombre LIKE :word')
+                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
+                }else if($filter_options == "3" ){
+                    $qb ->where('a.estatus = 3 and p.titular LIKE :word')
+                        ->orWhere('a.estatus = 2 and p.titular LIKE :word')
+                        ->orWhere('a.estatus = 1 and p.titular LIKE :word')
+                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
+                }
+                else{
+                    $qb ->where('a.estatus = 3 and a.idAportacion LIKE :word')
+                        ->orWhere('a.estatus = 2 and a.idAportacion LIKE :word')
+                        ->orWhere('a.estatus = 1 and a.idAportacion LIKE :word')
+                        ->orWhere('a.estatus = 3 and p.parcela LIKE :word')
+                        ->orWhere('a.estatus = 2 and p.parcela LIKE :word')
+                        ->orWhere('a.estatus = 1 and p.parcela LIKE :word')
+                        ->orWhere('a.estatus = 3 and c.nombre LIKE :word')
+                        ->orWhere('a.estatus = 2 and c.nombre LIKE :word')
+                        ->orWhere('a.estatus = 1 and c.nombre LIKE :word')
+                        ->orWhere('a.estatus = 3 and p.titular LIKE :word')
+                        ->orWhere('a.estatus = 2 and p.titular LIKE :word')
+                        ->orWhere('a.estatus = 1 and p.titular LIKE :word')
+                        ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
+
+                }
             }
 
             if (isset($postData['order'])) {
-                $qb ->orderBy('a.'. $columns[$postData['order'][0]['column']], $postData['order'][0]['dir']);
+                //$qb ->orderBy('a.'. $columns[$postData['order'][0]['column']], $postData['order'][0]['dir']);
+                $qb ->orderBy('a.idAportacion', 'DESC');
             } else {
                 $qb ->orderBy('a.idAportacion', 'DESC');
             }
 
             if ($postData['length'] != -1)  {
                 $qb ->setFirstResult($postData['start'])->setMaxResults($postData['length']);
-                //$qb ->setFirstResult($postData['start']);
             }
 
 
@@ -182,18 +212,6 @@ class AportacionController extends AbstractActionController
                 ];
 
             return $response->setContent(json_encode($result));
-
-        // $response->setStatusCode(200);
-            // $response->setContent(\Laminas\Json\Json::encode($result));
-            // return $response;
-
-            // $json = new JsonModel($result);
-            // $json->setTerminal(true);
-            // return $json;
-       // } else {
-            // $contribuyentes = $this->entityManager->getRepository(Contribuyente::class)->findAll();
-            // $view = new ViewModel(['contribuyentes' => $contribuyentes, 'form' => $form]);
-            // echo 'Error get data from ajax';
         }
     }
 

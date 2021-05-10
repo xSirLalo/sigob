@@ -1365,9 +1365,10 @@ $(document).ready(function() {
     /////Para Validar filas de Colindacias/////////
     var table = $('#colindacias').DataTable();
     //Muestro la cantidad de filas
-    console.log("Filas: " + table.rows().count());
+    //console.log("Filas: " + table.rows().count());
     let filas = parseInt(table.rows().count());;
     //////////////Validaciones///////////////////
+    //parcela.focus();
 
     if(parcela.length == 0)
     {
@@ -1380,6 +1381,7 @@ $(document).ready(function() {
                     type: 'danger',
                     z_index: 999999,
                 });
+
     }
     else if(categoria.length == 0)
     {
@@ -2044,4 +2046,8 @@ $('#button').on('click',function()
 
     //Muestro la cantidad de columnas
     console.log("Columnas: " + table.columns().count());
+});
+
+$('#focus').click(  function () {
+    $("#parcela").focus();
 });

@@ -19,7 +19,7 @@ $(document).ready(function() {
                 loadingIndicator: true
             },
             processing: true,
-            //serverSide: true,
+            serverSide: true,
             //deferRender: true,
             paging: true,
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
@@ -29,6 +29,13 @@ $(document).ready(function() {
                 url: "/aportacion/datatable",
                 type: "POST",
                 dataSrc:"data",
+                data: function(d){
+                    return $.extend({},d,{
+                        //"filter_options":$("#query2").val(),
+                        "filter_options":$("#buscarAportacion").val(),
+                    });
+
+                },
                 error: function(){
                     $(".aportaciones-error").html("");
                     $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No se encontraron datos en el servidor. </th></tr></tbody>');
@@ -50,9 +57,9 @@ $(document).ready(function() {
                 {data: 'Parcela'},
                 {data: 'Contribuyente'},
                 {data: 'Propietario'},
-                {data: 'Lote'},
-                {data: 'UltimoPago'},
-                {data: 'Estatus', orderable: false, searchable: false,},
+                {data: 'Lote', searchable: false},
+                {data: 'UltimoPago', searchable: false},
+                {data: 'Estatus', orderable: false, searchable: false},
                 {data: 'Opciones', orderable: false, searchable: false },
                 ],
             columnDefs: [
@@ -141,7 +148,7 @@ $(document).ready(function() {
             //console.log(parametro());
             let colum = $('#query2').val();
             table
-            .columns(colum)
+            //.columns(colum)
             .search( this.value )
             .draw();
             } );
@@ -537,20 +544,20 @@ function validaNumericos(event) {
 }
 
 //Inicio Funcion validacion button buscar aportacion////
-$(document).ready(function() {
-    $('#query').attr("disabled", true);
-});
-function validacioninput(){
-    let buscar_aportacion =  $("#buscarAportacion").val();
+// $(document).ready(function() {
+//     $('#query').attr("disabled", true);
+// });
+// function validacioninput(){
+//     let buscar_aportacion =  $("#buscarAportacion").val();
 
-    if(buscar_aportacion == ""){
-        $('#query').attr("disabled", true);
-    }
-    else{
-        $('#query').attr("disabled", false);
-    }
+//     if(buscar_aportacion == ""){
+//         $('#query').attr("disabled", true);
+//     }
+//     else{
+//         $('#query').attr("disabled", false);
+//     }
 
-};
+// };
 ///Fin Funcion validacion button buscar aportacion////
 
 
