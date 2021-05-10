@@ -3,30 +3,24 @@ $(document).ready(function(){
     var table = $('#validation').DataTable({
         responsive: true,
         searching: true,
+        processing: true,
+        serverSide: true,
+        autoWidth: true,
         language: {
-        "decimal": "",
-        "emptyTable": "No hay información",
-        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        "infoEmpty": "Mostrando 0 to 0 de 0 Registros",
-        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        "infoPostFix": "",
-        "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
-        "loadingRecords": "Cargando...",
-        "processing": "Procesando...",
-        "search": "Buscar:",
-        "zeroRecords": "Sin resultados encontrados",
-        "paginate": {
-            "first": "Primero",
-            "last": "Ultimo",
-            "next": "Siguiente",
-            "previous": "Anterior"
-        }
-    },
+            url: "//cdn.datatables.net/plug-ins/1.10.6/i18n/Spanish.json"
+            },
     ajax: {
-                url: "/aportacion/datatablevalidation",
+                //url: "/aportacion/datatablevalidation",
+                url: "/aportacion/datatable",
                 type: "POST",
-                dataSrc:"aaData",
+                dataSrc:"data",
+                data: function(d){
+                    return $.extend({},d,{
+                        //"filter_options":$("#query2").val(),
+                        "filter_options":$("#buscarAportacion").val(),
+                    });
+
+                },
                 error: function(){
                     $(".aportaciones-error").html("");
                     $("#aportaciones").append('<tbody class="aportaciones-error"><tr class="text-center"><th colspan="6">No se encontraron datos en el servidor. </th></tr></tbody>');
@@ -50,6 +44,7 @@ $(document).ready(function(){
                 {data: 'Propietario'},
                 {data: 'Lote'},
                 {data: 'UltimoPago'},
+                {data: 'Estatus', orderable: false, searchable: false},
                 {data: 'Opciones', orderable: false, searchable: false },
                 ],
             columnDefs: [
@@ -57,14 +52,29 @@ $(document).ready(function(){
                     targets: 6,
                     orderable: false,
                     render: function(data, type, row, meta){
+                        if( row['Estatus'] == 1 ){
+                            $actionBtn = `<span class="badge badge-light-success">Verificado</span>`;
+                        }else if(row['Estatus'] == 2){
+                            $actionBtn = `<span class="badge badge-light-danger">Cancelado</span>`;
+                        }
+                        else {
+                            $actionBtn = `<span class="badge badge-light-warning">En Proceso</span>`;
+                        }
+                        return $actionBtn;
+                    },
+                },
+                {
+                    targets: 7,
+                    orderable: false,
+                    render: function(data, type, row, meta){
                         if(row['Estatus'] == 3 ){
-                        $actionBtn = `<div class="row"><a href="pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary">Ver</button></a>
-                        <a class="btn btn-secondary" href="aportacion/editar/` + row['idAportacion'] + `" data-toggle="modal" onclick="edit_validation(` + row['idAportacion'] + `)">Modificar</a>
-                        <button class="btn btn-success"  id="confirmar" name="confirmar" value="` + row['idAportacion'] + `"><i class="feather mr-2 icon-check-circle"></i>Confirmar</button>
-                        <button class="btn btn-danger" id="cancelar" name="cancelar" value="` + row['idAportacion'] + `"><i class="feather mr-2 icon-x-circle"></i>Cancelar</button>
-                        </div>`;
+                        $actionBtn = `<a href="pdfdirrector/` + row['idAportacion'] + `"> <button type="button=" data-toggle="tooltip" title="Ver"  class="btn btn btn-primary"><i class="fas fa-file-pdf"></i></button></a>
+                        <a class="btn btn-secondary" href="aportacion/editar/` + row['idAportacion'] + `" data-toggle="modal" onclick="edit_validation(` + row['idAportacion'] + `)"><i class="fa fa-edit"></i></a>
+                        <button class="btn btn-success" data-toggle="tooltip" title="Confirmar"  id="confirmar" name="confirmar" value="` + row['idAportacion'] + `"><i class="far fa-check-circle"></i></button>
+                        <button class="btn btn-danger" data-toggle="tooltip" title="Cancelar" id="cancelar" name="cancelar" value="` + row['idAportacion'] + `"><i class="far fa-times-circle"></i></button>
+                        `;
                         }else if(row['Estatus'] == 1 ||row['Estatus'] == 2 ){
-                        $actionBtn = `<div class="row"><a href="pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary">Ver</button></a></div>`;
+                        $actionBtn = `<a href="pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary"><i class="fas fa-file-pdf"></i></button></a>`;
                         }
 
                         return $actionBtn;
@@ -88,7 +98,7 @@ $(document).ready(function(){
             //console.log(parametro());
             let colum = $('#query2').val();
             table
-            .columns(colum)
+           // .columns(colum)
             .search( this.value )
             .draw();
             } );
@@ -506,18 +516,18 @@ $("#btn_edit").on('click', function(e) {
 ////////////////////////////
 
 //Inicio Funcion validacion button buscar aportacion////
-$(document).ready(function() {
-    $('#query').attr("disabled", true);
-});
-function validacioninput(){
-    let buscar_aportacion =  $("#buscarAportacion").val();
+// $(document).ready(function() {
+//     $('#query').attr("disabled", true);
+// });
+// function validacioninput(){
+//     let buscar_aportacion =  $("#buscarAportacion").val();
 
-    if(buscar_aportacion == ""){
-        $('#query').attr("disabled", true);
-    }
-    else{
-        $('#query').attr("disabled", false);
-    }
+//     if(buscar_aportacion == ""){
+//         $('#query').attr("disabled", true);
+//     }
+//     else{
+//         $('#query').attr("disabled", false);
+//     }
 
-};
+// };
 ///Fin Funcion validacion button buscar aportacion////

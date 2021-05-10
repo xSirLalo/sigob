@@ -39,12 +39,8 @@ $this->inlineScript()
             <h5><?= $title ?></h5>
         </div>
         <div class="card-body">
+        <a href="<?= $this->url('aportacion/nueva-aportacion');?>"><button type="button="class="btn btn-success float-right" data-toggle="tooltip" title="Agregar Aportacion" id="cancelar"><i class="fas fa-file-medical"></i></button></a>
             <div class="row">
-                <div class="col-sm-2">
-                    <div class="form-group ">
-                        <a href="<?= $this->url('aportacion/nueva-aportacion');?>"><button type="button="class="btn btn-success">Nueva Aportación</button></a>
-                    </div>
-                </div>
                 <div class="col-sm-2">
                     <div class="form-group ">
                         <!-- <select class="custom-select w-30" id="buscarAportacion" onchange="validacioninput()" class="form-control" name=""> -->
