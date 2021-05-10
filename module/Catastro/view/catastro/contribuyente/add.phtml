@@ -1,5 +1,5 @@
 <?php
-$title = $this->translate('Agregar');
+$title = $this->translate('Agregar contribuyente');
 $this->headMeta()->appendName('keywords', '');
 $this->headMeta()->appendName('description', '');
 $this->headTitle($this->escapeHtml($title));
@@ -24,9 +24,9 @@ $form->setAttribute('action', $this->url('contribuyente/agregar'));
 $form->prepare();
 ?>
 <!-- [ col ] start -->
-<div class="col-md-12">
+<div class="col">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header text-center">
             <h5>Alta Contribuyente</h5>
         </div>
         <div class="card-body">
@@ -136,18 +136,18 @@ $form->prepare();
                         </div>
                     </div>
                 </div>
-
-                <?= $this->formLabel($form->get('archivo')); ?>
+                <h6 class="text-center"><?= $this->formLabel($form->get('archivo')); ?></h6>
+                <hr>
                 <div class="form-group" id="select">
                     <div class="input-group mb-3">
                         <div class="input-group-append delete">
                             <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
                         </div>
-                            <?= $this->formSelect($form->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)); ?>
+                            <?= $this->formSelect($form->get('id_archivo_categoria[]')->setValueOptions($this->categorias)); ?>
                         <div class="custom-file">
                             <?= $this->formFile($form->get('archivo')); ?>
                             <div class="text-danger">
-                                <?= $this->formElementErrors($form->get('id_archivo_categoria')); ?>
+                                <?= $this->formElementErrors($form->get('id_archivo_categoria[]')); ?>
                                 <?= $this->formElementErrors($form->get('archivo')); ?>
                             </div>
                         </div>

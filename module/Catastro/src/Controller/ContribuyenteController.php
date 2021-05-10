@@ -57,7 +57,6 @@ class ContribuyenteController extends AbstractActionController
 
     public function datatableAction()
     {
-        $form = new ContribuyenteModalForm();
         $request = $this->getRequest();
         $response = $this->getResponse();
         $postData = $_POST;
@@ -68,7 +67,6 @@ class ContribuyenteController extends AbstractActionController
             2 => 'rfc',
             3 => 'curp'
         ];
-
         // AJAX response
         if ($request->isXmlHttpRequest()) {
             $fields = ['c'];
@@ -145,22 +143,31 @@ class ContribuyenteController extends AbstractActionController
             // $formData = $request->getPost()->toArray();
             // $inputFilter = new OptionalInputFilter();
             // $inputFilter->add([
-            //     'name' => 'correo',
+            //     'name' => 'rfc',
             //     'required' => true,
             //     'filters' => [
             //         ['name' => Filter\StripTags::class],
             //         ['name' => Filter\StringTrim::class],
             //     ],
             //     'validators' => [
-            //         // ['name' => Validator\NotEmpty::class],
-            //         ['name' => Validator\EmailAddress::class],
+            //         ['name' => Validator\NotEmpty::class],
+            //         // ['name' => Validator\EmailAddress::class],
             //             [
             //                 'name' => '\DoctrineModule\Validator\NoObjectExists',
             //                 'options' => array(
             //                     'object_repository' => $this->entityManager->getRepository(Contribuyente::class),
-            //                     'fields' => array('correo'),
+            //                     'fields' => array('rfc'),
             //                     'messages' => array(
-            //                         'objectFound' => 'Este correo ya se encuentra registrado.'
+            //                         'objectFound' => 'Este R.F.C ya se encuentra registrado.'
+            //                         ),
+            //                 ),
+            //             ],                        [
+            //                 'name' => '\DoctrineModule\Validator\NoObjectExists',
+            //                 'options' => array(
+            //                     'object_repository' => $this->entityManager->getRepository(Contribuyente::class),
+            //                     'fields' => array('curp'),
+            //                     'messages' => array(
+            //                         'objectFound' => 'Este C.U.R.P ya se encuentra registrado.'
             //                         ),
             //                 ),
             //             ],
@@ -209,10 +216,10 @@ class ContribuyenteController extends AbstractActionController
                     try {
                         $data = $form->getData();
 
-                        // echo "<pre>";
-                        // print_r($data);
-                        // echo "</pre>";
-                        // exit();
+                        echo "<pre>";
+                        print_r($data);
+                        echo "</pre>";
+                        exit();
 
                         $id = $data['input1'];
                         // Definimos la constante con el directorio de destino de los temporales

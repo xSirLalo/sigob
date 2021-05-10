@@ -295,13 +295,16 @@ class PredioForm extends Form
             'options' => [
                 'label' => 'Categorias',
                 // 'empty_option' => 'Seleccione una categoría',
+                'create_empty_option' => true,
+                'allowEmpty' => true,
+                'render_delimiters' => false,
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [
                 'required' => false,
-                // 'multiple'      => true,
-                // 'size' => 1,
-                'class' => 'custom-select',
+                // 'multiple' => 'multiple',
+                // 'size' => 1 ,
+                'class' => 'custom-select'
             ]
         ]);
 
@@ -309,17 +312,19 @@ class PredioForm extends Form
             'type' => Element\File::class,
             'name' => 'archivo',
             'options' => [
-                'label' => 'Archivos'
+                'label' => 'Archivos',
+                // 'label_attributes' => [
+                //     'class' => 'custom-file-label'
+                // ],
             ],
             'attributes' => [
-                'required'      => false,
+                // 'required'      => true,
                 'valueDisabled' => true,
                 'isArray'       => true,
                 'multiple'      => true,
-                'class'         => 'form-control',
+                'class' => 'custom-select',
+                // 'class'         => 'custom-file-input',
                 'id'            => 'archivo',
-                'data-toggle'   => 'tooltip',
-                'title'         => 'Cargar archivo'
             ]
         ]);
 
@@ -334,7 +339,6 @@ class PredioForm extends Form
                 'id' => 'add_more'
             ]
         ]);
-
         $this->add([
             'type' => Element\Csrf::class,
             'name' => 'csrf',
@@ -361,42 +365,42 @@ class PredioForm extends Form
         $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
 
-        $inputFilter->add([
-            'name' => 'archivo',
-            'required' => false,
-            # note for files we start with validators before we use filters
-            'validators' => [
-                // ['name' => Validator\NotEmpty::class],
-                // ['name' => Validator\File\IsImage::class],
-                // [
-                //     'name' => Validator\File\MimeType::class,
-                //     'options' => [
-                //         'mimeType' => 'image/png. image/jpeg, image/jpg, image/gif'
-                //     ],
-                // ], # just uncomment this one. I forgot. It always gives issues.
-                [
-                    'name' => Validator\File\Size::class,
-                    'options' => [
-                        'min' => '3kB',
-                        'max' => '15MB'
-                    ],
-                ],
-            ],
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-                [
-                    'name' => Filter\File\RenameUpload::class,
-                    'options' => [
-                        'target' => './public/img',
-                        'use_upload_name' => true,
-                        'use_upload_extension' => true,
-                        'overwrite' => true,
-                        'randomize' => false
-                    ]
-                ]
-            ]
-        ]);
+        // $inputFilter->add([
+        //     'name' => 'archivo',
+        //     'required' => false,
+        //     # note for files we start with validators before we use filters
+        //     'validators' => [
+        //         // ['name' => Validator\NotEmpty::class],
+        //         // ['name' => Validator\File\IsImage::class],
+        //         // [
+        //         //     'name' => Validator\File\MimeType::class,
+        //         //     'options' => [
+        //         //         'mimeType' => 'image/png. image/jpeg, image/jpg, image/gif'
+        //         //     ],
+        //         // ], # just uncomment this one. I forgot. It always gives issues.
+        //         [
+        //             'name' => Validator\File\Size::class,
+        //             'options' => [
+        //                 'min' => '3kB',
+        //                 'max' => '15MB'
+        //             ],
+        //         ],
+        //     ],
+        //     'filters' => [
+        //         ['name' => Filter\StripTags::class],
+        //         ['name' => Filter\StringTrim::class],
+        //         [
+        //             'name' => Filter\File\RenameUpload::class,
+        //             'options' => [
+        //                 'target' => './public/img',
+        //                 'use_upload_name' => true,
+        //                 'use_upload_extension' => true,
+        //                 'overwrite' => true,
+        //                 'randomize' => false
+        //             ]
+        //         ]
+        //     ]
+        // ]);
 
         $inputFilter->add([
                 'name' => 'id_archivo_categoria',

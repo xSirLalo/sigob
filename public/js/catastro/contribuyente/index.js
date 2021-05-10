@@ -1,7 +1,7 @@
 $(document).ready(function() {
-   setTimeout(function() {
+    setTimeout(function() {
         // [ Configuration Option ]
-    var myTable =  $('#contribuyentes').DataTable({
+        $('#contribuyentes').DataTable({
             responsive: true,
             // searching: true,
             autoWidth: true,
@@ -51,8 +51,8 @@ $(document).ready(function() {
                     render: function(data, type, row, meta){
                     $actionBtn = `
                         <div class="btn-group">
-                            <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info btn-sm">Detalle</a>
-                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `">Eliminar</button>
+                            <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info btn-sm" title="Detalle"><i class="fas fa-folder-open fa-fw"></i></a>
+                            <button class="btn btn-danger btn-sm" title="Eliminar" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `"><i class="fas fa-times fa-fw"></i></button>
                         </div>
                         `;
                         return $actionBtn;

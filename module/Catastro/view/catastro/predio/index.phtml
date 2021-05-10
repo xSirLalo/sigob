@@ -29,20 +29,19 @@ $this->inlineScript()
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-1 col-xs-12 mb-4" align=center>
-                    <div class="btn-group" role="group" aria-label="Botones">
-                        <a href="<?= $this->url("predio/agregar") ?>" class="btn btn-primary" >Agregar</a>
-                    </div>
+                <div class="col-12">
+                    <a href="<?= $this->url("predio/agregar") ?>" class="btn btn-secondary btn-sm float-right"><i class="fas fa-plus fa-fw"></i></a>
                 </div>
             </div>
+            <br>
             <table  class='display table table-striped table-hover dt-responsive nowrap' id="predios" style="width:100%">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Clave Catastral</th>
                         <th>Contribuyente</th>
-                        <th>Titular</th>
                         <th>Ubicacion</th>
+                        <th>Tipo</th>
                         <th>Opciones</th>
                     </tr>
                 </thead>
@@ -54,11 +53,11 @@ $this->inlineScript()
                                 <td><?= $predio->getClaveCatastral() ?></td>
                                 <!-- TODO: Consultar desde el Webservice antes te mostrarlo en la tabla de predios -->
                                 <td><?php echo $predio->getIdContribuyente()->getNombre()?></td>
-                                <td><?php echo $predio->getTitular()?></td>
-                                <td><?= $predio->getLocalidad() ?></td>
+                                <td><?php echo $predio->getUbicacion()?></td>
+                                <td><?= $predio->getTipo() ?></td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="<?= $this->url('predio/ver', ['action' => 'ver', 'id' => $predio->getIdPredio()]); ?>" class="btn btn-info"> Detalle</a>
+                                        <a href="<?= $this->url('predio/ver', ['action' => 'ver', 'id' => $predio->getIdPredio()]); ?>" class="btn btn-info btn-sm" title="Detalle"><i class="fas fa-folder-open fa-fw"></i></a>
                                     </div>
                                 </td>
                             </tr>

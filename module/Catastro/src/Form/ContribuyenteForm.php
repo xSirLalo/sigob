@@ -238,7 +238,7 @@ class ContribuyenteForm extends Form
 
         $this->add([
             'type' => Element\Select::class,
-            'name' => 'id_archivo_categoria',
+            'name' => 'id_archivo_categoria[]',
             'options' => [
                 'label' => 'Categorias',
                 // 'empty_option' => 'Seleccione una categoría',
@@ -324,7 +324,7 @@ class ContribuyenteForm extends Form
             [
                 'name' => 'id_archivo_categoria',
                 'required' => false,
-                // 'allow_empty' => false,
+                'allow_empty' => false,
                 'filters' => [],
                 'validators' => [],
                 // 'filters' => [
