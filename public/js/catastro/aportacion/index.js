@@ -78,9 +78,9 @@ $(document).ready(function() {
                     orderable: false,
                     render: function(data, type, row, meta){
                         if(row['Estatus'] == 3 ){
-                        $actionBtn = `<a href="aportacion/ver-aportacion/` + row['idAportacion'] + `"> <button  type="button"class="btn btn-warning"><i class="fa fa-edit"></i></button></a>
-                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary"><i class="fas fa-print"></i></button></a>
-                        <a href="#"> <button type="button="class="btn btn btn-success" disabled ><i class="fas fa-file-invoice-dollar"></i></button></a> `;
+                        $actionBtn = `<a href="aportacion/ver-aportacion/` + row['idAportacion'] + `"> <button  data-toggle="tooltip" title="Editar" type="button"class="btn btn-warning"><i class="fa fa-edit"></i></button></a>
+                        <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button data-toggle="tooltip" title="Imprimir" type="button="class="btn btn btn-primary"><i class="fas fa-print"></i></button></a>
+                        <a href="#"> <button data-toggle="tooltip" title="Pase de Caja" type="button="class="btn btn btn-success" disabled ><i class="fas fa-file-invoice-dollar"></i></button></a> `;
 
                         // $actionBtn = `<button value="` + row['idAportacion'] + `" id="btnEditar" type="button="class="btn btn-warning" onclick="edit_aportacion(` + row['idAportacion'] + `)">Editar</button>
                         // <a href="aportacion/pdfdirrector/` + row['idAportacion'] + `"> <button type="button="class="btn btn btn-primary" >Imprimir</button></a>

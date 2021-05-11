@@ -6,15 +6,322 @@ $(document).ready(function () {
         'nextSelector': '.button-next',
         'previousSelector': '.button-previous',
         'firstSelector': '.button-first',
-        'lastSelector': '.button-last'
+        'lastSelector': '.button-last',
+        onNext: function(tab, navigation, index) {
+                if (index == 1) {
+                    let categoria = $("#categoria").val();
+                    let condicion = $("#condicion").val();
+                    let localidad = $("#localidad").val();
+                    let regimenPropiedad = $("#regimenPropiedad").val();
+                    let documentoPropiedad   = $("#documentoPropiedad").val();
+                    let giroComercial        = $("#giroComercial").val();
+                    let usoDestino           = $("#usoDestino").val();
+                    var table = $('#colindacias').DataTable();
+                    let filas = parseInt(table.rows().count());
+
+                    if (!$('#parcela').val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese una Parcela'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#parcela').focus();
+                        $('#parcela').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#parcela').val()){
+                        $('#parcela').removeClass('is-invalid');
+                    }
+                    if (categoria.length == 0) {
+                        $.notify({
+
+                                message: 'Por favor, Seleccione una Categoria'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#categoria').focus();
+                        $('#categoria').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if(categoria.length > 0){
+                        $('#categoria').removeClass('is-invalid');
+                    }
+                    if (condicion.length == 0) {
+                        $.notify({
+
+                                message: 'Por favor, Seleccione una Condicion'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#condicion').focus();
+                        $('#condicion').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if(condicion.length > 0){
+                        $('#condicion').removeClass('is-invalid');
+                    }
+                    if (!$("#titular").val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese un Titular'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#titular').focus();
+                        $('#titular').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#titular').val()){
+                        $('#titular').removeClass('is-invalid');
+                    }
+                    if (!$("#ubicacion").val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese una Ubicación'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#ubicacion').focus();
+                        $('#ubicacion').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#ubicacion').val()){
+                        $('#ubicacion').removeClass('is-invalid');
+                    }
+                    if (localidad.length == 0) {
+                        $.notify({
+
+                                message: 'Por favor, Seleccione una Localidad'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#localidad').focus();
+                        $('#localidad').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if(localidad.length > 0){
+                        $('#localidad').removeClass('is-invalid');
+                    }
+                    if (!$('#antecedentes').val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese los Antecedentes'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#antecedentes').focus();
+                        $('#antecedentes').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#antecedentes').val()){
+                        $('#antecedentes').removeClass('is-invalid');
+                    }
+                    if (regimenPropiedad.length == 0) {
+                        $.notify({
+
+                                message: 'Por favor, Seleccione un Regimen de Propiedad'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#regimenPropiedad').focus();
+                        $('#regimenPropiedad').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if(regimenPropiedad.length > 0){
+                        $('#regimenPropiedad').removeClass('is-invalid');
+                    }
+                    if (!$('#titularAnterior').val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese El Titular Anterior'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#titularAnterior').focus();
+                        $('#titularAnterior').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#titularAnterior').val()){
+                        $('#titularAnterior').removeClass('is-invalid');
+                    }
+                    if (documentoPropiedad.length == 0) {
+                        $.notify({
+
+                                message: 'Por favor, Seleccione un Documento de Propiedad'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#documentoPropiedad').focus();
+                        $('#documentoPropiedad').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if(documentoPropiedad.length > 0){
+                        $('#documentoPropiedad').removeClass('is-invalid');
+                    }
+                    if (!$('#folio').val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese un Folio'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#folio').focus();
+                        $('#folio').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#folio').val()){
+                        $('#folio').removeClass('is-invalid');
+                    }
+                    if (!$('#Contribuyente').val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese El Contribuyente'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#Contribuyente').focus();
+                        $('#Contribuyente').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#Contribuyente').val()){
+                        $('#Contribuyente').removeClass('is-invalid');
+                    }
+                    if (giroComercial.length == 0) {
+                        $.notify({
+
+                                message: 'Por favor, Seleccione el Giro Comercial'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#giroComercial').focus();
+                        $('#giroComercial').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if(giroComercial.length > 0){
+                        $('#giroComercial').removeClass('is-invalid');
+                    }
+
+                    if (!$('#nombreComercial').val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese El Nombre Comercial'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#nombreComercial').focus();
+                        $('#nombreComercial').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#nombreComercial').val()){
+                        $('#nombreComercial').removeClass('is-invalid');
+                    }
+                    if (!$('#tenencia').val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese Una Tenencia'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#tenencia').focus();
+                        $('#tenencia').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#tenencia').val()){
+                        $('#tenencia').removeClass('is-invalid');
+                    }
+                    if (usoDestino.length == 0) {
+                        $.notify({
+
+                                message: 'Por favor, Seleccione El Uso Destino.'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#usoDestino').focus();
+                        $('#usoDestino').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if(usoDestino.length > 0){
+                        $('#usoDestino').removeClass('is-invalid');
+                    }
+                    if(filas < 4){
+                        $.notify({
+
+                                message: 'El minimo de colindancias agregados debe ser de 4'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                            });
+                            return false;
+                    }
+                }
+            }
     });
-
-
-
-    // $(".js-example-basic-single").select2(
-
-
-
 
 });
     $('.btn-ok').on('click', function(e) {
@@ -617,11 +924,11 @@ $(document).ready(function() {
 
                     $.notify({
 
-                message: 'No se puede guardar porque el RFC ya existe en la Base de datos'
-                    },
-                    {
-                        type: 'danger',
-                        z_index: 999999,
+                        message: 'No se puede guardar porque el RFC ya existe en la Base de datos'
+                        },
+                        {
+                            type: 'danger',
+                            z_index: 999999,
                     });
 
                 }
@@ -631,6 +938,14 @@ $(document).ready(function() {
                     $("#Contribuyente").val(data.nombre);
                     $("#rfContribuyente").val(data.rfc);
                     $('#addContribuyente').modal('hide');
+                    $.notify({
+
+                        message: 'Contribuyente Agregado Correctamente.'
+                        },
+                        {
+                            type: 'success',
+                            z_index: 999999,
+                    });
 
 				}else{
 
@@ -726,7 +1041,7 @@ $(document).ready(function() {
 
     if($("#tipoContribuyente").val()==="F"){
 
-    if(nombreContribuyente == 0) {
+    if(nombreContribuyente.length == 0) {
         $.notify({
 
             message: 'Por favor, Ingrese El Nombre del Contribuyente'
@@ -735,9 +1050,16 @@ $(document).ready(function() {
             type: 'danger',
             z_index: 999999,
         });
+        $('#nombreContribuyente').focus();
+        $('#nombreContribuyente').addClass('is-invalid');
+
+        return false;
 
     }
-    else if(apellidoPaterno.length == 0) {
+    else if(nombreContribuyente.length > 0){
+        $('#nombreContribuyente').removeClass('is-invalid');
+    }
+    if(apellidoPaterno.length == 0) {
         $.notify({
 
             message: 'Por favor, Ingrese El Apellido Paterno'
@@ -746,9 +1068,16 @@ $(document).ready(function() {
             type: 'danger',
             z_index: 999999,
         });
+        $('#apellidoPaterno').focus();
+        $('#apellidoPaterno').addClass('is-invalid');
+
+        return false;
 
     }
-    else if(apellidoMaterno.length == 0) {
+    else if(apellidoPaterno.length > 0){
+        $('#apellidoPaterno').removeClass('is-invalid');
+    }
+    if(apellidoMaterno.length == 0) {
             $.notify({
 
             message: 'Por favor, Ingrese El Apellido Materno'
@@ -757,9 +1086,16 @@ $(document).ready(function() {
             type: 'danger',
             z_index: 999999,
         });
+        $('#apellidoMaterno').focus();
+        $('#apellidoMaterno').addClass('is-invalid');
+
+        return false;
 
     }
-    else if(rfc.length == 0) {
+    else if(apellidoMaterno.length > 0){
+        $('#apellidoMaterno').removeClass('is-invalid');
+    }
+    if(rfc.length == 0) {
         $.notify({
 
             message: 'Por favor, Ingrese el R.F.C.'
@@ -768,9 +1104,16 @@ $(document).ready(function() {
             type: 'danger',
             z_index: 999999,
         });
+        $('#rfc').focus();
+        $('#rfc').addClass('is-invalid');
+
+        return false;
+    }
+    else if(rfc.length > 0){
+        $('#rfc').removeClass('is-invalid');
     }
 
-    else if(curp.length == 0){
+    if(curp.length == 0){
         $.notify({
 
             message: 'Por favor, Ingrese el C.U.R.P.'
@@ -779,10 +1122,18 @@ $(document).ready(function() {
             type: 'danger',
             z_index: 999999,
         });
+        $('#curp').focus();
+        $('#curp').addClass('is-invalid');
+
+        return false;
 
 
     }
-else if(dia.length == 0||mes.length == 0||año.length == 0){
+    else if(curp.length > 0){
+        $('#curp').removeClass('is-invalid');
+    }
+
+    if(dia.length == 0||mes.length == 0||año.length == 0){
     $.notify({
 
                 message: 'Por favor, Ingrese Una Fecha de Nacimiento'
@@ -791,8 +1142,18 @@ else if(dia.length == 0||mes.length == 0||año.length == 0){
                 type: 'danger',
                 z_index: 999999,
             });
+            $('#dia').addClass('is-invalid');
+            $('#mes').addClass('is-invalid');
+            $('#año').addClass('is-invalid');
+            return false;
+    }
+    else if(dia.length > 0 && mes.length > 0 && año.length > 0){
 
-}
+        $('#dia').removeClass('is-invalid');
+        $('#mes').removeClass('is-invalid');
+        $('#año').removeClass('is-invalid');
+
+    }
 
 // if(mes == 2 && dia > 28 ){
 
@@ -822,7 +1183,7 @@ else if(dia.length == 0||mes.length == 0||año.length == 0){
 //     }
 // }
 
-else if(mes == 2 && dia > 28|| mes == 4 && dia > 30 || mes == 6 && dia > 30 || mes == 9 && dia > 30 || mes == 11 && dia > 30 ){
+if(mes == 2 && dia > 28|| mes == 4 && dia > 30 || mes == 6 && dia > 30 || mes == 9 && dia > 30 || mes == 11 && dia > 30 ){
 
         $.notify({
 
@@ -850,6 +1211,8 @@ if (curp.length > 0){
                     type: 'danger',
                     z_index: 999999,
                 });
+                $('#curp').focus();
+                $('#curp').addClass('is-invalid');
 
         }else if(rfc.length > 0){
 
@@ -865,6 +1228,8 @@ if (curp.length > 0){
                     type: 'danger',
                     z_index: 999999,
                 });
+                $('#rfc').focus();
+                $('#rfc').addClass('is-invalid');
 
             }else{
                 let addContribuyente = new Contribuyente();
@@ -1366,7 +1731,7 @@ $(document).ready(function() {
     var table = $('#colindacias').DataTable();
     //Muestro la cantidad de filas
     //console.log("Filas: " + table.rows().count());
-    let filas = parseInt(table.rows().count());;
+    let filas = parseInt(table.rows().count());
     //////////////Validaciones///////////////////
     //parcela.focus();
 
@@ -1573,9 +1938,15 @@ $(document).ready(function() {
                     type: 'danger',
                     z_index: 999999,
                 });
+                $("#terreno").focus();
+                $('#terreno').addClass('is-invalid');
+                return false;
 
     }
-    else if(valor_zona.length == 0)
+    else if(terreno.length > 0){
+        $('#terreno').removeClass('is-invalid');
+    }
+    if(valor_zona.length == 0)
     {
             $.notify({
 
@@ -1585,9 +1956,15 @@ $(document).ready(function() {
                     type: 'danger',
                     z_index: 999999,
                 });
+                $("#valor_zona").focus();
+                $('#valor_zona').addClass('is-invalid');
+                return false;
 
     }
-    else if(sup_m.length == 0)
+    else if(valor_zona.length > 0){
+        $('#valor_zona').removeClass('is-invalid');
+    }
+    if(sup_m.length == 0)
     {
             $.notify({
 
@@ -1597,9 +1974,15 @@ $(document).ready(function() {
                     type: 'danger',
                     z_index: 999999,
                 });
+                $("#sup_m").focus();
+                $('#sup_m').addClass('is-invalid');
+                return false;
 
     }
-    else if(valor_c.length == 0)
+    else if(sup_m.length > 0){
+        $('#sup_m').removeClass('is-invalid');
+    }
+    if(valor_c.length == 0)
     {
             $.notify({
 
@@ -1609,9 +1992,15 @@ $(document).ready(function() {
                     type: 'danger',
                     z_index: 999999,
                 });
+                $("#valor_c").focus();
+                $('#valor_c').addClass('is-invalid');
+                return false;
 
     }
-    else if(tasa.length == 0)
+    if(valor_c.length > 0){
+        $('#valor_c').removeClass('is-invalid');
+    }
+    if(tasa.length == 0)
     {
             $.notify({
 
@@ -1621,9 +2010,15 @@ $(document).ready(function() {
                     type: 'danger',
                     z_index: 999999,
                 });
+                $("#tasa_i").focus();
+                $('#tasa_i').addClass('is-invalid');
+                return false;
 
     }
-    else if(ejercicio_fiscal > ejercicio_fiscal_final){
+    else if(tasa.length > 0){
+        $('#tasa_i').removeClass('is-invalid');
+    }
+    if(ejercicio_fiscal > ejercicio_fiscal_final){
             $.notify({
 
                     message: 'El Año de Ejercicio Fiscal no debe ser Mayor que Ejercicio Fiscal Final'
@@ -1632,10 +2027,23 @@ $(document).ready(function() {
                     type: 'danger',
                     z_index: 999999,
                 });
+                $("#ejercicio_fiscal").focus();
+                $('#ejercicio_fiscal').addClass('is-invalid');
+                $("#ejercicio_fiscal_final").focus();
+                $('#ejercicio_fiscal_final').addClass('is-invalid');
+                return false;
+
+    }
+    else if(ejercicio_fiscal < ejercicio_fiscal_final || ejercicio_fiscal == ejercicio_fiscal_final   )
+    {
+        $("#ejercicio_fiscal").focus();
+        $('#ejercicio_fiscal').removeClass('is-invalid');
+        $("#ejercicio_fiscal_final").focus();
+        $('#ejercicio_fiscal_final').removeClass('is-invalid');
 
     }
 
-    else if(parcela.length > 0 && categoria.length > 0 && condicion.length > 0 && titular.length > 0 && ubicacion.length > 0 && localidad.length > 0 && antecedentes.length > 0 && regimenPropiedad.length > 0 && titularAnterior.length > 0 && documentoPropiedad.length > 0 && folio.length > 0 && Contribuyente.length > 0 && factura.length > 0 && giroComercial.length > 0 && nombreComercial.length > 0 && tenencia.length > 0 && usoDestino.length > 0 && terreno.length > 0 && valor_zona.length > 0 && sup_m.length > 0 && valor_c.length > 0 && tasa.length > 0 ){
+    if(parcela.length > 0 && categoria.length > 0 && condicion.length > 0 && titular.length > 0 && ubicacion.length > 0 && localidad.length > 0 && antecedentes.length > 0 && regimenPropiedad.length > 0 && titularAnterior.length > 0 && documentoPropiedad.length > 0 && folio.length > 0 && Contribuyente.length > 0 && factura.length > 0 && giroComercial.length > 0 && nombreComercial.length > 0 && tenencia.length > 0 && usoDestino.length > 0 && terreno.length > 0 && valor_zona.length > 0 && sup_m.length > 0 && valor_c.length > 0 && tasa.length > 0 ){
 
         if(filas < 4){
             $.notify({
@@ -1722,11 +2130,7 @@ $(document).ready(function() {
             responsive: true,
             info: false,
             searching: false,
-            autoWidth: false,
-            scrollX: true,
-            scroller: {
-                loadingIndicator: true
-            },
+            autoWidth: true,
             processing: true,
             // serverSide: true,
             deferRender: true,
