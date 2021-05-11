@@ -2096,7 +2096,7 @@ $(document).ready(function() {
                 return false;
 
     }
-    if(valor_c.length > 0){
+    else if(valor_c.length > 0){
         $('#valor_c').removeClass('is-invalid');
     }
     if(tasa.length == 0)
