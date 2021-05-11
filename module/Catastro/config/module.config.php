@@ -671,7 +671,7 @@ return [
                             ],
                         ],
                     ],
-                    'verAportacion' => [
+                    'ver-aportacion' => [
                         'type' => 'segment',
                         'options' => [
                             'route' => '/ver-aportacion[/:id]',
