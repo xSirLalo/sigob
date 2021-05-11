@@ -1193,9 +1193,21 @@ if(mes == 2 && dia > 28|| mes == 4 && dia > 30 || mes == 6 && dia > 30 || mes ==
                 type: 'danger',
                 z_index: 999999,
             });
+            $('#dia').addClass('is-invalid');
+            $('#mes').addClass('is-invalid');
+            $('#año').addClass('is-invalid');
+            return false;
 
 
-}else{
+}
+else
+{
+        $('#dia').removeClass('is-invalid');
+        $('#mes').removeClass('is-invalid');
+        $('#año').removeClass('is-invalid');
+
+}
+//else{
 
 
 if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length == 0 && telefono.length == 0 ){
@@ -1244,7 +1256,7 @@ if (curp.length > 0){
 
 }else if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length > 0 && telefono.length < 1 ){
 
-    if($("#correoElectronico").val().indexOf('@', 0) == -1 || $("#correoElectronico").val().indexOf('.', 0) == -1){
+    if($("#correoElectronico").val().indexOf('@', 0) == -1||$("#correoElectronico").val().indexOf('.', 0) == -1 ){
         $.notify({
 
                 message: 'El correo electrónico introducido no es correcto.'
@@ -1253,7 +1265,16 @@ if (curp.length > 0){
                 type: 'danger',
                 z_index: 999999,
             });
-        }else if(curp.length > 0){
+
+            $('#correoElectronico').focus();
+            $('#correoElectronico').addClass('is-invalid');
+            return false;
+
+        }
+        else{
+                $('#correoElectronico').removeClass('is-invalid');
+        }
+        if(curp.length > 0){
             let  curCorrecto = curpValida(curp)
             if (!curCorrecto) {
                     $.notify({
@@ -1264,6 +1285,9 @@ if (curp.length > 0){
                         type: 'danger',
                         z_index: 999999,
                     });
+
+                    $('#curp').focus();
+                    $('#curp').addClass('is-invalid');
 
             }else if(rfc.length > 0){
 
@@ -1279,6 +1303,9 @@ if (curp.length > 0){
                         type: 'danger',
                         z_index: 999999,
                     });
+
+                    $('#rfc').focus();
+                    $('#rfc').addClass('is-invalid');
 
                 }else{
                     let addContribuyente = new Contribuyente();
@@ -1291,7 +1318,7 @@ if (curp.length > 0){
 
 }else if(nombreContribuyente.length > 0 && apellidoPaterno.length > 0 && apellidoMaterno.length > 0 && rfc.length > 0 && curp.length > 0 && dia.length > 0 && mes.length > 0 && año.length > 0 && correoElectronico.length < 1 && telefono.length  > 0 ){
 
-    if($("#telefono").val().length < 9){
+    if($("#telefono").val().length > 0 && $("#telefono").val().length < 9){
             $.notify({
 
                 message: 'El teléfono debe tener 9 caracteres.'
@@ -1301,7 +1328,17 @@ if (curp.length > 0){
                 z_index: 999999,
             });
 
-        }else if(curp.length > 0){
+            $('#telefono').focus();
+            $('#telefono').addClass('is-invalid');
+            return false;
+
+        }
+        else{
+            $('#telefono').removeClass('is-invalid');
+        }
+        var a = 3
+
+        if(curp.length > 0){
             let  curCorrecto = curpValida(curp)
             if (!curCorrecto) {
                     $.notify({
@@ -1312,6 +1349,9 @@ if (curp.length > 0){
                         type: 'danger',
                         z_index: 999999,
                     });
+
+                    $('#curp').focus();
+                    $('#curp').addClass('is-invalid');
 
             }else if(rfc.length > 0){
 
@@ -1327,6 +1367,9 @@ if (curp.length > 0){
                         type: 'danger',
                         z_index: 999999,
                     });
+
+                    $('#rfc').focus();
+                    $('#rfc').addClass('is-invalid');
 
                 }else{
                     let addContribuyente = new Contribuyente();
@@ -1348,6 +1391,10 @@ if (curp.length > 0){
                 type: 'danger',
                 z_index: 999999,
             });
+
+            $('#correoElectronico').focus();
+            $('#correoElectronico').addClass('is-invalid');
+
         }else if($("#telefono").val().length < 9){
             $.notify({
 
@@ -1357,6 +1404,9 @@ if (curp.length > 0){
                 type: 'danger',
                 z_index: 999999,
             });
+
+            $('#telefono').focus();
+            $('#telefono').addClass('is-invalid');
 
         }else if(curp.length > 0){
             let  curCorrecto = curpValida(curp)
@@ -1369,6 +1419,9 @@ if (curp.length > 0){
                         type: 'danger',
                         z_index: 999999,
                     });
+
+                    $('#curp').focus();
+                    $('#curp').addClass('is-invalid');
 
             }else if(rfc.length > 0){
 
@@ -1385,6 +1438,9 @@ if (curp.length > 0){
                         z_index: 999999,
                     });
 
+                    $('#rfc').focus();
+                    $('#rfc').addClass('is-invalid');
+
                 }else{
                     let addContribuyente = new Contribuyente();
 
@@ -1396,12 +1452,12 @@ if (curp.length > 0){
 
 }
 
-}
+//}
 
 ///////Validacion Persona Moral////////////
 
 }else if($("#tipoContribuyente").val()==="M"){
-    if(nombreContribuyente == 0) {
+    if(nombreContribuyente.length == 0) {
         $.notify({
 
             message: 'Por favor, Ingrese el Nombre del Contribuyente'
@@ -1411,7 +1467,16 @@ if (curp.length > 0){
             z_index: 999999,
         });
 
-    }else if(rfc == 0) {
+        $('#nombreContribuyente').focus();
+        $('#nombreContribuyente').addClass('is-invalid');
+
+        return false;
+
+    }
+    else if(nombreContribuyente.length > 0){
+        $('#nombreContribuyente').removeClass('is-invalid');
+    }
+    if(rfc.length == 0) {
         $.notify({
 
             message: 'Por favor, Ingrese el R.F.C'
@@ -1421,7 +1486,16 @@ if (curp.length > 0){
             z_index: 999999,
         });
 
-    }else if(razonSocial == 0) {
+        $('#rfc').focus();
+        $('#rfc').addClass('is-invalid');
+
+        return false;
+
+    }
+    else if(rfc.length > 0){
+        $('#rfc').removeClass('is-invalid');
+    }
+    if(razonSocial.length == 0) {
         $.notify({
 
             message: 'Por favor, Ingrese una Razón Social'
@@ -1431,10 +1505,17 @@ if (curp.length > 0){
             z_index: 999999,
         });
 
+        $('#razonSocial').focus();
+        $('#razonSocial').addClass('is-invalid');
+
+        return false;
 
     }
+    else if(rfc.length > 0){
+        $('#razonSocial').removeClass('is-invalid');
+    }
 
-else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length == 0 && correoElectronico.length == 0){
+if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length == 0 && correoElectronico.length == 0){
 
 if(rfc.length > 0){
 
