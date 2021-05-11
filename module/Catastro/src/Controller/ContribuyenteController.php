@@ -216,12 +216,10 @@ class ContribuyenteController extends AbstractActionController
                     try {
                         $data = $form->getData();
 
-                        echo "<pre>";
-                        print_r($data);
-                        echo "</pre>";
-                        exit();
+                        // exit('<pre>'.print_r($data, true).'</pre>');
 
                         $id = $data['input1'];
+                        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
                         // Definimos la constante con el directorio de destino de los temporales
                         define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal');
                         // Obtenemos el array de ficheros enviados
@@ -272,6 +270,11 @@ class ContribuyenteController extends AbstractActionController
                                             $data['categoria'] = $categoria[$i];
 
                                             $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+                                            if ($contribuyente) {
+                                                $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
+                                            } else {
+                                                $this->bibliotecaManager->guardarRelacionAC($contribuyente, $archivito);
+                                            }
                                             // Activamos el indicador de proceso correcto
                                             $estado_proceso = true;
                                             // Almacenamos el nombre del archivo de destino
@@ -286,55 +289,27 @@ class ContribuyenteController extends AbstractActionController
                                 }
                             }
                         }
-
-                        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
                         if ($contribuyente) {
                             $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
-                            if ($nombre) {
-                                $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
-                            }
                             $this->flashMessenger()->addInfoMessage('Se actualizo con éxito!');
                         } else {
                             $contribuyente = $this->contribuyenteManager->guardarContribuyente($data);
-                            if ($nombre) {
-                                $this->bibliotecaManager->guardarRelacionAC($contribuyente, $archivito);
-                            }
                             $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
                         }
                         return $this->redirect()->toRoute('contribuyente');
-                        // $archivoUrl = (array) $this->params()->fromFiles('archivo');
-                        // $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
-                        // $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
-                        // $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
-                        // $num = (int) count($archivoUrl);
-
-                        // for ($i=0; $i < $num; $i++) {
-                        //     $filename = $_FILES['archivo']['name'][$i];
-                        //     $filesize = $_FILES['archivo']['size'][$i];
-                        //     $tmp_name = $_FILES['archivo']['tmp_name'][$i];
-                        //     $file_type = $_FILES['archivo']['type'][$i];
-                        //     $date = date("d-m-Y_H-i");
-                        //     $temp = explode(".", $filename);
-                        //     $new_filename =  strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
-                        //     $file_folder = $destino . '/' . $new_filename;
-
-                        //     // if (!file_exists($file_folder)) {
-                        //     $data['archivoBlob'] = file_get_contents($file_folder, false);
-                        //     $data['extension'] = $temp[count($temp)-1];
-                        //     $data['size'] = $filesize;
-                        //     $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-                        //     $data['categoria'] = $categoria[$i];
-
-                        //     $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
-                        //     // }
-                        // }
-
+                        
                     } catch (RuntimeException $exception) {
                         $this->flashMessenger()->addErrorMessage($exception->getMessage());
                         return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
                     }
+                }   else {
+                    $this->flashMessenger()->addErrorMessage($form->getMessages());
+                        return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
                 }
-            }
+            }else {
+                    $this->flashMessenger()->addErrorMessage($form->getMessages());
+                        return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
+                }
         }
         return new ViewModel(['form' => $form, 'categorias' => $categorias]);
     }
@@ -381,10 +356,11 @@ class ContribuyenteController extends AbstractActionController
 
     public function editAction()
     {
+        $form = new ContribuyenteForm();
         $request = $this->getRequest();
         $response = $this->getResponse();
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
-        $form = new ContribuyenteForm();
+
         if ($contribuyenteId < 0) {
             $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
@@ -400,13 +376,54 @@ class ContribuyenteController extends AbstractActionController
         }
 
         if ($this->getRequest()->isPost()) {
-            $data = $this->params()->fromPost();
-            $form->setData($data);
+            $formData = $this->params()->fromPost();
+            $form->setData($formData);
+            $form->setValidationGroup(['tipo_persona']);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
-                $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
-                return $this->redirect()->toRoute('contribuyente');
+                $tipoPersona = $data['tipo_persona'];
+
+                if ($tipoPersona=='F') { // Persona Física
+                    $form->setValidationGroup([
+                        'input1', // ID Contribuyente
+                        'tipo_persona',
+                        'nombre',
+                        'apellido_paterno',
+                        'apellido_materno',
+                        'fecha_nacimiento',
+                        'estado_civil',
+                        'genero',
+                        'rfc',
+                        'curp',
+                        'correo',
+                        'telefono',
+                    ]);
+                    $fecha_nacimiento = $formData['year'].'-'.$formData['month'].'-'.$formData['day'];
+                } elseif ($tipoPersona=='M') { // Persona Moral
+                    $form->setValidationGroup([
+                        'input1', // ID Contribuyente
+                        'tipo_persona',
+                        'nombre',
+                        'razon_social',
+                        'rfc',
+                        'correo',
+                        'telefono',
+                    ]);
+                    $fecha_nacimiento = null;
+                }
+                if ($form->isValid()) {
+                try {
+                        $data = $form->getData();
+                        $data['fecha_nacimiento'] = $fecha_nacimiento;
+
+                        $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
+                        $this->flashMessenger()->addInfoMessage('Se actualizo con éxito');
+                        return $this->redirect()->toRoute('contribuyente');
+                    } catch (RuntimeException $exception) {
+                        $this->flashMessenger()->addErrorMessage($exception->getMessage());
+                        return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
+                    }
+                }
             }
         } else {
             $data = [

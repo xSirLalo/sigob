@@ -34,6 +34,7 @@ class PredioForm extends Form
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [
+                'id' => 'cve_catastral',
                 // 'required' => true,
                 'class' => 'custom-select'
             ]
@@ -43,9 +44,6 @@ class PredioForm extends Form
             'type' => Element\Text::class,
             'name' => 'input1',
             'attributes' => [
-                'class' => 'form-control',
-                'title' => 'input1',
-                'placeholder' => 'input1',
                 'hidden'=> true,
             ]
         ]);
@@ -302,8 +300,8 @@ class PredioForm extends Form
             ],
             'attributes' => [
                 'required' => false,
-                // 'multiple' => 'multiple',
-                // 'size' => 1 ,
+                'multiple' => 'multiple',
+                'size' => 1 ,
                 'class' => 'custom-select'
             ]
         ]);
@@ -364,6 +362,15 @@ class PredioForm extends Form
     {
         $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
+
+        $inputFilter->add(
+            [
+                'name' => 'cve_catastral',
+                'required' => false,
+                'filters' => [],
+                'validators' => [],
+            ]
+        );
 
         // $inputFilter->add([
         //     'name' => 'archivo',

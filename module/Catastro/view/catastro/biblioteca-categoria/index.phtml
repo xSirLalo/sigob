@@ -8,16 +8,19 @@ $this->pageBreadcrumbs()->setItems([
     'Categorias' => $this->url('categoria'),
 ]);
 // Css Requerido
-$this->headLink()
-    // Css DataTables
-    ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
-    ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'));
+// $this->headLink()
+//     // Css DataTables
+//     ->prependStylesheet($this->basePath('assets/css/plugins/responsive.bootstrap4.min.css'))
+//     ->prependStylesheet($this->basePath('assets/css/plugins/dataTables.bootstrap4.min.css'))
+//     ;
 $this->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/biblioteca-categoria/index.js'))
     // Js DataTables
-    ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
-    ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
-    ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
-    ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
+    // ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
+    // ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
+    // ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
+    // ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
     ;
 ?>
 <!-- [ col ] start -->
@@ -30,13 +33,11 @@ $this->inlineScript()
             <div class="row">
                 <div class="col-md-1 col-xs-12 mb-4" align=center>
                     <div class="btn-group" role="group" aria-label="Botones">
-                        <a href="<?= $this->url("categoria/agregar") ?>" class="btn btn-primary" >Agregar</a>
-                        <a href="<?= $this->url("categoria/pdf") ?>" class="btn btn-danger">PDF</a>
-                        <a href="<?= $this->url("categoria/excel") ?>" class="btn btn-success">Excel</a>
+                        <a href="#" class="btn btn-secondary btn-sm float-right" data-toggle="modal" onClick="agregarCategoria()"><i class="fas fa-plus fa-fw"></i></a>
                     </div>
                 </div>
             </div>
-            <table  class="display table table-striped table-hover dt-responsive nowrap" id="bibliotecas" style="width:100%">
+            <table  class="display table table-striped table-hover nowrap" id="tablaCategorias" style="width:100%">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -69,4 +70,39 @@ $this->inlineScript()
         </div>
     </div>
 </div>
-<!-- [ col] end -->
+<!-- [ col ] end -->
+
+<!-- Modal -->
+<div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <?php 
+                $form = $this->form;
+                // $form->setAttribute('action', $this->url('categoria/agregar'));
+                // $form->prepare();
+            ?>
+            <?= $this->form()->openTag($form); ?>
+                <div class="form-group">
+                    <?= $this->formLabel($form->get('nombre')); ?>
+                    <?= $this->formText($form->get('nombre')); ?>
+                    <?= $this->formElementErrors($form->get('nombre')); ?>
+                    <ul class="text-danger"></ul>
+                </div>
+                <?= $this->formHidden($form->get('csrf')); ?>
+                <?= $this->formElementErrors($form->get('csrf')); ?>
+      </div>
+      <div class="modal-footer">
+                <?= $this->formButton($form->get('btnCerrar')); ?>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
+            <?= $this->form()->closeTag(); ?>
+      </div>
+    </div>
+  </div>
+</div>

@@ -135,102 +135,70 @@ class PredioController extends AbstractActionController
     {
         // https://stackoverflow.com/questions/2194317/how-to-combine-two-zend-forms-into-one-zend-form
         $form = new PredioForm();
-        $categorias = $this->bibliotecaManager->categorias();
-        $destination = './public/img';
         $request = $this->getRequest();
+        $categorias = $this->bibliotecaManager->categorias();
+
         if ($request->isPost()) {
             $data = \array_merge_recursive(
                 $request->getPost()->toArray(),
                 $request->getFiles()->toArray(),
             );
-            // $data = $this->params()->fromPost();
-            $archivoUrl = (array) $this->params()->fromFiles('archivo');
-            $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
-
-            $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
-            $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
-            $num = (int) count($archivoUrl);
-            for ($i=0; $i < $num; $i++) {
-                $newName = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-
-                $file_folder = $destination . '/' . $newName;
-
-                // if (file_exists($file_folder)) {
-                //     // FIXME: Vacio aun asi muestra el mensaje
-                //     $this->flashMessenger()->addErrorMessage('El archivo existe! ' . $newName);
-                //     return $this->redirect()->toRoute('predio/agregar');
-                // }
-
-                $inputFilter = new OptionalInputFilter();
-                $inputFilter->add([
-                    'name' => 'archivo',
-                    'required' => true,
-                    'validators' => [
-                        ['name' => Validator\NotEmpty::class],
-                        [
-                            'name' => Validator\File\Size::class,
-                            'options' => [
-                                'min' => '3kB',
-                                'max' => '15MB'
-                            ],
-                        ],
-                    ],
-                    'filters' => [
-                        [
-                            'name' => Filter\File\Rename::class,
-                            'options' => [
-                                'target' => $destination . '/' . $newName,
-                            ]
-                        ]
-                    ]
-                ]);
-                $form->setInputFilter($inputFilter);
-            }
 
             $form->setData($data);
             if ($form->isValid()) {
-                $data = $form->getData();
-                $archivoUrl = (array) $this->params()->fromFiles('archivo');
-                $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
+                try {
+                    $data = $form->getData();
 
-                $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
-                $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
+                    echo "<pre>";
+                    print_r($data);
+                    echo "</pre>";
+                    exit();
+                    
+                    $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                    $archivoUrl = array_slice($archivoUrl, 0, 5); # we restrict to 5 fields i meant
 
-                $num = (int) count($archivoUrl);
-                for ($i=0; $i < $num; $i++) {
-                    $filename = $_FILES['archivo']['name'][$i];
-                    $filesize = $_FILES['archivo']['size'][$i];
-                    $tmp_name = $_FILES['archivo']['tmp_name'][$i];
-                    $file_type = $_FILES['archivo']['type'][$i];
-                    $date = date("d-m-Y_H-i");
-                    $temp = explode(".", $filename);
-                    $new_filename =   strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
-                    $file_folder = $destination . '/' . $new_filename;
+                    $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+                    $categoria = array_slice($categoria, 0, 5); # we restrict to 5 fields i meant
 
-                    $data['archivoBlob'] = file_get_contents($file_folder, true);
-                    $data['extension'] = $temp[count($temp)-1];
-                    $data['size'] = $filesize;
-                    $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-                    $data['categoria'] = $categoria[$i];
-                    $id = $data['input1'];
+                    $num = (int) count($archivoUrl);
+                    for ($i=0; $i < $num; $i++) {
+                        $filename = $_FILES['archivo']['name'][$i];
+                        $filesize = $_FILES['archivo']['size'][$i];
+                        $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                        $file_type = $_FILES['archivo']['type'][$i];
+                        $date = date("d-m-Y_H-i");
+                        $temp = explode(".", $filename);
+                        $new_filename =   strtolower(str_replace(" ", "-", $temp[0])) . '.' . $temp[count($temp)-1];
+                        $file_folder = $destination . '/' . $new_filename;
 
-                    $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+                        $data['archivoBlob'] = file_get_contents($file_folder, true);
+                        $data['extension'] = $temp[count($temp)-1];
+                        $data['size'] = $filesize;
+                        $data['archivoUrl'] = strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
+                        $data['categoria'] = $categoria[$i];
+                        $id = $data['input1'];
 
-                    if ($archivito) {
-                        $this->bibliotecaManager->guardarRelacionAP($id, $archivito);
+                        $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
+
+                        if ($archivito) {
+                            $this->bibliotecaManager->guardarRelacionAP($id, $archivito);
+                        }
                     }
-                }
-                $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
-                if ($predio) {
-                    $this->predioManager->actualizarPredio($predio, $data);
-                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
-                } else {
-                    $this->predioManager->guardarPredio($data);
-                    $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                }
-                // $data = $form->getData();
+                    $predio = $this->entityManager->getRepository(Predio::class)->findOneByClaveCatastral($data['cve_catastral']);
+                    if ($predio) {
+                        $this->predioManager->actualizarPredio($predio, $data);
+                        $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito!');
+                    } else {
+                        $this->predioManager->guardarPredio($data);
+                        $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                    }
+                    // $data = $form->getData();
 
-                return $this->redirect()->toRoute('predio');
+                    return $this->redirect()->toRoute('predio');
+                } catch (RuntimeException $exception) {
+                    $this->flashMessenger()->addErrorMessage($exception->getMessage());
+                    return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
+                }
             }
         }
         return new ViewModel(['form' => $form, 'categorias' => $categorias]);

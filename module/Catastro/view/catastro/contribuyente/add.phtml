@@ -143,11 +143,11 @@ $form->prepare();
                         <div class="input-group-append delete">
                             <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
                         </div>
-                            <?= $this->formSelect($form->get('id_archivo_categoria[]')->setValueOptions($this->categorias)); ?>
+                            <?= $this->formSelect($form->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)->setEmptyOption('Choose your gender')); ?>
                         <div class="custom-file">
                             <?= $this->formFile($form->get('archivo')); ?>
                             <div class="text-danger">
-                                <?= $this->formElementErrors($form->get('id_archivo_categoria[]')); ?>
+                                <?= $this->formElementErrors($form->get('id_archivo_categoria')); ?>
                                 <?= $this->formElementErrors($form->get('archivo')); ?>
                             </div>
                         </div>

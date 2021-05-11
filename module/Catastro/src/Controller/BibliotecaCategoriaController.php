@@ -36,21 +36,42 @@ class BibliotecaCategoriaController extends AbstractActionController
 
     public function indexAction()
     {
-        // $form = new ContribuyenteForm();
-
-        // $page = $this->params()->fromQuery('page', 1);
-        // $query = $this->entityManager->getRepository(Biblioteca::class)->createQueryBuilder('a')->getQuery();
-
-        // $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-        // $paginator = new Paginator($adapter);
-        // $paginator->setDefaultItemCountPerPage(5);
-        // $paginator->setCurrentPageNumber($page);
-        // return new ViewModel(['bibliotecas' => $paginator]);
+        $form = new BiblitoecaCategoriaForm();
         $categorias = $this->entityManager->getRepository(Categoria::class)->findAll();
-        return new ViewModel(['categorias' => $categorias]);
+
+        $data['categorias'] = $categorias;
+        $data['form'] = $form;
+
+        return new ViewModel($data);
     }
 
     public function addAction()
+    {
+        $form = new BiblitoecaCategoriaForm();
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest()) {
+            $data = $this->params()->fromPost();
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $data['status'] = true;
+                $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                $this->bibliotecaCategoriaManager->agregar($data);
+            } else {
+                $data['status'] = false;
+                $data['errors'] = $form->getMessages();
+            };
+            
+            $json = new JsonModel($data);
+            $json->setTerminal(true);
+            return $json;
+            
+        } else {
+            echo 'Error get data from javascript';
+        }
+    }
+
+    public function add2Action()
     {
         $form = new BiblitoecaCategoriaForm();
         $request = $this->getRequest();

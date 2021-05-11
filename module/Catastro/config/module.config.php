@@ -679,7 +679,7 @@ return [
                                 'id' => '[0-9,a-z,A-Z,-]+',
                             ],
                             'defaults' => [
-                                'action' => 'viewaportacion',
+                                'action' => 'viewAportacion',
                             ],
                         ],
                     ],
@@ -826,7 +826,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '@']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addcontribuyente', 'addaportacion', 'updateaportacion','viewaportacion','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias','datatablevalidation','statusvalidation'], 'allow' => '@']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addcontribuyente', 'addaportacion', 'updateaportacion','viewAportacion','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias','datatablevalidation','statusvalidation'], 'allow' => '@']
             ],
         ]
     ],

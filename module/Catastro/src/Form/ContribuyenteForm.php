@@ -29,7 +29,7 @@ class ContribuyenteForm extends Form
             'name' => 'persona',
             'options' => [
                 'label' => 'Buscar...',
-                'empty_option' => 'Buscar Persona por Nombre o R.F.C',
+                'empty_option' => 'Buscar Contribuyente por Nombre o R.F.C',
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [
@@ -218,14 +218,17 @@ class ContribuyenteForm extends Form
                 'max_year' => date('Y') - 13, # here we want users over the age of 13 only
                 'render_delimiters' => false,
                 'year_attributes' => [
+                    'data-placeholder' => 'Year',
                     'style'            => 'width: 33%',
                     'class' => 'custom-select'
                 ],
                 'month_attributes' => [
+                    'data-placeholder' => 'Month',
                     'style'            => 'width: 33%',
                     'class' => 'custom-select'
                 ],
                 'day_attributes' => [
+                    'data-placeholder' => 'Day',
                     'style'            => 'width: 33%',
                     'class' => 'custom-select',
                     'id' => 'day'
@@ -238,7 +241,7 @@ class ContribuyenteForm extends Form
 
         $this->add([
             'type' => Element\Select::class,
-            'name' => 'id_archivo_categoria[]',
+            'name' => 'id_archivo_categoria',
             'options' => [
                 'label' => 'Categorias',
                 // 'empty_option' => 'Seleccione una categoría',
@@ -248,10 +251,12 @@ class ContribuyenteForm extends Form
                 'disable_inarray_validator' => true,
             ],
             'attributes' => [
+                'class' => 'custom-select',
+                'data-placeholder' => 'Categoria',
                 'required' => false,
-                // 'multiple' => 'multiple',
-                // 'size' => 1 ,
-                'class' => 'custom-select'
+                'multiple' => 'multiple',
+                'size' => 1 ,
+                'placeholder' => 'Categoria',
             ]
         ]);
 
@@ -265,7 +270,7 @@ class ContribuyenteForm extends Form
                 // ],
             ],
             'attributes' => [
-                // 'required'      => true,
+                // 'required'      => false,
                 'valueDisabled' => true,
                 'isArray'       => true,
                 'multiple'      => true,
@@ -317,6 +322,8 @@ class ContribuyenteForm extends Form
             [
                 'name' => 'persona',
                 'required' => false,
+                'filters' => [],
+                'validators' => [],
             ]
         );
 
@@ -324,25 +331,30 @@ class ContribuyenteForm extends Form
             [
                 'name' => 'id_archivo_categoria',
                 'required' => false,
-                'allow_empty' => false,
-                'filters' => [],
-                'validators' => [],
-                // 'filters' => [
-                //     ['name' => Filter\StripTags::class],
-                //     ['name' => Filter\StringTrim::class],
-                //     ['name' => Filter\ToInt::class],
-                // ],
-                // 'validators' => [
-                //     ['name' => Validator\NotEmpty::class],
-                //     ['name' => I18n\Validator\IsInt::class],
-                //     [
-                //         'name' => Validator\InArray::class,
-                //         'options' => [
-                //             'haystack' => [1, 2],
-                //             'strict'   => false
-                //         ],
-                //     ],
-                // ],
+                'allow_empty' => true,
+                'allowEmpty' => true,
+                'continue_if_empty' => true,
+                'filters' => [
+                    ['name' => Filter\StripTags::class],
+                    ['name' => Filter\StringTrim::class],
+                    ['name' => Filter\ToInt::class],
+                ],
+                'validators' => [
+                    [
+                        'name' => Validator\NotEmpty::class,
+                        'options' => [
+                            "type" => "string"
+                        ]
+                    ],
+                    // ['name' => I18n\Validator\IsInt::class],
+                    // [
+                    //     'name' => Validator\InArray::class,
+                    //     'options' => [
+                    //         'haystack' => [0, 1, 2, 3],
+                    //         'strict'   => false
+                    //     ],
+                    // ],
+                ],
             ]
         );
 
@@ -413,6 +425,7 @@ class ContribuyenteForm extends Form
                 [
                     'name' => Validator\StringLength::class,
                     'options' => [
+                        'encoding' => 'UTF-8',
                         'min' => 3,
                         'max' => 30,
                     ],

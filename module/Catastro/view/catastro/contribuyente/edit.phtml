@@ -83,7 +83,7 @@ $this->pageBreadcrumbs()->setItems([
                         <?= $this->formLabel($form->get('genero')); ?>
                         <?= $this->formSelect($form->get('genero')); ?>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('genero')); ?>
+                            <?= $this->formElementErrors($form->get('genero')); ?>
                         </div>
                     </div>
                     <div class="form-group col-md-2">
@@ -99,14 +99,14 @@ $this->pageBreadcrumbs()->setItems([
                         <?= $this->formLabel($form->get('correo')); ?>
                         <?= $this->formText($form->get('correo')); ?>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('correo')); ?>
+                            <?= $this->formElementErrors($form->get('correo')); ?>
                         </div>
                     </div>
                     <div class="form-group col-md-6">
                         <?= $this->formLabel($form->get('telefono')); ?>
                         <?= $this->formText($form->get('telefono')); ?>
                         <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('telefono')); ?>
+                            <?= $this->formElementErrors($form->get('telefono')); ?>
                         </div>
                     </div>
                     <div class="form-group col-md-4">
@@ -115,7 +115,7 @@ $this->pageBreadcrumbs()->setItems([
                 </div>
                 <?= $this->formHidden($form->get('csrf')); ?>
                 <div class="text-danger">
-                <?= $this->formElementErrors($form->get('csrf')); ?>
+                    <?= $this->formElementErrors($form->get('csrf')); ?>
                 </div>
                 <?= $this->formSubmit($form->get('btnGuardar')); ?>
                 <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
