@@ -290,6 +290,24 @@ $(document).ready(function () {
                     else if($('#tenencia').val()){
                         $('#tenencia').removeClass('is-invalid');
                     }
+                    if (!$('#rfContribuyente').val()) {
+                        $.notify({
+
+                                message: 'Por favor, Ingrese Un R.F.C Buscando un Contribuyente o Agregando un Nuevo Contribuyente'
+                            },
+                            {
+                                type: 'danger',
+                                z_index: 999999,
+                        });
+
+                        $('#rfContribuyente').focus();
+                        $('#rfContribuyente').addClass('is-invalid');
+
+                        return false;
+                    }
+                    else if($('#rfContribuyente').val()){
+                        $('#rfContribuyente').removeClass('is-invalid');
+                    }
                     if (usoDestino.length == 0) {
                         $.notify({
 
