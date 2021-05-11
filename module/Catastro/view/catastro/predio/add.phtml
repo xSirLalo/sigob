@@ -1,5 +1,5 @@
 <?php
-$title = $this->translate('Agregar');
+$title = $this->translate('Agregar predio');
 $this->headMeta()->appendName('keywords', '');
 $this->headMeta()->appendName('description', '');
 $this->headTitle($this->escapeHtml($title));
@@ -22,17 +22,14 @@ $this ->inlineScript()
 $form = $this->form;
 $form->setAttribute('action', $this->url('predio/agregar'));
 $form->prepare();
-
-// $form2 = $this->form2;
-// $form2->setAttribute('action', $this->url('biblioteca/agregar'));
-// $form2->prepare();
 ?>
 <!-- [ col ] start -->
-<div class="col-md-6">
+<div class="col">
     <div class="card">
-        <div class="card-header">
-            <h5>Datos del Predio</h5>
+        <div class="card-header text-center">
+            <h5>Alta Predio</h5>
         </div>
+        <!-- [ card-body ] start -->
         <div class="card-body">
             <?= $this->form()->openTag($form); ?>
                 <div class="form-group">
@@ -59,17 +56,8 @@ $form->prepare();
                         </div>
                     </div>
                 </div>
-        </div>
-    </div>
-</div>
-<!-- [ col] end -->
-<!-- [ col ] start -->
-<div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
-            <h5>Ubicacion Geográfica</h5>
-        </div>
-        <div class="card-body">
+                <h6 class="text-center">Ubicación Geográfica</h6>
+                <hr>
                 <div class="form-row">
                     <div class="form-group col">
                         <?= $this->formLabel($form->get('municipio')); ?>
@@ -116,49 +104,39 @@ $form->prepare();
                         </div>
                     </div>
                 </div>
-        </div>
-    </div>
-</div>
-<!-- [ col] end -->
-<div class="col-md-12">
-    <div class="card">
-        <div class="card-header">
-            <h5><?= $this->formLabel($form->get('archivo')); ?></h5>
-        </div>
-        <div class="card-body">
-            <!-- [ openTag ] start -->
-                <div class="form-group">
-                    <?= $this->formText($form->get('input1')); ?>
-                    <?= $this->formElementErrors($form->get('input1')); ?>
-                </div>
+                <h6 class="text-center"><?= $this->formLabel($form->get('archivo')); ?></h6>
+                <hr>
                 <div class="form-group" id="select">
-                    <div class="input-group">
+                    <div class="input-group mb-3">
                         <div class="input-group-append delete">
                             <span class="input-group-text" title="Remove this field"><i class="fas fa-times"></i></span>
                         </div>
-                        <?= $this->formSelect($form->get('id_archivo_categoria')->setValueOptions($this->categorias)); ?>
-                        <?= $this->formFile($form->get('archivo')); ?>
-                        <div class="text-danger">
-                            <?= $this->formElementErrors($form->get('id_archivo_categoria')); ?>
-                            <?= $this->formElementErrors($form->get('archivo')); ?>
+                            <?= $this->formSelect($form->get('id_archivo_categoria')->setName("id_archivo_categoria[]")->setValueOptions($this->categorias)); ?>
+                        <div class="custom-file">
+                            <?= $this->formFile($form->get('archivo')); ?>
+                            <div class="text-danger">
+                                <?= $this->formElementErrors($form->get('id_archivo_categoria')); ?>
+                                <?= $this->formElementErrors($form->get('archivo')); ?>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="additionalselects">
-                    <!-- dynamically created archivos field will be placed here -->
                 </div>
+
                 <div class="btn-group float-right">
-
-                <?= $this->formButton($form->get('add_more')); ?>
-            <?= $this->form()->closeTag(); ?>
-            <!-- [ closeTag ] start -->
-        </div>
-    </div>
-</div>
-<!-- [ col] end -->
-
+                    <?= $this->formButton($form->get('add_more')); ?>
+                </div>
                 <?= $this->formHidden($form->get('csrf')); ?>
-                <?= $this->formElementErrors($form->get('csrf')); ?>
+                <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('csrf')); ?>
+                </div>
                 <?= $this->formSubmit($form->get('btnGuardar')); ?>
                 <a href="<?= $this->url("predio") ?>" class="btn btn-secondary"> Volver atrás</a>
+            <?= $this->form()->closeTag(); ?>
+        </div>
+        <!-- [ card-body ] end -->
+    </div>
+</div>
+<!-- [ col ] end -->

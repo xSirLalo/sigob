@@ -3,21 +3,23 @@ $(document).ready(function(){
         // [ Configuration Option ]
         $('#predios').DataTable({
             responsive: true,
-            autoWidth: false,
-            scrollX: true,
-            scroller: {
-                loadingIndicator: true
-            },
+            // searching: true,
+            autoWidth: true,
+            // scrollX: true,
+            // scroller: {
+            //     loadingIndicator: true
+            // },
             processing: true,
-            // serverSide: true,
+            serverSide: true,
             deferRender: true,
             paging: true,
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             pageLength: 10,
-            order: [],
+            order: [[ 0, "desc" ]],
             ajax: {
                 url: "/predio/datatable",
                 type: "POST",
+                dataSrc:"data",
                 error: function(){
                     $(".predios-error").html("");
                     $("#predios").append('<tbody class="predios-error"><tr class="text-center"><th colspan="6">No data found in the server</th></tr></tbody>');
@@ -35,11 +37,11 @@ $(document).ready(function(){
                 }
             },
             columns: [
-                {data: 'idPredio'},
+                {data: 'idPredio', orderable: true, searchable: false,},
                 {data: 'claveCatastral'},
                 {data: 'contribuyente'},
-                {data: 'titular'},
                 {data: 'ubicacion'},
+                {data: 'tipo', orderable: false, searchable: false,},
                 {data: 'opciones', orderable: false, searchable: false },
             ],
             columnDefs: [
@@ -49,7 +51,7 @@ $(document).ready(function(){
                     render: function(data, type, row, meta){
                     $actionBtn = `
                         <div class="btn-group">
-                            <a href="/predio/ver/` + row['idPredio'] + `"> <button class="btn btn-info"> Detalle</button> </a>
+                            <a href="/predio/ver/` + row['idPredio'] + `"> <button class="btn btn-info btn-sm" title="Detalle"><i class="fas fa-folder-open fa-fw"></i></button> </a>
                         </div>
                         `;
                         return $actionBtn;
@@ -62,14 +64,14 @@ $(document).ready(function(){
         });
 
         // [ Immediately Show Hidden Details ]
-        $('#show-hide-res').DataTable({
-            responsive: {
-                details: {
-                    display: $.fn.dataTable.Responsive.display.childRowImmediate,
-                    type: ''
-                }
-            }
-        });
+        // $('#show-hide-res').DataTable({
+        //     responsive: {
+        //         details: {
+        //             display: $.fn.dataTable.Responsive.display.childRowImmediate,
+        //             type: ''
+        //         }
+        //     }
+        // });
 
     }, 350);
 

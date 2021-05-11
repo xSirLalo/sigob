@@ -45,45 +45,90 @@ class PredioController extends AbstractActionController
 
     public function indexAction()
     {
-        $predios = $this->entityManager->getRepository(Predio::class)->findAll();
-        return new ViewModel(['predios' => $predios]);
+        $page = $this->params()->fromQuery('page', 1);
+        $query = $this->entityManager->getRepository(Predio::class)->createQueryBuilder('p')->getQuery();
+
+        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+        $paginator = new Paginator($adapter);
+        $paginator->setDefaultItemCountPerPage(10);
+        $paginator->setCurrentPageNumber($page);
+
+        return new ViewModel(['predios' => $paginator]);
     }
 
     public function datatableAction()
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
-        $qb = $this->entityManager->createQueryBuilder()->select('p')->from('Catastro\Entity\Predio', 'p');
-        $query = $qb->getQuery()->getResult();
+        $postData = $_POST;
 
-        $data = [];
-
-        foreach ($query as $r) {
-            $data[] = [
-                'idPredio'       => $r->getIdPredio(),
-                'claveCatastral' => $r->getClaveCatastral(),
-                'contribuyente'  => $r->getIdContribuyente()->getNombre(),
-                'titular'        => $r->getTitular(),
-                'ubicacion'      => $r->getLocalidad(),
-                'opciones'       => "Cargando..."
-            ];
-        }
-        $result = [
-            "draw"            => 1,
-            "recordsTotal"    => count($data),
-            "recordsFiltered" => count($data),
-            'aaData'            => $data,
+        $columns = [
+            0 => 'idPredio',
+            1 => 'claveCatastral',
+            2 => 'contribuyente',
+            3 => 'ubicacion'
         ];
+        // AJAX response
+        if ($request->isXmlHttpRequest()) {
+            $fields = ['p'];
+            $qb = $this->entityManager->createQueryBuilder();
+            $qb ->select($fields)->from('Catastro\Entity\Predio', 'p')
+                ->innerJoin('Catastro\Entity\Contribuyente', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'c.idContribuyente = p.idContribuyente')
+                ->orderBy('c.nombre', 'ASC');
+            $count = $qb->getQuery()->getScalarResult();
 
-        // return $response->setContent(json_encode($result));
+            $searchKeyWord = htmlspecialchars($postData['search']['value']);
+            if (isset($searchKeyWord)) {
+                $searchKeyWord = htmlspecialchars($postData['search']['value']);
+                $qb ->where('p.claveCatastral LIKE :word')
+                    ->orWhere('c.nombre LIKE :word')
+                    ->orWhere('p.ubicacion LIKE :word')
+                    ->setParameter("word", '%'.addcslashes($searchKeyWord, '%_').'%');
+            }
 
-        // $response->setStatusCode(200);
-        // $response->setContent(\Laminas\Json\Json::encode($result));
-        // return $response;
+            if (isset($postData['order'])) {
+                $qb ->orderBy('p.'. $columns[$postData['order'][0]['column']], $postData['order'][0]['dir']);
+            } else {
+                $qb ->orderBy('p.idPredio', 'DESC');
+            }
 
-        $json = new JsonModel($result);
-        $json->setTerminal(true);
-        return $json;
+            if ($postData['length'] != -1) {
+                $qb ->setFirstResult($postData['start'])->setMaxResults($postData['length']);
+            }
+
+            $query = $qb->getQuery()->getResult();
+
+            $data = [];
+            foreach ($query as $r) {
+                $data[] = [
+                    'idPredio' => $r->getIdPredio(),
+                    'claveCatastral'          => $r->getClaveCatastral(),
+                    'contribuyente' => $r->getIdContribuyente()->getNombre(),
+                    'ubicacion' => $r->getUbicacion(),
+                    'tipo'          => $r->getTipo(),
+                    'opciones'        => "Cargando..."
+                ];
+            }
+
+            $result = [
+                    "draw"            => intval($postData['draw']),
+                    "recordsTotal"    => count($count),
+                    "recordsFiltered" => count($count),
+                    'data'            => $data
+                ];
+
+            // return $response->setContent(json_encode($result));
+
+            // $response->setStatusCode(200);
+            // $response->setContent(\Laminas\Json\Json::encode($result));
+            // return $response;
+
+            $json = new JsonModel($result);
+            $json->setTerminal(true);
+            return $json;
+        } else {
+            echo 'Error get data from ajax';
+        }
     }
 
     public function addAction()
