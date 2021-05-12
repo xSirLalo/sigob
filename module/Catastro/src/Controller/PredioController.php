@@ -188,10 +188,10 @@ class PredioController extends AbstractActionController
                             if ($nombre) {
                                 if ($id == "") {
                                     $archivoUrl = $predio->getIdPredio() . '_predio_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
-                                    $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
+                                    $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_predio_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
                                 } else {
                                     $archivoUrl = $id . '_predio_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
-                                    $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
+                                    $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_predio_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
                                 }
                                 // Mover el archivo de la carpeta temporal a la nueva ubicación
                                 if (move_uploaded_file($ficheros['tmp_name'][$i], $archivo_destino)) {

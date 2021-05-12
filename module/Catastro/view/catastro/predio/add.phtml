@@ -108,12 +108,7 @@ $form->prepare();
                 <h6 class="text-center">Datos de propietario</h6>
                 <hr>
                 <div class="form-row">
-                    <div class="form-group col">
-                        <?= $this->formText($form->get('input1')); ?>
-                        <div class="text-danger">
-                            <?= $this->formElementErrors($form->get('input1')); ?>
-                        </div>
-                    </div>
+                    <?= $this->formText($form->get('input1')); ?>
                     <div class="form-group col">
                         <?= $this->formLabel($form->get('titular')); ?>
                         <?= $this->formText($form->get('titular')); ?>
