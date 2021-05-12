@@ -7,9 +7,6 @@ namespace Catastro\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
-use Laminas\Paginator\Paginator;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
-use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Entity\Archivo as Biblioteca;
 use Catastro\Entity\ArchivoCategoria as Categoria;
 use Catastro\Form\EliminarForm;
@@ -17,15 +14,7 @@ use Catastro\Form\BiblitoecaCategoriaForm;
 
 class BibliotecaCategoriaController extends AbstractActionController
 {
-    /**
-     * Entity manager.
-     * @var Doctrine\ORM\EntityManager
-     */
     private $entityManager;
-    /**
-     * Biblioteca Manager.
-     * @var Catastro\Service\BibliotecaCategoriaManager
-     */
     private $bibliotecaCategoriaManager;
 
     public function __construct($entityManager, $bibliotecaCategoriaManager)
@@ -39,10 +28,10 @@ class BibliotecaCategoriaController extends AbstractActionController
         $form = new BiblitoecaCategoriaForm();
         $categorias = $this->entityManager->getRepository(Categoria::class)->findAll();
 
-        $data['categorias'] = $categorias;
-        $data['form'] = $form;
-
-        return new ViewModel($data);
+        return new ViewModel([
+            'form' => $form,
+            'categorias' => $categorias
+        ]);
     }
 
     public function addAction()
@@ -65,87 +54,67 @@ class BibliotecaCategoriaController extends AbstractActionController
             $json = new JsonModel($data);
             $json->setTerminal(true);
             return $json;
-            
+
         } else {
-            echo 'Error get data from javascript';
+            echo 'No Ajax';
         }
-    }
-
-    public function add2Action()
-    {
-        $form = new BiblitoecaCategoriaForm();
-        $request = $this->getRequest();
-
-        if ($request->isPost()) {
-            $data = $this->params()->fromPost();
-            $form->setData($data);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $this->bibliotecaCategoriaManager->agregar($data);
-                $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                return $this->redirect()->toRoute('categoria');
-            }
-        }
-        return new ViewModel(['form' => $form]);
     }
 
     public function viewAction()
     {
-        $categoriaId = (int)$this->params()->fromRoute('id', -1);
+        $request = $this->getRequest();
+        $id = (int)$this->params()->fromRoute('id', -1);
+        if ($request->isXmlHttpRequest()) {
+            if ($id < 0) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
 
-        if ($categoriaId < 0) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
+            $resultado = $this->entityManager->getRepository(Categoria::class)->findOneByIdArchivoCategoria($id);
+            
+            if ($resultado == null) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            $data = [
+                'nombre' => $resultado->getNombre()
+            ];
+
+            $json = new JsonModel($data);
+            $json->setTerminal(true);
+            return $json;
+        } else {
+            echo 'No Ajax';
         }
-
-        $categoria = $this->entityManager->getRepository(Categoria::class)->findOneByIdArchivoCategoria($categoriaId);
-
-        if ($categoria == null) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
-        }
-
-        return new ViewModel(['categoria' => $categoria]);
     }
 
     public function editAction()
     {
         $form = new BiblitoecaCategoriaForm();
         $request = $this->getRequest();
-        $categoriaId = (int)$this->params()->fromRoute('id', -1);
-
-        if ($categoriaId < 0) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
-        }
-
-        $categoria = $this->entityManager->getRepository(Categoria::class)->findOneByIdArchivoCategoria($categoriaId);
-
-        if ($categoria == null) {
-            $this->layout()->setTemplate('error/404');
-            $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
-        }
-
-        if ($request->isPost()) {
+        $id = (int)$this->params()->fromRoute('id', -1);
+        if ($request->isXmlHttpRequest()) {
             $data = $this->params()->fromPost();
-            $form->setData($data);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
-                $this->bibliotecaCategoriaManager->actualizar($categoria, $data);
-                return $this->redirect()->toRoute('categoria');
-            }
+                $form->setData($request->getPost());
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $data['status'] = true;
+                    $categoria = $this->entityManager->getRepository(Categoria::class)->findOneByIdArchivoCategoria($id);
+                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
+                    $this->bibliotecaCategoriaManager->actualizar($categoria, $data);
+                } else {
+                    $data['status'] = false;
+                    $data['errors'] = $form->getMessages();
+                };
+
+                $json = new JsonModel($data);
+                $json->setTerminal(true);
+                return $json;
+
         } else {
-            $data = [
-                'nombre' => $categoria->getNombre(),
-                ];
-            $form->setData($data);
+            echo 'No Ajax';
         }
-        return new ViewModel(['form' => $form]);
     }
 
     public function deleteAction()
@@ -155,17 +124,15 @@ class BibliotecaCategoriaController extends AbstractActionController
         $categoriaId = (int)$this->params()->fromRoute('id', -1);
 
         if ($categoriaId < 0) {
-            $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
+            return;
         }
 
         $categoria = $this->entityManager->getRepository(Categoria::class)->findOneByIdArchivoCategoria($categoriaId);
 
         if ($categoria == null) {
-            $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
+            return;
         }
 
         if ($this->getRequest()->isPost()) {

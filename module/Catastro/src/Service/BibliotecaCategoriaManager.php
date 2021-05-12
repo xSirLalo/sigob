@@ -6,15 +6,8 @@ use Catastro\Entity\ArchivoCategoria as Categoria;
 
 class BibliotecaCategoriaManager
 {
-    /**
-     * Entity manager.
-     * @var Doctrine\ORM\EntityManager;
-     */
     private $entityManager;
 
-    /**
-     * Constructor.
-     */
     public function __construct($entityManager)
     {
         $this->entityManager = $entityManager;
@@ -22,33 +15,30 @@ class BibliotecaCategoriaManager
 
     public function agregar($data)
     {
+        // Crea un entity Categoria.
         $categoria = new Categoria();
 
         $categoria->setNombre($data['nombre']);
-
-        $currentDate = new \DateTime();
-        $categoria->setCreatedAt($currentDate);
-        $categoria->setUpdatedAt($currentDate);
-
+        $categoria->setCreatedAt(new \DateTime());
+        $categoria->setUpdatedAt(new \DateTime());
+        // Agrega el entity en el entity manager.
         $this->entityManager->persist($categoria);
-
+        // Aplicar cambios a la base de datos.
         $this->entityManager->flush();
     }
 
     public function actualizar($categoria, $data)
     {
         $categoria->setNombre($data['nombre']);
-
-        $currentDate = new \DateTime();
-        $categoria->setUpdatedAt($currentDate);
-
+        $categoria->setUpdatedAt(new \DateTime());
+        // Aplicar cambios a la base de datos.
         $this->entityManager->flush();
     }
 
     public function eliminar($categoria)
     {
         $this->entityManager->remove($categoria);
-
+        // Aplicar cambios a la base de datos.
         $this->entityManager->flush();
     }
 }

@@ -8,6 +8,19 @@ $this->pageBreadcrumbs()->setItems([
     'Predio' => $this->url('predio'),
     'Detalle' => $this->url('predio/ver'),
 ]);
+// Css Requerido
+$this->headLink()
+    // Css FileInput
+    ->prependStylesheet($this->basePath('js/plugins/FileInput/css/fileinput.min.css'))
+    ;
+// Js Requerido
+$this ->inlineScript()
+    // Js de la vista
+    ->prependFile($this->basePath('js/catastro/predio/view.js'))
+    // Js FileInput
+    ->prependFile($this->basePath('js/plugins/FileInput/js/locales/es.js'))
+    ->prependFile($this->basePath('js/plugins/FileInput/js/fileinput.min.js'))
+    ;
 ?>
 <!-- [ col ] start -->
 <div class="col-md-6">
@@ -114,10 +127,13 @@ $this->pageBreadcrumbs()->setItems([
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <h5><?= $title ?></h5>
+            <h5>Archivos</h5>
+            <div class="float-right">
+                <button id="agregar-archivo" class="btn btn-success btn-sm" data-toggle="modal" data-target="#subirArchivoModal">Agregar+</button>
+            </div>
         </div>
         <div class="card-body">
-            <table class="table table-light">
+            <table class="table table-light" id="archivosList">
                 <thead class="thead-dark">
                     <tr>
                         <th>Tipo</th>
@@ -147,7 +163,44 @@ $this->pageBreadcrumbs()->setItems([
                     <?php endif; ?>
                 </tbody>
             </table>
+
         </div>
+    </div>
+</div>
+<!-- [ col] end -->
+<!-- Modal -->
+<div class="modal fade" id="subirArchivoModal" tabindex="-1" role="dialog" aria-labelledby="subirArchivoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="subirArchivoLabel">Cargar archivo...</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form action="#" method="post" enctype="multipart/form-data" id="subirArchivoForm">
+                <div class="form-group">
+                    <input type="hidden" name="input1" value="<?= $predioId ?>">
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="id_archivo_categoria" name="id_archivo_categoria">
+                        <?php foreach($categorias as $categoria): ?>
+                            <?= '<option value="'. $categoria->getIdArchivoCategoria() .'">' . $categoria->getNombre() . '</option>'?>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="file-loading">
+                        <input type="file" name="archivo" id="archivo">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
     </div>
 </div>
 <!-- [ col] end -->

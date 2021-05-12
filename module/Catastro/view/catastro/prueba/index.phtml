@@ -35,12 +35,11 @@ $this->pageBreadcrumbs()->setItems([
 if (isset($data->Persona)) {
     if (is_array($data->Persona)) {
         echo $data->Persona[0]->CvePersona;
-        // foreach ($data->Persona as $item) {
-        //     echo $item->CvePersona;
-        //     echo "<br>";
-        // }
+        foreach ($data->Persona as $item) {
+            echo $item->CvePersona;
+            echo "<br>";
+        }
     }
-    echo "<br>";
     echo "seteado";
 }
 
@@ -50,11 +49,14 @@ if (isset($data->Predio)) {
             echo $item->PredioId;
             echo "<br>";
         }
+        echo "Arreglo";
+        echo "<br>";
     } else {
         echo $data->Predio->PredioId;
         echo "<br>";
+        echo "Objeto";
+        echo "<br>";
     }
-    echo "<br>";
     echo "seteado";
 }
 
@@ -64,11 +66,14 @@ if (isset($data->PredioColindancia)) {
             echo $item->Descripcion;
             echo "<br>";
         }
+        echo "Arreglo";
+        echo "<br>";
     } else {
         echo $data->PredioColindancia->Descripcion;
         echo "<br>";
+        echo "Objeto";
+        echo "<br>";
     }
-    echo "<br>";
     echo "seteado";
 }
 

@@ -181,6 +181,7 @@ class BibliotecaController extends AbstractActionController
     {
         if (!empty($_FILES)){
             $id = $_REQUEST['input1'];
+            $relacion = $_REQUEST['relacion'];
             $id_archivo_categoria = $_REQUEST['id_archivo_categoria'];
             // Definimos la constante con el directorio de destino de los temporales
             define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal');
@@ -207,34 +208,38 @@ class BibliotecaController extends AbstractActionController
                     $nombre=array_pop($nombre_extension);
                     // Creamos la ruta de destino
                     if ($nombre) {
-                        $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_' . utf8_decode(strtolower(str_replace(" ", "-",$nombre))) . '.' . $extension;
+                        if ($relacion == "ArchivoPredio") {
+                            $archivoUrl = $id . '_predio_' . utf8_decode(strtolower(str_replace(" ", "-",$nombre))) . '.' . $extension;
+                            $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_predio_' . utf8_decode(strtolower(str_replace(" ", "-",$nombre))) . '.' . $extension;
+                        } else {
+                            $archivoUrl = $id . '_contribuyente_' . utf8_decode(strtolower(str_replace(" ", "-",$nombre))) . '.' . $extension;
+                            $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_contribuyente_' . utf8_decode(strtolower(str_replace(" ", "-",$nombre))) . '.' . $extension;
+                        }
                         $respuestaJson['directorio'] = DIR_PUBLIC;
                         $respuestaJson['directorio2'] = $archivo_destino;
                         // Mover el archivo de la carpeta temporal a la nueva ubicación
                         if(move_uploaded_file($ficheros['tmp_name'], $archivo_destino)) {
-                            $filename = $_FILES['archivo']['name'];
-                            $filesize = $_FILES['archivo']['size'];
-                            $tmp_name = $_FILES['archivo']['tmp_name'];
-                            $file_type = $_FILES['archivo']['type'];
-                            $temp = explode(".", $filename);
 
-                            $respuestaJson['response'] = "ok";
                             $data['archivoBlob'] = file_get_contents($archivo_destino, true);
-                            $data['extension'] = $temp[count($temp)-1];
-                            $data['size'] = $filesize;
-                            $data['archivoUrl'] = $id . '_' . strtolower(str_replace(" ", "-", $filename));
+                            $data['extension'] = $extension;
+                            $data['size'] = $ficheros['size'];
+                            $data['archivoUrl'] = $archivoUrl;
                             // Se guarda los datos a la base datos
                             $archivito = $this->bibliotecaManager->guardarArchivos($data, $id_archivo_categoria);
-                            $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
+
+                            if ($relacion == "ArchivoPredio") {
+                                $this->bibliotecaManager->guardarRelacionAP($id, $archivito);
+                            } else {
+                                $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
+                            }
 
                             // Activamos el indicador de proceso correcto
-                            $estado_proceso = true;
+                            $respuestaJson['response'] = "ok";
 
                             // Almacenamos el nombre del archivo de destino
                             $paths[] = $archivo_destino;
                         } else {
                             // Activamos el indicador de proceso erroneo
-                            $estado_proceso = false;
                             $respuestaJson['error'] = "2. Error archivo...";
                         }
                     }

@@ -79,14 +79,20 @@ class NavManager
 
             if ($this->rbacManager->isGranted(null, 'catastro.manage')) {
                 $bibliotecaDropdownItems[] = [
-                            'id' => 'biblioteca',
-                            'label' => 'Biblioteca',
-                            'link'  => $url('biblioteca')
+                            'id' => 'contribuyentes',
+                            'label' => 'Contribuyentes',
+                            'link'  => $url('contribuyente')
+                        ];
+
+                $bibliotecaDropdownItems[] = [
+                            'id' => 'predios',
+                            'label' => 'Predios',
+                            'link'  => $url('predio')
                         ];
 
                 $bibliotecaDropdownItems[] = [
                             'id' => 'categoria',
-                            'label' => 'Categoria',
+                            'label' => 'Categoria Archivos',
                             'link'  => $url('categoria')
                         ];
             }

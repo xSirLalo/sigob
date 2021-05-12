@@ -20,10 +20,36 @@ class ContribuyenteManager
         $this->entityManager = $entityManager;
     }
 
+    public function guardarPersona($data)
+    {
+        $contribuyente = new Contribuyente();
+
+        $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
+        $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
+        $contribuyente->setCurp($data['curp']);
+        $contribuyente->setCvePersona($data['cve_persona']);
+        $contribuyente->setGenero($data['genero']);
+        $contribuyente->setNombre($data['nombre']);
+        $contribuyente->setTelefono($data['telefono']);
+        $contribuyente->setCorreo($data['correo']);
+        $contribuyente->setRfc($data['rfc']);
+        $contribuyente->setRazonSocial($data['razon_social']);
+        $contribuyente->setTipoPersona($data['tipo_persona']);
+        $contribuyente->setCreatedAt(new \DateTime());
+        $contribuyente->setUpdatedAt(new \DateTime());
+
+        $this->entityManager->persist($contribuyente);
+        $this->entityManager->flush();
+
+        if ($contribuyente->getIdContribuyente() > 0) {
+            return $contribuyente;
+        }
+        return false;
+    }
+
     public function guardarContribuyente($data)
     {
         $contribuyente = new Contribuyente();
-        $currentDate = new \DateTime();
 
         if ($data['tipo_persona'] == 'F') { // Persona Fisica
             $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
@@ -42,38 +68,8 @@ class ContribuyenteManager
         $contribuyente->setTelefono($data['telefono']);
         $contribuyente->setCorreo($data['correo']);
         $contribuyente->setRfc($data['rfc']);
-
-        $contribuyente->setCreatedAt($currentDate);
-        $contribuyente->setUpdatedAt($currentDate);
-
-        $this->entityManager->persist($contribuyente);
-        $this->entityManager->flush();
-
-        if ($contribuyente->getIdContribuyente() > 0) {
-            return $contribuyente;
-        }
-        return false;
-    }
-
-    public function guardarPersona($data)
-    {
-        $contribuyente = new Contribuyente();
-
-        $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
-        $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
-        $contribuyente->setCurp($data['curp']);
-        $contribuyente->setCvePersona($data['cve_persona']);
-        $contribuyente->setGenero($data['genero']);
-        $contribuyente->setNombre($data['nombre']);
-        $contribuyente->setTelefono($data['telefono']);
-        $contribuyente->setCorreo($data['correo']);
-        $contribuyente->setRfc($data['rfc']);
-        $contribuyente->setRazonSocial($data['razon_social']);
-        $contribuyente->setTipoPersona($data['tipo_persona']);
-
-        $currentDate = new \DateTime();
-        $contribuyente->setCreatedAt($currentDate);
-        $contribuyente->setUpdatedAt($currentDate);
+        $contribuyente->setCreatedAt(new \DateTime());
+        $contribuyente->setUpdatedAt(new \DateTime());
 
         $this->entityManager->persist($contribuyente);
         $this->entityManager->flush();
@@ -86,8 +82,6 @@ class ContribuyenteManager
 
     public function actualizarContribuyente($contribuyente, $data)
     {
-        $currentDate = new \DateTime();
-
         if ($data['tipo_persona'] == 'F') { // Persona Fisica
             $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
             $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
@@ -105,8 +99,7 @@ class ContribuyenteManager
         $contribuyente->setTelefono($data['telefono']);
         $contribuyente->setCorreo($data['correo']);
         $contribuyente->setRfc($data['rfc']);
-
-        $contribuyente->setUpdatedAt($currentDate);
+        $contribuyente->setUpdatedAt(new \DateTime());
 
         $this->entityManager->flush();
     }
@@ -118,15 +111,4 @@ class ContribuyenteManager
         $this->entityManager->flush();
     }
 
-    public function mostrarContribuyentes()
-    {
-        $contribuyentes  = $this->entityManager->createQuery("SELECT c FROM Catastro\Model\Entity\Contribuyentes c ORDER BY c.id ASC")->getResult();
-        $row = [];
-
-        foreach ($contribuyentes as $tuple) {
-            $row[$tuple->getId()] = $tuple->getNombre(). ' ' . $tuple->getApellidoPaterno(). ' ' . $tuple->getApellidoMaterno();
-        }
-
-        return $row;
-    }
 }

@@ -40,7 +40,6 @@ $this->inlineScript()
             <table  class="display table table-striped table-hover nowrap" id="tablaCategorias" style="width:100%">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Opciones</th>
                     </tr>
@@ -49,12 +48,10 @@ $this->inlineScript()
                     <?php if (!empty($categorias)): ?>
                         <?php foreach ($categorias as $categoria): ?>
                             <tr>
-                                <td><?= $categoria->getIdArchivoCategoria() ?></td>
                                 <td><?= $categoria->getNombre() ?></td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="<?= $this->url('categoria/ver', ['action' => 'ver', 'id' => $categoria->getIdArchivoCategoria()]); ?>" class="btn btn-info" > Ver</a>
-                                        <a href="<?= $this->url('categoria/editar', ['action' => 'editar', 'id' => $categoria->getIdArchivoCategoria()]); ?>" class="btn btn-warning" > Editar</a>
+                                        <a href="#" class="btn btn-warning" data-toggle="modal" onClick="editarCategoria('<?= $categoria->getIdArchivoCategoria() ?>')"> Editar</a>
                                         <a href="<?= $this->url('categoria/eliminar', ['action' => 'eliminar', 'id' => $categoria->getIdArchivoCategoria()]); ?>" class="btn btn-danger" > Eliminar</a>
                                     </div>
                                 </td>
@@ -73,7 +70,7 @@ $this->inlineScript()
 <!-- [ col ] end -->
 
 <!-- Modal -->
-<div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -83,11 +80,7 @@ $this->inlineScript()
         </button>
       </div>
       <div class="modal-body">
-            <?php 
-                $form = $this->form;
-                // $form->setAttribute('action', $this->url('categoria/agregar'));
-                // $form->prepare();
-            ?>
+            <?php $form = $this->form; ?>
             <?= $this->form()->openTag($form); ?>
                 <div class="form-group">
                     <?= $this->formLabel($form->get('nombre')); ?>

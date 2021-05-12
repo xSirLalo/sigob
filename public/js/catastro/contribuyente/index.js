@@ -52,7 +52,7 @@ $(document).ready(function() {
                     $actionBtn = `
                         <div class="btn-group">
                             <a href="/contribuyente/ver/` + row['idContribuyente'] + `"  class="btn btn-info btn-sm" title="Detalle"><i class="fas fa-folder-open fa-fw"></i></a>
-                            <button class="btn btn-danger btn-sm" title="Eliminar" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `"><i class="fas fa-times fa-fw"></i></button>
+                            <!-- <button class="btn btn-danger btn-sm" title="Eliminar" data-toggle="modal" data-target="#deleteModal" data-id="` + row['idContribuyente'] + `"><i class="fas fa-times fa-fw"></i></button> -->
                         </div>
                         `;
                         return $actionBtn;

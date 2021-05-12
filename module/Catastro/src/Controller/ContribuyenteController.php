@@ -15,27 +15,22 @@ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Catastro\Entity\Contribuyente;
 use Catastro\Form\ContribuyenteForm;
-use Catastro\Form\ContribuyenteModalForm;
 use Catastro\Form\EliminarForm;
 use Catastro\Form\BibliotecaForm;
 
 class ContribuyenteController extends AbstractActionController
 {
-    /**
-     * Entity manager.
-     * @var Doctrine\ORM\EntityManager
-     */
     private $entityManager;
-    /**
-     * Contribuyente Manager.
-     * @var Catastro\Service\ContribuyenteManager
-     */
     private $contribuyenteManager;
     private $bibliotecaManager;
     private $opergobserviceadapter;
 
-    public function __construct($entityManager, $contribuyenteManager, $bibliotecaManager, $opergobserviceadapter)
-    {
+    public function __construct(
+        $entityManager,
+        $contribuyenteManager,
+        $bibliotecaManager,
+        $opergobserviceadapter
+    ) {
         $this->entityManager = $entityManager;
         $this->contribuyenteManager = $contribuyenteManager;
         $this->bibliotecaManager = $bibliotecaManager;
@@ -58,7 +53,6 @@ class ContribuyenteController extends AbstractActionController
     public function datatableAction()
     {
         $request = $this->getRequest();
-        $response = $this->getResponse();
         $postData = $_POST;
 
         $columns = [
@@ -67,7 +61,6 @@ class ContribuyenteController extends AbstractActionController
             2 => 'rfc',
             3 => 'curp'
         ];
-        // AJAX response
         if ($request->isXmlHttpRequest()) {
             $fields = ['c'];
             $qb = $this->entityManager->createQueryBuilder();
@@ -113,12 +106,6 @@ class ContribuyenteController extends AbstractActionController
                     "recordsFiltered" => count($count),
                     'data'            => $data
                 ];
-
-            // return $response->setContent(json_encode($result));
-
-            // $response->setStatusCode(200);
-            // $response->setContent(\Laminas\Json\Json::encode($result));
-            // return $response;
 
             $json = new JsonModel($result);
             $json->setTerminal(true);
@@ -174,7 +161,7 @@ class ContribuyenteController extends AbstractActionController
             //     ],
             // ]);
             // $form->setInputFilter($inputFilter);
-            
+
             $form->setData($formData);
             $form->setValidationGroup(['tipo_persona']);
 
@@ -213,103 +200,98 @@ class ContribuyenteController extends AbstractActionController
                     ]);
                 }
                 if ($form->isValid()) {
-                    try {
-                        $data = $form->getData();
+                    $data = $form->getData();
 
-                        // exit('<pre>'.print_r($data, true).'</pre>');
+                    // exit('<pre>'.print_r($data, true).'</pre>');
 
-                        $id = $data['input1'];
-                        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
-                        // Definimos la constante con el directorio de destino de los temporales
-                        define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal');
-                        // Obtenemos el array de ficheros enviados
-                        $ficheros = $_FILES['archivo'];
-                        // Establecemos el indicador de proceso correcto (simplemente no indicando nada)
-                        $estado_proceso = NULL;
-                        // Paths para almacenar
-                        $paths= array();
-                        // Obtenemos los nombres de los ficheros
-                        $nombres_ficheros = $ficheros['name'];
-                        // LÍNEAS ENCARGADAS DE REALIZAR EL PROCESO DE UPLOAD POR CADA FICHERO RECIBIDO
-                        // ****************************************************************************
+                    $id = $data['input1'];
+                    $idContribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
+                    if ($idContribuyente) {
+                        $this->flashMessenger()->addInfoMessage('Se actualizo con éxito!');
+                        $this->contribuyenteManager->actualizarContribuyente($idContribuyente, $data);
+                    } else {
+                        $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
+                        $contribuyente = $this->contribuyenteManager->guardarContribuyente($data);
+                    }
+                    // Definimos la constante con el directorio de destino de los temporales
+                    define('DIR_PUBLIC', $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'temporal');
+                    // Obtenemos el array de ficheros enviados
+                    $ficheros = $_FILES['archivo'];
+                    // Establecemos el indicador de proceso correcto (simplemente no indicando nada)
+                    $estado_proceso = null;
+                    // Paths para almacenar
+                    $paths= array();
+                    // Obtenemos los nombres de los ficheros
+                    $nombres_ficheros = $ficheros['name'];
+                    // LÍNEAS ENCARGADAS DE REALIZAR EL PROCESO DE UPLOAD POR CADA FICHERO RECIBIDO
+                    // ****************************************************************************
 
-                        // Si no existe la carpeta de destino la creamos
-                        if(!file_exists(DIR_PUBLIC)) @mkdir(DIR_PUBLIC);    
+                    // Si no existe la carpeta de destino la creamos
+                    if (!file_exists(DIR_PUBLIC)) {
+                        @mkdir(DIR_PUBLIC);
+                    }
 
-                        if ($ficheros["error"] != 4 || $ficheros["size"] != 0)
-                        {
-                            // Sólo en el caso de que exista esta carpeta realizaremos el proceso
-                            if(file_exists(DIR_PUBLIC)) {
+                    if ($ficheros["error"] != 4 || $ficheros["size"] != 0) {
+                        // Sólo en el caso de que exista esta carpeta realizaremos el proceso
+                        if (file_exists(DIR_PUBLIC)) {
+                            $archivoUrl = (array) $this->params()->fromFiles('archivo');
+                            $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
 
-                                $archivoUrl = (array) $this->params()->fromFiles('archivo');
-                                $categoria = (array) $this->params()->fromPost('id_archivo_categoria');
+                            // Recorremos el array de nombres para realizar proceso de upload
+                            for ($i=0; $i < count($nombres_ficheros); $i++) {
+                                // Extraemos el nombre y la extensión del nombre completo del fichero
+                                $nombre_extension = explode('.', basename($nombres_ficheros[$i]));
+                                // Obtenemos la extensión
+                                $extension=array_pop($nombre_extension);
+                                // Obtenemos el nombre
+                                $nombre=array_pop($nombre_extension);
+                                // Creamos la ruta de destino
+                                if ($nombre) {
+                                    if ($id == "") {
+                                        $archivoUrl = $contribuyente->getIdContribuyente() . '_contribuyente_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
+                                        $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $contribuyente->getIdContribuyente() . '_contribuyente_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
+                                    } else {
+                                        $archivoUrl = $id . '_contribuyente_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
+                                        $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_contribuyente_' . utf8_decode(strtolower(str_replace(" ", "-", $nombre))) . '.' . $extension;
+                                    }
+                                    // Mover el archivo de la carpeta temporal a la nueva ubicación
+                                    if (move_uploaded_file($ficheros['tmp_name'][$i], $archivo_destino)) {
+                                        $filename = $_FILES['archivo']['name'][$i];
+                                        $filesize = $_FILES['archivo']['size'][$i];
+                                        $tmp_name = $_FILES['archivo']['tmp_name'][$i];
+                                        $file_type = $_FILES['archivo']['type'][$i];
+                                        $temp = explode(".", $filename);
 
-                                // Recorremos el array de nombres para realizar proceso de upload
-                                for($i=0; $i < count($nombres_ficheros); $i++){
-                                    // Extraemos el nombre y la extensión del nombre completo del fichero
-                                    $nombre_extension = explode('.', basename($nombres_ficheros[$i]));
-                                    // Obtenemos la extensión
-                                    $extension=array_pop($nombre_extension);
-                                    // Obtenemos el nombre
-                                    $nombre=array_pop($nombre_extension);
-                                    // Creamos la ruta de destino
-                                    if ($nombre) {
-                                        $archivo_destino = DIR_PUBLIC . DIRECTORY_SEPARATOR . $id . '_' . utf8_decode(strtolower(str_replace(" ", "-",$nombre))) . '.' . $extension;
-                                        // Mover el archivo de la carpeta temporal a la nueva ubicación
-                                        if(move_uploaded_file($ficheros['tmp_name'][$i], $archivo_destino)) {
-                                            $filename = $_FILES['archivo']['name'][$i];
-                                            $filesize = $_FILES['archivo']['size'][$i];
-                                            $tmp_name = $_FILES['archivo']['tmp_name'][$i];
-                                            $file_type = $_FILES['archivo']['type'][$i];
-                                            $temp = explode(".", $filename);
+                                        $data['archivoBlob'] = file_get_contents($archivo_destino, true);
+                                        $data['extension'] = $temp[count($temp)-1];
+                                        $data['size'] = $filesize;
+                                        $data['categoria'] = $categoria[$i];
+                                        $data['archivoUrl'] = $archivoUrl;
 
-                                            $data['archivoBlob'] = file_get_contents($archivo_destino, true);
-                                            $data['extension'] = $temp[count($temp)-1];
-                                            $data['size'] = $filesize;
-                                            $data['archivoUrl'] = $id . '_' . strtolower(str_replace(" ", "-", $archivoUrl[$i]['name']));
-                                            $data['categoria'] = $categoria[$i];
+                                        $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
 
-                                            $archivito = $this->bibliotecaManager->guardarArchivos($data, $categoria[$i]);
-                                            if ($contribuyente) {
-                                                $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
-                                            } else {
-                                                $this->bibliotecaManager->guardarRelacionAC($contribuyente, $archivito);
-                                            }
-                                            // Activamos el indicador de proceso correcto
-                                            $estado_proceso = true;
-                                            // Almacenamos el nombre del archivo de destino
-                                            $paths[] = $archivo_destino;
+                                        if ($idContribuyente) {
+                                            $this->bibliotecaManager->guardarRelacionAC($id, $archivito);
                                         } else {
-                                            // Activamos el indicador de proceso erroneo
-                                            $estado_proceso = false;
-                                            // Rompemos el bucle para que no continue procesando ficheros
-                                            break;
+                                            $this->bibliotecaManager->guardarRelacionAC($contribuyente->getIdContribuyente(), $archivito);
                                         }
+                                        // Activamos el indicador de proceso correcto
+                                        $estado_proceso = true;
+                                        // Almacenamos el nombre del archivo de destino
+                                        $paths[] = $archivo_destino;
+                                    } else {
+                                        // Activamos el indicador de proceso erroneo
+                                        $estado_proceso = false;
+                                        // Rompemos el bucle para que no continue procesando ficheros
+                                        break;
                                     }
                                 }
                             }
                         }
-                        if ($contribuyente) {
-                            $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
-                            $this->flashMessenger()->addInfoMessage('Se actualizo con éxito!');
-                        } else {
-                            $contribuyente = $this->contribuyenteManager->guardarContribuyente($data);
-                            $this->flashMessenger()->addSuccessMessage('Se agrego con éxito!');
-                        }
-                        return $this->redirect()->toRoute('contribuyente');
-                        
-                    } catch (RuntimeException $exception) {
-                        $this->flashMessenger()->addErrorMessage($exception->getMessage());
-                        return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
                     }
-                }   else {
-                    $this->flashMessenger()->addErrorMessage($form->getMessages());
-                        return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
+                    return $this->redirect()->toRoute('contribuyente');
                 }
-            }else {
-                    $this->flashMessenger()->addErrorMessage($form->getMessages());
-                        return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
-                }
+            }
         }
         return new ViewModel(['form' => $form, 'categorias' => $categorias]);
     }
@@ -319,60 +301,53 @@ class ContribuyenteController extends AbstractActionController
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
         $categorias = $this->bibliotecaManager->categoriasList();
 
-
         if ($contribuyenteId < 0) {
-            $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
+            return;
         }
 
         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
 
         $qb = $this->entityManager->createQueryBuilder();
-        $qb ->select('aco')
-            ->from('Catastro\Entity\ArchivoContribuyente', 'aco')
-            ->join('Catastro\Entity\Contribuyente', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'aco.idContribuyente = c.idContribuyente')
-            ->join('Catastro\Entity\Archivo', 'a', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idArchivo = aco.idArchivo')
-            ->join('Catastro\Entity\ArchivoCategoria', 'ac', \Doctrine\ORM\Query\Expr\Join::WITH, 'ac.idArchivoCategoria = a.idArchivoCategoria')
-            ->where('aco.idContribuyente = :idParam')
+        $qb ->select('aco')->from('Catastro\Entity\ArchivoContribuyente', 'aco')
+                ->join('Catastro\Entity\Contribuyente', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'aco.idContribuyente = c.idContribuyente')
+                ->join('Catastro\Entity\Archivo', 'a', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idArchivo = aco.idArchivo')
+                ->join('Catastro\Entity\ArchivoCategoria', 'ac', \Doctrine\ORM\Query\Expr\Join::WITH, 'ac.idArchivoCategoria = a.idArchivoCategoria')
+                ->where('aco.idContribuyente = :idParam')
             ->setParameter('idParam', $contribuyenteId)
             ->orderBy('aco.idArchivo', 'ASC');
 
         $archivos = $qb->getQuery()->getResult();
 
         if ($contribuyente == null) {
-            $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
+            return;
         }
 
-        $data['contribuyente'] =  $contribuyente;
-        $data['archivos'] =  $archivos;
-        $data['contribuyenteId'] =  $contribuyenteId;
-        $data['categorias'] =  $categorias;
-
-        return new ViewModel($data);
+        return new ViewModel([
+            'categorias' =>  $categorias,
+            'archivos' =>  $archivos,
+            'contribuyenteId' =>  $contribuyenteId,
+            'contribuyente' =>  $contribuyente,
+        ]);
     }
 
     public function editAction()
     {
         $form = new ContribuyenteForm();
         $request = $this->getRequest();
-        $response = $this->getResponse();
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
 
         if ($contribuyenteId < 0) {
-            $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
+            return;
         }
 
         $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
 
         if ($contribuyente == null) {
-            $this->layout()->setTemplate('error/404');
             $this->getResponse()->setStatusCode(404);
-            return $response->setTemplate('error/404');
+            return;
         }
 
         if ($this->getRequest()->isPost()) {
@@ -412,7 +387,7 @@ class ContribuyenteController extends AbstractActionController
                     $fecha_nacimiento = null;
                 }
                 if ($form->isValid()) {
-                try {
+                    try {
                         $data = $form->getData();
                         $data['fecha_nacimiento'] = $fecha_nacimiento;
 
@@ -460,18 +435,16 @@ class ContribuyenteController extends AbstractActionController
             $view->setTerminal(true);
         } else {
             if ($contribuyenteId < 0) {
-                $this->layout()->setTemplate('error/404');
                 $this->getResponse()->setStatusCode(404);
-                return $response->setTemplate('error/404');
+                return;
             }
 
             $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
 
-            // if ($contribuyente == null) {
-            //     $this->layout()->setTemplate('error/404');
-            //     $this->getResponse()->setStatusCode(404);
-            //     return $response->setTemplate('error/404');
-            // }
+            if ($contribuyente == null) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
 
             if ($this->getRequest()->isPost()) {
                 $data = $this->params()->fromPost();
@@ -494,7 +467,6 @@ class ContribuyenteController extends AbstractActionController
         $word = $_REQUEST['q'];
 
         $qb = $this->entityManager->createQueryBuilder();
-
         $qb ->select('c')->from('Catastro\Entity\Contribuyente', 'c')
                 ->where($qb->expr()->like('c.nombre', ":word"))
                 ->orWhere($qb->expr()->like('c.apellidoPaterno', ":word"))
@@ -523,7 +495,7 @@ class ContribuyenteController extends AbstractActionController
                             'cve_persona'      => $WebService->Persona[0]->CvePersona,
                             'nombre'           => $WebService->Persona[0]->NombrePersona,
                             'apellido_paterno' => $WebService->Persona[0]->ApellidoPaternoPersona,
-                            'apellido_materno' => $WebService->Persona[0]->ApellidoPaternoPersona,
+                            'apellido_materno' => $WebService->Persona[0]->ApellidoMaternoPersona,
                             'tipo_persona'     => $WebService->Persona[0]->TipoPersona,
                             'rfc'              => $WebService->Persona[0]->RFCPersona,
                             'curp'             => $WebService->Persona[0]->CURPPersona,
@@ -531,7 +503,7 @@ class ContribuyenteController extends AbstractActionController
                             'correo'           => $WebService->Persona[0]->PersonaCorreo,
                             'telefono'         => $WebService->Persona[0]->PersonaTelefono,
                             'genero'           => $WebService->Persona[0]->GeneroPersona,
-                    ];
+                        ];
 
                     $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
 
@@ -547,14 +519,15 @@ class ContribuyenteController extends AbstractActionController
                             'cve_persona'      => $WebService->Persona->CvePersona,
                             'nombre'           => $WebService->Persona->NombrePersona,
                             'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
-                            'apellido_materno' => $WebService->Persona->ApellidoPaternoPersona,
+                            'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
+                            'tipo_persona'     => $WebService->Persona->TipoPersona,
                             'rfc'              => $WebService->Persona->RFCPersona,
                             'curp'             => $WebService->Persona->CURPPersona,
                             'razon_social'     => $WebService->Persona->RazonSocialPersona,
                             'correo'           => $WebService->Persona->PersonaCorreo,
                             'telefono'         => $WebService->Persona->PersonaTelefono,
                             'genero'           => $WebService->Persona->GeneroPersona,
-                    ];
+                        ];
 
                         $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
 
@@ -583,57 +556,51 @@ class ContribuyenteController extends AbstractActionController
     public function autofillPersonaAction()
     {
         $request = $this->getRequest();
-        $response = $this->getResponse();
-        // AJAX response
+
         if ($request->isXmlHttpRequest()) {
             $id = $this->params()->fromRoute('id');
 
             $qb = $this->entityManager->createQueryBuilder();
-
-            $qb ->select('c')
-                ->from('Catastro\Entity\Contribuyente', 'c')
-                ->where('c.idContribuyente = :idParam')
+            $qb ->select('c')->from('Catastro\Entity\Contribuyente', 'c')
+                    ->where('c.idContribuyente = :idParam')
                 ->setParameter("idParam", $id);
             $query = $qb->getQuery()->getResult();
 
             $data = [];
-            if ($query) {
-                foreach ($query as $r) {
+            foreach ($query as $resultado) {
+                if ($resultado->getTipoPersona() == "F") {
                     $data = [
-                        'contribuyente_id' => $r->getIdContribuyente(),
-                        'nombre'           => $r->getNombre(),
-                        'apellido_paterno' => $r->getApellidoPaterno(),
-                        'apellido_materno' => $r->getApellidoMaterno(),
-                        'fecha_nacimiento' => $r->getFechaNacimiento(),
-                        'estado_civil'     => $r->getEstadoCivil(),
-                        'genero'           => $r->getGenero(),
-                        'tipo_persona'     => $r->getTipoPersona(),
-                        'rfc'              => $r->getRfc(),
-                        'curp'             => $r->getCurp(),
-                        'razon_social'     => $r->getRazonSocial(),
-                        'correo'           => $r->getCorreo(),
-                        'telefono'         => $r->getTelefono(),
+                        'contribuyente_id' => $resultado->getIdContribuyente(),
+                        'nombre'           => $resultado->getNombre(),
+                        'apellido_paterno' => $resultado->getApellidoPaterno(),
+                        'apellido_materno' => $resultado->getApellidoMaterno(),
+                        'fecha_nacimiento' => $resultado->getFechaNacimiento(),
+                        'estado_civil'     => $resultado->getEstadoCivil(),
+                        'genero'           => $resultado->getGenero(),
+                        'tipo_persona'     => $resultado->getTipoPersona(),
+                        'rfc'              => $resultado->getRfc(),
+                        'curp'             => $resultado->getCurp(),
+                        'razon_social'     => $resultado->getRazonSocial(),
+                        'correo'           => $resultado->getCorreo(),
+                        'telefono'         => $resultado->getTelefono(),
+                    ];
+                } else {
+                    $data = [
+                        'contribuyente_id' => $resultado->getIdContribuyente(),
+                        'nombre'           => $resultado->getNombre(),
+                        'tipo_persona'     => $resultado->getTipoPersona(),
+                        'rfc'              => $resultado->getRfc(),
+                        'razon_social'     => $resultado->getRazonSocial(),
+                        'correo'           => $resultado->getCorreo(),
+                        'telefono'         => $resultado->getTelefono(),
                     ];
                 }
-            } else {
-                // FIXME: No pasa por aquí!
-                $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($id);
-
-                $data = [
-                    'nombre'           => $WebService->Persona->NombrePersona,
-                    'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
-                    'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
-                    'tipo_persona'     => $WebService->Persona->TipoPersona,
-                    'rfc'              => $WebService->Persona->RFCPersona,
-                    'curp'             => $WebService->Persona->CURPPersona,
-                    'razon_social'     => $WebService->Persona->RazonSocialPersona,
-                    'correo'           => $WebService->Persona->PersonaCorreo,
-                    'telefono'         => $WebService->Persona->PersonaTelefono,
-                    'genero'           => $WebService->Persona->GeneroPersona,
-                ];
             }
 
-            return $response->setContent(json_encode($data));
+            $json = new JsonModel($data);
+            $json->setTerminal(true);
+
+            return $json;
         } else {
             echo 'Error get data from ajax';
         }

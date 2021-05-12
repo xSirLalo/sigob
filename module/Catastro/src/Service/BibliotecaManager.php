@@ -66,7 +66,6 @@ class BibliotecaManager
     {
         $biblioteca = new Biblioteca();
 
-
         $this->entityManager->persist($biblioteca);
         $this->entityManager->flush();
     }
@@ -99,10 +98,8 @@ class BibliotecaManager
         $file->setExtension($data['extension']);
         $file->setSize($data['size']);
         $file->setUrl($data['archivoUrl']);
-
-        $currentDate = new \DateTime();
-        $file->setCreatedAt($currentDate);
-        $file->setUpdatedAt($currentDate);
+        $file->setCreatedAt(new \DateTime());
+        $file->setUpdatedAt(new \DateTime());
 
         $this->entityManager->persist($file);
         $this->entityManager->flush();
@@ -116,7 +113,6 @@ class BibliotecaManager
     public function guardarRelacionAP($id, $archivito)
     {
         $filePredio = new ArchivoPredio();
-        $currentDate = new \DateTime();
 
         $Predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($id);
         if ($Predio == null) {
@@ -125,8 +121,8 @@ class BibliotecaManager
 
         $filePredio->setIdArchivo($archivito);
         $filePredio->setIdPredio($Predio);
-        $filePredio->setCreatedAt($currentDate);
-        $filePredio->setUpdatedAt($currentDate);
+        $filePredio->setCreatedAt(new \DateTime());
+        $filePredio->setUpdatedAt(new \DateTime());
 
         $this->entityManager->persist($filePredio);
         $this->entityManager->flush();
@@ -135,7 +131,6 @@ class BibliotecaManager
     public function guardarRelacionAC($id, $archivito)
     {
         $fileContribuyente = new ArchivoContribuyente();
-        $currentDate = new \DateTime();
 
         $Contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
         if ($Contribuyente == null) {
@@ -144,8 +139,8 @@ class BibliotecaManager
 
         $fileContribuyente->setIdArchivo($archivito);
         $fileContribuyente->setIdContribuyente($Contribuyente);
-        $fileContribuyente->setCreatedAt($currentDate);
-        $fileContribuyente->setUpdatedAt($currentDate);
+        $fileContribuyente->setCreatedAt(new \DateTime());
+        $fileContribuyente->setUpdatedAt(new \DateTime());
 
         $this->entityManager->persist($fileContribuyente);
         $this->entityManager->flush();

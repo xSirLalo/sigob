@@ -32,11 +32,12 @@ $form->prepare();
         <!-- [ card-body ] start -->
         <div class="card-body">
             <?= $this->form()->openTag($form); ?>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('cve_catastral')); ?>
-                    <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-select2-predio col-sm-12"])); ?>
-                    <div class="text-danger">
-                        <?= $this->formElementErrors($form->get('cve_catastral')); ?>
+                <div class="form-row">
+                    <div class="form-group">
+                        <?= $this->formSelect($form->get('cve_catastral')->setAttributes(['class' => "custom-select js-select2-predio col-sm-12"])); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('cve_catastral')); ?>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -101,6 +102,30 @@ $form->prepare();
                         <?= $this->formText($form->get('numero_interior')); ?>
                         <div class="text-danger">
                             <?= $this->formElementErrors($form->get('numero_interior')); ?>
+                        </div>
+                    </div>
+                </div>
+                <h6 class="text-center">Datos de propietario</h6>
+                <hr>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <?= $this->formText($form->get('input1')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('input1')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('titular')); ?>
+                        <?= $this->formText($form->get('titular')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('titular')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <?= $this->formLabel($form->get('titular_anterior')); ?>
+                        <?= $this->formText($form->get('titular_anterior')); ?>
+                        <div class="text-danger">
+                            <?= $this->formElementErrors($form->get('titular_anterior')); ?>
                         </div>
                     </div>
                 </div>

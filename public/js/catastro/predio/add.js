@@ -22,9 +22,17 @@ $(document).ready(function () {
 
     $(".js-select2-predio").select2({
         selectOnClose: true,
+        language: {
+            errorLoading:function(){return"La carga falló"},
+            inputTooLong:function(e){var t=e.input.length-e.maximum,n="Por favor, elimine "+t+" car";return t==1?n+="ácter":n+="acteres",n},
+            inputTooShort:function(e){var t=e.minimum-e.input.length,n="Por favor, introduzca "+t+" car";return t==1?n+="ácter":n+="acteres",n},
+            loadingMore:function(){return"Cargando más resultados…"},
+            maximumSelected:function(e){var t="Sólo puede seleccionar "+e.maximum+" elemento";return e.maximum!=1&&(t+="s"),t},
+            noResults:function(){return"No se encontraron resultados"},
+            searching:function(){return"Buscando…"}
+        },
         width: '100%',
         ajax: {
-        //url: "/aportacion/buscar_ajax",
             url: "/predio/buscarCatastral",
             dataType: 'JSON',
             delay: 250,
@@ -38,7 +46,6 @@ $(document).ready(function () {
                 params.page = params.page || 1;
 
                 return {
-                    //results: data.items2,
                     results: data.items,
                     pagination: {
                         more: (params.page * 30) < data.total_count
@@ -57,8 +64,7 @@ $(document).ready(function () {
 
     $('.js-select2-predio').change(function(){
         var id = $(this).val();
-        var url = '/predio/autorellenaCatastral/'+id;
-        // AJAX request
+        var url = '/predio/autorellenaCatastral/' + id;
         $.ajax({
             url: url,
             method: 'POST',
@@ -67,23 +73,22 @@ $(document).ready(function () {
         success: function(data)
         {
             console.log(data);
+
             $('[name ="input1"]').val(data.predio_id);
-            $('[name ="titular"]').val(data.titular);
+            $('[name ="ultimo_ejercicio_pagado"]').val(data.ultimo_ejercicio_pagado);
+            $('[name ="ultimo_periodo_pagado"]').val(data.ultimo_periodo_pagado);
             $('[name ="localidad"]').val(data.localidad);
+            $('[name ="municipio"]').val(data.municipio);
+            $('[name ="colonia"]').val(data.colonia);
+            $('[name ="calle"]').val(data.calle);
+            $('[name ="numero_interior"]').val(data.numero_interior);
+            $('[name ="numero_exterior"]').val(data.numero_exterior);
+            $('[name ="titular"]').val(data.titular);
             $('[name ="titular_anterior"]').val(data.titular_anterior);
-            $('[name ="con_norte"]').val(data.con_norte);
-            $('[name ="con_sur"]').val(data.con_sur);
-            $('[name ="con_este"]').val(data.con_este);
-            $('[name ="con_oeste"]').val(data.con_oeste);
-            $('[name ="norte"]').val(data.norte);
-            $('[name ="sur"]').val(data.sur);
-            $('[name ="este"]').val(data.este);
-            $('[name ="oeste"]').val(data.oeste);
         },
         error: function (jqXHR, textStatus, errorThrown)
             {
                 console.log(data);
-                // $('#modal_alert').modal('show'); // show bootstrap modal
             }
         });
     });

@@ -303,10 +303,10 @@ return [
                             ],
                         ],
                     ],
-                    'guardar-archivo-contribuyente' => [
+                    'guardar-archivo' => [
                         'type' => 'literal',
                         'options' => [
-                            'route' => '/guardar-archivo-contribuyente',
+                            'route' => '/guardar-archivo',
                             'defaults' => [
                                 'action' => 'saveFile',
                             ],

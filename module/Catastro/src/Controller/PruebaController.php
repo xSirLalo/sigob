@@ -51,8 +51,8 @@ class PruebaController extends AbstractActionController
 
     public function indexAction()
     {
-        $fecha = new \DateTime("now");
-        //$data = $this->opergobserviceadapter->obtenerPredio("109015000050035-61");
+        // $fecha = new \DateTime("now");
+        // $data = $this->opergobserviceadapter->obtenerPredio("109015000050035-61");
         // $data = $this->opergobserviceadapter->AddSolicitud("11959");
         // $idSolicitud = $data->IdEntity;
         // $data2 = $this->opergobserviceadapter->SolicitudFuentaIngreso($idSolicitud,"1800");
@@ -61,11 +61,12 @@ class PruebaController extends AbstractActionController
         //$data = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
         //$data = $this->opergobserviceadapter->obtenerGiroComercialByCveFte('MTULUM', "2020");
         //$data = $this->opergobserviceadapter->AgregarContribuyente("Eduardo","Cauich","Herrera","H","Soltero","lalo_lego@hotmail.com",0,"",$fecha,$fecha);
-        //$data = $this->opergobserviceadapter->obtenerColindancia("1714");
-        //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("CABR840209R86");
-        //$data = $this->opergobserviceadapter->obtenerPersonaPorRfc("POPA450408K72");
-        $data = $this->opergobserviceadapter->obtenerNombrePersona("APOLINARIO");
-        //$data = $this->opergobserviceadapter->obtenerPersonaPorCve("0");
+        // $data = $this->opergobserviceadapter->obtenerColindancia("1714");
+        $data = $this->opergobserviceadapter->obtenerColindancia("1714");
+        // $data = $this->opergobserviceadapter->obtenerPersonaPorRfc("CABR840209R86");
+        // $data = $this->opergobserviceadapter->obtenerPersonaPorRfc("POPA450408K72");
+        // $data = $this->opergobserviceadapter->obtenerNombrePersona("APOLINARIO");
+        // $data = $this->opergobserviceadapter->obtenerPersonaPorCve("11959");
         // return new ViewModel(['data' => $data, 'data2' => $data2,'data3' => $data3]);
         return new ViewModel(['data' => $data]);
     }

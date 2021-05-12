@@ -43,6 +43,7 @@ $(document).ready(function () {
 
         return markup;
     }
+
     tipoPersonaCambia();
 
     $("#tipo_persona").change(function() {
@@ -79,7 +80,6 @@ $(document).ready(function () {
                 params.page = params.page || 1;
 
                 return {
-                    //results: data.items2,
                     results: data.items,
                     pagination: {
                         more: (params.page * 30) < data.total_count
@@ -99,7 +99,6 @@ $(document).ready(function () {
     $('.js-select2-persona').change(function(){
         var id = $(this).val();
         var url = '/contribuyente/autorellenaPersona/'+id;
-        // AJAX request
         $.ajax({
         url: url,
         method: 'POST',
@@ -109,6 +108,10 @@ $(document).ready(function () {
         {
             console.log(data);
 
+            $('[name ="input1"]').val(data.contribuyente_id);
+            $('[name ="nombre"]').val(data.nombre);
+            $('[name ="apellido_paterno"]').val(data.apellido_paterno);
+            $('[name ="apellido_materno"]').val(data.apellido_materno);
             if (data.fecha_nacimiento) {
                 const dateTime = data.fecha_nacimiento['date'];
                 let dateTimeParts = dateTime.split(/[- :]/); // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
@@ -122,19 +125,21 @@ $(document).ready(function () {
                 if (days <= 9) days = "0" + days
                 $('[name ="fecha_nacimiento[day]"]').val(days);
             }
+            $('[name ="estado_civil"]').val(data.estado_civil);
+            $('[name ="genero"]').val(data.genero);
+            $('[name ="tipo_persona"]').val(data.tipo_persona);
+            
+            tipoPersonaCambia();
 
-            $('[name ="input1"]').val(data.contribuyente_id.replace(/\s+/g,' ').trim());
-            $('[name ="nombre"]').val(data.nombre.replace(/\s+/g,' ').trim());
-            $('[name ="apellido_paterno"]').val(data.apellido_paterno.replace(/\s+/g,' ').trim());
-            $('[name ="apellido_materno"]').val(data.apellido_materno.replace(/\s+/g,' ').trim());
-            $('[name ="estado_civil"]').val(data.estado_civil.replace(/\s+/g,' ').trim());
-            $('[name ="genero"]').val(data.genero.replace(/\s+/g,' ').trim());
-            $('[name ="tipo_persona"]').val(data.tipo_persona.replace(/\s+/g,' ').trim());
-            $('[name ="rfc"]').val(data.rfc.replace(/\s+/g,' ').trim());
-            $('[name ="curp"]').val(data.curp.replace(/\s+/g,' ').trim());
-            $('[name ="razon_social"]').val(data.razon_social.replace(/\s+/g,' ').trim());
-            $('[name ="correo"]').val(data.correo.replace(/\s+/g,' ').trim());
-            $('[name ="telefono"]').val(data.telefono.replace(/\s+/g,' ').trim());
+            $("#tipo_persona").change(function() {
+                tipoPersonaCambia();
+            });
+
+            $('[name ="rfc"]').val(data.rfc);
+            $('[name ="curp"]').val(data.curp);
+            $('[name ="razon_social"]').val(data.razon_social);
+            $('[name ="correo"]').val(data.correo);
+            $('[name ="telefono"]').val(data.telefono);
         },
         error: function (jqXHR, textStatus, errorThrown)
             {

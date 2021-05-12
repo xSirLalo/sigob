@@ -16,7 +16,7 @@ $(document).ready(function () {
             var info = {
                 'id_archivo_categoria':$("#id_archivo_categoria").val(),
                 'input1':$('[name="input1"]').val(),
-                'relacion': "ArchivoContribuyente"
+                'relacion': "ArchivoPredio"
             };
             return info;
         }

@@ -44,7 +44,7 @@ class PredioForm extends Form
             'type' => Element\Text::class,
             'name' => 'input1',
             'attributes' => [
-                'hidden'=> true,
+                // 'hidden'=> true,
             ]
         ]);
 
