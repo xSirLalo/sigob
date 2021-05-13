@@ -86,13 +86,10 @@ return [
                         ],
                     ],
                     'editar' => [
-                        'type' => 'segment',
+                        'type' => 'literal',
                         'options' => [
-                            'route' => '/editar[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
+                            'route' => '/editar',
+                                'defaults' => [
                                 'action' => 'edit',
                             ],
                         ],
@@ -468,12 +465,9 @@ return [
                 'may_terminate' => true,
                 'child_routes' => [
                     'nueva-aportacion' => [
-                        'type' => 'segment',
+                        'type' => 'literal',
                         'options' => [
-                            'route' => '/nueva-aportacion[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9,a-z,A-Z,-]+',
-                            ],
+                            'route' => '/nueva-aportacion',
                             'defaults' => [
                                 'action' => 'add',
                             ],
@@ -516,12 +510,9 @@ return [
                         ],
                     ],
                     'validacion' => [
-                        'type' => 'segment',
+                        'type' => 'literal',
                         'options' => [
-                            'route' => '/validacion[/:id]',
-                            'constraints' => [
-                                'slug' => '[0-9]+',
-                            ],
+                            'route' => '/validacion',
                             'defaults' => [
                                 'action' => 'validation',
                             ],
@@ -578,51 +569,6 @@ return [
                             ],
                         ],
                     ],
-                    'guardarModal' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/guardarModal',
-                            'defaults' => [
-                                'action' => 'addModal',
-                            ],
-                        ],
-                    ],
-                    'buscarCatastral' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/buscarCatastral[/:action]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'searchCatastral',
-                            ],
-                        ],
-                    ],
-                    'autorellenaCatastral' => [
-                        'type' => 'segment',
-                        'options' => [
-                                'route' => '/autorellenaCatastral[/:id]',
-                                'constraints' => [
-                                    'id' => '[0-9,-]+',
-                                ],
-                            'defaults' => [
-                                'action' => 'autofillCatastral',
-                            ],
-                        ],
-                    ],
-                    'pdff' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/pdff[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'puff',
-                            ],
-                        ],
-                    ],
                     'pdfdirrector' => [
                         'type' => 'segment',
                         'options' => [
@@ -632,30 +578,6 @@ return [
                             ],
                             'defaults' => [
                                 'action' => 'pdfdirrector',
-                            ],
-                        ],
-                    ],
-                    'buscarAportacion' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/buscarAportacion[/:action]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'searchAportacion',
-                            ],
-                        ],
-                    ],
-                    'autorellenaAportacion' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/autorellenaAportacion[/:id]',
-                            'constraints' => [
-                                'id' => '[0-9,a-z,A-Z,-]+',
-                            ],
-                            'defaults' => [
-                                'action' => 'autofillAportacion',
                             ],
                         ],
                     ],
@@ -761,15 +683,6 @@ return [
                             ],
                         ],
                     ],
-                    'datatableValidation' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/datatablevalidation',
-                            'defaults' => [
-                                'action' => 'datatablevalidation',
-                            ],
-                        ],
-                    ],
                     'statusValidation' => [
                         'type' => 'literal',
                         'options' => [
@@ -826,7 +739,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete'], 'allow' => '@']
             ],
             Controller\AportacionController::class => [
-                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'searchCatastral', 'autofillCatastral', 'add', 'addModal', 'pdf', 'excel', 'puff','pdfdirrector', 'searchAportacion', 'autofillAportacion', 'editaportacion', 'addcontribuyente', 'addaportacion', 'updateaportacion','viewAportacion','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias','datatablevalidation','statusvalidation'], 'allow' => '@']
+                ['actions' => ['index', 'view', 'edit', 'validation', 'datatable', 'searchRfc', 'autofillRfc', 'add', 'pdf', 'excel', 'puff','pdfdirrector', 'editaportacion', 'addcontribuyente', 'addaportacion', 'updateaportacion','viewAportacion','datatablecolindancias','addcolindancias','deletecolindancias','editcolindancia','updatecolindancias','statusvalidation'], 'allow' => '@']
             ],
         ]
     ],

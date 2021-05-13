@@ -69,7 +69,7 @@ $(document).ready(function(){
                     render: function(data, type, row, meta){
                         if(row['Estatus'] == 3 ){
                         $actionBtn = `<a href="pdfdirrector/` + row['idAportacion'] + `"> <button type="button=" data-toggle="tooltip" title="Ver"  class="btn btn btn-primary"><i class="fas fa-file-pdf"></i></button></a>
-                        <a class="btn btn-secondary" href="aportacion/editar/` + row['idAportacion'] + `" data-toggle="modal" onclick="edit_validation(` + row['idAportacion'] + `)"><i class="fa fa-edit"></i></a>
+                        <button id="editarAportacion" data-toggle="tooltip" title="Editar"  class="btn btn-warning" value="` + row['idAportacion'] + `"><i class="fa fa-edit"></i></button>
                         <button class="btn btn-success" data-toggle="tooltip" title="Confirmar"  id="confirmar" name="confirmar" value="` + row['idAportacion'] + `"><i class="far fa-check-circle"></i></button>
                         <button class="btn btn-danger" data-toggle="tooltip" title="Cancelar" id="cancelar" name="cancelar" value="` + row['idAportacion'] + `"><i class="far fa-times-circle"></i></button>
                         `;
@@ -180,24 +180,12 @@ let CancelarAportacion = function(aportacion){
 
 		});
 
+///////Modal  Editar Aportacion///////////
+    $('#tbody').on( 'click', '#editarAportacion', function () {
 
-});
+    $('#editAportacion').modal('show');
 
-
-/////Fin-Datatable-Validacion////
-
-//Modal-Funcion Modificar
-function edit_validation(id)
-{
-    save_method = 'update';
-    $('#btnGuardar').show();
-    $('#btnGuardar').removeClass('invisible');
-    $('#pago_a').attr('readonly','readonly');
-    $('#validacion_form_modal')[0].reset(); // reset form on modals
-    $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
-    $('.text-danger').empty(); // clear error string
-    $("#validacion_form_modal :input").prop("disabled", false);
-    //Ajax Load data from ajax
+    let id = $(this).val();
     $.ajax({
     url : "ver/" + id,
     type: "POST",
@@ -205,7 +193,8 @@ function edit_validation(id)
     contentType: "application/json; charset=utf-8",
     success: function(data)
         {
-            //console.log(data);
+            console.log(data);
+
             $('[name="id_aportacion"]').val(data.id_aportacion);
             $('[name="vig"]').val(data.vig);
             $('[name="terreno"]').val(data.terreno);
@@ -221,12 +210,10 @@ function edit_validation(id)
             $('[name="select_tasa"]').val(data.select_tasa);
             $('[name="tasa_hidden"]').val(data.tasa_hidden);
             $('[name="ejercicio_f"]').val(data.ejercicio_f);
-           // $('[name="pago_a"]').val(formatter.format(data.pago_a));
             $('[name="pago_a"]').val(data.pago_a);
             $('[id="p_hide"]').val(data.p_hide);
-            //$('[name="pago_a"]').val(formatter.format(data.pago_a));
-            $('#myModal').modal('show'); // show bootstrap modal when complete loaded
             $('.modal-title').text('DIRECCION DE CATASTRO'); // Set Title to Bootstrap modal title
+
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
@@ -234,50 +221,52 @@ function edit_validation(id)
         }
     });
 
-    if(save_method == 'update') {
-        $("#validacion_form_modal").submit(function(event){
-            event.preventDefault();
-            var id = $("#id_aportacion").val();
-            var url = 'editar/' + id;
-            //console.log(id);
-            $.ajax({
-                url: url,
-                type: 'POST',
-                dataType: 'JSON',
-                async: true,
-                data: $("#validacion_form_modal").serialize(),
-                success: function (data) {
 
-                console.log(data);
-                if(data.proceso) //if success close modal and reload ajax table
-                {
-                    //console.log(data);
-                    //console.log(data.proceso);
-                    location.reload();
-                    $('#myModal').modal('hide'); // show bootstrap modal when complete loaded
-                } else {
-                    console.log(data);
-                        $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
-                        $('.text-danger').empty(); // clear error string
-                        $.each(data.errors, function(key, value) {
-                            $('[name="'+ key +'"]').addClass('is-invalid');
-                            for(var i in value) {
-                                $('[name="'+ key +'"]').parents('.form-group').find('.text-danger').append('<li>' + value[i] + '</li>');
-                            }
-                        });
-                    }
-                    $('#btnGuardar').val('Guardar'); //change button text
-                    $('#btnGuardar').attr('disabled',false); //set button enable
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    //console.log(data);
-                    alert('Error get data from ajax');
-                }
-            });
-        });
-    }
-}
+    });
+///////Actualizar Aportacion//////////////
+    let ActualizarAportacion = function(aportacion){
+
+		$.post('/aportacion/editar', {a:aportacion}, function(data){
+
+			if(data != null){
+
+				if(data.resp == "ok"){
+
+                table.ajax.reload();
+
+				}else{
+
+					alert(data.msg);
+				}
+			}
+
+		}, 'json');
+	};
+
+    $("#btnGuardar").click(function(e){
+        event.preventDefault(e);
+        let updateAportacion = {
+
+                id:$('#id_aportacion').val(),
+                vig:$("#vig").val(),
+                terreno:$("#terreno").val(),
+                valor_m2_zona:$("#valor_zona").val(),
+                sup_m:$("#sup_m").val(),
+                valor:$("#valor").val(),
+                tasa_hidden:$("#tasa_hidden").val(),
+                ejercicio_fiscal:$("#ejercicio_fiscal").val(),
+                ejercicio_fiscal_final:$("#ejercicio_fiscal_final").val(),
+
+            };
+
+            ActualizarAportacion(new Array(updateAportacion));
+            $('#editAportacion').modal('hide');
+    });
+
+
+});
+/////Fin-Datatable-Validacion////
+
 //formato moneda
 var formatter = new Intl.NumberFormat('en-US', {
 style: 'currency',
@@ -514,20 +503,3 @@ $("#btn_edit").on('click', function(e) {
 
 	});
 ////////////////////////////
-
-//Inicio Funcion validacion button buscar aportacion////
-// $(document).ready(function() {
-//     $('#query').attr("disabled", true);
-// });
-// function validacioninput(){
-//     let buscar_aportacion =  $("#buscarAportacion").val();
-
-//     if(buscar_aportacion == ""){
-//         $('#query').attr("disabled", true);
-//     }
-//     else{
-//         $('#query').attr("disabled", false);
-//     }
-
-// };
-///Fin Funcion validacion button buscar aportacion////

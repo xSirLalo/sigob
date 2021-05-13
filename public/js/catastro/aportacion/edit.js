@@ -499,15 +499,6 @@ edit_aportacion($('#id_aportacion').val());
 			this.id_predio = $("#id_predio").val();
 		}
 
-
-
-
-        // [ New Constructor ]
-        // var newcs = $('#new-cons').DataTable();
-
-        // new $.fn.dataTable.Responsive(newcs);
-
-        // [ Immediately Show Hidden Details ]
         $('#show-hide-res').DataTable({
             responsive: {
                 details: {
@@ -1488,15 +1479,10 @@ function formatRepoSelection(repo) {
 
 $('#contribuyenteId').select2({
     language: {
-    inputTooShort:function(e){
-    var t=e.minimum-e.input.length,n="Por favor, introduzca "+t+" car";return t==1?n+="ácter":n+="acteres",n
-    },
-    noResults: function() {
-    return "No hay resultado";
-    },
-    searching: function() {
-    return "Buscando..";
-    }
+    inputTooShort:function(e){var t=e.minimum-e.input.length,n="Por favor, introduzca "+t+" car";return t==1?n+="ácter":n+="acteres",n},
+    noResults: function(){return "No se encontraron resultados"},
+    errorLoading:function(){return"La carga falló"},
+    searching: function(){return "Buscando..."}
     },
     width: '100%',
     // dropdownParent: $("#MyModal"),
@@ -1983,7 +1969,6 @@ if(curp.length > 0){
 }
 
 }
-
 ///////Validacion Persona Moral////////////
 
 }else if($("#tipoContribuyente").val()==="M"){
@@ -1996,8 +1981,15 @@ if(curp.length > 0){
             type: 'danger',
             z_index: 999999,
         });
+        $('#nombreContribuyente').focus();
+        $('#nombreContribuyente').addClass('is-invalid');
 
-    }else if(rfc == 0) {
+        return false;
+
+    }else if(nombreContribuyente.length > 0){
+        $('#nombreContribuyente').removeClass('is-invalid');
+    }
+    if(rfc == 0) {
         $.notify({
 
             message: 'Por favor, Ingrese el R.F.C'
@@ -2007,7 +1999,16 @@ if(curp.length > 0){
             z_index: 999999,
         });
 
-    }else if(razonSocial == 0) {
+        $('#rfc').focus();
+        $('#rfc').addClass('is-invalid');
+
+        return false;
+
+    }
+    else if(rfc.length > 0){
+        $('#rfc').removeClass('is-invalid');
+    }
+    if(razonSocial == 0) {
         $.notify({
 
             message: 'Por favor, Ingrese una Razón Social'
@@ -2017,10 +2018,18 @@ if(curp.length > 0){
             z_index: 999999,
         });
 
+        $('#razonSocial').focus();
+        $('#razonSocial').addClass('is-invalid');
+
+        return false;
 
     }
 
-else if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length == 0 && correoElectronico.length == 0){
+    else if(rfc.length > 0){
+        $('#razonSocial').removeClass('is-invalid');
+    }
+
+if(nombreContribuyente.length > 0 && rfc.length > 0 && razonSocial.length > 0 && telefono.length == 0 && correoElectronico.length == 0){
 
 if(rfc.length > 0){
 
@@ -2155,11 +2164,6 @@ if(rfc.length > 0){
 
 }
 
-
-
-
-
-
 }
 
 		});
@@ -2243,8 +2247,6 @@ function tipoPersona(){
         $('#div_razonSocial').hide();
         $('#div_rfc').removeClass('col-sm-6');
         $('#div_rfc').addClass('col-sm-4');
-        // $('#div_curp').removeClass('col-sm-4');
-        // $('#div_curp').addClass('col-sm-6');
         $('#div_apellidoPaterno').show();
         $('#div_apellidoMaterno').show();
         $('#div_fechaNacimeinto').show();
