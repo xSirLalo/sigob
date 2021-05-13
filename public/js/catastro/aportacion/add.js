@@ -2395,8 +2395,16 @@ $('#modalColindancias').on( 'click', function () {
                 z_index: 999999,
             });
 
+            $('#medidasMetros').addClass('is-invalid');
+            $('#medidasMetros').focus();
+
+            return false;
+
     }
-    else if(colindaCon.length == 0|| medidasMetros == 0){
+    else{
+        $('#medidasMetros').removeClass('is-invalid');
+    }
+    if(colindaCon.length == 0){
         $.notify({
 
             message: 'Por favor llene los campos'
@@ -2406,7 +2414,38 @@ $('#modalColindancias').on( 'click', function () {
             z_index: 999999,
         });
 
-    }else{
+        $('#colindaCon').addClass('is-invalid');
+        $('#colindaCon').focus();
+
+        return false;
+
+    }
+    else{
+        $('#colindaCon').removeClass('is-invalid');
+    }
+
+    if( medidasMetros.length == 0){
+        $.notify({
+
+            message: 'Por favor llene los campos'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+        $('#medidasMetros').addClass('is-invalid');
+        $('#medidasMetros').focus();
+
+        return false;
+
+    }
+    else {
+        $('#colindaCon').removeClass('is-invalid');
+    }
+
+    if(colindaCon.length > 0 && medidasMetros.length > 0)
+    {
         let puntosCardinales = $("#puntoCardinal").val();
         let addColindancia = new Colindancias();
 
@@ -2430,7 +2469,10 @@ $('#modalColindancias').on( 'click', function () {
 				if(data.resp == "ok"){
 
                     table.ajax.reload();
+                    if(data.return_valorColindancia == "Norte"|| data.return_valorColindancia == "Sur" || data.return_valorColindancia == "Este" || data.return_valorColindancia == "Oeste" ){
                     $('#puntoCardinal').append('<option value="'+data.return_valorColindancia+'" selected="selected">'+data.return_valorColindancia+'</option>');
+                    }
+
 				}else{
 
 					alert(data.msg);
@@ -2453,7 +2495,8 @@ $('#modalColindancias').on( 'click', function () {
         $("#updateRow").show();
         $("#addRow").hide();
         $('#addColindancia').modal('show');
-        $("#puntoCardinal").val("Norte");
+        //$("#puntoCardinal").val("Norte");
+        $("#div_colindanciasDefaul").hide();
         $("#medidasMetros").val("");
         $("#colindaCon").val("");
         $("#observacionesColindacias").val("");
@@ -2468,8 +2511,10 @@ $('#modalColindancias').on( 'click', function () {
     success: function(data)
         {
             console.log(data);
+
             $('[id="idPredioColindancias"]').val(data.idPredioColindancias);
-            $('[id="puntoCardinal"]').val(data.puntoCardinal);
+            //$('[id="puntoCardinal"]').val(data.puntoCardinal);
+            $('[id="colindanciaHiden"]').val(data.puntoCardinal);
             $('[id="colindaCon"]').val(data.colindaCon);
             $('[id="medidasMetros"]').val(data.medidasMetros);
             $('[id="observacionesColindacias"]').val(data.observacionesColindacias);
@@ -2521,8 +2566,16 @@ let ActualizarColindancia = function(colindancias){
                     z_index: 999999,
                 });
 
+            $('#medidasMetros').addClass('is-invalid');
+            $('#medidasMetros').focus();
+
+            return false;
+
         }
-        else if(colindaCon.length == 0|| medidasMetros == 0){
+        else{
+            $('#medidasMetros').removeClass('is-invalid');
+        }
+        if(colindaCon.length == 0){
             $.notify({
 
                 message: 'Por favor llene los campos'
@@ -2532,14 +2585,41 @@ let ActualizarColindancia = function(colindancias){
                 z_index: 999999,
             });
 
-        }else{
+            $('#colindaCon').addClass('is-invalid');
+            $('#colindaCon').focus();
 
+            return false;
 
+        }
+        else{
+            $('#colindaCon').removeClass('is-invalid');
+        }
+        if( medidasMetros.length == 0){
+        $.notify({
+
+            message: 'Por favor llene los campos'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+        $('#medidasMetros').addClass('is-invalid');
+        $('#medidasMetros').focus();
+
+        return false;
+
+        }
+        else {
+            $('#colindaCon').removeClass('is-invalid');
+        }
+        if(colindaCon.length > 0 && medidasMetros.length > 0){
 
             let updateColindacia = {
 
                 id:$('#idPredioColindancias').val(),
-                puntoCardinal:$("#puntoCardinal").val(),
+                //puntoCardinal:$("#puntoCardinal").val(),
+                puntoCardinal:$("#colindanciaHiden").val(),
                 colindaCon:$("#colindaCon").val(),
                 medidasMetros: $("#medidasMetros").val(),
                 observacionesColindacias:$("#observacionesColindacias").val(),

@@ -122,7 +122,7 @@ class AportacionController extends AbstractActionController
             $qb ->select('a')
             ->from('Catastro\Entity\Aportacion', 'a')
             ->join('Catastro\Entity\Contribuyente', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idContribuyente = c.idContribuyente')
-            ->join('Catastro\Entity\P111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111dio', 'p', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idPredio = p.idPredio')
+            ->join('Catastro\Entity\Predio', 'p', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idPredio = p.idPredio')
             ->where('a.estatus = 1')
             ->orWhere('a.estatus = 2')
             ->orWhere('a.estatus = 3');

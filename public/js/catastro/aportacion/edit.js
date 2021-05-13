@@ -518,10 +518,21 @@ edit_aportacion($('#id_aportacion').val());
         });
 ///////Modal Colindancias///////////
 $('#modalColindancias').on( 'click', function () {
+
+        var table = $('#colindacias').DataTable();
+        let filas = parseInt(table.rows().count());
+        if(filas < 4){
+            $("#div_colindanciasDefaul").show();
+            $("#div_Colindancias").hide();
+        }else{
+            $("#div_colindanciasDefaul").hide();
+            $("#div_Colindancias").show();
+        }
+
         $("#updateRow").hide();
         $("#addRow").show();
         $('#addColindancia').modal('show');
-        $("#puntoCardinal").val("Norte");
+        // $("#puntoCardinal").val("Norte");
         $("#medidasMetros").val("");
         $("#colindaCon").val("");
         $("#observacionesColindacias").val("");
@@ -532,9 +543,16 @@ $('#modalColindancias').on( 'click', function () {
 
 /////Add Datatbale row////////
     let Colindancias = function(){
+        let table = $('#colindacias').DataTable();
+        let filas = parseInt(table.rows().count());
+
         this.Idaportacion = $("#id_aportacion").val();
         ///Colindancias///
+        if(filas < 4){
         this.puntoCardinal            = $("#puntoCardinal").val();
+        }else{
+        this.puntoCardinal            = $("#puntoCardinales").val();
+        }
         this.colindaCon               = $("#colindaCon").val();
         this.medidasMetros            = $("#medidasMetros").val();
         this.observacionesColindacias = $("#observacionesColindacias").val();
@@ -576,8 +594,16 @@ $('#modalColindancias').on( 'click', function () {
                 z_index: 999999,
             });
 
+            $('#medidasMetros').addClass('is-invalid');
+            $('#medidasMetros').focus();
+
+            return false;
+
     }
-    else if(colindaCon.length == 0|| medidasMetros == 0){
+    else{
+        $('#medidasMetros').removeClass('is-invalid');
+    }
+    if(colindaCon.length == 0){
         $.notify({
 
             message: 'Por favor llene los campos'
@@ -587,16 +613,48 @@ $('#modalColindancias').on( 'click', function () {
             z_index: 999999,
         });
 
-    }else{
+        $('#colindaCon').addClass('is-invalid');
+        $('#colindaCon').focus();
 
+        return false;
 
+    }
+    else{
+        $('#colindaCon').removeClass('is-invalid');
+    }
+
+    if( medidasMetros.length == 0){
+        $.notify({
+
+            message: 'Por favor llene los campos'
+        },
+        {
+            type: 'danger',
+            z_index: 999999,
+        });
+
+        $('#medidasMetros').addClass('is-invalid');
+        $('#medidasMetros').focus();
+
+        return false;
+
+    }
+    else {
+        $('#colindaCon').removeClass('is-invalid');
+    }
+
+    if(colindaCon.length > 0 && medidasMetros.length > 0)
+    {
+        let puntosCardinales = $("#puntoCardinal").val();
         let addColindancia = new Colindancias();
 
 		guardarColindancia(new Array(addColindancia));
 
         $('#addColindancia').modal('hide');
 
-        }
+        $("#puntoCardinal").find("option[value='"+puntosCardinales+"']").remove();
+    }
+
     });
 
     /////////Eliminar Colindancias///////////////
@@ -609,6 +667,9 @@ $('#modalColindancias').on( 'click', function () {
 				if(data.resp == "ok"){
 
                     table.ajax.reload();
+                    if(data.return_valorColindancia == "Norte"|| data.return_valorColindancia == "Sur" || data.return_valorColindancia == "Este" || data.return_valorColindancia == "Oeste" ){
+                    $('#puntoCardinal').append('<option value="'+data.return_valorColindancia+'" selected="selected">'+data.return_valorColindancia+'</option>');
+                    }
 
 				}else{
 
@@ -631,7 +692,8 @@ $('#modalColindancias').on( 'click', function () {
         $("#updateRow").show();
         $("#addRow").hide();
         $('#addColindancia').modal('show');
-        $("#puntoCardinal").val("Norte");
+        //$("#puntoCardinal").val("Norte");
+        $("#div_colindanciasDefaul").hide();
         $("#medidasMetros").val("");
         $("#colindaCon").val("");
         $("#observacionesColindacias").val("");
@@ -647,7 +709,8 @@ $('#modalColindancias').on( 'click', function () {
         {
             console.log(data);
             $('[id="idPredioColindancias"]').val(data.idPredioColindancias);
-            $('[id="puntoCardinal"]').val(data.puntoCardinal);
+            // $('[id="puntoCardinal"]').val(data.puntoCardinal);
+            $('[id="colindanciaHiden"]').val(data.puntoCardinal);
             $('[id="colindaCon"]').val(data.colindaCon);
             $('[id="medidasMetros"]').val(data.medidasMetros);
             $('[id="observacionesColindacias"]').val(data.observacionesColindacias);
@@ -729,10 +792,12 @@ let ActualizarColindancia = function(colindancias){
 		});
 
 
-
-
-
-
+///Como esta en Editar aportacion las colindacias
+///no deben excistir porque ya son 4
+$("#puntoCardinal").find("option[value='Norte']").remove();
+$("#puntoCardinal").find("option[value='Sur']").remove();
+$("#puntoCardinal").find("option[value='Este']").remove();
+$("#puntoCardinal").find("option[value='Oeste']").remove();
 
 
 });
