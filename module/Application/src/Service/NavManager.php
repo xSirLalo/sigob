@@ -150,6 +150,44 @@ class NavManager
                     'dropdown' => $aportacionDropdownItems
                 ];
             }
+            // Usuario Aportacion.
+            $aportacionUserDropdownItems = [];
+
+            if ($this->rbacManager->isGranted(null, 'catastro.aportacion.user')) {
+                $aportacionUserDropdownItems[] = [
+                            'id' => 'aportacion',
+                            'label' => 'Aportacion',
+                            'link'  => $url('aportacion')
+                        ];
+            }
+
+            if (count($aportacionUserDropdownItems)!=0) {
+                $items[] = [
+                    'id' => 'aportaciones',
+                    'label' => 'Aportaciones',
+                    'icon' => 'feather icon-menu"',
+                    'dropdown' => $aportacionUserDropdownItems
+                ];
+            }
+            // Usuario Direccion Aportacion.
+            $aportacionDirectorDropdownItems = [];
+
+            if ($this->rbacManager->isGranted(null, 'catastro.aportacion.director')) {
+                $aportacionDirectorDropdownItems[] = [
+                            'id' => 'validacion',
+                            'label' => 'Validacion',
+                            'link'  => $url('aportacion/validacion')
+                        ];
+            }
+
+            if (count($aportacionDirectorDropdownItems)!=0) {
+                $items[] = [
+                    'id' => 'aportaciones',
+                    'label' => 'Aportaciones',
+                    'icon' => 'feather icon-menu"',
+                    'dropdown' => $aportacionDirectorDropdownItems
+                ];
+            }
 
             // Determine which items must be displayed in Admin dropdown.
             $adminDropdownItems = [];

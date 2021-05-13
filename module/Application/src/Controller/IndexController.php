@@ -28,8 +28,8 @@ class IndexController extends AbstractActionController
      */
     public function __construct($entityManager,  $i18nSessionContainer)
     {
-       $this->entityManager = $entityManager;
-       $this->i18nSessionContainer = $i18nSessionContainer;
+        $this->entityManager = $entityManager;
+        $this->i18nSessionContainer = $i18nSessionContainer;
     }
 
     /**

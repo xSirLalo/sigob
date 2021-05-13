@@ -122,7 +122,7 @@ class AportacionController extends AbstractActionController
             $qb ->select('a')
             ->from('Catastro\Entity\Aportacion', 'a')
             ->join('Catastro\Entity\Contribuyente', 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idContribuyente = c.idContribuyente')
-            ->join('Catastro\Entity\Predio', 'p', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idPredio = p.idPredio')
+            ->join('Catastro\Entity\P111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111dio', 'p', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.idPredio = p.idPredio')
             ->where('a.estatus = 1')
             ->orWhere('a.estatus = 2')
             ->orWhere('a.estatus = 3');
@@ -1362,13 +1362,13 @@ class AportacionController extends AbstractActionController
     {
         $req_post = $this->params()->fromPost();
 
-        $result = $this->aportacionManager->guardarColindancias($req_post['c'][0]);
+            $result = $this->aportacionManager->guardarColindancias($req_post['c'][0]);
 
-        if ($result) {
-            $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'id_predio' =>$result->getIdPredio()->getIdPredio()];
-        } else {
-            $datos = ["resp"=>"no", "msg"=>"Np se guardo"];
-        }
+            if ($result) {
+                $datos = ["resp"=>"ok", "msg"=>"cambios guardados", 'id_objeto' =>$result->getIdAportacion(), 'id_predio' =>$result->getIdPredio()->getIdPredio()];
+            } else {
+                $datos = ["resp"=>"no", "msg"=>"No se guardo"];
+            }
 
         $json = new JsonModel($datos);
         $json->setTerminal(true);
@@ -1382,9 +1382,10 @@ class AportacionController extends AbstractActionController
 
         $id_predioColindancias = $req_post['c'][0];
         $predioColindancias = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredioColindancia($id_predioColindancias);
+        $colindancia = $predioColindancias->getPuntoCardinal();
         $this->aportacionManager->eliminarColindancias($predioColindancias);
 
-        $datos = ["resp"=>"ok", "msg"=>"se elimino correctamente"];
+        $datos = ["resp"=>"ok", "msg"=>"se elimino correctamente", 'return_valorColindancia' => $colindancia];
 
         $json = new JsonModel($datos);
         $json->setTerminal(true);

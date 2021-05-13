@@ -2318,23 +2318,42 @@ $(document).ready(function() {
         });
 ///////Modal Colindancias///////////
 $('#modalColindancias').on( 'click', function () {
+
+        var table = $('#colindacias').DataTable();
+        let filas = parseInt(table.rows().count());
+        if(filas < 4){
+            $("#div_colindanciasDefaul").show();
+            $("#div_Colindancias").hide();
+        }else{
+            $("#div_colindanciasDefaul").hide();
+            $("#div_Colindancias").show();
+        }
+
         $("#updateRow").hide();
         $("#addRow").show();
         $('#addColindancia').modal('show');
-        $("#puntoCardinal").val("Norte");
+       // $("#puntoCardinal").val("Norte");
+       // $("#puntoCardinal").find("option[value='Norte']").remove();
         $("#medidasMetros").val("");
         $("#colindaCon").val("");
         $("#observacionesColindacias").val("");
 
-
-    });
+        });
 
 
 /////Add Datatbale row////////
     let Colindancias = function(){
+        let table = $('#colindacias').DataTable();
+        let filas = parseInt(table.rows().count());
+
         this.Idaportacion = $("#id_aportacion").val();
+        this.Idpredio     = $("#id_predio").val();
         ///Colindancias///
+        if(filas < 4){
         this.puntoCardinal            = $("#puntoCardinal").val();
+        }else{
+        this.puntoCardinal            = $("#puntoCardinales").val();
+        }
         this.colindaCon               = $("#colindaCon").val();
         this.medidasMetros            = $("#medidasMetros").val();
         this.observacionesColindacias = $("#observacionesColindacias").val();
@@ -2388,19 +2407,15 @@ $('#modalColindancias').on( 'click', function () {
         });
 
     }else{
-
+        let puntosCardinales = $("#puntoCardinal").val();
         let addColindancia = new Colindancias();
 
 		guardarColindancia(new Array(addColindancia));
 
         $('#addColindancia').modal('hide');
+
+        $("#puntoCardinal").find("option[value='"+puntosCardinales+"']").remove();
     }
-
-
-
-
-
-
 
 
     });
@@ -2415,7 +2430,7 @@ $('#modalColindancias').on( 'click', function () {
 				if(data.resp == "ok"){
 
                     table.ajax.reload();
-
+                    $('#puntoCardinal').append('<option value="'+data.return_valorColindancia+'" selected="selected">'+data.return_valorColindancia+'</option>');
 				}else{
 
 					alert(data.msg);
@@ -2430,6 +2445,7 @@ $('#modalColindancias').on( 'click', function () {
         let deleteColindancias = $(this).val();
 
 		EliminarColindancia(new Array(deleteColindancias));
+
 
     });
 ///////Modal  Editar Colindancias///////////
