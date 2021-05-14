@@ -519,11 +519,16 @@ function validaNumericos(event) {
 /////Buton Editar calculo de la aportacion//////////
 $("#btn_edit").on('click', function(e) {
         event.preventDefault(e);
+        let pago = $("#pago_a").val();
 
-
+            if(isNaN($('#pago_a').val())){
 			$("#pago_a").removeAttr("readonly");
-            let pago = $("#pago_a").val();
             $("#pago_a").val(pago.slice(1));
+            }else if(!isNaN($('#pago_a').val())){
+                $('#pago_a').attr('readonly', true);
+                $("#pago_a").val("$"+pago)
+            }
+
 
 
 	});
