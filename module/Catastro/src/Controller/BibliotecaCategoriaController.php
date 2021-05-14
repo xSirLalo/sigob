@@ -50,11 +50,10 @@ class BibliotecaCategoriaController extends AbstractActionController
                 $data['status'] = false;
                 $data['errors'] = $form->getMessages();
             };
-            
+
             $json = new JsonModel($data);
             $json->setTerminal(true);
             return $json;
-
         } else {
             echo 'No Ajax';
         }
@@ -71,13 +70,14 @@ class BibliotecaCategoriaController extends AbstractActionController
             }
 
             $resultado = $this->entityManager->getRepository(Categoria::class)->findOneByIdArchivoCategoria($id);
-            
+
             if ($resultado == null) {
                 $this->getResponse()->setStatusCode(404);
                 return;
             }
 
             $data = [
+                'input1' => $resultado->getIdArchivoCategoria(),
                 'nombre' => $resultado->getNombre()
             ];
 
@@ -93,31 +93,76 @@ class BibliotecaCategoriaController extends AbstractActionController
     {
         $form = new BiblitoecaCategoriaForm();
         $request = $this->getRequest();
-        $id = (int)$this->params()->fromRoute('id', -1);
+
+        $id = $_POST['input1'];
+
         if ($request->isXmlHttpRequest()) {
+            if ($id<0) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            $categoria = $this->entityManager->getRepository(Categoria::class)->findOneByIdArchivoCategoria($id);
+
+            if ($categoria == null) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
             $data = $this->params()->fromPost();
-                $form->setData($request->getPost());
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $data['status'] = true;
-                    $categoria = $this->entityManager->getRepository(Categoria::class)->findOneByIdArchivoCategoria($id);
-                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
-                    $this->bibliotecaCategoriaManager->actualizar($categoria, $data);
-                } else {
-                    $data['status'] = false;
-                    $data['errors'] = $form->getMessages();
-                };
+            $form->setData($request->getPost());
 
-                $json = new JsonModel($data);
-                $json->setTerminal(true);
-                return $json;
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $data['status'] = true;
 
+                $this->bibliotecaCategoriaManager->actualizar($categoria, $data);
+
+                $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
+            } else {
+                $data['status'] = false;
+                $data['errors'] = $form->getMessages();
+            };
+
+            $json = new JsonModel($data);
+            $json->setTerminal(true);
+            return $json;
         } else {
             echo 'No Ajax';
         }
     }
 
     public function deleteAction()
+    {
+        $request = $this->getRequest();
+        $id = (int)$this->params()->fromRoute('id', -1);
+
+        if ($request->isXmlHttpRequest()) {
+            if ($id < 0) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            $categoria = $this->entityManager->getRepository(Categoria::class)->findOneByIdArchivoCategoria($id);
+
+            if ($categoria == null) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            $this->bibliotecaCategoriaManager->eliminar($categoria);
+
+            $this->flashMessenger()->addSuccessMessage('Se elimino con éxito');
+
+            $json = new JsonModel();
+            $json->setTerminal(true);
+            return $json;
+        } else {
+            echo 'No Ajax';
+        }
+    }
+
+    public function deleteTestAction()
     {
         $form = new EliminarForm();
         $request = $this->getRequest();
@@ -135,11 +180,11 @@ class BibliotecaCategoriaController extends AbstractActionController
             return;
         }
 
-        if ($this->getRequest()->isPost()) {
+        if ($request->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
-                if ($this->getRequest()->getPost()->get('delete') == 'Yes') {
+                if ($request->getPost()->get('delete') == 'Yes') {
                     $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
                     $this->bibliotecaCategoriaManager->eliminar($categoria);
                 }

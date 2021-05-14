@@ -488,6 +488,9 @@ class ContribuyenteController extends AbstractActionController
             $WebService = $this->opergobserviceadapter->obtenerNombrePersona($word);
             if (empty($WebService->Persona)) {
                 $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($word);
+
+            } elseif (empty($WebService->Persona)) {
+                $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($word);
             }
             if (isset($WebService->Persona)) {
                 if (is_array($WebService->Persona)) {
@@ -504,15 +507,6 @@ class ContribuyenteController extends AbstractActionController
                             'telefono'         => $WebService->Persona[0]->PersonaTelefono,
                             'genero'           => $WebService->Persona[0]->GeneroPersona,
                         ];
-
-                    $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
-
-                    if ($contribuyente) {
-                        $arreglo[] = [
-                                    'id' => $contribuyente->getIdContribuyente(),
-                                    'item_select_name' => $WebService->Persona[0]->CvePersona.' '.$WebService->Persona[0]->NombrePersona,
-                                ];
-                    }
                 } else {
                     if (isset($WebService->Persona)) {
                         $WebServicePersona = [
@@ -528,16 +522,17 @@ class ContribuyenteController extends AbstractActionController
                             'telefono'         => $WebService->Persona->PersonaTelefono,
                             'genero'           => $WebService->Persona->GeneroPersona,
                         ];
-
-                        $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
-
-                        if ($contribuyente) {
-                            $arreglo[] = [
-                                'id' => $contribuyente->getIdContribuyente(),
-                                'item_select_name' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
-                            ];
-                        }
                     }
+                }
+                if (!$WebServicePersona['cve_persona'] == null) {
+                    $contribuyente = $this->contribuyenteManager->guardarPersona($WebServicePersona);
+                }
+
+                if ($contribuyente) {
+                    $arreglo[] = [
+                                'id' => $contribuyente->getIdContribuyente(),
+                                'item_select_name' => $WebServicePersona['cve_persona'].' '.$WebServicePersona['nombre'].' '.$WebServicePersona['apellido_paterno'].' '.$WebServicePersona['apellido_materno'],
+                            ];
                 }
             }
         }

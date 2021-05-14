@@ -21,9 +21,13 @@ $this->inlineScript()
     // ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))
     // ->prependFile($this->basePath('assets/js/plugins/dataTables.bootstrap4.min.js'))
     // ->prependFile($this->basePath('assets/js/plugins/jquery.dataTables.min.js'))
+    // Js notification
+    ->prependFile($this->basePath('assets/js/plugins/bootstrap-notify.min.js'))
+    // ->prependFile($this->basePath('assets/js/pages/ac-notification.js'))
+
     ;
 ?>
-<!-- [ col ] start -->
+<!-- [ col ] inicio -->
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
@@ -31,15 +35,14 @@ $this->inlineScript()
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-1 col-xs-12 mb-4" align=center>
-                    <div class="btn-group" role="group" aria-label="Botones">
-                        <a href="#" class="btn btn-secondary btn-sm float-right" data-toggle="modal" onClick="agregarCategoria()"><i class="fas fa-plus fa-fw"></i></a>
-                    </div>
+                <div class="col-12 mb-4">
+                    <a href="#" class="btn btn-secondary btn-sm float-right" data-toggle="modal" onClick="agregar()"><i class="fas fa-plus fa-fw"></i></a>
                 </div>
             </div>
             <table  class="display table table-striped table-hover nowrap" id="tablaCategorias" style="width:100%">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Nombre</th>
                         <th>Opciones</th>
                     </tr>
@@ -48,11 +51,12 @@ $this->inlineScript()
                     <?php if (!empty($categorias)): ?>
                         <?php foreach ($categorias as $categoria): ?>
                             <tr>
+                                <td><?= $categoria->getIdArchivoCategoria() ?></td>
                                 <td><?= $categoria->getNombre() ?></td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="#" class="btn btn-warning" data-toggle="modal" onClick="editarCategoria('<?= $categoria->getIdArchivoCategoria() ?>')"> Editar</a>
-                                        <a href="<?= $this->url('categoria/eliminar', ['action' => 'eliminar', 'id' => $categoria->getIdArchivoCategoria()]); ?>" class="btn btn-danger" > Eliminar</a>
+                                        <a href="#" class="btn btn-warning" data-toggle="modal" onClick="editar('<?= $categoria->getIdArchivoCategoria() ?>')"><i class="fa fa-edit fa-fw"></i></a>
+                                        <a href="#" class="btn btn-danger" title="Eliminar" data-toggle="modal" data-target="#modalEliminar" data-id="<?= $categoria->getIdArchivoCategoria() ?>" data-href="<?= $this->url('categoria/eliminar', ['action' => 'eliminar', 'id' => $categoria->getIdArchivoCategoria()]); ?>"><i class="fas fa-times fa-fw"></i></a>
                                     </div>
                                 </td>
                             </tr>
@@ -67,9 +71,9 @@ $this->inlineScript()
         </div>
     </div>
 </div>
-<!-- [ col ] end -->
+<!-- [ col ] fin -->
 
-<!-- Modal -->
+<!-- [ modal ] inicio -->
 <div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -88,6 +92,7 @@ $this->inlineScript()
                     <?= $this->formElementErrors($form->get('nombre')); ?>
                     <ul class="text-danger"></ul>
                 </div>
+                <?= $this->formNumber($form->get('input1')); ?>
                 <?= $this->formHidden($form->get('csrf')); ?>
                 <?= $this->formElementErrors($form->get('csrf')); ?>
       </div>
@@ -99,3 +104,29 @@ $this->inlineScript()
     </div>
   </div>
 </div>
+<!-- [ modal ] fin -->
+
+<!-- [ modal ] inicio -->
+<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Esta apunto de realizar una acción irreversible hasta para el administrador.</p>
+                <p>¿Desea continuar?</p>
+                <p class="debug-url"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger btn-ok">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ modal ] fin -->

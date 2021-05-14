@@ -41,6 +41,16 @@ class BiblitoecaCategoriaForm extends Form
         ]);
 
         $this->add([
+            'type' => Element\Number::class,
+            'name' => 'input1',
+            'attributes' => [
+                'hidden'=> true,
+                'id' => 'input1',
+                'style' => 'color:red;'
+            ]
+        ]);
+
+        $this->add([
             'type' => Element\Csrf::class,
             'name' => 'csrf',
             'options' => [
@@ -66,6 +76,7 @@ class BiblitoecaCategoriaForm extends Form
             'type' => Element\Submit::class,
             'name' => 'btnGuardar',
             'attributes' => [
+                'onClick' => 'guardar();',
                 'id' => 'btnGuardar',
                 'value' => 'Guardar',
                 'class' => 'btn btn-primary'
@@ -77,6 +88,16 @@ class BiblitoecaCategoriaForm extends Form
     {
         $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
+
+
+        $inputFilter->add(
+            [
+                'name' => 'input1',
+                'required' => false,
+                'filters' => [],
+                'validators' => [],
+            ]
+        );
 
         $inputFilter->add(
             [
