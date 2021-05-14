@@ -124,7 +124,7 @@ class OperGobServiceAdapter{
             "CvePersona"                => $cvpersona, //***
             "SolicitudVencimientoFecha" => $fecha_vence->format("Y-m-d")."T".$fecha_vence->format("h:i:s"),
             "SolicitudUsuario"          => "SOPORTE2",
-            "SolicitudObservaciones"    => "PAGO CORRESPONDIENTE AL EJERCICIO FISCAL DEL AÑO ".$añoInicial."-".$añoFinal.", UBICADO ".$ubicacion." ,LOCALIDAD ".$localidad." ID ".$id." ,".$observacion.", ".$loteConflicto ,
+            "SolicitudObservaciones"    => "PAGO CORRESPONDIENTE AL EJERCICIO FISCAL DEL AÑO ".$añoInicial."-".$añoFinal.",UBICADO ".$ubicacion." ,LOCALIDAD ".$localidad." ID ".$id." ,".$observacion.", ".$loteConflicto ,
             "SolicitudPadronId"         => "0",
             "SolicitudTipoIngreso"      => "",
         ];

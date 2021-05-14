@@ -639,7 +639,7 @@ $('#contribuyenteId').change(function(){
     {
     console.log(data);
         $('[name ="rfc"]').val(data.rfc);
-        $('[name ="contribuyente"]').val(data.contribuyente);
+        $('[name ="contribuyente"]').val(data.contribuyente+' '+data.apellidoPaterno+' '+data.apellidoMaterno);
         $('[id ="idContribuyente"]').val(data.idcontribuyente);
         $('[name ="cvlCatastral"]').val(data.cvlCatastral);
         $("#formato").show();

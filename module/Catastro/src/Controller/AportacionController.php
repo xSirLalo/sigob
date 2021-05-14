@@ -275,8 +275,9 @@ class AportacionController extends AbstractActionController
             }
         } else {
             $WebService = $this->opergobserviceadapter->obtenerNombrePersona($name);
-            if (!(array)$WebService) {
-                $WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($name);
+            if (empty($WebService->Persona)) {
+                //$WebService = $this->opergobserviceadapter->obtenerPersonaPorCve($name);
+                $WebService = $this->opergobserviceadapter->obtenerPersonaPorRfc($name);
             }
             if (isset($WebService->Persona)) {
                 if (is_array($WebService->Persona)) {
@@ -284,46 +285,41 @@ class AportacionController extends AbstractActionController
                             'cve_persona'      => $WebService->Persona[0]->CvePersona,
                             'nombre'           => $WebService->Persona[0]->NombrePersona,
                             'apellido_paterno' => $WebService->Persona[0]->ApellidoPaternoPersona,
-                            'apellido_materno' => $WebService->Persona[0]->ApellidoPaternoPersona,
+                            'apellido_materno' => $WebService->Persona[0]->ApellidoMaternoPersona,
                             'rfc'              => $WebService->Persona[0]->RFCPersona,
                             'curp'             => $WebService->Persona[0]->CURPPersona,
+                            'tipo_persona'     => $WebService->Persona[0]->TipoPersona,
                             'razon_social'     => $WebService->Persona[0]->RazonSocialPersona,
                             'correo'           => $WebService->Persona[0]->PersonaCorreo,
                             'telefono'         => $WebService->Persona[0]->PersonaTelefono,
                             'genero'           => $WebService->Persona[0]->GeneroPersona,
                     ];
-
-                    $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
-                    if ($contribuyente) {
-                        $arreglo[] = [
-                                    'id' => $contribuyente->getIdContribuyente(),
-                                    'titular' => $WebService->Persona[0]->CvePersona.' '.$WebService->Persona[0]->NombrePersona,
-                                ];
-                    }
                 } else {
                     if (isset($WebService->Persona)) {
                         $WebServicePersona = [
-                'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
-                'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
-                'curp'             => $WebService->Persona->CURPPersona,
-                'cve_persona'      => $WebService->Persona->CvePersona,
-                'genero'           => $WebService->Persona->GeneroPersona,
-                'nombre'           => $WebService->Persona->NombrePersona,
-                'telefono'         => $WebService->Persona->PersonaTelefono,
-                'correo'           => $WebService->Persona->PersonaCorreo,
-                'rfc'              => $WebService->Persona->RFCPersona,
-                'razon_social'     => $WebService->Persona->RazonSocialPersona,
-            ];
-
-                        $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
-                        if ($contribuyente) {
-                            $arreglo[] = [
-                                'id' => $contribuyente->getIdContribuyente(),
-                                'titular' => $WebService->Persona->CvePersona.' '.$WebService->Persona->NombrePersona,
-                            ];
-                        }
+                            'apellido_paterno' => $WebService->Persona->ApellidoPaternoPersona,
+                            'apellido_materno' => $WebService->Persona->ApellidoMaternoPersona,
+                            'curp'             => $WebService->Persona->CURPPersona,
+                            'tipo_persona'     => $WebService->Persona->TipoPersona,
+                            'cve_persona'      => $WebService->Persona->CvePersona,
+                            'genero'           => $WebService->Persona->GeneroPersona,
+                            'nombre'           => $WebService->Persona->NombrePersona,
+                            'telefono'         => $WebService->Persona->PersonaTelefono,
+                            'correo'           => $WebService->Persona->PersonaCorreo,
+                            'rfc'              => $WebService->Persona->RFCPersona,
+                            'razon_social'     => $WebService->Persona->RazonSocialPersona,
+                        ];
                     }
                 }
+                if (!$WebServicePersona['cve_persona'] == null) {
+                    $contribuyente = $this->aportacionManager->guardarPersona($WebServicePersona);
+                }
+                    if ($contribuyente) {
+                        $arreglo[] = [
+                            'id' => $contribuyente->getIdContribuyente(),
+                            'titular' => $WebServicePersona['cve_persona'].' '.$WebServicePersona['nombre'].' '.$WebServicePersona['apellido_paterno'].' '.$WebServicePersona['apellido_materno'],
+                        ];
+                    }
             }
         }
 
@@ -354,6 +350,8 @@ class AportacionController extends AbstractActionController
             $data = [
                 'idcontribuyente' =>  $contribuyente->getIdContribuyente(),
                 'contribuyente'   =>  $contribuyente->getNombre(),
+                'apellidoPaterno' =>  $contribuyente->getApellidoPaterno(),
+                'apellidoMaterno' =>  $contribuyente->getApellidoMaterno(),
                 'giroComercial'   =>  $contribuyente->getGiroComercial(),
                 'nombreComercial' =>  $contribuyente->getNombreComercial(),
                 'rfc'             =>  $contribuyente->getRfc(),
