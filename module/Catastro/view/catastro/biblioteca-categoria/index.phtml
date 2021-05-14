@@ -56,7 +56,7 @@ $this->inlineScript()
                                 <td>
                                     <div class="btn-group">
                                         <a href="#" class="btn btn-warning" data-toggle="modal" onClick="editar('<?= $categoria->getIdArchivoCategoria() ?>')"><i class="fa fa-edit fa-fw"></i></a>
-                                        <a href="#" class="btn btn-danger" title="Eliminar" data-toggle="modal" data-target="#modalEliminar" data-id="<?= $categoria->getIdArchivoCategoria() ?>" data-href="<?= $this->serverUrl('/categoria/eliminar/' . $categoria->getIdArchivoCategoria()); ?>"><i class="fas fa-times fa-fw"></i></a>
+                                        <a href="#" class="btn btn-danger" title="Eliminar" data-toggle="modal" data-target="#modalEliminar" data-id="<?= $categoria->getIdArchivoCategoria() ?>" onClick="eliminar('<?= $categoria->getIdArchivoCategoria() ?>')"><i class="fas fa-times fa-fw"></i></a>
                                     </div>
                                 </td>
                             </tr>
@@ -75,34 +75,58 @@ $this->inlineScript()
 
 <!-- [ modal ] inicio -->
 <div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-            <?php $form = $this->form; ?>
-            <?= $this->form()->openTag($form); ?>
-                <div class="form-group">
-                    <?= $this->formLabel($form->get('nombre')); ?>
-                    <?= $this->formText($form->get('nombre')); ?>
-                    <?= $this->formElementErrors($form->get('nombre')); ?>
-                    <ul class="text-danger"></ul>
-                </div>
-                <?= $this->formNumber($form->get('input1')); ?>
-                <?= $this->formHidden($form->get('csrf')); ?>
-                <?= $this->formElementErrors($form->get('csrf')); ?>
-      </div>
-      <div class="modal-footer">
-                <?= $this->formButton($form->get('btnCerrar')); ?>
-                <?= $this->formSubmit($form->get('btnGuardar')); ?>
-            <?= $this->form()->closeTag(); ?>
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+                <?php $form = $this->form; ?>
+                <?= $this->form()->openTag($form); ?>
+                    <div class="form-group">
+                        <?= $this->formLabel($form->get('nombre')); ?>
+                        <?= $this->formText($form->get('nombre')); ?>
+                        <?= $this->formElementErrors($form->get('nombre')); ?>
+                        <ul class="text-danger"></ul>
+                    </div>
+                    <?= $this->formNumber($form->get('input1')); ?>
+                    <?= $this->formHidden($form->get('csrf')); ?>
+                    <?= $this->formElementErrors($form->get('csrf')); ?>
+        </div>
+        <div class="modal-footer">
+                    <?= $this->formButton($form->get('btnCerrar')); ?>
+                    <?= $this->formSubmit($form->get('btnGuardar')); ?>
+                <?= $this->form()->closeTag(); ?>
+        </div>
+        </div>
     </div>
-  </div>
+</div>
+<!-- [ modal ] fin -->
+
+<!-- [ modal ] inicio -->
+<div class="modal fade" id="modalEliminar1" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Esta apunto de realizar una acción irreversible hasta para el administrador.</p>
+                <p>¿Desea continuar?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger btn-ok" id="btn-ok">Confirmar</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- [ modal ] fin -->
 
@@ -118,15 +142,22 @@ $this->inlineScript()
                 </button>
             </div>
             <div class="modal-body">
+                <?php $formEliminar = $this->formEliminar; ?>
+                <?= $this->form()->openTag($formEliminar); ?>
                 <p>Esta apunto de realizar una acción irreversible hasta para el administrador.</p>
                 <p>¿Desea continuar?</p>
-                <p class="debug-url"></p>
+                <?= $this->formNumber($formEliminar->get('input1')); ?>
             </div>
             <div class="modal-footer">
+                <?= $this->formHidden($formEliminar->get('csrf')); ?>
+                <?= $this->formElementErrors($formEliminar->get('csrf')); ?>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-danger btn-ok" id="btn-ok">Confirmar</button>
+                <?= $this->formSubmit($formEliminar->get('btnEliminar')); ?>
+                <?= $this->form()->closeTag(); ?>
             </div>
         </div>
     </div>
 </div>
 <!-- [ modal ] fin -->
+
+

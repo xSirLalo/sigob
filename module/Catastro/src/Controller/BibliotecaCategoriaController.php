@@ -26,10 +26,12 @@ class BibliotecaCategoriaController extends AbstractActionController
     public function indexAction()
     {
         $form = new BiblitoecaCategoriaForm();
+        $formEliminar = new EliminarForm();
         $categorias = $this->entityManager->getRepository(Categoria::class)->findAll();
 
         return new ViewModel([
             'form' => $form,
+            'formEliminar' => $formEliminar,
             'categorias' => $categorias
         ]);
     }
@@ -134,7 +136,9 @@ class BibliotecaCategoriaController extends AbstractActionController
 
     public function deleteAction()
     {
+        $formEliminar = new EliminarForm();
         $request = $this->getRequest();
+
         $id = (int)$this->params()->fromRoute('id', -1);
 
         if ($request->isXmlHttpRequest()) {
@@ -150,11 +154,25 @@ class BibliotecaCategoriaController extends AbstractActionController
                 return;
             }
 
-            $this->bibliotecaCategoriaManager->eliminar($categoria);
+            $data = $this->params()->fromPost();
+            $formEliminar->setData($request->getPost());
 
-            $this->flashMessenger()->addSuccessMessage('Se elimino con éxito');
+            if ($formEliminar->isValid()) {
+                $data = $formEliminar->getData();
+                $data['status'] = true;
+                if ($request->getPost()->get('btnEliminar') == 'Confirmar') {
+                    $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
+                    $this->bibliotecaCategoriaManager->eliminar($categoria);
+                }
+                // $this->bibliotecaCategoriaManager->eliminar($categoria);
 
-            $json = new JsonModel();
+                // $this->flashMessenger()->addSuccessMessage('Se elimino con éxito');
+            } else {
+                $data['status'] = false;
+                $data['errors'] = $formEliminar->getMessages();
+            };
+
+            $json = new JsonModel($data);
             $json->setTerminal(true);
             return $json;
         } else {

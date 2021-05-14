@@ -133,33 +133,33 @@ function guardar() {
 }
 
 // $('#modalEliminar').on('show.bs.modal', function (event) {
-//     var button = $(event.relatedTarget);
-//     var id = button.data('id');
-//     var url = 'categoria/eliminar/' + id;
-//     $('.modal-title').text('Eliminar');
-//     $(this).find( ".btn-ok" ).click(function() {
+//     let id = $(event.relatedTarget).attr('data-id');
+//     $('.modal-title').text('Eliminar ' + id);
+//     $(this).find(".btn-ok").click(function() {
 //         $.ajax({
-//             url: url,
+//             url: 'categoria/eliminar/' + id,
 //             type: 'POST',
-//             dataType: 'JSON',
-//             async: true,
+//             cache:false,
 //             success: function () {
 //                 $("#tablaCategorias").load(" #tablaCategorias");
+//                 $('#modalEliminar').trigger("reset");
+//                 $(this).removeData('bs.modal');
 //                 $('#modalEliminar').modal('hide'); // show bootstrap modal when complete loaded
 //             },
-//             error: function (jqXHR, textStatus, errorThrown)
+//             error: function ()
 //             {
 //                 console.log();
 //                 alert('Error get data from ajax');
 //             }
 //         });
+//         return false;
 //     });
 // });
 
-$('#modalEliminar').on('show.bs.modal', function(e) {
-    $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-    $('.debug-url').html('URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
-});
+// $('#modalEliminar').on('show.bs.modal', function(e) {
+//     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+//     $('.debug-url').html('URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+// });
 
 // $('#modalEliminar').click(function(){
 //     var ID = $(this).data('id');
@@ -173,3 +173,64 @@ $('#modalEliminar').on('show.bs.modal', function(e) {
 //         url: 'categoria/eliminar/' + ID
 //     });
 // });
+function eliminar(id)
+{
+    $('#eliminar_form')[0].reset(); // Reinicia formulario del modal
+    $('.modal-title').text('Eliminar'); // Set Title to Bootstrap modal title
+    $.ajax({
+    url : "categoria/ver/" + id,
+    type: "POST",
+    dataType: "JSON",
+    contentType: "application/json; charset=utf-8",
+    success: function(data)
+        {
+            $('#modalEliminar').modal('show'); // show bootstrap modal when complete loaded
+            $('[name="input1"]').val(data.input1);
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error get data from ajax');
+        }
+    });
+
+    $("#eliminar_form").submit(function(event){
+        event.preventDefault();
+        var url = 'categoria/eliminar/' + id;
+        var data =  $("#eliminar_form").serialize();
+        $('#btnEliminar').attr('disabled', true); // Deshabilita el boton
+        $('#btnEliminar').val('Eliminando..'); // Cambia el texto del boton
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'JSON',
+            async: true,
+            data: data,
+            success: function (data) {
+            if(data.status) //if success close modal and reload ajax table
+            {
+                $('#modalCategoria').modal('hide'); // show bootstrap modal when complete loaded
+                $("#tablaCategorias").load(" #tablaCategorias");
+                $('#btnEliminar').attr('disabled', false); // Habilita el boton
+                $('#btnEliminar').val('Confirmar'); // Cambia el texto del boton
+            } else {
+                    $('.form-control').removeClass('is-invalid').removeClass('is-valid'); // clear error class
+                    $('.text-danger').empty(); // clear error string
+                    $.each(data.errors, function(key, value) {
+                        $('[name="'+ key +'"]').addClass('is-invalid');
+                        for(var i in value) {
+                            $('[name="'+ key +'"]').parents('.form-group').find('.text-danger').append('<li>' + value[i] + '</li>');
+                        }
+                    });
+                    $('#btnEliminar').attr('disabled', false); // Habilita el boton
+                    $('#btnEliminar').val('Confirmar'); // Cambia el texto del boton
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error get data from ajax');
+                $('#btnGuardar').attr('disabled', false); // Habilita el boton
+                $('#btnGuardar').val('Confirmar'); // Cambia el texto del boton
+            }
+        });
+    });
+};

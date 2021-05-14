@@ -82,36 +82,7 @@ $this ->inlineScript()
             <table class="table table-striped table-bordered">
                 <tbody>
                     <?php if ($colindancias): ?>
-                        <?php
-                            foreach ($colindancias as $r) {
-                                $medidas[] = $r->getMedidaMetros();
-                                $descripcion[] = $r->getDescripcion();
-                            }
-                        ?>
-                        <tr>
-                            <td>Al Norte</td>
-                            <td><?= $medidas[0] ?></td>
-                            <td>Colinda con</td>
-                            <td><?= $descripcion[0] ?></td>
-                        </tr>
-                        <tr>
-                            <td>Al Sur</td>
-                            <td><?= $medidas[1] ?></td>
-                            <td>Colinda con</td>
-                            <td><?= $descripcion[1] ?></td>
-                        </tr>
-                        <tr>
-                            <td>Al Este</td>
-                            <td><?= $medidas[2] ?></td>
-                            <td>Colinda con</td>
-                            <td><?= $descripcion[2] ?></td>
-                        </tr>
-                        <tr>
-                            <td>Al Oeste</td>
-                            <td><?= $medidas[3] ?></td>
-                            <td>Colinda con</td>
-                            <td><?= $descripcion[3] ?></td>
-                        </tr>
+
                     <?php else: ?>
                         <tr>
                             <td colspan="4" class="text-center">No hay colindancias...</td>
@@ -185,7 +156,7 @@ $this ->inlineScript()
                 </div>
                 <div class="form-group">
                     <select class="form-control" id="id_archivo_categoria" name="id_archivo_categoria">
-                        <?php foreach($categorias as $categoria): ?>
+                        <?php foreach ($categorias as $categoria): ?>
                             <?= '<option value="'. $categoria->getIdArchivoCategoria() .'">' . $categoria->getNombre() . '</option>'?>
                         <?php endforeach;?>
                     </select>

@@ -14,9 +14,6 @@ use Laminas\Form\Form;
 
 class BiblitoecaCategoriaForm extends Form
 {
-    /**
-     * Constructor.
-     */
     public function __construct($name = null)
     {
         parent::__construct('bilioteca_categoria_form');
