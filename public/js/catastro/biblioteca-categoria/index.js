@@ -133,10 +133,10 @@ function guardar() {
 }
 
 // $('#modalEliminar').on('show.bs.modal', function (event) {
-//     var button = $(event.relatedTarget)
-//     var id = button.data('id')
+//     var button = $(event.relatedTarget);
+//     var id = button.data('id');
 //     var url = 'categoria/eliminar/' + id;
-//     $('.modal-title').text('Eliminar')
+//     $('.modal-title').text('Eliminar');
 //     $(this).find( ".btn-ok" ).click(function() {
 //         $.ajax({
 //             url: url,
@@ -154,9 +154,22 @@ function guardar() {
 //             }
 //         });
 //     });
-// })
+// });
 
 $('#modalEliminar').on('show.bs.modal', function(e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
     $('.debug-url').html('URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
 });
+
+// $('#modalEliminar').click(function(){
+//     var ID = $(this).data('id');
+//     $('#btn-ok').data('id', ID); //set the data attribute on the modal button
+//     $('.debug-url').html('URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+// });
+
+// $('#btn-ok').click(function(){
+//     var ID = $(this).data('id');
+//     $.ajax({
+//         url: 'categoria/eliminar/' + ID
+//     });
+// });

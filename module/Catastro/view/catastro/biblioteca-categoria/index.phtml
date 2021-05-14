@@ -56,7 +56,7 @@ $this->inlineScript()
                                 <td>
                                     <div class="btn-group">
                                         <a href="#" class="btn btn-warning" data-toggle="modal" onClick="editar('<?= $categoria->getIdArchivoCategoria() ?>')"><i class="fa fa-edit fa-fw"></i></a>
-                                        <a href="#" class="btn btn-danger" title="Eliminar" data-toggle="modal" data-target="#modalEliminar" data-id="<?= $categoria->getIdArchivoCategoria() ?>" data-href="<?= $this->url('categoria/eliminar', ['action' => 'eliminar', 'id' => $categoria->getIdArchivoCategoria()]); ?>"><i class="fas fa-times fa-fw"></i></a>
+                                        <a href="#" class="btn btn-danger" title="Eliminar" data-toggle="modal" data-target="#modalEliminar" data-id="<?= $categoria->getIdArchivoCategoria() ?>" data-href="<?= $this->serverUrl('/categoria/eliminar/' . $categoria->getIdArchivoCategoria()); ?>"><i class="fas fa-times fa-fw"></i></a>
                                     </div>
                                 </td>
                             </tr>
@@ -124,7 +124,7 @@ $this->inlineScript()
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-danger btn-ok">Confirmar</button>
+                <button type="button" class="btn btn-danger btn-ok" id="btn-ok">Confirmar</button>
             </div>
         </div>
     </div>
