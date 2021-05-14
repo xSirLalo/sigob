@@ -138,8 +138,9 @@ class AportacionManager
 
             $contribuyente = new Contribuyente();
             //////Contribuyente/////
-            $contribuyente->setApellidoPaterno($data['apellido_paterno']);
-            $contribuyente->setApellidoMaterno($data['apellido_materno']);
+            $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
+            $contribuyente->setApellidoMaterno(ucfirst($data['apellido_materno']));
+            $contribuyente->setTipoPersona($data['tipo_persona']);
             $contribuyente->setCurp($data['curp']);
             $contribuyente->setCvePersona($data['cve_persona']);
             $contribuyente->setGenero($data['genero']);
