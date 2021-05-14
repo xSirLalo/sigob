@@ -895,12 +895,10 @@ class AportacionController extends AbstractActionController
         if ($req_post['a'][0]['status'] == 1) {
             $status = $req_post['a'][0]['status'];
             $this->aportacionManager->update($contribuyente, $aportacion, $status);
-            $this->flashMessenger()->addSuccessMessage('La aportacion ha sido confirmado');
             $datos = ["resp"=>"ok", "msg"=>"se Confirmo Correctamente"];
         } elseif ($req_post['a'][0]['status'] == 2) {
             $status = $req_post['a'][0]['status'];
             $this->aportacionManager->update($contribuyente, $aportacion, $status);
-            $this->flashMessenger()->addErrorMessage('La aportacion ha sido cancelada');
             $datos = ["resp"=>"ok", "msg"=>"se Cancelo Correctamente"];
         } else {
             $datos = ["resp"=>"no", "msg"=>"Error"];

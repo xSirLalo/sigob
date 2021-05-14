@@ -273,18 +273,19 @@ class AportacionManager
         $aportacion->setTasa($data['tasa_hidden']);
         $aportacion->setEjercicioFiscal($data['ejercicio_fiscal']);
         $aportacion->setEjercicioFiscalFinal($data['ejercicio_fiscal_final']);
-        //$pago_aportacion = $data['tasa_hidden']*$avaluo;
-        //$aportacion->setPago($pago_aportacion);//Pago aportacion
+        $pago_aportacion = $data['tasa_hidden']*$avaluo;
+        $año_default = 1;
+        $año_inicial = $data['ejercicio_fiscal'];
+        $año_final = $data['ejercicio_fiscal_final'];
+        $resultado = $año_final-$año_inicial+$año_default;
+        $aportacion_final = $resultado * $pago_aportacion;
 
         if (is_numeric($data['pago_a'])) {
                 $aportacion->setPago($data['pago_a']);
-            }else{
-                //$aportacion->setPago(substr($data['pago_a'],1));
-                $pago_aportacion = $data['tasa_hidden']*$avaluo;
-                $aportacion->setPago($pago_aportacion);//Pago aportacion
             }
-         //Pago aportacion
-
+            else{
+                $aportacion->setPago($aportacion_final);
+            }
 
         // $currentDate = new \DateTime();
         // $aportacion->setUpdatedAt($currentDate);

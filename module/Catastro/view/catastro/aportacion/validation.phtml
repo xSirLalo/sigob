@@ -19,6 +19,8 @@ $this->headLink()
 $this->inlineScript()
  // Js de la vista
     ->prependFile($this->basePath('js/catastro/aportacion/validation.js'))
+    // Js Notification
+    ->prependFile($this->basePath('assets/js/plugins/bootstrap-notify.min.js'))
     // Css DataTables
    // ->prependFile($this->basePath('assets/js/pages/data-responsive-custom.js'))
     ->prependFile($this->basePath('assets/js/plugins/dataTables.responsive.min.js'))

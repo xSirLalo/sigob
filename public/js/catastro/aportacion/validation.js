@@ -113,8 +113,15 @@ let ConfirmarAportacion = function(aportacion){
 
 				if(data.resp == "ok"){
 
-                //table.ajax.reload();
-                window.location = "/aportacion/validacion";
+                table.ajax.reload();
+                $.notify({
+
+                        message: 'Aportacion Confirmada Correctamente'
+                    },
+                    {
+                        type: 'success',
+                        z_index: 999999,
+                });
 
 				}else{
 
@@ -151,8 +158,15 @@ let CancelarAportacion = function(aportacion){
 
 				if(data.resp == "ok"){
 
-                //table.ajax.reload();
-                window.location = "/aportacion/validacion";
+                table.ajax.reload();
+                $.notify({
+
+                        message: 'Aportacion Cancelada'
+                    },
+                    {
+                        type: 'danger',
+                        z_index: 999999,
+                });
 
 				}else{
 
@@ -184,6 +198,8 @@ let CancelarAportacion = function(aportacion){
     $('#tbody').on( 'click', '#editarAportacion', function () {
 
     $('#editAportacion').modal('show');
+    $('#pago_a').attr('readonly', true);
+
 
     let id = $(this).val();
     $.ajax({
@@ -233,6 +249,14 @@ let CancelarAportacion = function(aportacion){
 				if(data.resp == "ok"){
 
                 table.ajax.reload();
+                $.notify({
+
+                        message: 'Se Actualizo Correctamente'
+                    },
+                    {
+                        type: 'success',
+                        z_index: 999999,
+                });
 
 				}else{
 
@@ -256,6 +280,7 @@ let CancelarAportacion = function(aportacion){
                 tasa_hidden:$("#tasa_hidden").val(),
                 ejercicio_fiscal:$("#ejercicio_fiscal").val(),
                 ejercicio_fiscal_final:$("#ejercicio_fiscal_final").val(),
+                pago_a:$("#pago_a").val()
 
             };
 
