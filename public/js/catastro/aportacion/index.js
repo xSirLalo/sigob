@@ -54,7 +54,7 @@ $(document).ready(function() {
                     orderable: false,
                     render: function(data, type, row, meta){
                         if( row['Estatus'] == 1 ){
-                            $actionBtn = `<span class="badge badge-light-success">Verificado</span>`;
+                            $actionBtn = `<span class="badge badge-light-success">Aprobado</span>`;
                         }else if(row['Estatus'] == 2){
                             $actionBtn = `<span class="badge badge-light-danger">Cancelado</span>`;
                         }

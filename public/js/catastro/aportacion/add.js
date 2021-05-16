@@ -678,6 +678,18 @@ function tipoPersona(){
         $('#div_curp').hide();
         $('#br_año').hide();
         $('#br_mes').hide();
+        ////Para remover las clases////
+        $('#nombreContribuyente').removeClass('is-invalid');
+        $('#razonSocial').removeClass('is-invalid');
+        $('#rfc').removeClass('is-invalid');
+        $('#correoElectronico').removeClass('is-invalid');
+        $('#telefono').removeClass('is-invalid');
+        ////////////////
+        $('#nombreContribuyente').val('');
+        $('#razonSocial').val('');
+        $('#rfc').val('');
+        $('#correoElectronico').val('');
+        $('#telefono').val('');
     }
     else if(tipo_Persona == "F"){
         $('#div_nombre').removeClass('col-sm-12');
@@ -701,6 +713,28 @@ function tipoPersona(){
         $('#div_curp').show();
         $('#br_año').show();
         $('#br_mes').show();
+          ////Para remover las clases////
+        $('#nombreContribuyente').removeClass('is-invalid');
+        $('#apellidoPaterno').removeClass('is-invalid');
+        $('#apellidoMaterno').removeClass('is-invalid');
+        $('#curp').removeClass('is-invalid');
+        $('#rfc').removeClass('is-invalid');
+        $('#dia').removeClass('is-invalid');
+        $('#mes').removeClass('is-invalid');
+        $('#año').removeClass('is-invalid');
+        $('#correoElectronico').removeClass('is-invalid');
+        $('#telefono').removeClass('is-invalid');
+          //////////////////////////////
+        $('#nombreContribuyente').val('');
+        $('#apellidoPaterno').val('');
+        $('#apellidoMaterno').val('');
+        $('#curp').val('');
+        $('#rfc').val('');
+        $('#dia').val('');
+        $('#mes').val('');
+        $('#año').val('');
+        $('#correoElectronico').val('');
+        $('#telefono').val('');
 
 
 
@@ -869,7 +903,7 @@ $(document).ready(function() {
         $('#nombreContribuyente').focus();
         $('#nombreContribuyente').addClass('is-invalid');
 
-        return false;
+        //return false;
 
     }
     else if(nombreContribuyente.length > 0){
@@ -887,7 +921,7 @@ $(document).ready(function() {
         $('#apellidoPaterno').focus();
         $('#apellidoPaterno').addClass('is-invalid');
 
-        return false;
+        //return false;
 
     }
     else if(apellidoPaterno.length > 0){
@@ -905,7 +939,7 @@ $(document).ready(function() {
         $('#apellidoMaterno').focus();
         $('#apellidoMaterno').addClass('is-invalid');
 
-        return false;
+        //return false;
 
     }
     else if(apellidoMaterno.length > 0){
@@ -923,7 +957,7 @@ $(document).ready(function() {
         $('#rfc').focus();
         $('#rfc').addClass('is-invalid');
 
-        return false;
+        //return false;
     }
     else if(rfc.length > 0){
         $('#rfc').removeClass('is-invalid');
@@ -941,7 +975,7 @@ $(document).ready(function() {
         $('#curp').focus();
         $('#curp').addClass('is-invalid');
 
-        return false;
+        //return false;
 
 
     }
@@ -1042,7 +1076,11 @@ if (curp.length > 0){
                 $('#curp').focus();
                 $('#curp').addClass('is-invalid');
 
-        }else if(rfc.length > 0){
+        }
+        // else if(curCorrecto){
+        //     $('#curp').removeClass('is-invalid');
+        // }
+        else if(rfc.length > 0){
 
 
         let rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
