@@ -222,7 +222,7 @@ class AportacionController extends AbstractActionController
                 'select_tasa'       =>  $aportacion->getTasa(),
                 'tasa_hidden'       =>  $aportacion->getTasa(),
                 'ejercicio_f'       =>  $aportacion->getEjercicioFiscal(),
-                'pago_a'            =>  "$".$aportacion->getPago(),
+                'pago_a'            =>  $aportacion->getPago(),
                 'p_hide'            =>  $aportacion->getPago(),
             ];
 

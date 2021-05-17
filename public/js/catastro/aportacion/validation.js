@@ -226,7 +226,7 @@ let CancelarAportacion = function(aportacion){
             $('[name="select_tasa"]').val(data.select_tasa);
             $('[name="tasa_hidden"]').val(data.tasa_hidden);
             $('[name="ejercicio_f"]').val(data.ejercicio_f);
-            $('[name="pago_a"]').val(data.pago_a);
+            $('[name="pago_a"]').val(formatter.format(data.pago_a));
             $('[id="p_hide"]').val(data.p_hide);
             $('.modal-title').text('DIRECCION DE CATASTRO'); // Set Title to Bootstrap modal title
 
