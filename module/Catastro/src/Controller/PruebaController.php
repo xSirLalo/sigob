@@ -19,26 +19,15 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Paginator\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use Catastro\Entity\Contriobuyente;
 use Catastro\Entity\Predio;
 use Catastro\Entity\Aportacion;
-use Catastro\Entity\Biblioteca;
-use Catastro\Entity\BibliotecaCategoria;
 use Catastro\Entity\PredioColindancia;
 use Catastro\Entity\Contribuyente;
 use Catastro\Form\PruebaForm;
 
 class PruebaController extends AbstractActionController
 {
-    /**
-     * Entity manager.
-     * @var Doctrine\ORM\EntityManager
-     */
     private $entityManager;
-    /**
-     * Prueba Manager.
-     * @var Catastro\Service\PruebaManager
-     */
     private $pruebaManager;
     private $opergobserviceadapter;
 

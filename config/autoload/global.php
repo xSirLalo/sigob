@@ -41,7 +41,8 @@ return [
                 'name'    => Filesystem::class,
                 'options' => [
                     // Store cached data in this directory.
-                    'cache_dir' => './data/cache',
+                    // 'cache_dir' => './data/cache', // Windows
+                    'cache_dir' => '/tmp', // Linux
                     // Store cached data for 1 hour.
                     'ttl' => 60*60*1
                 ],

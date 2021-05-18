@@ -38,7 +38,8 @@
         "laminas/laminas-cache": "^2.9.0",
         "doctrine/migrations": "^3.1",
         "doctrine/doctrine-orm-module": "^3.2",
-        "friendsofphp/php-cs-fixer": "^2.18"
+        "friendsofphp/php-cs-fixer": "^2.18",
+        "webimpress/safe-writer": "^2.2"
     },
     "autoload": {
         "psr-4": {
@@ -78,7 +79,6 @@
         "test": "Run unit tests."
     },
     "require-dev": {
-        "laminas/laminas-developer-tools": "^2.0.1",
         "laminas/laminas-test": "^3.3.0"
     }
 }

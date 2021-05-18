@@ -77,3 +77,27 @@ sudo mv config/autoload/doctrine.local.php.dist config/autoload/doctrine.local.p
 sudo mv config/autoload/local.php.dist config/autoload/local.php
 
 sudo chmod -R 777 data/
+
+Instalacion Linux con LAMP
+
+sudo nano /etc/apache2/sites-available/sigob.test.conf
+
+<Directory /var/www/sigob/public>
+    Require all granted
+    AllowOverride All
+</Directory>
+<VirtualHost *:80>
+	ServerAdmin admin@sigob.test
+	ServerName sigob.test
+	ServerAlias www.sigob.test
+	DocumentRoot /var/www/sigob/public
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+a2enmod rewrite
+systemctl restart apache2
+
+sudo nano /etc/hosts
+
+127.0.0.1	sigob.test
