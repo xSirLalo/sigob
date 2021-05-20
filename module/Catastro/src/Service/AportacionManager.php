@@ -29,113 +29,8 @@ class AportacionManager
 
 
 
-    public function guardar($data)
-    {
-        $aportacion = new Aportacion();
-        $predio = new Predio();
-
-        // $contribuyente->setRfc($data['rfc']);
-        // $this->entityManager->flush();
-
-        // $cvepredio  = $data['cvepredio'];
-        $idcontribuyente = $data['parametro'];
-
-        ///Guarda el Predio///
-        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($idcontribuyente);
-
-        $predio->setIdContribuyente($contribuyentebd);
-        $predio->setParcela($data['parcela']);
-        $predio->setManzana($data['manzana']);
-        $predio->setLote($data['lote']);
-        $predio->setLocal($data['local']);
-        $predio->setCategoria($data['categoria']);
-        $predio->setCondicion($data['condicion']);
-        $predio->setTitular($data['titular']);
-        $predio->setUbicacion($data['ubicacion']);
-        $predio->setLocalidad($data['localidad']);
-        $predio->setAntecedentes($data['antecedentes']);
-        $predio->setClaveCatastral($data['clave_catastral']);
-        $predio->setRegimenPropiedad($data['regimen_propiedad']);
-        $predio->setTitularAnterior($data['titular_anterior']);
-
-        $this->entityManager->persist($predio);
-        $this->entityManager->flush();
-
-        ///Guarda el Predio Colindacias///
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
-        $predioColindacia = new PredioColindancia();
-        $predioColindacia->setIdPredio($prediobd);
-        $predioColindacia->setDescripcion($data['con_norte']);
-        $predioColindacia->setMedidaMetros($data['norte']);
-        $predioColindacia->setOrientacionGeografica("N");
-        $this->entityManager->persist($predioColindacia);
-        $this->entityManager->flush();
-
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
-        $predioColindacia = new PredioColindancia();
-        $predioColindacia->setIdPredio($prediobd);
-        $predioColindacia->setDescripcion($data['con_sur']);
-        $predioColindacia->setMedidaMetros($data['sur']);
-        $predioColindacia->setOrientacionGeografica("S");
-        $this->entityManager->persist($predioColindacia);
-        $this->entityManager->flush();
-
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
-        $predioColindacia = new PredioColindancia();
-        $predioColindacia->setIdPredio($prediobd);
-        $predioColindacia->setDescripcion($data['con_este']);
-        $predioColindacia->setMedidaMetros($data['este']);
-        $predioColindacia->setOrientacionGeografica("E");
-        $this->entityManager->persist($predioColindacia);
-        $this->entityManager->flush();
-
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
-        $predioColindacia = new PredioColindancia();
-        $predioColindacia->setIdPredio($prediobd);
-        $predioColindacia->setDescripcion($data['con_oeste']);
-        $predioColindacia->setMedidaMetros($data['oeste']);
-        $predioColindacia->setOrientacionGeografica("O");
-        $this->entityManager->persist($predioColindacia);
-        $this->entityManager->flush();
-
-        ///Guarda la Aportacion///
-        $contribuyentebd = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($idcontribuyente);
-        $prediobd = $this->entityManager->getRepository(Predio::class)->findOneByIdContribuyente($idcontribuyente);
-
-        $aportacion->setIdContribuyente($contribuyentebd);
-        $aportacion->setIdPredio($prediobd);
-        $aportacion ->setEstatus($data['status']);//Estatus
-        $fecha = new \DateTime($data['vig']);//fecha
-        $aportacion->setFecha($fecha);
-        $fecha_adquicision = new \DateTime($data['fecha_adquisicion']);
-        $aportacion->setFechaAdquicision($fecha_adquicision);
-        $aportacion->setObservaciones($data['observaciones']);
-        $aportacion->setMetrosTerreno($data['terreno']);//Metros2 Terrreno
-        $aportacion->setValorZona($data['valor_m2_zona']);//Valor Zona
-        $valor_terreno = $data['terreno'] * $data['valor_m2_zona'];
-        $aportacion->setValorTerreno($valor_terreno);//Valor terreno
-        $aportacion->setMetrosConstruccion($data['sup_m']);//Metros2 Metros2 Construccion
-        $aportacion->setValorMtsConstruccion($data['valor']);//VALOR M2 CONSTRUCCION
-        $valor_construnccion = $data['sup_m']*$data['valor'];
-        $aportacion->setValorConstruccion($valor_construnccion);//Valor Construccion
-        $avaluo = $valor_terreno + $valor_construnccion;
-        $aportacion->setAvaluo($avaluo);//Avaluo Total
-        $aportacion->setTasa($data['tasa_hidden']);
-        $aportacion->setEjercicioFiscal($data['ejercicio_f']);
-        $pago_aportacion = $data['tasa_hidden']*$avaluo;
-        $aportacion->setPago($pago_aportacion);//Pago aportacion
-        $aportacion->setFactura($data['factura']);
-
-        $this->entityManager->persist($aportacion);
-        $this->entityManager->flush();
-        if ($aportacion->getIdAportacion() > 0) {
-            return $aportacion;
-        }
-
-    }
     public function guardarPersona($data)
     {
-
             $contribuyente = new Contribuyente();
             //////Contribuyente/////
             $contribuyente->setApellidoPaterno(ucfirst($data['apellido_paterno']));
@@ -162,26 +57,7 @@ class AportacionManager
             }
 
             return 0;
-
     }
-
-    public function actualizarContribuyente($contribuyente, $data)
-    {
-
-        $contribuyente->setNombre($data['contribuyente']);
-        // $contribuyente->setFactura($data['factura']);
-        $contribuyente->setGiroComercial($data['giro_comercial']);
-        $contribuyente->setNombreComercial($data['nombre_comercial']);
-        $contribuyente->setTenencia($data['tenencia']);
-        $contribuyente->setRfc($data['rfc']);
-        $contribuyente->setUsoDestino($data['uso_destino']);
-
-        // $currentDate = new \DateTime();
-        // $contribuyente->setUpdatedAt($currentDate);
-
-        $this->entityManager->flush();
-    }
-
 
     public function update($contribuyente,$aportacion, $status)
     {
@@ -193,10 +69,8 @@ class AportacionManager
                 $nombre              = $aportacion->getIdContribuyente()->getNombre();
                 $apellido_paterno    = $aportacion->getIdContribuyente()->getApellidoPaterno();
                 $apellido_materno    = $aportacion->getIdContribuyente()->getApellidoMaterno();
-                // $genero              = $aportacion->getIdContribuyente()->get();
-                $genero              = "H";
-                // $estado_civiL        = $aportacion->getIdContribuyente()->getNombre();
-                $estado_civiL        = "Soltero";
+                $genero              = $aportacion->getIdContribuyente()->getGenero();
+                $estado_civiL        = $aportacion->getIdContribuyente()->getEstadoCivil();
                 $correo_electronico  = $aportacion->getIdContribuyente()->getCorreo();
                 $rfc                 = $aportacion->getIdContribuyente()->getRfc();
                 $curp                = $aportacion->getIdContribuyente()->getCurp();
@@ -237,28 +111,11 @@ class AportacionManager
         $this->entityManager->flush();
         }
 
-
     }
 
-    public function actualizar($aportacion, $data)
-    {
-        $aportacion->setPago($data['pago']);
-
-        $currentDate = new \DateTime();
-        $aportacion->setUpdatedAt($currentDate);
-
-        $this->entityManager->flush();
-    }
-
-    public function eliminar($aportacion)
-    {
-        $this->entityManager->remove($aportacion);
-
-        $this->entityManager->flush();
-    }
     public function actualizarValidation($aportacion, $data)
     {
-        //$aportacion->setPago($data['pago_a']);
+
         $fecha = new \DateTime($data['vig']);//fecha
         $aportacion->setFecha($fecha);
         $aportacion->setMetrosTerreno($data['terreno']);
@@ -386,8 +243,6 @@ class AportacionManager
             $this->entityManager->persist($aportacion);
             $this->entityManager->flush();
 
-
-
             if ($aportacion->getIdAportacion() > 0) {
                 return $aportacion;
             }
@@ -475,6 +330,8 @@ class AportacionManager
             $predio->setFechaDocumento($fecha_documento);
             $predio->setLoteConflicto($datos['loteConflicto']);
             $predio->setObservaciones($datos['observaciones']);
+            $predio->setTipoPredio(3);
+
             $this->entityManager->persist($predio);
             $this->entityManager->flush();
 
@@ -516,36 +373,7 @@ class AportacionManager
 
     }
 
-    public function actualizarAportacion($datos)
-    {
-        $aportacionId = $datos['Idaportacion'];
-        $apotacion = $this->entityManager->getRepository(Aportacion::class)->findOneByIdAportacion($aportacionId);
-        $contribuyenteId = $apotacion->getIdContribuyente()->getIdContribuyente();
-        $predioId = $apotacion->getIdPredio()->getIdPredio();
-        $predio = $this->entityManager->getRepository(Predio::class)->findOneByIdPredio($predioId);
-        $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($contribuyenteId);
-
-
-        $predio->setParcela($datos['parcela']);
-        $predio->setManzana($datos['manzana']);
-        $predio->setLote($datos['lote']);
-        $predio->setLocal($datos['local']);
-        $predio->setCategoria($datos['categoria']);
-        $predio->setCondicion($datos['condicion']);
-        $predio->setTitular($datos['titular']);
-        $predio->setUbicacion($datos['ubicacion']);
-        $predio->setLocalidad($datos['localidad']);
-        $predio->setAntecedentes($datos['antecedentes']);
-        $predio->setClaveCatastral($datos['claveCatastral']);
-        // $predio->setRegimenPropiedad($datos['regimenPropiedad']);
-        $fecha_adquicision = new \DateTime($datos['fechaAdquicision']);
-        $predio->setFechaAdquicision($fecha_adquicision);
-
-        $this->entityManager->persist($predio);
-        $this->entityManager->flush();
-
-    }
-///////////Agregar Colindancias Datatble/////////
+    /////Agregar Colindancias Datatble/////////
     public function guardarColindancias($datos)
         {
             if($datos['Idaportacion'] > 0 ){
@@ -600,14 +428,14 @@ class AportacionManager
 
             return 0;
         }
-///////////Eliminar Colindancias Datatble/////////
+   //////Eliminar Colindancias Datatble/////////
     public function eliminarColindancias($predioColindancia)
     {
         $this->entityManager->remove($predioColindancia);
         $this->entityManager->flush();
     }
-///////////Actualizar Colindancias Datatble/////////
-public function actualizarColindancias($datos)
+    ////Actualizar Colindancias Datatble/////////
+    public function actualizarColindancias($datos)
     {
         $predioColindanciasId = $datos['id'];
         $predioColindancias = $this->entityManager->getRepository(PredioColindancia::class)->findOneByIdPredioColindancia($predioColindanciasId);

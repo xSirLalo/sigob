@@ -199,9 +199,9 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="estastus", type="string", length=1, nullable=true, options={"fixed"=true})
+     * @ORM\Column(name="estatus", type="string", length=1, nullable=true, options={"fixed"=true})
      */
-    private $estastus;
+    private $estatus;
 
     /**
      * @var string|null
@@ -223,6 +223,13 @@ class Predio
      * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
      */
     private $cvePredio;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="tipo_predio", type="integer", nullable=true)
+     */
+    private $tipoPredio;
 
     /**
      * @var \DateTime|null

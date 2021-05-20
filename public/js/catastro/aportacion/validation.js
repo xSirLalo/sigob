@@ -267,25 +267,149 @@ let CancelarAportacion = function(aportacion){
 		}, 'json');
 	};
 
-    $("#btnGuardar").click(function(e){
-        event.preventDefault(e);
+    $("#btnGuardar").click(function(){
+
+        let terreno              = $("#terreno").val();
+        let valor_zona           = $("#valor_zona").val();
+        let sup_m                = $("#sup_m").val();
+        let valor_c              = $("#valor_c").val();
+        let tasa                 = $("#tasa_i").val();
+        let ejercicio_fiscal           = $("#ejercicio_fiscal").val();
+        let ejercicio_fiscal_final     = $("#ejercicio_fiscal_final").val();
         let updateAportacion = {
 
-                id:$('#id_aportacion').val(),
-                vig:$("#vig").val(),
-                terreno:$("#terreno").val(),
-                valor_m2_zona:$("#valor_zona").val(),
-                sup_m:$("#sup_m").val(),
-                valor:$("#valor").val(),
-                tasa_hidden:$("#tasa_hidden").val(),
-                ejercicio_fiscal:$("#ejercicio_fiscal").val(),
-                ejercicio_fiscal_final:$("#ejercicio_fiscal_final").val(),
-                pago_a:$("#pago_a").val()
+            id:$('#id_aportacion').val(),
+            vig:$("#vig").val(),
+            terreno:$("#terreno").val(),
+            valor_m2_zona:$("#valor_zona").val(),
+            sup_m:$("#sup_m").val(),
+            valor:$("#valor").val(),
+            tasa_hidden:$("#tasa_hidden").val(),
+            ejercicio_fiscal:$("#ejercicio_fiscal").val(),
+            ejercicio_fiscal_final:$("#ejercicio_fiscal_final").val(),
+            pago_a:$("#pago_a").val()
 
             };
+        if(terreno.length == 0)
+            {
+                    $.notify({
 
-            ActualizarAportacion(new Array(updateAportacion));
-            $('#editAportacion').modal('hide');
+                            message: 'Por favor, Ingrese los Metros Terreno.'
+                        },
+                        {
+                            type: 'danger',
+                            z_index: 999999,
+                        });
+                        $("#terreno").focus();
+                        $('#terreno').addClass('is-invalid');
+                        return false;
+
+            }
+            else if(terreno.length > 0){
+                $('#terreno').removeClass('is-invalid');
+            }
+            if(valor_zona.length == 0)
+            {
+                    $.notify({
+
+                            message: 'Por favor, El Valor de Metros Zona.'
+                        },
+                        {
+                            type: 'danger',
+                            z_index: 999999,
+                        });
+                        $("#valor_zona").focus();
+                        $('#valor_zona').addClass('is-invalid');
+                        return false;
+
+            }
+            else if(valor_zona.length > 0){
+                $('#valor_zona').removeClass('is-invalid');
+            }
+            if(sup_m.length == 0)
+            {
+                    $.notify({
+
+                            message: 'Por favor, Ingrese los Metros Construccion.'
+                        },
+                        {
+                            type: 'danger',
+                            z_index: 999999,
+                        });
+                        $("#sup_m").focus();
+                        $('#sup_m').addClass('is-invalid');
+                        return false;
+
+            }
+            else if(sup_m.length > 0){
+                $('#sup_m').removeClass('is-invalid');
+            }
+            if(valor_c.length == 0)
+            {
+                    $.notify({
+
+                            message: 'Por favor, Seleccione Valores de Construcción.'
+                        },
+                        {
+                            type: 'danger',
+                            z_index: 999999,
+                        });
+                        $("#valor_c").focus();
+                        $('#valor_c').addClass('is-invalid');
+                        return false;
+
+            }
+            else if(valor_c.length > 0){
+                $('#valor_c').removeClass('is-invalid');
+            }
+            if(tasa.length == 0)
+            {
+                    $.notify({
+
+                            message: 'Por favor, Seleccione la Tasa Impositiva.'
+                        },
+                        {
+                            type: 'danger',
+                            z_index: 999999,
+                        });
+                        $("#tasa_i").focus();
+                        $('#tasa_i').addClass('is-invalid');
+                        return false;
+
+            }
+            else if(tasa.length > 0){
+                $('#tasa_i').removeClass('is-invalid');
+            }
+            if(ejercicio_fiscal > ejercicio_fiscal_final){
+                    $.notify({
+
+                            message: 'El Año de Ejercicio Fiscal no debe ser Mayor que Ejercicio Fiscal Final'
+                        },
+                        {
+                            type: 'danger',
+                            z_index: 999999,
+                        });
+                        $("#ejercicio_fiscal").focus();
+                        $('#ejercicio_fiscal').addClass('is-invalid');
+                        $("#ejercicio_fiscal_final").focus();
+                        $('#ejercicio_fiscal_final').addClass('is-invalid');
+                        return false;
+
+            }
+            else if(ejercicio_fiscal < ejercicio_fiscal_final || ejercicio_fiscal == ejercicio_fiscal_final   )
+            {
+                $("#ejercicio_fiscal").focus();
+                $('#ejercicio_fiscal').removeClass('is-invalid');
+                $("#ejercicio_fiscal_final").focus();
+                $('#ejercicio_fiscal_final').removeClass('is-invalid');
+
+            }
+            if(terreno.length > 0 && valor_zona.length > 0 && sup_m.length > 0 && valor_c.length > 0 && tasa.length > 0){
+                ActualizarAportacion(new Array(updateAportacion));
+                $('#editAportacion').modal('hide');
+            }
+
+
     });
 
 

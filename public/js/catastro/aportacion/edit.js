@@ -892,6 +892,7 @@ $(document).ready(function() {
     let ejercicio_fiscal           = $("#ejercicio_fiscal").val();
     let ejercicio_fiscal_final     = $("#ejercicio_fiscal_final").val();
 
+
     /////Para Validar filas de Colindacias/////////
     var table = $('#colindacias').DataTable();
     //Muestro la cantidad de filas
@@ -2236,6 +2237,18 @@ function tipoPersona(){
         $('#div_curp').hide();
         $('#br_año').hide();
         $('#br_mes').hide();
+        ////Para remover las clases////
+        $('#nombreContribuyente').removeClass('is-invalid');
+        $('#razonSocial').removeClass('is-invalid');
+        $('#rfc').removeClass('is-invalid');
+        $('#correoElectronico').removeClass('is-invalid');
+        $('#telefono').removeClass('is-invalid');
+        ////////////////
+        $('#nombreContribuyente').val('');
+        $('#razonSocial').val('');
+        $('#rfc').val('');
+        $('#correoElectronico').val('');
+        $('#telefono').val('');
     }
     else if(tipo_Persona == "F"){
         $('#div_nombre').removeClass('col-sm-12');
@@ -2257,6 +2270,28 @@ function tipoPersona(){
         $('#div_curp').show();
         $('#br_año').show();
         $('#br_mes').show();
+          ////Para remover las clases////
+        $('#nombreContribuyente').removeClass('is-invalid');
+        $('#apellidoPaterno').removeClass('is-invalid');
+        $('#apellidoMaterno').removeClass('is-invalid');
+        $('#curp').removeClass('is-invalid');
+        $('#rfc').removeClass('is-invalid');
+        $('#dia').removeClass('is-invalid');
+        $('#mes').removeClass('is-invalid');
+        $('#año').removeClass('is-invalid');
+        $('#correoElectronico').removeClass('is-invalid');
+        $('#telefono').removeClass('is-invalid');
+          //////////////////////////////
+        $('#nombreContribuyente').val('');
+        $('#apellidoPaterno').val('');
+        $('#apellidoMaterno').val('');
+        $('#curp').val('');
+        $('#rfc').val('');
+        $('#dia').val('');
+        $('#mes').val('');
+        $('#año').val('');
+        $('#correoElectronico').val('');
+        $('#telefono').val('');
 
 
 

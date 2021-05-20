@@ -225,6 +225,13 @@ class Predio
     private $cvePredio;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="tipo_predio", type="integer", nullable=true)
+     */
+    private $tipoPredio;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
@@ -954,6 +961,30 @@ class Predio
     public function getCvePredio()
     {
         return $this->cvePredio;
+    }
+
+    /**
+     * Set tipoPredio.
+     *
+     * @param int|null $tipoPredio
+     *
+     * @return Predio
+     */
+    public function setTipoPredio($tipoPredio = null)
+    {
+        $this->tipoPredio = $tipoPredio;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoPredio.
+     *
+     * @return int|null
+     */
+    public function getTipoPredio()
+    {
+        return $this->tipoPredio;
     }
 
     /**
