@@ -538,6 +538,7 @@ $('#modalColindancias').on( 'click', function () {
         let filas = parseInt(table.rows().count());
 
         this.Idaportacion = $("#id_aportacion").val();
+        this.status       = 3;
         ///Colindancias///
         if(filas < 4){
         this.puntoCardinal            = $("#puntoCardinal").val();
@@ -1550,6 +1551,7 @@ $('#contribuyenteId').change(function(){
 /////////Guardar Contribuyente metodo post////////////
 $(document).ready(function() {
     let Contribuyente  = function(){
+        this.status              = 3;
         this.Idaportacion        = $("#id_aportacion").val();
         this.Idcontribuyente     = $("#idContribuyente").val();
         this.tipoContribuyente   = $("#tipoContribuyente").val();

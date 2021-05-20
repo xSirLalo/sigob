@@ -746,6 +746,7 @@ function tipoPersona(){
 /////////Guardar Contribuyente metodo post////////////
 $(document).ready(function() {
     let Contribuyente  = function(){
+        this.status              = 0;
         this.Idaportacion        = $("#id_aportacion").val();
         this.Idcontribuyente     = $("#idContribuyente").val();
         this.tipoContribuyente   = $("#tipoContribuyente").val();
@@ -2158,6 +2159,7 @@ $('#modalColindancias').on( 'click', function () {
 
         this.Idaportacion = $("#id_aportacion").val();
         this.Idpredio     = $("#id_predio").val();
+        this.status       = 0;
         ///Colindancias///
         if(filas < 4){
         this.puntoCardinal            = $("#puntoCardinal").val();

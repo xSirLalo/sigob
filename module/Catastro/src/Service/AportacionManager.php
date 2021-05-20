@@ -238,8 +238,8 @@ class AportacionManager
             // //////Aportacion/////
             $aportacion->setIdContribuyente($contribuyente);
             $aportacion->setIdPredio($predio);
+            $aportacion->setEstatus($datos['status']);
 
-            $aportacion->setEstatus(0);
             $this->entityManager->persist($aportacion);
             $this->entityManager->flush();
 
@@ -414,7 +414,8 @@ class AportacionManager
             //////Aportacion/////
             $aportacion->setIdContribuyente($contribuyente);
             $aportacion->setIdPredio($predio);
-            $aportacion->setEstatus(0);
+            //$aportacion->setEstatus(0);
+            $aportacion->setEstatus($datos['status']);
 
 
             $this->entityManager->persist($aportacion);

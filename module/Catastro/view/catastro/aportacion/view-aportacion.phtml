@@ -192,14 +192,7 @@ $form->prepare();
                             <div class="col-sm-4">
                                 <div class="form-group ">
                                     <label>Regimen de Propiedad</label>
-                                    <select class="js-example-basic-single custom-select w-30"name="select_usoDestino" id="regimenPropiedad">
-                                        <option value="0">Buscar...</option>
-                                        <?php if ($regimenPropiedades): ?>
-                                            <?php foreach ($regimenPropiedades as $regimenPropiedad):?>
-                                                <option value="<?= $regimenPropiedad->getNombreRegimenPropiedad()?>"><?=$regimenPropiedad->getNombreRegimenPropiedad()?></option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </select>
+                                    <input class="form-control" type="text" id="regimenPropiedad" name="" placeholder="Regimen de Propiedad">
                                 </div>
                             </div>
                             <div class="col-sm-4">
