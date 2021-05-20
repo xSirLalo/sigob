@@ -1955,7 +1955,7 @@ $(document).ready(function() {
                 return false;
 
     }
-    else if(ejercicio_fiscal < ejercicio_fiscal_final || ejercicio_fiscal == ejercicio_fiscal_final   )
+    else if(ejercicio_fiscal < ejercicio_fiscal_final || ejercicio_fiscal == ejercicio_fiscal_final )
     {
         $("#ejercicio_fiscal").focus();
         $('#ejercicio_fiscal').removeClass('is-invalid');
