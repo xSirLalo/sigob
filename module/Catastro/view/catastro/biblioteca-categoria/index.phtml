@@ -151,7 +151,7 @@ $this->inlineScript()
             <div class="modal-footer">
                 <?= $this->formHidden($formEliminar->get('csrf')); ?>
                 <?= $this->formElementErrors($formEliminar->get('csrf')); ?>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <?= $this->formButton($formEliminar->get('btnCerrar')); ?>
                 <?= $this->formSubmit($formEliminar->get('btnEliminar')); ?>
                 <?= $this->form()->closeTag(); ?>
             </div>

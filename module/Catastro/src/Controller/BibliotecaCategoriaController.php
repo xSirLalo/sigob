@@ -139,10 +139,10 @@ class BibliotecaCategoriaController extends AbstractActionController
         $formEliminar = new EliminarForm();
         $request = $this->getRequest();
 
-        $id = (int)$this->params()->fromRoute('id', -1);
-
+        $id = $_POST['input1'];
+        // $id = (int)$this->params()->fromRoute('id', -1);
         if ($request->isXmlHttpRequest()) {
-            if ($id < 0) {
+            if ($id<0) {
                 $this->getResponse()->setStatusCode(404);
                 return;
             }
@@ -154,19 +154,19 @@ class BibliotecaCategoriaController extends AbstractActionController
                 return;
             }
 
-            $data = $this->params()->fromPost();
+            // $data = $this->params()->fromPost();
             $formEliminar->setData($request->getPost());
 
             if ($formEliminar->isValid()) {
-                $data = $formEliminar->getData();
+                // $data = $formEliminar->getData();
                 $data['status'] = true;
-                if ($request->getPost()->get('btnEliminar') == 'Confirmar') {
-                    $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
-                    $this->bibliotecaCategoriaManager->eliminar($categoria);
-                }
-                // $this->bibliotecaCategoriaManager->eliminar($categoria);
+                // if ($request->getPost()->get('btnEliminar') == 'Confirmar') {
+                //     $this->flashMessenger()->addSuccessMessage('Se elimino con éxito!');
+                //     $this->bibliotecaCategoriaManager->eliminar($categoria);
+                // }
+                $this->bibliotecaCategoriaManager->eliminar($categoria);
 
-                // $this->flashMessenger()->addSuccessMessage('Se elimino con éxito');
+                $this->flashMessenger()->addSuccessMessage('Se elimino con éxito');
             } else {
                 $data['status'] = false;
                 $data['errors'] = $formEliminar->getMessages();

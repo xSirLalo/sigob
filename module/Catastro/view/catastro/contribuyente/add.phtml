@@ -165,8 +165,8 @@ $form->prepare();
                 <div class="text-danger">
                     <?= $this->formElementErrors($form->get('csrf')); ?>
                 </div>
-                <?= $this->formSubmit($form->get('btnGuardar')); ?>
                 <a href="<?= $this->url("contribuyente") ?>" class="btn btn-secondary"> Volver atrás</a>
+                <?= $this->formSubmit($form->get('btnGuardar')); ?>
             <?= $this->form()->closeTag(); ?>
             <!-- [ closeTag ] start -->
         </div>

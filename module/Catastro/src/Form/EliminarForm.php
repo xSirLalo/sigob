@@ -28,7 +28,7 @@ class EliminarForm extends Form
             'type' => Element\Number::class,
             'name' => 'input1',
             'attributes' => [
-                // 'hidden'=> true,
+                'hidden'=> true,
                 'id' => 'input1',
                 'style' => 'color:red;'
             ]
@@ -45,9 +45,21 @@ class EliminarForm extends Form
         ]);
 
         $this->add([
+            'type' => Element\Button::class,
+            'name' => 'btnCerrar',
+            'options' => [
+                'label' => 'Cerrar'
+            ],
+            'attributes' => [
+                'data-dismiss' => 'modal',
+                'class' => 'btn btn-secondary',
+                'id' => 'btnCerrar'
+            ]
+        ]);
+
+        $this->add([
             'type' => Element\Submit::class,
             'name' => 'btnEliminar',
-            'options' => ['label' => 'Login'],
             'attributes' => [
                 'value' => 'Confirmar',
                 'class' => 'btn btn-danger btn-ok'

@@ -85,6 +85,18 @@ return [
                             ],
                         ],
                     ],
+                    'verAjax' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/verAjax[/:id]',
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'action' => 'viewAjax',
+                            ],
+                        ],
+                    ],
                     'editar' => [
                         'type' => 'literal',
                         'options' => [
@@ -727,7 +739,7 @@ return [
                 ['actions' => ['index', 'add'], 'allow' => '@'],
             ],
             Controller\ContribuyenteController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search', 'searchPersona', 'autofillPersona'], 'allow' => '@']
+                ['actions' => ['index', 'add', 'view', 'viewAjax', 'edit', 'delete', 'pdf', 'excel', 'datatable', 'search', 'searchPersona', 'autofillPersona'], 'allow' => '@']
             ],
             Controller\PredioController::class => [
                 ['actions' => ['index', 'add', 'view', 'edit', 'pdf', 'excel', 'datatable', 'searchCatastral', 'autofillCatastral'], 'allow' => '@']

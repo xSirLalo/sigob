@@ -298,6 +298,7 @@ class ContribuyenteController extends AbstractActionController
 
     public function viewAction()
     {
+        $form = new ContribuyenteForm();
         $contribuyenteId = (int)$this->params()->fromRoute('id', -1);
         $categorias = $this->bibliotecaManager->categoriasList();
 
@@ -327,12 +328,136 @@ class ContribuyenteController extends AbstractActionController
         return new ViewModel([
             'categorias' =>  $categorias,
             'archivos' =>  $archivos,
+            'form' => $form,
             'contribuyenteId' =>  $contribuyenteId,
             'contribuyente' =>  $contribuyente,
         ]);
     }
 
+    public function viewAjaxAction()
+    {
+        $request = $this->getRequest();
+        $id = (int)$this->params()->fromRoute('id', -1);
+
+        if ($request->isXmlHttpRequest()) {
+            if ($id<0) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            $resultado = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
+
+            if ($resultado == null) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            $data = [
+                'id' => $resultado->getIdContribuyente(),
+                'tipo_persona' => $resultado->getTipoPersona(),
+                'nombre' => $resultado->getNombre(),
+                'apellido_paterno' => $resultado->getApellidoPaterno(),
+                'apellido_materno' => $resultado->getApellidoMaterno(),
+                'estado_civil' => $resultado->getEstadoCivil(),
+                'fecha_nacimiento' => $resultado->getFechaNacimiento(),
+                'razon_social' => $resultado->getRazonSocial(),
+                'rfc' => $resultado->getRfc(),
+                'curp' => $resultado->getCurp(),
+                'genero' => $resultado->getGenero(),
+                'correo' => $resultado->getCorreo(),
+                'telefono' => $resultado->getTelefono(),
+            ];
+
+            $json = new JsonModel($data);
+            $json->setTerminal(true);
+            return $json;
+        } else {
+            echo 'No Ajax';
+        }
+    }
+
     public function editAction()
+    {
+        $form = new ContribuyenteForm();
+        $request = $this->getRequest();
+
+        $id = $_POST['input1'];
+
+        if ($request->isXmlHttpRequest()) {
+            if ($id<0) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            $contribuyente = $this->entityManager->getRepository(Contribuyente::class)->findOneByIdContribuyente($id);
+
+            if ($contribuyente == null) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+
+            $data = $this->params()->fromPost();
+            $form->setData($request->getPost());
+            $form->setValidationGroup(['tipo_persona']);
+            if ($form->isValid()) {
+                
+                $data = $form->getData();
+                $tipoPersona = $data['tipo_persona'];
+
+                if ($tipoPersona=='F') { // Persona Física
+                    $form->setValidationGroup([
+                        'input1', // ID Contribuyente
+                        'tipo_persona',
+                        'nombre',
+                        'apellido_paterno',
+                        'apellido_materno',
+                        'fecha_nacimiento',
+                        'estado_civil',
+                        'genero',
+                        'rfc',
+                        'curp',
+                        'correo',
+                        'telefono',
+                    ]);
+                    $fecha_nacimiento = $formData['year'].'-'.$formData['month'].'-'.$formData['day'];
+                } elseif ($tipoPersona=='M') { // Persona Moral
+                    $form->setValidationGroup([
+                        'input1', // ID Contribuyente
+                        'tipo_persona',
+                        'nombre',
+                        'razon_social',
+                        'rfc',
+                        'correo',
+                        'telefono',
+                    ]);
+                    $fecha_nacimiento = null;
+                }
+
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $data['status'] = true;
+
+                    $this->contribuyenteManager->actualizarContribuyente($contribuyente, $data);
+
+                    $this->flashMessenger()->addSuccessMessage('Se actualizo con éxito');
+                } else {
+                    $data['status'] = false;
+                    $data['errors'] = $form->getMessages();
+                };
+            } else {
+                    $data['status'] = false;
+                    $data['errors'] = $form->getMessages();
+                };
+
+            $json = new JsonModel($data);
+            $json->setTerminal(true);
+            return $json;
+        } else {
+            echo 'No Ajax';
+        }
+    }
+
+    public function edit1Action()
     {
         $form = new ContribuyenteForm();
         $request = $this->getRequest();
