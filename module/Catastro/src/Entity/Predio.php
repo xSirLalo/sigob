@@ -199,9 +199,9 @@ class Predio
     /**
      * @var string|null
      *
-     * @ORM\Column(name="estastus", type="string", length=1, nullable=true, options={"fixed"=true})
+     * @ORM\Column(name="estatus", type="string", length=1, nullable=true, options={"fixed"=true})
      */
-    private $estastus;
+    private $estatus;
 
     /**
      * @var string|null
@@ -223,6 +223,13 @@ class Predio
      * @ORM\Column(name="cve_predio", type="bigint", nullable=true)
      */
     private $cvePredio;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="tipo_predio", type="integer", nullable=true)
+     */
+    private $tipoPredio;
 
     /**
      * @var \DateTime|null
@@ -861,27 +868,27 @@ class Predio
     }
 
     /**
-     * Set estastus.
+     * Set estatus.
      *
-     * @param string|null $estastus
+     * @param string|null $estatus
      *
      * @return Predio
      */
-    public function setEstastus($estastus = null)
+    public function setEstatus($estatus = null)
     {
-        $this->estastus = $estastus;
+        $this->estatus = $estatus;
 
         return $this;
     }
 
     /**
-     * Get estastus.
+     * Get estatus.
      *
      * @return string|null
      */
-    public function getEstastus()
+    public function getEstatus()
     {
-        return $this->estastus;
+        return $this->estatus;
     }
 
     /**
@@ -954,6 +961,30 @@ class Predio
     public function getCvePredio()
     {
         return $this->cvePredio;
+    }
+
+    /**
+     * Set tipoPredio.
+     *
+     * @param int|null $tipoPredio
+     *
+     * @return Predio
+     */
+    public function setTipoPredio($tipoPredio = null)
+    {
+        $this->tipoPredio = $tipoPredio;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoPredio.
+     *
+     * @return int|null
+     */
+    public function getTipoPredio()
+    {
+        return $this->tipoPredio;
     }
 
     /**

@@ -330,6 +330,8 @@ class AportacionManager
             $predio->setFechaDocumento($fecha_documento);
             $predio->setLoteConflicto($datos['loteConflicto']);
             $predio->setObservaciones($datos['observaciones']);
+            $predio->setTipoPredio(3);
+
             $this->entityManager->persist($predio);
             $this->entityManager->flush();
 
