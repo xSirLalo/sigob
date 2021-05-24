@@ -229,10 +229,10 @@ class PredioController extends AbstractActionController
                 }
                 return $this->redirect()->toRoute('predio');
             }
-            // else {
-            //     $this->flashMessenger()->addErrorMessage($form->getMessages());
-            //     return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
-            // }
+            else {
+                $this->flashMessenger()->addErrorMessage($form->getMessages());
+                return $this->redirect()->refresh(); # refresca esta pagina y muestra los errores
+            }
         }
         return new ViewModel([
             'form' => $form,

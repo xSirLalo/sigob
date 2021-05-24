@@ -124,6 +124,68 @@ $form->prepare();
                         </div>
                     </div>
                 </div>
+                <h6 class="text-center">Colindancias del predio</h6>
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-success btn-sm float-right mb-2" data-toggle="modal" data-target="#AgregarColindanciaModal"><i class="fas fa-plus fa-fw"></i></button>
+                    </div>
+                </div>
+                <table  id="mytable" class="table table-bordered table-hover ">
+                  <tr>
+                    <th>Punto cardinal</th>
+                    <th>Colinda con</th>
+                    <th>Metros</th>
+                    <th>Observaciones</th>
+                    <th>Eliminar</th>
+                  </tr>
+                </table>
+                <p class="text-right">Elementos en la Tabla: <span id="adicionados">0</span></p>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="AgregarColindanciaModal" tabindex="-1" role="dialog" aria-labelledby="AgregarColindanciaModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="AgregarColindanciaModalLabel">Agregar colindancia </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label for="puntoCardinal">Punto cardinal: </label>
+                                    <select class="custom-select w-30" name="puntoCardinal" id="puntoCardinal">
+                                        <option name="Norte">Norte</option>
+                                        <option name="Sur">Sur</option>
+                                        <option name="Este">Este</option>
+                                        <option name="Oeste">Oeste</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col">
+                                    <label for="colindaCon">Colinda con: </label>
+                                    <input class="form-control" type="text" name="colindaCon" id="colindaCon" placeholder="Colindancia">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="medidasMetro">Medidda metros: </label>
+                                    <input class="form-control" type="text" name="medidasMetro" id="medidasMetro" placeholder="Metros" onkeypress="return filterFloat(event,this);">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label for="">Observaciones: </label>
+                                    <textarea class="form-control" name="observacionesColindancias" id="observacionesColindancias" placeholder="Observaciones" rows="3"></textarea>
+                                </div>
+                            </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-success" id="adicionar">Adicionar a la tabla</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <h6 class="text-center"><?= $this->formLabel($form->get('archivo')); ?></h6>
                 <hr>
                 <div class="form-group" id="select">

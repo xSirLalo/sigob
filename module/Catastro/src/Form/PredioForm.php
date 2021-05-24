@@ -165,6 +165,7 @@ class PredioForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Titula anterior'
             ]
         ]);
 
@@ -177,6 +178,7 @@ class PredioForm extends Form
             'attributes' => [
                 //'required' => true,
                 'class' => 'form-control',
+                'placeholder' => 'Titular'
             ]
         ]);
 

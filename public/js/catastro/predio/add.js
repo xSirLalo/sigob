@@ -7,6 +7,41 @@ $(document).on('keydown', '.js-select2-predio', function(e) {
 });
 
 $(document).ready(function () {
+    //obtenemos el valor de los input
+    $('#adicionar').click(function() {
+        var puntoCardinal = document.getElementById("puntoCardinal").value;
+        var colindaCon = document.getElementById("colindaCon").value;
+        var medidasMetro = document.getElementById("medidasMetro").value;
+        var observacionesColindancias = document.getElementById("observacionesColindancias").value;
+        
+        var i = 1; //contador para asignar id al boton que borrara la fila
+        var fila = '<tr id="row' + i + '"><td>' + puntoCardinal + '</td><td>' + colindaCon + '</td><td>' + medidasMetro + '</td><td>' + observacionesColindancias + '</td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">Quitar</button></td></tr>'; //esto seria lo que contendria la fila
+
+        i++;
+
+        $('#mytable tr:first').after(fila);
+        $("#adicionados").text(""); //esta instruccion limpia el div adicioandos para que no se vayan acumulando
+        var nFilas = $("#mytable tr").length;
+        $("#adicionados").append(nFilas - 1);
+        //le resto 1 para no contar la fila del header
+        document.getElementById("medidasMetro").value ="";
+        document.getElementById("observacionesColindancias").value = "";
+        document.getElementById("colindaCon").value = "";
+        document.getElementById("puntoCardinal").value = "";
+        
+        $('#AgregarColindanciaModal').modal('hide');
+    });
+
+    $(document).on('click', '.btn_remove', function() {
+        var button_id = $(this).attr("id");
+        //cuando da click obtenemos el id del boton
+        $('#row' + button_id + '').remove(); //borra la fila
+        //limpia el para que vuelva a contar las filas de la tabla
+        $("#adicionados").text("");
+        var nFilas = $("#mytable tr").length;
+            $("#adicionados").append(nFilas - 1);
+    });
+
     function formatRepo(repo) {
         if (repo.loading) return repo.text;
 
@@ -94,3 +129,40 @@ $(document).ready(function () {
     });
 });
 
+
+
+function filterFloat(evt,input){
+    // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
+    var key = window.Event ? evt.which : evt.keyCode;
+    var chark = String.fromCharCode(key);
+    var tempValue = input.value+chark;
+    if(key >= 48 && key <= 57){
+        if(filter(tempValue)=== false){
+            return false;
+        }else{
+            return true;
+        }
+    }else{
+        if(key == 8 || key == 13 || key == 0) {
+            return true;
+        }else if(key == 46){
+                if(filter(tempValue)=== false){
+                    return false;
+                }else{
+                    return true;
+                }
+        }else{
+            return false;
+        }
+    }
+
+}
+
+function filter(__val__){
+    var preg = /^([0-9]+\.?[0-9]{0,5})$/;
+    if(preg.test(__val__) === true){
+        return true;
+    }else{
+        return false;
+    }
+}

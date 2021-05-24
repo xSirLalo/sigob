@@ -51,8 +51,8 @@
             <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
             <a href="#!" class="b-brand">
                 <!-- ========   change your logo hear   ============ -->
-                <img src=<?= $this->basePath('assets/images/logo.png') ?> alt="" class="logo">
-                <img src=<?= $this->basePath('assets/images/logo-icon.png') ?> alt="" class="logo-thumb">
+                <img src="<?= $this->basePath('assets/images/logo.png') ?>" alt="" class="logo">
+                <img src="<?= $this->basePath('assets/images/logo-icon.png') ?>" alt="" class="logo-thumb">
             </a>
             <a href="#!" class="mob-toggler">
                 <i class="feather icon-more-vertical"></i>
@@ -71,11 +71,11 @@
                     <li>
                         <div class="dropdown drp-user">
                             <a href="#!" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src=<?= $this->basePath('assets/images/user/avatar-1.png') ?> class="img-radius wid-40" alt="User-Profile-Image">
+                                <img src="<?= $this->basePath('assets/images/user/avatar-1.png') ?>" class="img-radius wid-40" alt="User-Profile-Image">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-notification">
                                 <div class="pro-head">
-                                    <img src=<?= $this->basePath('assets/images/user/avatar-1.png') ?> class="img-radius" alt="User-Profile-Image">
+                                    <img src="<?= $this->basePath('assets/images/user/avatar-1.png') ?>" class="img-radius" alt="User-Profile-Image">
                                     <span>
                                         <?php
                                             if ($this->identity()) {
@@ -127,11 +127,11 @@
     <!-- [ Main Content ] end -->
     <!-- Required Js -->
     <?= $this->inlineScript()
-        ->prependFile($this->basePath('js/app.js'))
-        ->prependFile($this->basePath('assets/js/menu-setting.min.js'))
-        ->prependFile($this->basePath('assets/js/pcoded.min.js'))
-        ->prependFile($this->basePath('assets/js/plugins/bootstrap.min.js'))
-        ->prependFile($this->basePath('assets/js/vendor-all.min.js'))
+        ->prependFile($this->basePath('/js/app.js'))
+        ->prependFile($this->basePath('/assets/js/menu-setting.min.js'))
+        ->prependFile($this->basePath('/assets/js/pcoded.min.js'))
+        ->prependFile($this->basePath('/assets/js/plugins/bootstrap.min.js'))
+        ->prependFile($this->basePath('/assets/js/vendor-all.min.js'))
     ?>
 </body>
 </html>
