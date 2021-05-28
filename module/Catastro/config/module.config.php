@@ -780,8 +780,8 @@ return [
             __NAMESPACE__ . '_driver' => [
                 'class' => \Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
                 'cache' => 'array',
-                'paths' => [__DIR__ . '\..\src\\'], // Windows
-               // 'paths' => [__DIR__ . '/../src'], // Linux
+                // 'paths' => [__DIR__ . '\..\src\\'], // Windows
+               'paths' => [__DIR__ . '/../src'], // Linux
             ],
             // default metadata driver, aggregates all other drivers into a single one.
             // Override `orm_default` only if you know what you're doing

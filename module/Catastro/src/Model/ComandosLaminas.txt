@@ -51,9 +51,11 @@ cd C:/laragon/www/sigob/
 
 CREATE USER 'sigob'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON *.* TO 'sigob'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
 CREATE USER 'sigob'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON *.* TO 'sigob'@'%' WITH GRANT OPTION;
-FLUSH PRIVILEGES
+FLUSH PRIVILEGES;
 
 http://www.generatedata.com/
 
@@ -71,10 +73,10 @@ INSERT INTO contribuyente (id_contribuyente,nombre,apellido_paterno,apellido_mat
 INSERT INTO contribuyente (id_contribuyente,nombre,apellido_paterno,apellido_materno,rfc,curp,genero,created_at,updated_at) VALUES (81,"Rahim","Aquila","Monroe","ODO076633SHT","WKPT520449JYLTWI06",2,"2021-02-22 16:16:48","2021-02-09 13:43:31"),(82,"Quin","Cyrus","Potter","JCA257547FYJ","ZUED224872UYPZTG46",1,"2021-03-06 09:40:46","2021-02-03 22:26:59"),(83,"Xavier","Nolan","Gilmore","RRJ408327GPI","JYJP574230GUWOEF98",1,"2021-01-30 08:57:17","2021-02-25 17:04:08"),(84,"Ignacia","Ross","Hopkins","PEO435101CMN","JHZX614304EEQMXP74",1,"2021-03-03 14:27:39","2021-02-03 07:32:00"),(85,"Alma","Ralph","Koch","OXQ622893KAN","FIPT005883YYGQYQ54",2,"2021-01-25 17:26:59","2021-02-28 20:41:09"),(86,"Owen","Aquila","Gonzales","XCE130252IKF","INOL646993DWUMFT40",3,"2021-03-01 04:40:58","2021-01-24 20:55:37"),(87,"Melissa","Aaron","Lambert","BMA189589JIB","OIJZ479282OGOAEP40",1,"2021-03-09 19:32:31","2021-03-05 16:02:41"),(88,"Camden","Elliott","Hyde","RZW318527OQA","KQGU799471KLKMTS51",1,"2021-02-08 13:53:13","2021-01-08 01:16:22"),(89,"Uma","Yuli","Rodriguez","XED771556DPQ","VRYE247480ITLVIZ05",3,"2021-01-28 15:32:29","2021-02-13 04:38:22"),(90,"Blair","Cade","Morse","UBG620514UHK","AXOZ268635JGNFTX18",2,"2021-01-01 18:15:06","2021-02-09 22:09:40");
 INSERT INTO contribuyente (id_contribuyente,nombre,apellido_paterno,apellido_materno,rfc,curp,genero,created_at,updated_at) VALUES (91,"Jackson","Kasimir","Mcmahon","RJI448319UPB","KGLB991450LCMUOV52",1,"2021-02-20 06:50:52","2021-01-26 18:27:48"),(92,"Quyn","Elijah","Grant","FQN577005OBW","MVRP543111SIRBNB56",3,"2021-02-04 05:34:00","2021-01-23 06:53:23"),(93,"Rigel","Kelly","Bond","QSB340402DMD","GRIR566459JAYGFU36",2,"2021-02-10 11:50:50","2021-02-17 22:38:59"),(94,"Hall","Xander","Mccarty","SBK033254JDW","NKWC294082IYDGCA17",1,"2021-03-03 10:53:44","2021-01-28 03:17:25"),(95,"Joel","Preston","Justice","TZV247236GDY","ASNA781471UTUWMN73",1,"2021-02-14 09:22:22","2021-02-15 17:33:08"),(96,"Amos","Jacob","Buckley","HCW662005XNF","PMDC997726ULIKSW47",1,"2021-01-27 19:45:10","2021-01-07 03:25:08"),(97,"Lareina","Brian","Conner","LAF548127SPD","COHZ285767VBBPIX31",1,"2021-01-10 03:16:49","2021-01-08 22:45:23"),(98,"Laith","Jonas","Clark","ULU470449KUW","UAON704909HNADDD49",1,"2021-02-24 16:04:50","2021-01-30 09:58:44"),(99,"Mechelle","Reese","Franklin","GII501157GKV","BYJH111225YJFWGQ72",3,"2021-02-23 21:54:39","2021-01-03 03:34:30"),(100,"Isabella","Dieter","Franco","XNM732064HBM","SAOE247047FXINEH16",3,"2021-03-06 04:19:22","2021-02-14 00:05:42");
 
-sudo mv config/development.config.php.dist config/development.config.php
-sudo mv config/autoload/development.local.php.dist config/autoload/development.local.php
-sudo mv config/autoload/doctrine.local.php.dist config/autoload/doctrine.local.php
-sudo mv config/autoload/local.php.dist config/autoload/local.php
+sudo cp config/development.config.php.dist config/development.config.php
+sudo cp config/autoload/development.local.php.dist config/autoload/development.local.php
+sudo cp config/autoload/doctrine.local.php.dist config/autoload/doctrine.local.php
+sudo cp config/autoload/local.php.dist config/autoload/local.php
 
 sudo chmod -R 777 data/
 
@@ -101,3 +103,5 @@ systemctl restart apache2
 sudo nano /etc/hosts
 
 127.0.0.1	sigob.test
+
+tail -f  /var/log/apache2/error.log
